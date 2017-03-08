@@ -7,8 +7,8 @@
     <ProjectGuid>{EE97C495-DE64-4602-8623-68B4032260C6}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Trade_platform</RootNamespace>
-    <AssemblyName>Trade-platform</AssemblyName>
+    <RootNamespace>TradePlatform</RootNamespace>
+    <AssemblyName>TradePlatform</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -34,8 +34,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -50,35 +59,40 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="views\App.xaml">
+    <Compile Include="Main\ViewModel\MainWindowViewModel.cs" />
+    <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="views\data\DownloadedData.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="views\data\DownloadNewData.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="views\MainWindow.xaml">
+    <Page Include="Main\View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="views\App.xaml.cs">
+    <Page Include="StockDataUploud\View\DownloadedData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StockDataUploud\View\DownloadNewData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
     </Compile>
-    <Compile Include="views\data\DownloadedData.xaml.cs">
+    <Compile Include="Main\View\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StockDataUploud\Model\DownloadedData.cs" />
+    <Compile Include="StockDataUploud\Model\DownloadNewData.cs" />
+    <Compile Include="Common\BaseModel\BaseViewModel.cs" />
+    <Compile Include="Common\BaseModel\DelegateCommand.cs" />
+    <Compile Include="StockDataUploud\ViewModel\DownloadedDataViewModel.cs" />
+    <Compile Include="StockDataUploud\ViewModel\DownloadNewDataViewModel.cs" />
+    <Compile Include="StockDataUploud\View\DownloadedData.xaml.cs">
       <DependentUpon>DownloadedData.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\data\DownloadNewData.xaml.cs">
+    <Compile Include="StockDataUploud\View\DownloadNewData.xaml.cs">
       <DependentUpon>DownloadNewData.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="views\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -108,10 +122,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="services\" />
-    <Folder Include="viewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
