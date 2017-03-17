@@ -1,9 +1,10 @@
 ﻿using TradePlatform.StockDataUploud.model;
-using TradePlatform.common.viewModel;
+using Prism.Mvvm;
+using TradePlatform.Common.ViewModel;
 
 namespace TradePlatform.StockDataUploud.viewModel
 {
-    class DownloadedDataViewModel : BaseViewModel
+    class DownloadedDataViewModel : BindableBase, IViewModel
     {
         public DownloadedDataViewModel(DownloadedData model)
         {

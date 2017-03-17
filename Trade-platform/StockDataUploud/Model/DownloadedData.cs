@@ -1,7 +1,13 @@
 ﻿namespace TradePlatform.StockDataUploud.model
 {
-    class DownloadedData
+    public class DownloadedData
     {
+
         public string PageTitle { get; set; }
+
+        public DownloadedData ()
+        {
+            PageTitle = "DownloadedData";
+        }
     }
 }
