@@ -84,15 +84,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Common\ViewModel\IViewModel.cs" />
     <Compile Include="ContainerBuilder.cs" />
+    <Compile Include="HistoryDataView.cs" />
+    <Compile Include="Main\ViewModel\IShellModel.cs" />
     <Compile Include="Main\ViewModel\ShellModel.cs" />
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="StockDataUploud\View\HistoryView.xaml.cs">
-      <DependentUpon>HistoryView.xaml</DependentUpon>
+    <Compile Include="StockDataUploud\ViewModel\HistoryDataViewModel.cs" />
+    <Compile Include="StockDataUploud\ViewModel\IDownloadedDataViewModel.cs" />
+    <Compile Include="StockDataUploud\ViewModel\IDownloadNewDataViewModel.cs" />
+    <Compile Include="StockDataUploud\ViewModel\IHistoryDataViewModel.cs" />
+    <Compile Include="StockDataUploud\View\HistoryDataView.xaml.cs">
+      <DependentUpon>HistoryDataView.xaml</DependentUpon>
     </Compile>
     <Page Include="Main\View\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -112,8 +117,6 @@
     <Compile Include="Main\View\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\DownloadedDataModule.cs" />
-    <Compile Include="Modules\DownloadNewDataModule.cs" />
     <Compile Include="StockDataUploud\Model\DownloadedData.cs" />
     <Compile Include="StockDataUploud\Model\DownloadNewData.cs" />
     <Compile Include="Common\BaseModel\DelegateCommand.cs" />
@@ -125,7 +128,7 @@
     <Compile Include="StockDataUploud\View\DownloadNewDataView.xaml.cs">
       <DependentUpon>DownloadNewDataView.xaml</DependentUpon>
     </Compile>
-    <Page Include="StockDataUploud\View\HistoryView.xaml">
+    <Page Include="StockDataUploud\View\HistoryDataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

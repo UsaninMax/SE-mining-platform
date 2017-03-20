@@ -1,15 +1,14 @@
-﻿<Window x:Class="TradePlatform.StockDataUploud.View.HistoryView"
+﻿<Window x:Class="TradePlatform.StockDataUploud.view.HistoryView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:views="clr-namespace:TradePlatform.StockDataUploud.view"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TradePlatform.StockDataUploud.View"
         xmlns:prism="http://prismlibrary.com/"
-        xmlns:cal="clr-namespace:Prism.Regions; assembly=Prism.Composition"
         mc:Ignorable="d"
         Title="HistoryView" Height="300" Width="300">
-    <Grid>
-        <ItemsControl cal:RegionManager.RegionName="DownloadedData" />
-        <ItemsControl cal:RegionManager.RegionName="DownloadNewData" />
-    </Grid>
+    <StackPanel>
+        <views:DownloadedDataView/>
+        <views:DownloadNewDataView/>
+    </StackPanel>
 </Window>

@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
-using TradePlatform.Common.ViewModel;
+using TradePlatform.StockDataUploud.viewModel;
+using Microsoft.Practices.Unity;
 
 namespace TradePlatform.StockDataUploud.view
 {
@@ -8,10 +9,10 @@ namespace TradePlatform.StockDataUploud.view
     /// </summary>
     public partial class DownloadNewDataView : UserControl
     {
-        public DownloadNewDataView(IViewModel viewModel)
+        public DownloadNewDataView()
         {
             this.InitializeComponent();
-            this.DataContext = viewModel;
+            this.DataContext = ContainerBuilder.Container.Resolve<IDownloadNewDataViewModel>();
         }
     }
 }

@@ -1,16 +1,13 @@
 ﻿using System.Windows.Input;
 using TradePlatform.common.viewModel;
 using Prism.Mvvm;
-using TradePlatform.Common.ViewModel;
-using Prism.Modularity;
 using Microsoft.Practices.Unity;
-using TradePlatform.Modules;
-using TradePlatform.StockDataUploud.View;
-using System.Windows;
+using TradePlatform.Main.ViewModel;
+using TradePlatform.StockDataUploud.view;
 
 namespace TradePlatform.viewModel
 {
-    class ShellModel : BindableBase, IViewModel
+    class ShellModel : BindableBase, IShellModel
     {
         public ShellModel()
         {
@@ -22,13 +19,7 @@ namespace TradePlatform.viewModel
         private void LoadDownloadedDataPage()
         {
             IUnityContainer container = ContainerBuilder.Container;
-            IModule downloadedDataModule = container.Resolve<DownloadedDataModule>();
-            IModule downloadNewDataModule = container.Resolve<DownloadNewDataModule>();
-
             container.Resolve<HistoryView>().Show();
-
-            downloadedDataModule.Initialize();
-            downloadNewDataModule.Initialize();
         }
     }
 }

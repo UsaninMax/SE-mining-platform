@@ -1,11 +1,8 @@
 ﻿using System.Windows;
 
 using TradePlatform.view;
-using TradePlatform.Modules;
-using Prism.Modularity;
 using Prism.Unity;
 using Microsoft.Practices.Unity;
-using TradePlatform.Common;
 
 namespace TradePlatform
 {

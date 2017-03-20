@@ -1,6 +1,8 @@
 ﻿using System.Windows;
+using TradePlatform.StockDataUploud.viewModel;
+using Microsoft.Practices.Unity;
 
-namespace TradePlatform.StockDataUploud.View
+namespace TradePlatform.StockDataUploud.view
 {
     /// <summary>
     /// Interaction logic for HistoryView.xaml
@@ -10,6 +12,7 @@ namespace TradePlatform.StockDataUploud.View
         public HistoryView()
         {
             InitializeComponent();
+            this.DataContext = ContainerBuilder.Container.Resolve<IHistoryDataViewModel>();
         }
     }
 }

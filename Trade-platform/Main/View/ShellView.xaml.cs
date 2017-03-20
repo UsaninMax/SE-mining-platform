@@ -1,5 +1,6 @@
 ﻿using System.Windows;
-using TradePlatform.Common.ViewModel;
+using TradePlatform.Main.ViewModel;
+using Microsoft.Practices.Unity;
 
 namespace TradePlatform.view
 {
@@ -8,10 +9,10 @@ namespace TradePlatform.view
     /// </summary>
     public partial class ShellView : Window
     {
-        public ShellView(IViewModel viewModel)
+        public ShellView()
         {
             this.InitializeComponent();
-            this.DataContext = viewModel;
+            this.DataContext = ContainerBuilder.Container.Resolve<IShellModel>();
         }
     }
 }

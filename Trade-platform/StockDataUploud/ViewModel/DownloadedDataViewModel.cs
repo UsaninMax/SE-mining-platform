@@ -1,10 +1,10 @@
 ﻿using TradePlatform.StockDataUploud.model;
 using Prism.Mvvm;
-using TradePlatform.Common.ViewModel;
+using TradePlatform.StockDataUploud.viewModel;
 
 namespace TradePlatform.StockDataUploud.viewModel
 {
-    class DownloadedDataViewModel : BindableBase, IViewModel
+    class DownloadedDataViewModel : BindableBase, IDownloadedDataViewModel
     {
         public DownloadedDataViewModel(DownloadedData model)
         {
