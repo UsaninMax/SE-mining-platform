@@ -12,6 +12,6 @@
 
     <StackPanel>
         <vw:DownloadNewDataView />
-        <vw:DownloadedDataView />
+        <vw:DownloadNewDataView />
     </StackPanel>
 </Window>

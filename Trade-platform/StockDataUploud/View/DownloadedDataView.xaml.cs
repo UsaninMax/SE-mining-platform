@@ -1,6 +1,7 @@
 ﻿using System.Windows.Controls;
 using TradePlatform.StockDataUploud.viewModel;
 using Microsoft.Practices.Unity;
+using System.ComponentModel;
 
 namespace TradePlatform.StockDataUploud.view
 {
@@ -12,7 +13,11 @@ namespace TradePlatform.StockDataUploud.view
         public DownloadedDataView()
         {
             this.InitializeComponent();
-            this.DataContext = ContainerBuilder.Container.Resolve<IDownloadedDataViewModel>();
+
+            if (!DesignerProperties.GetIsInDesignMode(this))
+            {
+                this.DataContext = ContainerBuilder.Container.Resolve<IDownloadedDataViewModel>();
+            }
         }
     }
 }
