@@ -19,7 +19,7 @@ namespace TradePlatform.viewModel
         private void LoadDownloadedDataPage()
         {
             IUnityContainer container = ContainerBuilder.Container;
-            container.Resolve<HistoryView>().Show();
+            container.Resolve<HistoryView>().ShowDialog();
         }
     }
 }

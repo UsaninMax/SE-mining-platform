@@ -7,6 +7,7 @@
          d:DesignHeight="100" d:DesignWidth="300">
     <Grid>
         <TextBlock FontSize="20" Text="{Binding Path=PageTitle}" />
-        
+       
     </Grid>
+    
 </UserControl>

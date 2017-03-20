@@ -4,7 +4,7 @@ using TradePlatform.StockDataUploud.viewModel;
 
 namespace TradePlatform.StockDataUploud.viewModel
 {
-    class DownloadNewDataViewModel : BindableBase, IDownloadNewDataViewModel
+    public class DownloadNewDataViewModel : BindableBase, IDownloadNewDataViewModel
     {
         public DownloadNewDataViewModel(DownloadNewData model)
         {

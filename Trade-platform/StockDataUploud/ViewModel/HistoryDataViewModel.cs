@@ -3,7 +3,7 @@ using TradePlatform.StockDataUploud.viewModel;
 
 namespace TradePlatform.StockDataUploud.viewModel
 {
-    class HistoryDataViewModel : BindableBase, IHistoryDataViewModel
+    public class HistoryDataViewModel : BindableBase, IHistoryDataViewModel
     {
         public HistoryDataViewModel()
         {
