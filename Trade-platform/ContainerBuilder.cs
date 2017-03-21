@@ -26,7 +26,7 @@ namespace TradePlatform
             Container.RegisterType<HistoryDataView>();
             Container.RegisterType<IHistoryDataViewModel, HistoryDataViewModel>();
 
-            Container.RegisterType<IDownloadedDataViewModel, DownloadedDataViewModel>(new InjectionConstructor(typeof(DownloadedData)));
+            Container.RegisterType<IDownloadedDataViewModel, DownloadedDataViewModel>();
             Container.RegisterType<IDownloadNewDataViewModel, DownloadNewDataViewModel>(new InjectionConstructor(typeof(DownloadNewData)));
         }
     }

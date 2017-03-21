@@ -8,10 +8,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:prism="http://prismlibrary.com/"
         mc:Ignorable="d"
-        Title="HistoryView" Height="300" Width="300">
+        Title="Downloaded data:" Height="700" Width="500">
 
     <StackPanel>
-        <vw:DownloadNewDataView />
+        <vw:DownloadedDataView />
         <vw:DownloadNewDataView />
     </StackPanel>
 </Window>

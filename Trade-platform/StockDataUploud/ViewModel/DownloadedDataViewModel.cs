@@ -1,27 +1,25 @@
 ﻿using TradePlatform.StockDataUploud.model;
 using Prism.Mvvm;
+using System.Collections.ObjectModel;
+using TradePlatform.StockDataUploud.Model;
 
 namespace TradePlatform.StockDataUploud.viewModel
 {
     public class DownloadedDataViewModel : BindableBase, IDownloadedDataViewModel
     {
-        public DownloadedDataViewModel(DownloadedData model)
+        public DownloadedDataViewModel()
         {
-            this.Model = model;
+            _dounloadedInstruments.Add(new DownloadedData() { Instrument = "UUDD", From = new System.DateTime(), To = new System.DateTime(), Step = 10, Status = DownloadStatus.InProgress});
+            _dounloadedInstruments.Add(new DownloadedData() { Instrument = "AFSJD", From = new System.DateTime(), To = new System.DateTime(), Step = 0.10F, Status = DownloadStatus.Done });
         }
 
-        public DownloadedData Model { get; private set; }
+        ObservableCollection<DownloadedData> _dounloadedInstruments = new ObservableCollection<DownloadedData>();
 
-        public string PageTitle
+        public ObservableCollection<DownloadedData> DounloadedInstruments
         {
             get
             {
-                return this.Model.PageTitle;
-            }
-            set
-            {
-                this.Model.PageTitle = value;
-                this.OnPropertyChanged();
+                return _dounloadedInstruments;
             }
         }
     }

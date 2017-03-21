@@ -92,6 +92,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="StockDataUploud\Model\DownloadStatus.cs" />
     <Compile Include="StockDataUploud\ViewModel\HistoryDataViewModel.cs" />
     <Compile Include="StockDataUploud\ViewModel\IDownloadedDataViewModel.cs" />
     <Compile Include="StockDataUploud\ViewModel\IDownloadNewDataViewModel.cs" />
