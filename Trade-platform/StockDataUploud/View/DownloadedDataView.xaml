@@ -3,23 +3,33 @@
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+         xmlns:vw="clr-namespace:TradePlatform.common.view"
          mc:Ignorable="d">
-    <ListView ItemsSource="{Binding DounloadedInstruments}">
-        <ListView.ContextMenu>
+    <DataGrid IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding DounloadedInstruments}">
+        <DataGrid.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Remove"
                     Command="{Binding RemoveItem}"
                     CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
             </ContextMenu>
-        </ListView.ContextMenu>
-        <ListView.View>
-            <GridView>
-                <GridViewColumn Header="Instrument" DisplayMemberBinding="{Binding Instrument}" />
-                <GridViewColumn Header="From" DisplayMemberBinding="{Binding From}" />
-                <GridViewColumn Header="To" DisplayMemberBinding="{Binding To}" />
-                <GridViewColumn Header="Step" DisplayMemberBinding="{Binding Step}" />
-                <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}" />
-            </GridView>
-        </ListView.View>
-    </ListView>
+        </DataGrid.ContextMenu>
+        <DataGrid.Columns>
+            <DataGridTextColumn  Header="Instrument" Binding="{Binding Instrument}" />
+            <DataGridTextColumn  Header="From" Binding="{Binding From}" />
+            <DataGridTextColumn  Header="To" Binding="{Binding To}" />
+            <DataGridTextColumn  Header="Step" Binding="{Binding Step}" />
+            <DataGridTemplateColumn>
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <vw:WaitSpinner x:Name="WaitSpinner" Grid.Row="1" Grid.Column="2" Visibility="Hidden"/>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Status}" Value="True">
+                                <Setter TargetName="WaitSpinner" Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid.Columns>
+    </DataGrid>
 </UserControl>

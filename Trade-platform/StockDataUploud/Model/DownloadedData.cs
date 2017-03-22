@@ -9,6 +9,6 @@ namespace TradePlatform.StockDataUploud.model
         public DateTime From { get; set; }
         public DateTime To { get; set; }
         public float Step { get; set; }
-        public DownloadStatus Status { get; set; }
+        public bool Status { get; set; }
     }
 }

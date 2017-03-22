@@ -84,6 +84,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Common\View\WaitSpinner.xaml.cs">
+      <DependentUpon>WaitSpinner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ContainerBuilder.cs" />
     <Compile Include="HistoryDataView.cs" />
     <Compile Include="Main\ViewModel\IShellModel.cs" />
@@ -101,6 +104,10 @@
     <Compile Include="StockDataUploud\View\HistoryDataView.xaml.cs">
       <DependentUpon>HistoryDataView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Common\View\WaitSpinner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Main\View\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -153,6 +160,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Fonts\FontAwesome.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

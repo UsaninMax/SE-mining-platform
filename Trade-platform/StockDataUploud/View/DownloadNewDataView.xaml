@@ -4,6 +4,8 @@
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
          xmlns:System="clr-namespace:System;assembly=mscorlib"
+         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+         xmlns:vw="clr-namespace:TradePlatform.common.view"
          mc:Ignorable="d">
 
     <Grid>
@@ -18,7 +20,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock x:Name="TextBlockAddDataInfo" Text="Connection, in progress.." Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Margin="5"/>
+        <vw:WaitSpinner Grid.Row="1" Grid.Column="2"/>
         <ComboBox Grid.Column="0" Grid.Row="1" Margin="5"/>
         <ComboBox Grid.Column="1"  Grid.Row="1" Margin="5"/>
         <DatePicker Grid.Column="0"  Grid.Row="2" Margin="5" SelectedDate="{Binding Path=DateFrom, Mode=TwoWay, TargetNullValue={x:Static System:DateTime.Now}}"/>

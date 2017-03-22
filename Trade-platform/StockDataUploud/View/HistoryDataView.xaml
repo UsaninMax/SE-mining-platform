@@ -1,6 +1,5 @@
 ﻿<Window x:Class="TradePlatform.StockDataUploud.view.HistoryView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:vm="clr-namespace:TradePlatform.StockDataUploud.viewModel"
         xmlns:vw="clr-namespace:TradePlatform.StockDataUploud.view"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

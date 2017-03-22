@@ -4,9 +4,6 @@ using Microsoft.Practices.Unity;
 
 namespace TradePlatform.StockDataUploud.view
 {
-    /// <summary>
-    /// Interaction logic for HistoryView.xaml
-    /// </summary>
     public partial class HistoryView : Window
     {
         public HistoryView()

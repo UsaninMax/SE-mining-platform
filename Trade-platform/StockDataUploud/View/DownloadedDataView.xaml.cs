@@ -5,9 +5,6 @@ using System.ComponentModel;
 
 namespace TradePlatform.StockDataUploud.view
 {
-    /// <summary>
-    /// Interaction logic for DownloadedData.xaml
-    /// </summary>
     public partial class DownloadedDataView : UserControl
     {
         public DownloadedDataView()

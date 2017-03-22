@@ -12,8 +12,8 @@ namespace TradePlatform.StockDataUploud.viewModel
 
         public DownloadedDataViewModel()
         {
-            _dounloadedInstruments.Add(new DownloadedData() { Instrument = "UUDD", From = new System.DateTime(), To = new System.DateTime(), Step = 10, Status = DownloadStatus.InProgress});
-            _dounloadedInstruments.Add(new DownloadedData() { Instrument = "AFSJD", From = new System.DateTime(), To = new System.DateTime(), Step = 0.10F, Status = DownloadStatus.Done });
+            _dounloadedInstruments.Add(new DownloadedData() { Instrument = "UUDD", From = new System.DateTime(), To = new System.DateTime(), Step = 10, Status = true});
+            _dounloadedInstruments.Add(new DownloadedData() { Instrument = "AFSJD", From = new System.DateTime(), To = new System.DateTime(), Step = 0.10F, Status = false });
 
             this.RemoveItem = new DelegateCommand<DownloadedData> (RemoveItemFromList, CanRemoveItemFromList);
         }
