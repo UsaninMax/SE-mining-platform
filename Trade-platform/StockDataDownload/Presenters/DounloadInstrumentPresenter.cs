@@ -4,13 +4,15 @@ using TradePlatform.StockDataDownload.Services;
 using Microsoft.Practices.Unity;
 using System;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace TradePlatform.StockDataDownload.Presenters
 {
     public class DounloadInstrumentPresenter : BindableBase, IDounloadInstrumentPresenter
     {
-        Instrument _instrument;
-        IDownloadInstrument _downloadInstrument;
+        private Instrument _instrument;
+        private IDownloadInstrument _downloadInstrument;
+        private CancellationTokenSource _tokenSource = new CancellationTokenSource();
 
         public DounloadInstrumentPresenter(Instrument instrument)
         {
@@ -60,16 +62,21 @@ namespace TradePlatform.StockDataDownload.Presenters
             }
             set
             {
-                this._status = value;
+                _status = value;
                 OnPropertyChanged();
             }
         }
 
         public void StartDownload()
         {
-            var downloadTask = new Task<bool>(() => _downloadInstrument.download(_instrument));
+            var downloadTask = new Task<bool>(() => _downloadInstrument.download(_instrument, _tokenSource.Token), _tokenSource.Token);
             downloadTask.ContinueWith((i) => Status = i.Result);
             downloadTask.Start();
+        }
+
+        public void StopDownload()
+        {
+            _tokenSource.Cancel();
         }
     }
 }
