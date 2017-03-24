@@ -10,7 +10,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top" Height="25">
             <MenuItem Header="Data source">
-                <MenuItem Command="{Binding LoadDownloadedDataCommand}" Header="Downloaded data"/>
+                <MenuItem Command="{Binding LoadInstrumentCommand}" Header="Downloaded data"/>
             </MenuItem>
         </Menu>
         <Grid>

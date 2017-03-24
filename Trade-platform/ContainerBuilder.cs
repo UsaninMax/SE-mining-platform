@@ -1,8 +1,9 @@
 ﻿
 using Microsoft.Practices.Unity;
+using Prism.Events;
 using TradePlatform.Main.ViewModel;
-using TradePlatform.StockDataUploud.model;
-using TradePlatform.StockDataUploud.viewModel;
+using TradePlatform.StockDataDownload.Services;
+using TradePlatform.StockDataDownload.viewModel;
 using TradePlatform.view;
 using TradePlatform.viewModel;
 
@@ -20,14 +21,21 @@ namespace TradePlatform
 
         private static void initializeShell()
         {
+
+            Container.RegisterType<ShellView>();
+
+            Container.RegisterType<IEventAggregator, EventAggregator>(new ContainerControlledLifetimeManager());
+
             Container.RegisterType<ShellView>();
             Container.RegisterType<IShellModel, ShellModel>();
 
             Container.RegisterType<HistoryDataView>();
-            Container.RegisterType<IHistoryDataViewModel, HistoryDataViewModel>();
+            Container.RegisterType<IHistoryInstrumentsViewModel, HistoryInstrumentsViewModel>();
 
-            Container.RegisterType<IDownloadedDataViewModel, DownloadedDataViewModel>();
-            Container.RegisterType<IDownloadNewDataViewModel, DownloadNewDataViewModel>(new InjectionConstructor(typeof(DownloadNewData)));
+            Container.RegisterType<IDownloadedInstrumentsViewModel, DownloadedInstrumentsViewModel>();
+            Container.RegisterType<IDownloadNewInstrumentViewModel, DownloadNewInstrumentViewModel>();
+
+            Container.RegisterType<IDownloadInstrument, DownloadFinamInstrument>();
         }
     }
 }

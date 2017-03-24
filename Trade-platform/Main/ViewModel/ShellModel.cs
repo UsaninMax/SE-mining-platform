@@ -3,7 +3,7 @@ using TradePlatform.common.viewModel;
 using Prism.Mvvm;
 using Microsoft.Practices.Unity;
 using TradePlatform.Main.ViewModel;
-using TradePlatform.StockDataUploud.view;
+using TradePlatform.StockDataDownload.view;
 
 namespace TradePlatform.viewModel
 {
@@ -11,15 +11,15 @@ namespace TradePlatform.viewModel
     {
         public ShellModel()
         {
-            this.LoadDownloadedDataCommand = new DelegateCommand(o => this.LoadDownloadedDataPage());
+            this.LoadInstrumentCommand = new DelegateCommand(o => this.HistoryInstrumentsPage());
         }
 
-        public ICommand LoadDownloadedDataCommand { get; private set; }
+        public ICommand LoadInstrumentCommand { get; private set; }
 
-        private void LoadDownloadedDataPage()
+        private void HistoryInstrumentsPage()
         {
             IUnityContainer container = ContainerBuilder.Container;
-            container.Resolve<HistoryView>().ShowDialog();
+            container.Resolve<HistoryInstrumentsView>().ShowDialog();
         }
     }
 }
