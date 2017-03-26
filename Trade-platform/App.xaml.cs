@@ -9,7 +9,7 @@ namespace TradePlatform
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            ContainerBuilder.initialize();
+            ContainerBuilder.Initialize();
             var bootstrapper = new Bootstrapper();
             bootstrapper.Run();
         }

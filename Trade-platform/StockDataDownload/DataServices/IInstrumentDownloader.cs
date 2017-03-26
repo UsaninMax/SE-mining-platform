@@ -3,8 +3,8 @@ using TradePlatform.StockDataDownload.model;
 
 namespace TradePlatform.StockDataDownload.Services
 {
-    interface IDownloadInstrument
+    interface IInstrumentDownloader
     {
-        bool download(Instrument instrument, CancellationToken ct);
+        bool Download(Instrument instrument, CancellationToken ct);
     }
 }

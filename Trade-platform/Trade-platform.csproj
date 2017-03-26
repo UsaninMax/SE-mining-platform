@@ -34,7 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Expression.Interaction.3.0.40218.0\lib\net45\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
@@ -51,23 +53,19 @@
       <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Prism, Version=6.2.0.0, Culture=neutral, PublicKeyToken=91a96d2a154366d8, processorArchitecture=MSIL">
-      <HintPath>..\packages\Prism.Core.6.2.0\lib\net45\Prism.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Prism, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Core.6.3.0\lib\net45\Prism.dll</HintPath>
     </Reference>
-    <Reference Include="Prism.Unity.Wpf, Version=6.2.0.0, Culture=neutral, PublicKeyToken=91a96d2a154366d8, processorArchitecture=MSIL">
-      <HintPath>..\packages\Prism.Unity.6.2.0\lib\net45\Prism.Unity.Wpf.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Prism.Unity.Wpf, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Unity.6.3.0\lib\net45\Prism.Unity.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="Prism.Wpf, Version=6.2.0.0, Culture=neutral, PublicKeyToken=91a96d2a154366d8, processorArchitecture=MSIL">
-      <HintPath>..\packages\Prism.Wpf.6.2.0\lib\net45\Prism.Wpf.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Prism.Wpf, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\Prism.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Prism.Wpf.6.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -84,61 +82,66 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Common\View\WaitSpinner.xaml.cs">
+    <Compile Include="Commons\Securities\SecuritiesInfo.cs" />
+    <Compile Include="Commons\Server\OperationStatuses.cs" />
+    <Compile Include="Commons\Views\WaitSpinner.xaml.cs">
       <DependentUpon>WaitSpinner.xaml</DependentUpon>
     </Compile>
     <Compile Include="ContainerBuilder.cs" />
     <Compile Include="HistoryDataView.cs" />
-    <Compile Include="Main\ViewModel\IShellModel.cs" />
-    <Compile Include="Main\ViewModel\ShellModel.cs" />
+    <Compile Include="Main\ViewModels\IShellModel.cs" />
+    <Compile Include="Main\ViewModels\ShellModel.cs" />
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="StockDataDownload\Presenters\DounloadInstrumentPresenter.cs" />
     <Compile Include="StockDataDownload\Presenters\IDounloadInstrumentPresenter.cs" />
-    <Compile Include="StockDataDownload\Services\DownloadFinamInstrument.cs" />
-    <Compile Include="StockDataDownload\Services\IDownloadInstrument.cs" />
-    <Compile Include="StockDataDownload\ViewModel\HistoryInstrumentsViewModel.cs" />
-    <Compile Include="StockDataDownload\ViewModel\IDownloadedInstrumentsViewModel.cs" />
-    <Compile Include="StockDataDownload\ViewModel\IDownloadNewInstrumentViewModel.cs" />
-    <Compile Include="StockDataDownload\ViewModel\IHistoryInstrumentsViewModel.cs" />
-    <Compile Include="StockDataDownload\View\HistoryInstrumentsView.xaml.cs">
+    <Compile Include="StockDataDownload\DataServices\FinamInstrumentDownloader.cs" />
+    <Compile Include="StockDataDownload\DataServices\FinamSecuritiesInfoDownloader.cs" />
+    <Compile Include="StockDataDownload\DataServices\IInstrumentDownloader.cs" />
+    <Compile Include="StockDataDownload\DataServices\ISecuritiesInfoDownloader.cs" />
+    <Compile Include="StockDataDownload\DataServices\IServer.cs" />
+    <Compile Include="StockDataDownload\ViewModels\HistoryInstrumentsViewModel.cs" />
+    <Compile Include="StockDataDownload\ViewModels\IDownloadedInstrumentsViewModel.cs" />
+    <Compile Include="StockDataDownload\ViewModels\IDownloadNewInstrumentViewModel.cs" />
+    <Compile Include="StockDataDownload\ViewModels\IHistoryInstrumentsViewModel.cs" />
+    <Compile Include="StockDataDownload\Views\HistoryInstrumentsView.xaml.cs">
       <DependentUpon>HistoryInstrumentsView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Common\View\WaitSpinner.xaml">
+    <Page Include="Commons\Views\WaitSpinner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Main\View\ShellView.xaml">
+    <Page Include="Main\Views\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="StockDataDownload\View\DownloadedInstrumentsView.xaml">
+    <Page Include="StockDataDownload\Views\DownloadedInstrumentsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="StockDataDownload\View\DownloadNewInstrumentView.xaml">
+    <Page Include="StockDataDownload\Views\DownloadNewInstrumentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Main\View\ShellView.xaml.cs">
+    <Compile Include="Main\Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StockDataDownload\Model\Instrument.cs" />
-    <Compile Include="Common\BaseModel\DelegateCommand.cs" />
-    <Compile Include="StockDataDownload\ViewModel\DownloadedInstrumentsViewModel.cs" />
-    <Compile Include="StockDataDownload\ViewModel\DownloadNewInstrumentViewModel.cs" />
-    <Compile Include="StockDataDownload\View\DownloadedInstrumentsView.xaml.cs">
+    <Compile Include="StockDataDownload\Models\Instrument.cs" />
+    <Compile Include="Commons\BaseModels\DelegateCommand.cs" />
+    <Compile Include="StockDataDownload\ViewModels\DownloadedInstrumentsViewModel.cs" />
+    <Compile Include="StockDataDownload\ViewModels\DownloadNewInstrumentViewModel.cs" />
+    <Compile Include="StockDataDownload\Views\DownloadedInstrumentsView.xaml.cs">
       <DependentUpon>DownloadedInstrumentsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StockDataDownload\View\DownloadNewInstrumentView.xaml.cs">
+    <Compile Include="StockDataDownload\Views\DownloadNewInstrumentView.xaml.cs">
       <DependentUpon>DownloadNewInstrumentView.xaml</DependentUpon>
     </Compile>
-    <Page Include="StockDataDownload\View\HistoryInstrumentsView.xaml">
+    <Page Include="StockDataDownload\Views\HistoryInstrumentsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -174,6 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
+    <Folder Include="StockDataDownload\DataParsers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

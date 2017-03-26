@@ -4,9 +4,9 @@ using TradePlatform.StockDataDownload.model;
 
 namespace TradePlatform.StockDataDownload.Services
 {
-    class DownloadFinamInstrument : IDownloadInstrument
+    class FinamInstrumentDownloader : IInstrumentDownloader
     {
-        public bool download(Instrument instrument, CancellationToken ct)
+        public bool Download(Instrument instrument, CancellationToken ct)
         {
 
             while (true)

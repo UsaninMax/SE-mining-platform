@@ -11,13 +11,13 @@ namespace TradePlatform.StockDataDownload.Presenters
     public class DounloadInstrumentPresenter : BindableBase, IDounloadInstrumentPresenter
     {
         private Instrument _instrument;
-        private IDownloadInstrument _downloadInstrument;
+        private IInstrumentDownloader _instrumentDownloader;
         private CancellationTokenSource _tokenSource = new CancellationTokenSource();
 
         public DounloadInstrumentPresenter(Instrument instrument)
         {
             _instrument = instrument;
-            _downloadInstrument = ContainerBuilder.Container.Resolve<IDownloadInstrument>();
+            _instrumentDownloader = ContainerBuilder.Container.Resolve<IInstrumentDownloader>();
         }
 
         public String Instrument
@@ -63,13 +63,13 @@ namespace TradePlatform.StockDataDownload.Presenters
             set
             {
                 _status = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 
         public void StartDownload()
         {
-            var downloadTask = new Task<bool>(() => _downloadInstrument.download(_instrument, _tokenSource.Token), _tokenSource.Token);
+            var downloadTask = new Task<bool>(() => _instrumentDownloader.Download(_instrument, _tokenSource.Token), _tokenSource.Token);
             downloadTask.ContinueWith((i) => Status = i.Result);
             downloadTask.Start();
         }

@@ -13,7 +13,10 @@ namespace TradePlatform.StockDataDownload.view
 
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                this.DataContext = ContainerBuilder.Container.Resolve<IDownloadNewInstrumentViewModel>();
+                IDownloadNewInstrumentViewModel viewModel = ContainerBuilder.Container.Resolve<IDownloadNewInstrumentViewModel>();
+                this.DataContext = viewModel;
+                viewModel.UpdateSecuritiesInfo();
+
             }
         }
     }
