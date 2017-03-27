@@ -10,6 +10,7 @@ using TradePlatform.StockDataDownload.Services;
 using System.Threading.Tasks;
 using TradePlatform.Commons.Server;
 using System.Collections.ObjectModel;
+using TradePlatform.StockDataDownload.DataServices;
 
 namespace TradePlatform.StockDataDownload.viewModel
 {
@@ -140,11 +141,11 @@ namespace TradePlatform.StockDataDownload.viewModel
             }
         }
 
-        private ISecuritiesInfoDownloader _securitiesInfoDownloader;
+        private ISecuritiesInfoUpdater _suritiesInfoUpdater;
 
         public DownloadNewInstrumentViewModel()
         {
-            this._securitiesInfoDownloader = ContainerBuilder.Container.Resolve<ISecuritiesInfoDownloader>();
+            this._suritiesInfoUpdater = ContainerBuilder.Container.Resolve<ISecuritiesInfoUpdater>();
             this.AddNew = new DelegateCommand(AddNewInstrument);
         }
 
@@ -160,7 +161,7 @@ namespace TradePlatform.StockDataDownload.viewModel
         public void UpdateSecuritiesInfo()
         {
             StatusMessage = OperationStatuses.SECURITIES_INFO_UPDATE_IN_PROGRESS;
-            var downloadTask = new Task<bool>(() => _securitiesInfoDownloader.Download());
+            var downloadTask = new Task<bool>(() => _suritiesInfoUpdater.Update());
             downloadTask.ContinueWith((i) => UpdatePanel(i.Result));
             downloadTask.Start();
         }

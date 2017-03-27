@@ -82,6 +82,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Commons\Securities\Finam\FinamSecurity.cs" />
+    <Compile Include="Commons\Securities\ISecurity.cs" />
     <Compile Include="Commons\Securities\SecuritiesInfo.cs" />
     <Compile Include="Commons\Server\OperationStatuses.cs" />
     <Compile Include="Commons\Views\WaitSpinner.xaml.cs">
@@ -95,10 +97,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="StockDataDownload\DataServices\Finam\FinamSecuritiesInfoParser.cs" />
+    <Compile Include="StockDataDownload\DataServices\ISecuritiesInfoParser.cs" />
+    <Compile Include="StockDataDownload\DataServices\Finam\FinamMarketHelper.cs" />
+    <Compile Include="StockDataDownload\DataServices\Finam\FinamSecuritiesInfoUpdater.cs" />
+    <Compile Include="StockDataDownload\DataServices\ISecuritiesInfoUpdater.cs" />
     <Compile Include="StockDataDownload\Presenters\DounloadInstrumentPresenter.cs" />
     <Compile Include="StockDataDownload\Presenters\IDounloadInstrumentPresenter.cs" />
-    <Compile Include="StockDataDownload\DataServices\FinamInstrumentDownloader.cs" />
-    <Compile Include="StockDataDownload\DataServices\FinamSecuritiesInfoDownloader.cs" />
+    <Compile Include="StockDataDownload\DataServices\Finam\FinamInstrumentDownloader.cs" />
+    <Compile Include="StockDataDownload\DataServices\Finam\FinamSecuritiesInfoDownloader.cs" />
     <Compile Include="StockDataDownload\DataServices\IInstrumentDownloader.cs" />
     <Compile Include="StockDataDownload\DataServices\ISecuritiesInfoDownloader.cs" />
     <Compile Include="StockDataDownload\DataServices\IServer.cs" />
@@ -177,7 +184,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
-    <Folder Include="StockDataDownload\DataParsers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

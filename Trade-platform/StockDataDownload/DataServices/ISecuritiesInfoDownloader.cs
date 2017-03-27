@@ -3,6 +3,6 @@ namespace TradePlatform.StockDataDownload.Services
 {
     interface ISecuritiesInfoDownloader
     {
-        bool Download();
+        string Download();
     }
 }
