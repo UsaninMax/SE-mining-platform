@@ -178,6 +178,7 @@ namespace TradePlatform.StockDataDownload.viewModel
 
             StatusMessage = OperationStatuses.SECURITIES_INFO_UPDATED;
             IsEnabledPanel = true;
+
         }
     }
 }
