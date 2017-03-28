@@ -82,8 +82,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Commons\Securities\Finam\FinamSecurity.cs" />
-    <Compile Include="Commons\Securities\ISecurity.cs" />
+    <Compile Include="Commons\Securities\Security.cs" />
+    <Compile Include="Commons\Securities\Market.cs" />
     <Compile Include="Commons\Securities\SecuritiesInfo.cs" />
     <Compile Include="Commons\Server\OperationStatuses.cs" />
     <Compile Include="Commons\Views\WaitSpinner.xaml.cs">

@@ -15,7 +15,7 @@ namespace TradePlatform.StockDataDownload.DataParsers
         private string[] _emitentChild;
         private string[] _emitentUrls;
 
-        public IList<ISecurity> Parse(string message)
+        public IList<Security> Parse(string message)
         {
             string[] sets = message.Split('=');
             _ids = CustomSplit(sets[1], new string[] {"','",","});
@@ -51,19 +51,17 @@ namespace TradePlatform.StockDataDownload.DataParsers
             return replaced.Split(splitters, StringSplitOptions.None); ;
         }
 
-        private IList<ISecurity> BuildSecutities()
+        private IList<Security> BuildSecutities()
         {
-            IList<ISecurity> securities = new List<ISecurity>(_ids.Length);
-
+            IList<Security> securities = new List<Security>(_ids.Length);
             for (int i = 0; i < _ids.Length; i++)
             {
-                securities.Add(new FinamSecurity()
+                securities.Add(new Security()
                 {
                     Id = _ids[i],
                     Name = _names[i],
                     Code = _codes[i],
-                    MarketId = _markets[i],
-                    Market = FinamMarketHelper.Markets[_markets[i]],
+                    Market = new Market() { Name = FinamMarketHelper.Markets[_markets[i]], Id = _markets[i] },
                     Decp = _decp[i].Split(':')[1],
                     EmitentChild = _emitentChild[i],
                     Url = _emitentUrls[i].Split(':')[1]

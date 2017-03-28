@@ -41,6 +41,8 @@ namespace TradePlatform
             Container.RegisterType<ISecuritiesInfoUpdater, FinamSecuritiesInfoUpdater>();
             Container.RegisterType<ISecuritiesInfoDownloader, FinamSecuritiesInfoDownloader>();
             Container.RegisterType<ISecuritiesInfoParser, FinamSecuritiesInfoParser>();
+            Container.RegisterType<IInstrumentDownloader, FinamInstrumentDownloader>();
+            
 
             Container.RegisterType<SecuritiesInfo>(new ContainerControlledLifetimeManager());
         }

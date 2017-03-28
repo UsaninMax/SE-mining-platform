@@ -5,6 +5,6 @@ namespace TradePlatform.StockDataDownload.DataParsers
 {
     interface ISecuritiesInfoParser
     {
-        IList<ISecurity> Parse(string message);
+        IList<Security> Parse(string message);
     }
 }

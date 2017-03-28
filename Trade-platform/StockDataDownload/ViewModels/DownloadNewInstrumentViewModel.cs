@@ -6,11 +6,12 @@ using Prism.Commands;
 using System.Windows.Input;
 using TradePlatform.StockDataDownload.Presenters;
 using System;
-using TradePlatform.StockDataDownload.Services;
 using System.Threading.Tasks;
 using TradePlatform.Commons.Server;
 using System.Collections.ObjectModel;
 using TradePlatform.StockDataDownload.DataServices;
+using TradePlatform.Common.Securities;
+using TradePlatform.Commons.Securities;
 
 namespace TradePlatform.StockDataDownload.viewModel
 {
@@ -59,63 +60,64 @@ namespace TradePlatform.StockDataDownload.viewModel
             }
         }
 
-        private ObservableCollection<String> _securitiesClasses;
-        public ObservableCollection<String> SecuritiesClasses
+        private ObservableCollection<Market> _markets;
+        public ObservableCollection<Market> Markets
         {
             get
             {
-                return _securitiesClasses;
+                return _markets;
             }
             set
             {
-                _securitiesClasses = value;
+                _markets = value;
                 RaisePropertyChanged();
             }
         }
 
-        private String _selectedSecuritiesClass;
-        public String SelectedSecuritiesClass
+        private Market _selectedMarket;
+        public Market SelectedMarket
         {
             get
             {
-                return _selectedSecuritiesClass;
+                return _selectedMarket;
             }
             set
             {
-                _selectedSecuritiesClass = value;
+                _selectedMarket = value;
+                updateSecuritiesBox();
                 RaisePropertyChanged();
             }
         }
 
-        private ObservableCollection<String> _securitiesInstruments;
-        public ObservableCollection<String> SecuritiesInstruments
+        private ObservableCollection<Security> _securities;
+        public ObservableCollection<Security> Securities
         {
             get
             {
-                return _securitiesInstruments;
+                return _securities;
             }
             set
             {
-                _securitiesInstruments = value;
+                _securities = value;
                 RaisePropertyChanged();
             }
         }
 
-        private String _selectedSecuritiesInstrument;
-        public String SelectedSecuritiesInstrument
+        private Security _selectedSecurity;
+        public Security SelectedSecurity
         {
             get
             {
-                return _selectedSecuritiesInstrument;
+                return _selectedSecurity;
             }
             set
             {
-                _selectedSecuritiesInstrument = value;
+                _selectedSecurity = value;
                 RaisePropertyChanged();
             }
         }
 
-        private DateTime _dateFrom;
+        private DateTime _dateFrom = DateTime.Today;
         public DateTime DateFrom
         {
             get
@@ -128,7 +130,7 @@ namespace TradePlatform.StockDataDownload.viewModel
             }
         }
 
-        private DateTime _dateTo;
+        private DateTime _dateTo = DateTime.Today;
         public DateTime DateTo
         {
             get
@@ -142,9 +144,11 @@ namespace TradePlatform.StockDataDownload.viewModel
         }
 
         private ISecuritiesInfoUpdater _suritiesInfoUpdater;
+        private SecuritiesInfo _securitiesInfo;
 
         public DownloadNewInstrumentViewModel()
         {
+            this._securitiesInfo = ContainerBuilder.Container.Resolve<SecuritiesInfo>();
             this._suritiesInfoUpdater = ContainerBuilder.Container.Resolve<ISecuritiesInfoUpdater>();
             this.AddNew = new DelegateCommand(AddNewInstrument);
         }
@@ -153,7 +157,7 @@ namespace TradePlatform.StockDataDownload.viewModel
 
         private void AddNewInstrument()
         {
-            DounloadInstrumentPresenter presenter = new DounloadInstrumentPresenter(new Instrument() { Name = _selectedSecuritiesInstrument, From = _dateFrom, To = _dateTo, MinStep = 10 });
+            DounloadInstrumentPresenter presenter = new DounloadInstrumentPresenter(new Instrument() { Name = _selectedSecurity.Name, From = _dateFrom, To = _dateTo, MinStep = 10 });
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<PubSubEvent<DounloadInstrumentPresenter>>().Publish(presenter);
         }
@@ -176,9 +180,14 @@ namespace TradePlatform.StockDataDownload.viewModel
                 return;
             }
 
+            Markets = new ObservableCollection<Market>(_securitiesInfo.Markets());
             StatusMessage = OperationStatuses.SECURITIES_INFO_UPDATED;
             IsEnabledPanel = true;
+        }
 
+        private void updateSecuritiesBox()
+        {
+            Securities = new ObservableCollection<Security>(_securitiesInfo.SecuritiesBy(_selectedMarket));
         }
     }
 }
