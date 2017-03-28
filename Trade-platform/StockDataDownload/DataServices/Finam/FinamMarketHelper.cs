@@ -4,7 +4,7 @@ namespace TradePlatform.StockDataDownload.DataServices.FinamHelpers
 {
     class FinamMarketHelper
     {
-        Dictionary<string, string> Markets = new Dictionary<string, string>()
+        public static readonly Dictionary<string, string> Markets = new Dictionary<string, string>()
             {
                 { "200", "МосБиржа топ" },
 

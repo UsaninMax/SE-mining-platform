@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using TradePlatform.Commons.Securities;
 using System;
+using TradePlatform.StockDataDownload.DataServices.FinamHelpers;
 
 namespace TradePlatform.StockDataDownload.DataParsers
 {
@@ -30,7 +31,7 @@ namespace TradePlatform.StockDataDownload.DataParsers
                 throw new Exception("Securities info parsing has mistakes!");
             }
 
-            return new List<ISecurity>();
+            return BuildSecutities();
         }
 
         private string[] CustomSplit(string input, string[] splitters)
@@ -50,6 +51,26 @@ namespace TradePlatform.StockDataDownload.DataParsers
             return replaced.Split(splitters, StringSplitOptions.None); ;
         }
 
+        private IList<ISecurity> BuildSecutities()
+        {
+            IList<ISecurity> securities = new List<ISecurity>(_ids.Length);
+
+            for (int i = 0; i < _ids.Length; i++)
+            {
+                securities.Add(new FinamSecurity()
+                {
+                    Id = _ids[i],
+                    Name = _names[i],
+                    Code = _codes[i],
+                    MarketId = _markets[i],
+                    Market = FinamMarketHelper.Markets[_markets[i]],
+                    Decp = _decp[i].Split(':')[1],
+                    EmitentChild = _emitentChild[i],
+                    Url = _emitentUrls[i].Split(':')[1]
+                });
+            }
+            return securities;
+        }
         private bool ParseChecker()
         {
             int baseLength = _ids.Length;
