@@ -1,31 +1,65 @@
 ﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using TradePlatform.Commons.Securities;
-using System.Linq;
 using System;
 
 namespace TradePlatform.StockDataDownload.DataParsers
 {
     class FinamSecuritiesInfoParser : ISecuritiesInfoParser
     {
+        private string[] _ids;
+        private string[] _names;
+        private string[] _codes;
+        private string[] _markets;
+        private string[] _decp;
+        private string[] _emitentChild;
+        private string[] _emitentUrls;
+
         public IList<ISecurity> Parse(string message)
         {
-
             string[] sets = message.Split('=');
-            string[] ids = sets[1].Split('[')[1].Split(']')[0].Split(',');
-            //string[] names = SplitRegexp(SplitRegexp(SplitRegexp(sets[2], @"\[\'")[2], @"\'\]")[1], @"\'\,\'");
-            string[] codes = sets[3].Split('[')[1].Split(']')[0].Split(',');
-            string[] markets = sets[4].Split('[')[1].Split(']')[0].Split(',');
-            string[] decp = sets[5].Split('{')[1].Split('}')[0].Split(',');
-            string[] emitentChild = sets[7].Split('[')[1].Split(']')[0].Split(',');
-            string[] emitentUrls = sets[8].Split('{')[1].Split('}')[0].Split(',');
+            _ids = CustomSplit(sets[1], new string[] {"','",","});
+            _names = CustomSplit(sets[2], new string[] {"','"});
+            _codes = CustomSplit(sets[3], new string[] {"','"});
+            _markets = CustomSplit(sets[4], new string[] {","});
+            _decp = CustomSplit(sets[5], new string[] { "," });
+            _emitentChild = CustomSplit(sets[7], new string[] { "," });
+            _emitentUrls = CustomSplit(sets[8], new string[] { "," });
+
+            if(!ParseChecker())
+            {
+                throw new Exception("Securities info parsing has mistakes!");
+            }
 
             return new List<ISecurity>();
         }
 
-        private string[] SplitRegexp (string input, string pattern)
+        private string[] CustomSplit(string input, string[] splitters)
         {
-            return Regex.Matches(input, pattern).Cast<Match>().Select(m => m.Value).ToArray();
-        } 
+            string trimmed = input.Trim();
+            string replaced = trimmed
+                .Replace("{", "")
+                .Replace("[", "")
+                .Replace("['", "")
+                .Replace("'];\r\nvar aEmitentNames", "")
+                .Replace("];\r\nvar aEmitentDecp", "")
+                .Replace("};\r\nvar aDataFormatStrs", "")
+                .Replace("];\r\nvar aEmitentUrls", "")
+                .Replace("'];\r\nvar aEmitentMarkets", "")
+                .Replace("};", "");
+
+            return replaced.Split(splitters, StringSplitOptions.None); ;
+        }
+
+        private bool ParseChecker()
+        {
+            int baseLength = _ids.Length;
+            return
+                _names.Length == baseLength &&
+                _codes.Length == baseLength &&
+                _markets.Length == baseLength &&
+                _decp.Length == baseLength &&
+                _emitentChild.Length == baseLength &&
+                _emitentUrls.Length == baseLength; 
+        }
     }
 }
