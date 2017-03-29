@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TradePlatform.Commons.Securities;
 
@@ -17,7 +16,7 @@ namespace TradePlatform.Common.Securities
 
         public IEnumerable<Market> Markets()
         {
-            return new HashSet<Market>(_securities.Select(s => s.Market).ToList());
+            return new HashSet<Market>(_securities.Select(s => s.Market).OrderByDescending(o => o.Name).ToList());
         }
 
         public IEnumerable<Security> SecuritiesBy(Market chosenMarket)

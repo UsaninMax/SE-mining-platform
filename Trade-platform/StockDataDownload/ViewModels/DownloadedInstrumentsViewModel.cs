@@ -41,7 +41,6 @@ namespace TradePlatform.StockDataDownload.viewModel
         private void RemoveItemFromList(object param)
         {
             var instrument  = param as DounloadInstrumentPresenter;
-            instrument.StopDownload();
             InstrumentsInfo.Remove(instrument);
         }
 
