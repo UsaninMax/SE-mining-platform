@@ -90,25 +90,30 @@
       <DependentUpon>WaitSpinner.xaml</DependentUpon>
     </Compile>
     <Compile Include="ContainerBuilder.cs" />
-    <Compile Include="HistoryDataView.cs" />
     <Compile Include="Main\ViewModels\IShellModel.cs" />
     <Compile Include="Main\ViewModels\ShellModel.cs" />
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="StockDataDownload\DataServices\Finam\FinamSecuritiesInfoParser.cs" />
-    <Compile Include="StockDataDownload\DataServices\ISecuritiesInfoParser.cs" />
-    <Compile Include="StockDataDownload\DataServices\Finam\FinamMarketHelper.cs" />
-    <Compile Include="StockDataDownload\DataServices\Finam\FinamSecuritiesInfoUpdater.cs" />
-    <Compile Include="StockDataDownload\DataServices\ISecuritiesInfoUpdater.cs" />
+    <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamInstrumentDownloadManager.cs" />
+    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoParser.cs" />
+    <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamInstrumentSplitter.cs" />
+    <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamTradesParser.cs" />
+    <Compile Include="StockDataDownload\DataServices\Trades\IInstrumentDownloadManager.cs" />
+    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\ISecuritiesInfoParser.cs" />
+    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamMarketHelper.cs" />
+    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoUpdater.cs" />
+    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\ISecuritiesInfoUpdater.cs" />
+    <Compile Include="StockDataDownload\DataServices\Trades\IInstrumentSplitter.cs" />
+    <Compile Include="StockDataDownload\DataServices\Trades\ITradesParser.cs" />
+    <Compile Include="StockDataDownload\Models\Trade.cs" />
     <Compile Include="StockDataDownload\Presenters\DounloadInstrumentPresenter.cs" />
     <Compile Include="StockDataDownload\Presenters\IDounloadInstrumentPresenter.cs" />
-    <Compile Include="StockDataDownload\DataServices\Finam\FinamInstrumentDownloader.cs" />
-    <Compile Include="StockDataDownload\DataServices\Finam\FinamSecuritiesInfoDownloader.cs" />
-    <Compile Include="StockDataDownload\DataServices\IInstrumentDownloader.cs" />
-    <Compile Include="StockDataDownload\DataServices\ISecuritiesInfoDownloader.cs" />
-    <Compile Include="StockDataDownload\DataServices\IServer.cs" />
+    <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamTradesDownloader.cs" />
+    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoDownloader.cs" />
+    <Compile Include="StockDataDownload\DataServices\Trades\ITradesDownloader.cs" />
+    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\ISecuritiesInfoDownloader.cs" />
     <Compile Include="StockDataDownload\ViewModels\HistoryInstrumentsViewModel.cs" />
     <Compile Include="StockDataDownload\ViewModels\IDownloadedInstrumentsViewModel.cs" />
     <Compile Include="StockDataDownload\ViewModels\IDownloadNewInstrumentViewModel.cs" />

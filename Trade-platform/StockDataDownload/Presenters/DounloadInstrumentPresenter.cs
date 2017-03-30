@@ -4,18 +4,19 @@ using TradePlatform.StockDataDownload.Services;
 using Microsoft.Practices.Unity;
 using System;
 using System.Threading.Tasks;
+using TradePlatform.StockDataDownload.DataServices;
 
 namespace TradePlatform.StockDataDownload.Presenters
 {
     public class DounloadInstrumentPresenter : BindableBase, IDounloadInstrumentPresenter
     {
         private Instrument _instrument;
-        private IInstrumentDownloader _instrumentDownloader;
+        private IInstrumentDownloadManager _downloadManager;
 
         public DounloadInstrumentPresenter(Instrument instrument)
         {
             _instrument = instrument;
-            _instrumentDownloader = ContainerBuilder.Container.Resolve<IInstrumentDownloader>();
+            _downloadManager = ContainerBuilder.Container.Resolve<IInstrumentDownloadManager>();
         }
 
         public String Instrument
@@ -42,14 +43,6 @@ namespace TradePlatform.StockDataDownload.Presenters
             }
         }
 
-        public float MinStep
-        {
-            get
-            {
-                return _instrument.MinStep;
-            }
-        }
-
         private bool _status;
 
         public bool Status
@@ -67,7 +60,7 @@ namespace TradePlatform.StockDataDownload.Presenters
 
         public void StartDownload()
         {
-            var downloadTask = new Task<bool>(() => _instrumentDownloader.Download(_instrument));
+            var downloadTask = new Task<bool>(() => _downloadManager.Execute(_instrument));
             downloadTask.ContinueWith((i) => Status = i.Result);
             downloadTask.Start();
         }
