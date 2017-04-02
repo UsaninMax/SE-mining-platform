@@ -85,9 +85,6 @@
     <Compile Include="Commons\Securities\Security.cs" />
     <Compile Include="Commons\Securities\Market.cs" />
     <Compile Include="Commons\Securities\SecuritiesInfo.cs" />
-    <Compile Include="Commons\Server\FinamWebClient.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Commons\Server\OperationStatuses.cs" />
     <Compile Include="Commons\Views\WaitSpinner.xaml.cs">
       <DependentUpon>WaitSpinner.xaml</DependentUpon>
