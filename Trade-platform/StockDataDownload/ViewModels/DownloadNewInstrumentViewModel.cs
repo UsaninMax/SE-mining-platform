@@ -157,7 +157,10 @@ namespace TradePlatform.StockDataDownload.viewModel
 
         private void AddNewInstrument()
         {
-            DounloadInstrumentPresenter presenter = new DounloadInstrumentPresenter(new Instrument() { Name = _selectedSecurity.Name, From = _dateFrom, To = _dateTo, MinStep = 10 });
+            DounloadInstrumentPresenter presenter = new DounloadInstrumentPresenter(new Instrument() {
+                Name = _selectedSecurity.Name,
+                From = _dateFrom,
+                To = _dateTo});
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<PubSubEvent<DounloadInstrumentPresenter>>().Publish(presenter);
         }
