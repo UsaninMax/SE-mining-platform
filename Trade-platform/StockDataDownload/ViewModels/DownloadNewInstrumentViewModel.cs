@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using TradePlatform.StockDataDownload.DataServices;
 using TradePlatform.Common.Securities;
 using TradePlatform.Commons.Securities;
+using System.Text;
 
 namespace TradePlatform.StockDataDownload.viewModel
 {
@@ -155,13 +156,23 @@ namespace TradePlatform.StockDataDownload.viewModel
 
         public ICommand AddNew { get; private set; }
 
+        private static string DATE_FRORMAT = "ddMMyy";
+
         private void AddNewInstrument()
         {
+            StringBuilder path = new StringBuilder()
+                .Append(_selectedSecurity.Name)
+                .Append("_")
+                .Append(_dateFrom.ToString(DATE_FRORMAT))
+                .Append("_")
+                .Append(_dateTo.ToString(DATE_FRORMAT));
+
             DounloadInstrumentPresenter presenter = new DounloadInstrumentPresenter(new Instrument() {
                 Name = _selectedSecurity.Name,
                 Code = _selectedSecurity.Code,
                 Id = _selectedSecurity.Id,
                 MarketId = _selectedSecurity.Market.Id,
+                Path = path.ToString(),
                 From = _dateFrom,
                 To = _dateTo});
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();

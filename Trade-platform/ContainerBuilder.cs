@@ -7,8 +7,6 @@ using TradePlatform.Main.ViewModel;
 using TradePlatform.StockDataDownload.DataParsers;
 using TradePlatform.StockDataDownload.DataServices;
 using TradePlatform.StockDataDownload.DataServices.Finam;
-using TradePlatform.StockDataDownload.DataServices.Trades;
-using TradePlatform.StockDataDownload.DataServices.Trades.Finam;
 using TradePlatform.StockDataDownload.Services;
 using TradePlatform.StockDataDownload.viewModel;
 using TradePlatform.view;
@@ -54,7 +52,6 @@ namespace TradePlatform
 
             Container.RegisterType<IInstrumentDownloadService, FinamInstrumentDownloadService>();
 
-            Container.RegisterType<ITradesParser, FinamTradesParser>();
             Container.RegisterType<ITradesDownloader, FinamTradesDownloader>();
         }
     }

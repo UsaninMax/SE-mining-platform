@@ -1,17 +1,26 @@
 ﻿using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using TradePlatform.StockDataDownload.model;
 
 namespace TradePlatform.StockDataDownload.Services
 {
     class FinamTradesDownloader : ITradesDownloader
     {
-
         private static string DATE_FRORMAT = "ddMMyy";
+        private string _fileName;
 
-        public string Download(Instrument instrument)
+        public void Download(Instrument instrument)
         {
-            return new WebClient().DownloadString(Url(instrument));
+            _fileName = new StringBuilder()
+                .Append(instrument.Name)
+                .Append("_")
+                .Append(instrument.From.ToString(DATE_FRORMAT))
+                .Append("_")
+                .Append(instrument.To.ToString(DATE_FRORMAT))
+                .ToString();
+
+            new WebClient().DownloadFile(Url(instrument), instrument.Path +"\\"+ _fileName + ".txt");
         }
 
         private string Url(Instrument instrument)
@@ -21,11 +30,7 @@ namespace TradePlatform.StockDataDownload.Services
                 .Append("http://")
                 .Append("78.41.196.47")
                 .Append("/")
-                .Append(instrument.Name)
-                .Append("_")
-                .Append(instrument.From.ToString(DATE_FRORMAT))
-                .Append("_")
-                .Append(instrument.To.ToString(DATE_FRORMAT))
+                .Append(_fileName)
                 .Append(".txt?")
                 .Append("market=").Append(instrument.MarketId).Append("&")
                 .Append("em=").Append(instrument.Id).Append("&")
@@ -40,11 +45,7 @@ namespace TradePlatform.StockDataDownload.Services
                 .Append("to=").Append(instrument.To.ToShortDateString()).Append("&")
                 .Append("p=").Append(1).Append("&")
                 .Append("f=")
-                .Append(instrument.Name)
-                .Append("_")
-                .Append(instrument.From.ToString(DATE_FRORMAT))
-                .Append("_")
-                .Append(instrument.To.ToString(DATE_FRORMAT))
+                .Append(_fileName)
                 .Append("&")
                 .Append("e=").Append(".txt").Append("&")
                 .Append("cn=").Append(instrument.Name).Append("&")

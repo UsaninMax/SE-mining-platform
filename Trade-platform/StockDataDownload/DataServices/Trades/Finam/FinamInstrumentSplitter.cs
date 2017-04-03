@@ -17,7 +17,8 @@ namespace TradePlatform.StockDataDownload.DataServices.Finam
                     To = date,
                     MarketId = instrument.MarketId,
                     Code = instrument.Code,
-                    Id = instrument.Id
+                    Id = instrument.Id,
+                    Path = instrument.Path
                 });
             }
             return instruments;

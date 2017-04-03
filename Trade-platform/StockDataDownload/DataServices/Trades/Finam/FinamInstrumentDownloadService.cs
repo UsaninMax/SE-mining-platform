@@ -1,13 +1,7 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using TradePlatform.StockDataDownload.model;
+﻿using TradePlatform.StockDataDownload.model;
 using TradePlatform.StockDataDownload.Services;
 using Microsoft.Practices.Unity;
-using TradePlatform.StockDataDownload.Models;
-
-using System.Linq;
-using System.Collections.Generic;
-using TradePlatform.StockDataDownload.DataServices.Trades;
+using System.IO;
 
 namespace TradePlatform.StockDataDownload.DataServices.Finam
 {
@@ -19,40 +13,33 @@ namespace TradePlatform.StockDataDownload.DataServices.Finam
         {
             this._instrumentSplitter = ContainerBuilder.Container.Resolve<IInstrumentSplitter>();
         }
-
+        // Finam can return data only synchronously
         public bool Execute(Instrument instrument)
         {
-            IList<Instrument> splitted = _instrumentSplitter.Split(instrument);
-            IList<Task> tasks = new List<Task>();
-            CancellationTokenSource source = new CancellationTokenSource();
-            CancellationToken token = source.Token;
+            CreateLocalFolder(instrument.Path);
 
-            foreach (var splitInstrument in splitted)
+            foreach (var splitInstrument in _instrumentSplitter.Split(instrument))
             {
-                tasks.Add(Task.Factory.StartNew(fn =>
-                {
-                    ITradesDownloader downloader = ContainerBuilder.Container.Resolve<ITradesDownloader>();
-                    ITradesParser parser = ContainerBuilder.Container.Resolve<ITradesParser>();
-                    return parser.Parse(downloader.Download(splitInstrument));
-                }, token));
+                ITradesDownloader downloader = ContainerBuilder.Container.Resolve<ITradesDownloader>();
+                downloader.Download(splitInstrument);
             }
-
-            Task.Factory.ContinueWhenAll(tasks.ToArray(), contTasks =>
-            {
-                IList<Trade> allTrades = AggregateResult(contTasks);
-            }, token).Wait();
 
             return true;
         }
 
-        private IList<Trade> AggregateResult(Task[] tasks)
+        private void CreateLocalFolder(string path)
         {
-            IEnumerable<Trade> allTrades = new List<Trade>();
-            foreach (Task<IList<Trade>> task in tasks)
+            if (!Directory.Exists(path))
             {
-                allTrades = allTrades.Concat(task.Result);
+                Directory.CreateDirectory(path);
             }
-            return allTrades.OrderBy(trade => trade.Date).ToList();
+            else
+            {
+                foreach (string filePath in Directory.GetFiles(path))
+                {
+                    File.Delete(filePath);
+                }
+            }
         }
     }
 }
