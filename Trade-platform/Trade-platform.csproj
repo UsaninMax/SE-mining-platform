@@ -111,7 +111,6 @@
     <Compile Include="StockDataDownload\Presenters\DounloadInstrumentPresenter.cs" />
     <Compile Include="StockDataDownload\Presenters\IDounloadInstrumentPresenter.cs" />
     <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamTradesDownloader.cs" />
-    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoDownloader.cs" />
     <Compile Include="StockDataDownload\DataServices\Trades\ITradesDownloader.cs" />
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\ISecuritiesInfoDownloader.cs" />
     <Compile Include="StockDataDownload\ViewModels\HistoryInstrumentsViewModel.cs" />
