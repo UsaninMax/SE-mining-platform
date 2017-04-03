@@ -1,12 +1,14 @@
-﻿namespace TradePlatform.StockDataDownload.Services
+﻿using System.Net;
+using TradePlatform.Commons.Server;
+
+namespace TradePlatform.StockDataDownload.Services
 {
     class FinamSecuritiesInfoDownloader : ISecuritiesInfoDownloader
     {
-        private string _url = "http://www.finam.ru/cache/icharts/icharts.js";
+        private string _url = "https://www.finam.ru/cache/icharts/icharts.js";
         public string Download() 
         {
-            var wb = new System.Net.WebClient();
-            return wb.DownloadString(_url);
+            return new WebClient().DownloadString(_url);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Practices.Unity;
 using Prism.Events;
+using System.Net;
 using TradePlatform.Common.Securities;
 using TradePlatform.Main.ViewModel;
 using TradePlatform.StockDataDownload.DataParsers;
@@ -27,6 +28,8 @@ namespace TradePlatform
 
         private static void initializeShell()
         {
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls11;
 
             Container.RegisterType<ShellView>();
 
