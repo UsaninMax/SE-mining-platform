@@ -159,6 +159,9 @@ namespace TradePlatform.StockDataDownload.viewModel
         {
             DounloadInstrumentPresenter presenter = new DounloadInstrumentPresenter(new Instrument() {
                 Name = _selectedSecurity.Name,
+                Code = _selectedSecurity.Code,
+                Id = _selectedSecurity.Id,
+                MarketId = _selectedSecurity.Market.Id,
                 From = _dateFrom,
                 To = _dateTo});
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();

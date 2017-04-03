@@ -24,12 +24,12 @@ namespace TradePlatform
         {
             Container = new UnityContainer();
             initializeShell();
-        } 
+        }
 
         private static void initializeShell()
         {
 
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls11;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             Container.RegisterType<ShellView>();
 
@@ -52,11 +52,10 @@ namespace TradePlatform
             Container.RegisterType<IInstrumentSplitter, FinamInstrumentSplitter>();
 
 
-            Container.RegisterType<IInstrumentDownloadManager, FinamInstrumentDownloadManager>(
-                new InjectionConstructor(typeof(IInstrumentSplitter)));
+            Container.RegisterType<IInstrumentDownloadService, FinamInstrumentDownloadService>();
 
             Container.RegisterType<ITradesParser, FinamTradesParser>();
-            Container.RegisterType<ITradesDownloader, FinamTradesDownloader>(new InjectionConstructor(typeof(ITradesParser)));
+            Container.RegisterType<ITradesDownloader, FinamTradesDownloader>();
         }
     }
 }

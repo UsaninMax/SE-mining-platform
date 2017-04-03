@@ -2,7 +2,7 @@
 
 namespace TradePlatform.StockDataDownload.DataServices
 {
-    interface IInstrumentDownloadManager
+    interface IInstrumentDownloadService
     {
         bool Execute(Instrument instrument);
     }

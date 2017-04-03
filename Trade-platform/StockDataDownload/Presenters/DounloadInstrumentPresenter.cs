@@ -1,6 +1,5 @@
 ﻿using Prism.Mvvm;
 using TradePlatform.StockDataDownload.model;
-using TradePlatform.StockDataDownload.Services;
 using Microsoft.Practices.Unity;
 using System;
 using System.Threading.Tasks;
@@ -11,12 +10,12 @@ namespace TradePlatform.StockDataDownload.Presenters
     public class DounloadInstrumentPresenter : BindableBase, IDounloadInstrumentPresenter
     {
         private Instrument _instrument;
-        private IInstrumentDownloadManager _downloadManager;
+        private IInstrumentDownloadService _downloadService;
 
         public DounloadInstrumentPresenter(Instrument instrument)
         {
             _instrument = instrument;
-            _downloadManager = ContainerBuilder.Container.Resolve<IInstrumentDownloadManager>();
+            _downloadService = ContainerBuilder.Container.Resolve<IInstrumentDownloadService>();
         }
 
         public String Instrument
@@ -60,7 +59,7 @@ namespace TradePlatform.StockDataDownload.Presenters
 
         public void StartDownload()
         {
-            var downloadTask = new Task<bool>(() => _downloadManager.Execute(_instrument));
+            var downloadTask = new Task<bool>(() => _downloadService.Execute(_instrument));
             downloadTask.ContinueWith((i) => Status = i.Result);
             downloadTask.Start();
         }

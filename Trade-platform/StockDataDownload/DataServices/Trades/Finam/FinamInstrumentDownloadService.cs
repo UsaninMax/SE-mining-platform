@@ -7,16 +7,17 @@ using TradePlatform.StockDataDownload.Models;
 
 using System.Linq;
 using System.Collections.Generic;
+using TradePlatform.StockDataDownload.DataServices.Trades;
 
 namespace TradePlatform.StockDataDownload.DataServices.Finam
 {
-    class FinamInstrumentDownloadManager : IInstrumentDownloadManager
+    class FinamInstrumentDownloadService : IInstrumentDownloadService
     {
         private IInstrumentSplitter _instrumentSplitter;
 
-        public FinamInstrumentDownloadManager(IInstrumentSplitter instrumentSplitter)
+        public FinamInstrumentDownloadService()
         {
-            this._instrumentSplitter = instrumentSplitter;
+            this._instrumentSplitter = ContainerBuilder.Container.Resolve<IInstrumentSplitter>();
         }
 
         public bool Execute(Instrument instrument)
@@ -30,8 +31,9 @@ namespace TradePlatform.StockDataDownload.DataServices.Finam
             {
                 tasks.Add(Task.Factory.StartNew(fn =>
                 {
-                    ITradesDownloader tradesDownloader = ContainerBuilder.Container.Resolve<ITradesDownloader>();
-                    return tradesDownloader.Download(splitInstrument);
+                    ITradesDownloader downloader = ContainerBuilder.Container.Resolve<ITradesDownloader>();
+                    ITradesParser parser = ContainerBuilder.Container.Resolve<ITradesParser>();
+                    return parser.Parse(downloader.Download(splitInstrument));
                 }, token));
             }
 

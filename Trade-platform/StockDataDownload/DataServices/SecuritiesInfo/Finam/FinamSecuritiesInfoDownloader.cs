@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using TradePlatform.Commons.Server;
 
 namespace TradePlatform.StockDataDownload.Services
 {

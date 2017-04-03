@@ -96,11 +96,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamInstrumentDownloadManager.cs" />
+    <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamInstrumentDownloadService.cs" />
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoParser.cs" />
     <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamInstrumentSplitter.cs" />
     <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamTradesParser.cs" />
-    <Compile Include="StockDataDownload\DataServices\Trades\IInstrumentDownloadManager.cs" />
+    <Compile Include="StockDataDownload\DataServices\Trades\IInstrumentDownloadService.cs" />
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\ISecuritiesInfoParser.cs" />
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamMarketHelper.cs" />
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoUpdater.cs" />

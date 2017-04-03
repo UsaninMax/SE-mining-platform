@@ -6,6 +6,6 @@ namespace TradePlatform.StockDataDownload.Services
 {
     interface ITradesDownloader
     {
-        IList<Trade> Download(Instrument instrument);
+        string Download(Instrument instrument);
     }
 }

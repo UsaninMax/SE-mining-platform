@@ -11,7 +11,14 @@ namespace TradePlatform.StockDataDownload.DataServices.Finam
             IList<Instrument> instruments = new List<Instrument>();
             for (DateTime date = instrument.From; date <= instrument.To; date = date.AddDays(1))
             {
-                instruments.Add(new Instrument() { Name = instrument.Name, From = date, To = date });
+                instruments.Add(new Instrument() {
+                    Name = instrument.Name,
+                    From = date,
+                    To = date,
+                    MarketId = instrument.MarketId,
+                    Code = instrument.Code,
+                    Id = instrument.Id
+                });
             }
             return instruments;
         }
