@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using TradePlatform.Commons.Securities;
 
-namespace TradePlatform.StockDataDownload.DataParsers
+namespace TradePlatform.StockDataDownload.DataServices.SecuritiesInfo
 {
-    interface ISecuritiesInfoParser
+    internal interface ISecuritiesInfoParser
     {
         IList<Security> Parse(string message);
     }

@@ -1,6 +1,7 @@
 ﻿namespace TradePlatform.StockDataDownload.Presenters
 {
-    interface IDounloadInstrumentPresenter 
+    public interface IDounloadInstrumentPresenter 
     {
+        void StartDownload();
     }
 }

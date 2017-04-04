@@ -1,9 +1,9 @@
-﻿using TradePlatform.StockDataDownload.model;
+﻿using TradePlatform.Commons.Trades;
 
-namespace TradePlatform.StockDataDownload.DataServices
+namespace TradePlatform.StockDataDownload.DataServices.Trades
 {
     interface IInstrumentDownloadService
     {
-        bool Execute(Instrument instrument);
+        void Execute(Instrument instrument);
     }
 }

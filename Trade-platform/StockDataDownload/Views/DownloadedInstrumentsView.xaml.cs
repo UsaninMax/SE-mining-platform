@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
-using TradePlatform.StockDataDownload.viewModel;
 using Microsoft.Practices.Unity;
 using System.ComponentModel;
+using TradePlatform.StockDataDownload.ViewModels;
 
 namespace TradePlatform.StockDataDownload.view
 {

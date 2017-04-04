@@ -1,8 +1,8 @@
 ﻿using System.Windows;
-using TradePlatform.StockDataDownload.viewModel;
 using Microsoft.Practices.Unity;
+using TradePlatform.StockDataDownload.ViewModels;
 
-namespace TradePlatform.StockDataDownload.view
+namespace TradePlatform.StockDataDownload.Views
 {
     public partial class HistoryInstrumentsView : Window
     {

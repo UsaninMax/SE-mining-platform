@@ -84,8 +84,8 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Commons\Securities\Security.cs" />
     <Compile Include="Commons\Securities\Market.cs" />
-    <Compile Include="Commons\Securities\SecuritiesInfo.cs" />
-    <Compile Include="Commons\Server\OperationStatuses.cs" />
+    <Compile Include="Commons\Securities\SecuritiesInfoHolder.cs" />
+    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\SecuritiesInfoStatuses.cs" />
     <Compile Include="Commons\Views\WaitSpinner.xaml.cs">
       <DependentUpon>WaitSpinner.xaml</DependentUpon>
     </Compile>
@@ -106,7 +106,7 @@
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoUpdater.cs" />
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\ISecuritiesInfoUpdater.cs" />
     <Compile Include="StockDataDownload\DataServices\Trades\IInstrumentSplitter.cs" />
-    <Compile Include="StockDataDownload\Models\Trade.cs" />
+    <Compile Include="StockDataDownload\DataServices\Trades\TradesStatuses.cs" />
     <Compile Include="StockDataDownload\Presenters\DounloadInstrumentPresenter.cs" />
     <Compile Include="StockDataDownload\Presenters\IDounloadInstrumentPresenter.cs" />
     <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamTradesDownloader.cs" />
@@ -141,7 +141,7 @@
     <Compile Include="Main\Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StockDataDownload\Models\Instrument.cs" />
+    <Compile Include="Commons\Trades\Instrument.cs" />
     <Compile Include="Commons\BaseModels\DelegateCommand.cs" />
     <Compile Include="StockDataDownload\ViewModels\DownloadedInstrumentsViewModel.cs" />
     <Compile Include="StockDataDownload\ViewModels\DownloadNewInstrumentViewModel.cs" />

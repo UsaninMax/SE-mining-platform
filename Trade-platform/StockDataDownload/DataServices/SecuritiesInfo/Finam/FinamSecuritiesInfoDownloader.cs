@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace TradePlatform.StockDataDownload.Services
+namespace TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam
 {
     class FinamSecuritiesInfoDownloader : ISecuritiesInfoDownloader
     {

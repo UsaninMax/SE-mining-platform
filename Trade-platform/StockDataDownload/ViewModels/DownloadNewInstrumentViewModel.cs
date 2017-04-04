@@ -1,20 +1,18 @@
-﻿using TradePlatform.StockDataDownload.model;
-using Prism.Mvvm;
-using Microsoft.Practices.Unity;
-using Prism.Events;
-using Prism.Commands;
-using System.Windows.Input;
-using TradePlatform.StockDataDownload.Presenters;
-using System;
-using System.Threading.Tasks;
-using TradePlatform.Commons.Server;
+﻿using System;
 using System.Collections.ObjectModel;
-using TradePlatform.StockDataDownload.DataServices;
-using TradePlatform.Common.Securities;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using Microsoft.Practices.Unity;
+using Prism.Commands;
+using Prism.Events;
+using Prism.Mvvm;
 using TradePlatform.Commons.Securities;
-using System.Text;
+using TradePlatform.Commons.Trades;
+using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo;
+using TradePlatform.StockDataDownload.Presenters;
 
-namespace TradePlatform.StockDataDownload.viewModel
+namespace TradePlatform.StockDataDownload.ViewModels
 {
     public class DownloadNewInstrumentViewModel : BindableBase, IDownloadNewInstrumentViewModel
     {
@@ -85,7 +83,7 @@ namespace TradePlatform.StockDataDownload.viewModel
             set
             {
                 _selectedMarket = value;
-                updateSecuritiesBox();
+                UpdateSecuritiesBox();
                 RaisePropertyChanged();
             }
         }
@@ -144,65 +142,63 @@ namespace TradePlatform.StockDataDownload.viewModel
             }
         }
 
-        private ISecuritiesInfoUpdater _suritiesInfoUpdater;
-        private SecuritiesInfo _securitiesInfo;
+        private readonly ISecuritiesInfoUpdater _suritiesInfoUpdater;
+        private readonly SecuritiesInfoHolder _securitiesInfo;
 
         public DownloadNewInstrumentViewModel()
         {
-            this._securitiesInfo = ContainerBuilder.Container.Resolve<SecuritiesInfo>();
+            this._securitiesInfo = ContainerBuilder.Container.Resolve<SecuritiesInfoHolder>();
             this._suritiesInfoUpdater = ContainerBuilder.Container.Resolve<ISecuritiesInfoUpdater>();
             this.AddNew = new DelegateCommand(AddNewInstrument);
         }
 
         public ICommand AddNew { get; private set; }
 
-        private static string DATE_FRORMAT = "ddMMyy";
-
         private void AddNewInstrument()
         {
-            StringBuilder path = new StringBuilder()
-                .Append(_selectedSecurity.Name)
-                .Append("_")
-                .Append(_dateFrom.ToString(DATE_FRORMAT))
-                .Append("_")
-                .Append(_dateTo.ToString(DATE_FRORMAT));
-
-            DounloadInstrumentPresenter presenter = new DounloadInstrumentPresenter(new Instrument() {
-                Name = _selectedSecurity.Name,
-                Code = _selectedSecurity.Code,
-                Id = _selectedSecurity.Id,
-                MarketId = _selectedSecurity.Market.Id,
-                Path = path.ToString(),
-                From = _dateFrom,
-                To = _dateTo});
+            IDounloadInstrumentPresenter presenter = new DounloadInstrumentPresenter(new Instrument.Builder()
+                    .WithFrom(_dateFrom)
+                    .WithTo(_dateTo)
+                    .WithCode(_selectedSecurity.Code)
+                    .WithMarketId(_selectedSecurity.Market.Id)
+                    .WithName(_selectedSecurity.Name)
+                    .WithId(_selectedSecurity.Id)
+                    .Build());
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
-            eventAggregator.GetEvent<PubSubEvent<DounloadInstrumentPresenter>>().Publish(presenter);
+            eventAggregator.GetEvent<PubSubEvent<IDounloadInstrumentPresenter>>().Publish(presenter);
         }
 
         public void UpdateSecuritiesInfo()
         {
-            StatusMessage = OperationStatuses.SECURITIES_INFO_UPDATE_IN_PROGRESS;
-            var downloadTask = new Task<bool>(() => _suritiesInfoUpdater.Update());
-            downloadTask.ContinueWith((i) => UpdatePanel(i.Result));
+            StatusMessage = SecuritiesInfoStatuses.SecuritiesInfoUpdateInProgress;
+            var downloadTask = new Task(() => _suritiesInfoUpdater.Update());
+            downloadTask.ContinueWith((t) =>
+            {
+                if (t.IsFaulted)
+                {
+                    StatusMessage = SecuritiesInfoStatuses.FailToUpdateSecuritiesInfo;
+
+                    //TODO
+                    Exception ex = t.Exception;
+                    while (ex is AggregateException && ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+                else
+                {
+                    Markets = new ObservableCollection<Market>(_securitiesInfo.Markets());
+                    StatusMessage = SecuritiesInfoStatuses.SecuritiesInfoUpdated;
+                }
+
+                HideWaitSpinnerBar = true;
+                IsEnabledPanel = true;
+            });
             downloadTask.Start();
         }
 
-        private void UpdatePanel(bool status)
-        {
-            HideWaitSpinnerBar = true;
-
-            if (status == false)
-            {
-                StatusMessage = OperationStatuses.FAIL_TO_UPDATE_SECURITIES_INFO;
-                return;
-            }
-
-            Markets = new ObservableCollection<Market>(_securitiesInfo.Markets());
-            StatusMessage = OperationStatuses.SECURITIES_INFO_UPDATED;
-            IsEnabledPanel = true;
-        }
-
-        private void updateSecuritiesBox()
+        private void UpdateSecuritiesBox()
         {
             Securities = new ObservableCollection<Security>(_securitiesInfo.SecuritiesBy(_selectedMarket));
         }

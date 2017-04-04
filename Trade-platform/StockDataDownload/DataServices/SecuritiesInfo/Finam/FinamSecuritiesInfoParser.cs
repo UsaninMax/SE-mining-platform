@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TradePlatform.Commons.Securities;
-using System;
-using TradePlatform.StockDataDownload.DataServices.FinamHelpers;
 
-namespace TradePlatform.StockDataDownload.DataParsers
+namespace TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam
 {
     class FinamSecuritiesInfoParser : ISecuritiesInfoParser
     {

@@ -1,15 +1,12 @@
-﻿using System;
-using TradePlatform.StockDataDownload.Services;
-using Microsoft.Practices.Unity;
-using TradePlatform.Common.Securities;
-using TradePlatform.StockDataDownload.DataParsers;
+﻿using Microsoft.Practices.Unity;
+using TradePlatform.Commons.Securities;
 
-namespace TradePlatform.StockDataDownload.DataServices
+namespace TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam
 {
     class FinamSecuritiesInfoUpdater : ISecuritiesInfoUpdater
     {
-        private ISecuritiesInfoDownloader _securitiesInfoDownloader;
-        private ISecuritiesInfoParser _securitiesInfoParser;
+        private readonly ISecuritiesInfoDownloader _securitiesInfoDownloader;
+        private readonly ISecuritiesInfoParser _securitiesInfoParser;
 
         public FinamSecuritiesInfoUpdater()
         {
@@ -17,20 +14,10 @@ namespace TradePlatform.StockDataDownload.DataServices
             _securitiesInfoParser = ContainerBuilder.Container.Resolve<ISecuritiesInfoParser>();
         }
 
-        public bool Update()
+        public void Update()
         {
-            try
-            {
-                SecuritiesInfo securitiesInfo = ContainerBuilder.Container.Resolve<SecuritiesInfo>();
-                securitiesInfo.Securities = _securitiesInfoParser.Parse(_securitiesInfoDownloader.Download());
-                return true;
-            }
-            catch (Exception e)
-            {
-                //TODO:- need to add to log 
-                throw new Exception(e.Message);
-            }
-            //return false;
+            SecuritiesInfoHolder securitiesInfo = ContainerBuilder.Container.Resolve<SecuritiesInfoHolder>();
+            securitiesInfo.Securities = _securitiesInfoParser.Parse(_securitiesInfoDownloader.Download());
         }
     }
 }

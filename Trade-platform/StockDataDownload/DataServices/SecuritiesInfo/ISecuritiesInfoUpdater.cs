@@ -1,8 +1,8 @@
 ﻿
-namespace TradePlatform.StockDataDownload.DataServices
+namespace TradePlatform.StockDataDownload.DataServices.SecuritiesInfo
 {
-    interface ISecuritiesInfoUpdater
+    internal interface ISecuritiesInfoUpdater
     {
-        bool Update();
+        void Update();
     }
 }

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using TradePlatform.Commons.Securities;
 
-namespace TradePlatform.Common.Securities
+namespace TradePlatform.Commons.Securities
 {
-    class SecuritiesInfo
+    public class SecuritiesInfoHolder
     {
         private IList<Security> _securities;
         public IList<Security> Securities

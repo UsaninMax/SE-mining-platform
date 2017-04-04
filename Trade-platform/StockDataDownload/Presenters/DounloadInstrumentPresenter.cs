@@ -1,16 +1,17 @@
 ﻿using Prism.Mvvm;
-using TradePlatform.StockDataDownload.model;
 using Microsoft.Practices.Unity;
 using System;
 using System.Threading.Tasks;
-using TradePlatform.StockDataDownload.DataServices;
+using TradePlatform.StockDataDownload.DataServices.Trades;
+using System.Windows;
+using TradePlatform.Commons.Trades;
 
 namespace TradePlatform.StockDataDownload.Presenters
 {
     public class DounloadInstrumentPresenter : BindableBase, IDounloadInstrumentPresenter
     {
-        private Instrument _instrument;
-        private IInstrumentDownloadService _downloadService;
+        private readonly Instrument _instrument;
+        private readonly IInstrumentDownloadService _downloadService;
 
         public DounloadInstrumentPresenter(Instrument instrument)
         {
@@ -18,50 +19,56 @@ namespace TradePlatform.StockDataDownload.Presenters
             _downloadService = ContainerBuilder.Container.Resolve<IInstrumentDownloadService>();
         }
 
-        public String Instrument
+        public string Instrument => _instrument.Name;
+
+        public DateTime From => _instrument.From;
+
+        public DateTime To => _instrument.To;
+
+        private string _statusMessage;
+
+        public string StatusMessage
         {
             get
             {
-                return _instrument.Name;
-            }
-        }
-
-        public DateTime From
-        {
-            get
-            {
-                return _instrument.From;
-            }
-        }
-
-        public DateTime To
-        {
-            get
-            {
-                return _instrument.To;
-            }
-        }
-
-        private bool _status;
-
-        public bool Status
-        {
-            get
-            {
-                return _status; 
+                return _statusMessage;
             }
             set
             {
-                _status = value;
+                _statusMessage = value;
                 RaisePropertyChanged();
             }
         }
 
         public void StartDownload()
         {
-            var downloadTask = new Task<bool>(() => _downloadService.Execute(_instrument));
-            downloadTask.ContinueWith((i) => Status = i.Result);
+            StatusMessage = TradesStatuses.InProgress;
+            var downloadTask = new Task(() => _downloadService.Execute(_instrument));
+            downloadTask.ContinueWith((t) =>
+            {
+                if (t.IsFaulted)
+                {
+                    StatusMessage = TradesStatuses.FailToDownloud;
+
+                    //TODO
+                    Exception ex = t.Exception;
+                    while (ex is AggregateException && ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+                else if (t.IsCanceled)
+                {
+
+                }
+                else
+                {
+                    StatusMessage = TradesStatuses.Downloaded;
+                }
+            });
             downloadTask.Start();
         }
     }
 }
+

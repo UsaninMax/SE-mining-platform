@@ -2,29 +2,28 @@
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using System.Net;
-using TradePlatform.Common.Securities;
-using TradePlatform.Main.ViewModel;
-using TradePlatform.StockDataDownload.DataParsers;
-using TradePlatform.StockDataDownload.DataServices;
-using TradePlatform.StockDataDownload.DataServices.Finam;
-using TradePlatform.StockDataDownload.Services;
-using TradePlatform.StockDataDownload.viewModel;
+using TradePlatform.Commons.Securities;
+using TradePlatform.Main.ViewModels;
+using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo;
+using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam;
+using TradePlatform.StockDataDownload.DataServices.Trades;
+using TradePlatform.StockDataDownload.DataServices.Trades.Finam;
+using TradePlatform.StockDataDownload.ViewModels;
 using TradePlatform.view;
-using TradePlatform.viewModel;
 
 namespace TradePlatform
 {
     class ContainerBuilder
     {    
-        public static IUnityContainer Container { get; protected set; }
+        public static IUnityContainer Container { get; private set; }
 
         public static void Initialize()
         {
             Container = new UnityContainer();
-            initializeShell();
+            InitializeShell();
         }
 
-        private static void initializeShell()
+        private static void InitializeShell()
         {
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -45,7 +44,7 @@ namespace TradePlatform
             Container.RegisterType<ISecuritiesInfoDownloader, FinamSecuritiesInfoDownloader>();
             Container.RegisterType<ISecuritiesInfoParser, FinamSecuritiesInfoParser>();
 
-            Container.RegisterType<SecuritiesInfo>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<SecuritiesInfoHolder>(new ContainerControlledLifetimeManager());
 
             Container.RegisterType<IInstrumentSplitter, FinamInstrumentSplitter>();
 

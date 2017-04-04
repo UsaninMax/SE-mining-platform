@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using TradePlatform.StockDataDownload.model;
+using TradePlatform.Commons.Trades;
 
-namespace TradePlatform.StockDataDownload.DataServices
+namespace TradePlatform.StockDataDownload.DataServices.Trades
 {
-    interface IInstrumentSplitter
+    internal interface IInstrumentSplitter
     {
-        IList<Instrument> Split(Instrument instrument);
+        IEnumerable<Instrument> Split(Instrument instrument);
     }
 }

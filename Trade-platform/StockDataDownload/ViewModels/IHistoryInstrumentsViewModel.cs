@@ -1,6 +1,6 @@
-﻿namespace TradePlatform.StockDataDownload.viewModel
+﻿namespace TradePlatform.StockDataDownload.ViewModels
 {
-    interface IHistoryInstrumentsViewModel
+    internal interface IHistoryInstrumentsViewModel
     {
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace TradePlatform.common.viewModel
+namespace TradePlatform.Commons.BaseModels
 {
     class DelegateCommand : ICommand
     {

@@ -1,10 +1,8 @@
-﻿using System.Threading.Tasks;
-using TradePlatform.StockDataDownload.model;
+﻿using TradePlatform.Commons.Trades;
 
-
-namespace TradePlatform.StockDataDownload.Services
+namespace TradePlatform.StockDataDownload.DataServices.Trades
 {
-    interface ITradesDownloader
+    internal interface ITradesDownloader
     {
         void Download(Instrument instrument);
     }

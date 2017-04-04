@@ -1,6 +1,6 @@
-﻿namespace TradePlatform.Main.ViewModel
+﻿namespace TradePlatform.Main.ViewModels
 {
-    interface IShellModel
+    internal interface IShellModel
     {
     }
 }

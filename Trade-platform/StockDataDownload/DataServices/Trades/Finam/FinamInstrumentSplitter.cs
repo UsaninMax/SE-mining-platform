@@ -1,25 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using TradePlatform.StockDataDownload.model;
+using TradePlatform.Commons.Trades;
 
-namespace TradePlatform.StockDataDownload.DataServices.Finam
+namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
 {
     class FinamInstrumentSplitter : IInstrumentSplitter
     {
-        public IList<Instrument> Split(Instrument instrument)
+        public IEnumerable<Instrument> Split(Instrument instrument)
         {
             IList<Instrument> instruments = new List<Instrument>();
             for (DateTime date = instrument.From; date <= instrument.To; date = date.AddDays(1))
             {
-                instruments.Add(new Instrument() {
-                    Name = instrument.Name,
-                    From = date,
-                    To = date,
-                    MarketId = instrument.MarketId,
-                    Code = instrument.Code,
-                    Id = instrument.Id,
-                    Path = instrument.Path
-                });
+                instruments.Add(new Instrument.Builder()
+                    .WithFrom(date)
+                    .WithTo(date)
+                    .WithParent(instrument)
+                    .Build());
             }
             return instruments;
         }

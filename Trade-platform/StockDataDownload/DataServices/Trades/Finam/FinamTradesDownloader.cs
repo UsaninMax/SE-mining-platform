@@ -1,26 +1,15 @@
 ﻿using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using TradePlatform.StockDataDownload.model;
+using TradePlatform.Commons.Trades;
 
-namespace TradePlatform.StockDataDownload.Services
+namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
 {
     class FinamTradesDownloader : ITradesDownloader
     {
-        private static string DATE_FRORMAT = "ddMMyy";
-        private string _fileName;
 
         public void Download(Instrument instrument)
         {
-            _fileName = new StringBuilder()
-                .Append(instrument.Name)
-                .Append("_")
-                .Append(instrument.From.ToString(DATE_FRORMAT))
-                .Append("_")
-                .Append(instrument.To.ToString(DATE_FRORMAT))
-                .ToString();
-
-            new WebClient().DownloadFile(Url(instrument), instrument.Path +"\\"+ _fileName + ".txt");
+            new WebClient().DownloadFile(Url(instrument), instrument.Path +"\\"+ instrument.FileName + ".txt");
         }
 
         private string Url(Instrument instrument)
@@ -30,7 +19,7 @@ namespace TradePlatform.StockDataDownload.Services
                 .Append("http://")
                 .Append("78.41.196.47")
                 .Append("/")
-                .Append(_fileName)
+                .Append(instrument.FileName)
                 .Append(".txt?")
                 .Append("market=").Append(instrument.MarketId).Append("&")
                 .Append("em=").Append(instrument.Id).Append("&")
@@ -45,7 +34,7 @@ namespace TradePlatform.StockDataDownload.Services
                 .Append("to=").Append(instrument.To.ToShortDateString()).Append("&")
                 .Append("p=").Append(1).Append("&")
                 .Append("f=")
-                .Append(_fileName)
+                .Append(instrument.FileName)
                 .Append("&")
                 .Append("e=").Append(".txt").Append("&")
                 .Append("cn=").Append(instrument.Name).Append("&")

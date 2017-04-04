@@ -1,11 +1,11 @@
 ﻿using System.Windows.Input;
-using TradePlatform.common.viewModel;
-using Prism.Mvvm;
 using Microsoft.Practices.Unity;
-using TradePlatform.Main.ViewModel;
+using Prism.Mvvm;
+using TradePlatform.Commons.BaseModels;
 using TradePlatform.StockDataDownload.view;
+using HistoryInstrumentsView = TradePlatform.StockDataDownload.Views.HistoryInstrumentsView;
 
-namespace TradePlatform.viewModel
+namespace TradePlatform.Main.ViewModels
 {
     class ShellModel : BindableBase, IShellModel
     {

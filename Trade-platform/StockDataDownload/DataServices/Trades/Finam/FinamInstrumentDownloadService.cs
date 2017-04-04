@@ -1,30 +1,26 @@
-﻿using TradePlatform.StockDataDownload.model;
-using TradePlatform.StockDataDownload.Services;
+﻿using System.IO;
 using Microsoft.Practices.Unity;
-using System.IO;
+using TradePlatform.Commons.Trades;
 
-namespace TradePlatform.StockDataDownload.DataServices.Finam
+namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
 {
     class FinamInstrumentDownloadService : IInstrumentDownloadService
     {
-        private IInstrumentSplitter _instrumentSplitter;
+        private readonly IInstrumentSplitter _instrumentSplitter;
 
         public FinamInstrumentDownloadService()
         {
             this._instrumentSplitter = ContainerBuilder.Container.Resolve<IInstrumentSplitter>();
         }
         // Finam can return data only synchronously
-        public bool Execute(Instrument instrument)
+        public void Execute(Instrument instrument)
         {
             CreateLocalFolder(instrument.Path);
-
             foreach (var splitInstrument in _instrumentSplitter.Split(instrument))
             {
                 ITradesDownloader downloader = ContainerBuilder.Container.Resolve<ITradesDownloader>();
                 downloader.Download(splitInstrument);
             }
-
-            return true;
         }
 
         private void CreateLocalFolder(string path)

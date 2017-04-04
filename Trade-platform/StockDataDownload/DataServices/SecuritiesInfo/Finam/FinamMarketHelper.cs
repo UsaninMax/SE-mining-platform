@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace TradePlatform.StockDataDownload.DataServices.FinamHelpers
+namespace TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam
 {
-    class FinamMarketHelper
+    internal static class FinamMarketHelper
     {
         public static readonly Dictionary<string, string> Markets = new Dictionary<string, string>()
             {
