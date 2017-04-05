@@ -4,6 +4,8 @@
     {
         public static string FailToDownloud => "Fail to download";
 
+        public static string FailToDelete => "Fail to delete";
+
         public static string Downloaded => "Downloaded";
 
         public static string InProgress => "In progress";

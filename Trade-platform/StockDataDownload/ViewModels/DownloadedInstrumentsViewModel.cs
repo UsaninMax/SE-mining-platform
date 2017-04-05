@@ -17,7 +17,8 @@ namespace TradePlatform.StockDataDownload.ViewModels
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<AddToList<IDounloadInstrumentPresenter>>().Subscribe(AddItemItemToList, false);
             eventAggregator.GetEvent<RemoveFromList<IDounloadInstrumentPresenter>>().Subscribe(RemoveItemFromList, false);
-            this.RemoveItem = new DelegateCommand<IDounloadInstrumentPresenter> (RemoveData, CanRemoveItemFromList);
+            this.RemoveItem = new DelegateCommand<IDounloadInstrumentPresenter> (RemoveData, CanDoActionItemFromList);
+            this.ReloadItem = new DelegateCommand<IDounloadInstrumentPresenter>(ReloadData, CanDoActionItemFromList);
         }
 
         private readonly ObservableCollection<IDounloadInstrumentPresenter> _dounloadedInstruments = new ObservableCollection<IDounloadInstrumentPresenter>();
@@ -26,7 +27,8 @@ namespace TradePlatform.StockDataDownload.ViewModels
 
         public ICommand RemoveItem { get; private set; }
 
-    
+        public  ICommand ReloadItem { get; private set; }
+
         private void AddItemItemToList(object param)
         {
             var instrument = param as IDounloadInstrumentPresenter;
@@ -48,7 +50,13 @@ namespace TradePlatform.StockDataDownload.ViewModels
             instrument?.DeleteData();
         }
 
-        private bool CanRemoveItemFromList(object param)
+        private void ReloadData(object param)
+        {
+            var instrument = param as IDounloadInstrumentPresenter;
+            instrument?.ReloadData();
+        }
+
+        private bool CanDoActionItemFromList(object param)
         {
             return param != null;
         }

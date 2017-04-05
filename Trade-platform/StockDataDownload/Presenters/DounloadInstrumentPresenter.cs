@@ -15,16 +15,13 @@ namespace TradePlatform.StockDataDownload.Presenters
     {
         private readonly Instrument _instrument;
         private readonly IInstrumentDownloadService _downloadService;
-        private readonly Task _download;
-        private readonly Task _delete;
-        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        private Task _download;
+        private CancellationTokenSource _cancellationTokenSource;
 
         public DounloadInstrumentPresenter(Instrument instrument)
         {
             _instrument = instrument;
             _downloadService = ContainerBuilder.Container.Resolve<IInstrumentDownloadService>();
-            _download = new Task(() => _downloadService.Download(_instrument, _cancellationTokenSource.Token), _cancellationTokenSource.Token);
-            _delete = new Task(() => _downloadService.Delete(_instrument, _download, _cancellationTokenSource));
         }
 
         public string Instrument => _instrument.Name;
@@ -50,11 +47,11 @@ namespace TradePlatform.StockDataDownload.Presenters
 
         public void StartDownload()
         {
-
             StatusMessage = TradesStatuses.InProgress;
+            _cancellationTokenSource = new CancellationTokenSource();
+            _download = new Task(() => _downloadService.Download(_instrument, _cancellationTokenSource.Token), _cancellationTokenSource.Token);
             _download.ContinueWith(t =>
             {
-
                 if (t.IsFaulted)
                 {
                     StatusMessage = TradesStatuses.FailToDownloud;
@@ -67,7 +64,7 @@ namespace TradePlatform.StockDataDownload.Presenters
                     }
                     MessageBox.Show("Error: " + ex.Message);
                 }
-                if (t.IsCompleted)
+                else
                 {
                     StatusMessage = TradesStatuses.Downloaded;
                 }
@@ -79,10 +76,12 @@ namespace TradePlatform.StockDataDownload.Presenters
         public void DeleteData()
         {
             StatusMessage = TradesStatuses.Deleteing;
-            _delete.ContinueWith(t =>
+            var delete = new Task(() => _downloadService.Delete(_instrument, _download, _cancellationTokenSource));
+            delete.ContinueWith(t =>
             {
                 if (t.IsFaulted)
                 {
+                    StatusMessage = TradesStatuses.FailToDelete;
                     //TODO
                     Exception ex = t.Exception;
                     while (ex is AggregateException && ex.InnerException != null)
@@ -91,14 +90,25 @@ namespace TradePlatform.StockDataDownload.Presenters
                     }
                     MessageBox.Show("Error: " + ex.Message);
                 }
-
-                if (t.IsCompleted)
+                else
                 {
                     var eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
                     eventAggregator.GetEvent<RemoveFromList<IDounloadInstrumentPresenter>>().Publish(this);
+
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
-            _delete.Start();
+            delete.Start();
+        }
+
+        public void ReloadData()
+        {
+            if (_download != null
+                && !_download.IsCompleted)
+            {
+                return;
+            }
+
+            StartDownload();
         }
     }
 }

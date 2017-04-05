@@ -4,5 +4,6 @@
     {
         void StartDownload();
         void DeleteData();
+        void ReloadData();
     }
 }
