@@ -3,5 +3,6 @@
     public interface IDounloadInstrumentPresenter 
     {
         void StartDownload();
+        void DeleteData();
     }
 }

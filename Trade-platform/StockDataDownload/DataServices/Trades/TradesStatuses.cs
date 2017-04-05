@@ -7,5 +7,7 @@
         public static string Downloaded => "Downloaded";
 
         public static string InProgress => "In progress";
+
+        public static string Deleteing => "Deleting..";
     }
 }

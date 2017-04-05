@@ -82,6 +82,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Commons\MessageSubscribers\AddToList.cs" />
+    <Compile Include="Commons\MessageSubscribers\RemoveFromList.cs" />
     <Compile Include="Commons\Securities\Security.cs" />
     <Compile Include="Commons\Securities\Market.cs" />
     <Compile Include="Commons\Securities\SecuritiesInfoHolder.cs" />

@@ -4,6 +4,7 @@ using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using TradePlatform.Commons.MessageSubscribers;
 using TradePlatform.StockDataDownload.Presenters;
 
 namespace TradePlatform.StockDataDownload.ViewModels
@@ -14,8 +15,9 @@ namespace TradePlatform.StockDataDownload.ViewModels
         public DownloadedInstrumentsViewModel()
         {
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
-            eventAggregator.GetEvent<PubSubEvent<IDounloadInstrumentPresenter>>().Subscribe(AddItemItemToList, false);
-            this.RemoveItem = new DelegateCommand<IDounloadInstrumentPresenter> (RemoveItemFromList, CanRemoveItemFromList);
+            eventAggregator.GetEvent<AddToList<IDounloadInstrumentPresenter>>().Subscribe(AddItemItemToList, false);
+            eventAggregator.GetEvent<RemoveFromList<IDounloadInstrumentPresenter>>().Subscribe(RemoveItemFromList, false);
+            this.RemoveItem = new DelegateCommand<IDounloadInstrumentPresenter> (RemoveData, CanRemoveItemFromList);
         }
 
         private readonly ObservableCollection<IDounloadInstrumentPresenter> _dounloadedInstruments = new ObservableCollection<IDounloadInstrumentPresenter>();
@@ -30,15 +32,20 @@ namespace TradePlatform.StockDataDownload.ViewModels
             var instrument = param as IDounloadInstrumentPresenter;
             if (instrument != null)
             {
-                instrument.StartDownload();
                 InstrumentsInfo.Add(instrument);
+                instrument.StartDownload();
             }
         }
 
-        private void RemoveItemFromList(object param)
+        private void RemoveItemFromList(IDounloadInstrumentPresenter presenter)
+        {
+            InstrumentsInfo.Remove(presenter);
+        }
+
+        private void RemoveData(object param)
         {
             var instrument  = param as IDounloadInstrumentPresenter;
-            InstrumentsInfo.Remove(instrument);
+            instrument?.DeleteData();
         }
 
         private bool CanRemoveItemFromList(object param)

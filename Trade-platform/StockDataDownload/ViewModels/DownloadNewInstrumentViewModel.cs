@@ -7,6 +7,7 @@ using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using TradePlatform.Commons.MessageSubscribers;
 using TradePlatform.Commons.Securities;
 using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo;
@@ -165,7 +166,7 @@ namespace TradePlatform.StockDataDownload.ViewModels
                     .WithId(_selectedSecurity.Id)
                     .Build());
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
-            eventAggregator.GetEvent<PubSubEvent<IDounloadInstrumentPresenter>>().Publish(presenter);
+            eventAggregator.GetEvent<AddToList<IDounloadInstrumentPresenter>>().Publish(presenter);
         }
 
         public void UpdateSecuritiesInfo()
