@@ -6,6 +6,7 @@ using TradePlatform.Commons.Securities;
 using TradePlatform.Main.ViewModels;
 using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo;
 using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam;
+using TradePlatform.StockDataDownload.DataServices.Serialization;
 using TradePlatform.StockDataDownload.DataServices.Trades;
 using TradePlatform.StockDataDownload.DataServices.Trades.Finam;
 using TradePlatform.StockDataDownload.ViewModels;
@@ -52,6 +53,8 @@ namespace TradePlatform
             Container.RegisterType<IInstrumentDownloadService, FinamInstrumentDownloadService>();
 
             Container.RegisterType<ITradesDownloader, FinamTradesDownloader>();
+
+            Container.RegisterType<IInstrumentsSerializer, XmlInstrumentSerializer>();
         }
     }
 }

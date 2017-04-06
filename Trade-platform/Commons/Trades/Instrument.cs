@@ -5,6 +5,8 @@ namespace TradePlatform.Commons.Trades
 {
     public class Instrument
     {
+        private Instrument() { }
+
         public string Name { get; private set; }
         public string Code { get; private set; }
         public string Id { get; private set; }

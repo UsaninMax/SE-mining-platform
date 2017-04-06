@@ -5,5 +5,6 @@
         void StartDownload();
         void DeleteData();
         void ReloadData();
+        bool Check();
     }
 }

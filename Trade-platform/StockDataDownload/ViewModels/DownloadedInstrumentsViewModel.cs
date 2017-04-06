@@ -1,11 +1,19 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using TradePlatform.Commons.MessageSubscribers;
+using TradePlatform.Commons.Trades;
+using TradePlatform.StockDataDownload.DataServices.Serialization;
+using TradePlatform.StockDataDownload.DataServices.Trades;
 using TradePlatform.StockDataDownload.Presenters;
 
 namespace TradePlatform.StockDataDownload.ViewModels
@@ -24,9 +32,19 @@ namespace TradePlatform.StockDataDownload.ViewModels
             this.ClosingWindowCommand = new DelegateCommand(WindowClosing);
         }
 
-        private readonly ObservableCollection<IDounloadInstrumentPresenter> _dounloadedInstruments = new ObservableCollection<IDounloadInstrumentPresenter>();
-
-        public ObservableCollection<IDounloadInstrumentPresenter> InstrumentsInfo => _dounloadedInstruments;
+        private ObservableCollection<IDounloadInstrumentPresenter> _dounloadedInstruments = new ObservableCollection<IDounloadInstrumentPresenter>();
+        public ObservableCollection<IDounloadInstrumentPresenter> InstrumentsInfo
+        {
+            get
+            {
+                return _dounloadedInstruments;
+            }
+            set
+            {
+                _dounloadedInstruments = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public ICommand RemoveCommand { get; private set; }
 
@@ -86,11 +104,42 @@ namespace TradePlatform.StockDataDownload.ViewModels
 
         private void WindowLoaded()
         {
-            
+
+            var updateHistory = new Task<ObservableCollection<IDounloadInstrumentPresenter>>(() =>
+            {
+                var serializer = ContainerBuilder.Container.Resolve<IInstrumentsSerializer>();
+                return new ObservableCollection<IDounloadInstrumentPresenter>(serializer
+                    .Deserialize()
+                    .Select(i =>
+                {
+                    var presenter = new DounloadInstrumentPresenter(i);
+                    presenter.Check();
+                    return presenter;
+                }).ToList());
+            });
+            updateHistory.ContinueWith(t =>
+            {
+                if (t.IsFaulted)
+                {
+                    //TODO
+                    Exception ex = t.Exception;
+                    while (ex is AggregateException && ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+                else
+                {
+                    InstrumentsInfo = t.Result;
+                }
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+            updateHistory.Start();
         }
 
         private void WindowClosing()
         {
+          //  var serializer = ContainerBuilder.Container.Resolve<IInstrumentsSerializer>();
 
         }
 

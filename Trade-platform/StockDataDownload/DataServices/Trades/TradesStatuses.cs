@@ -11,5 +11,9 @@
         public static string InProgress => "In progress";
 
         public static string Deleteing => "Deleting..";
+
+        public static string Checking => "Checking..";
+
+        public static string FailToCheck => "Fail to check";
     }
 }

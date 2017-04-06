@@ -121,7 +121,9 @@
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoUpdater.cs" />
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\ISecuritiesInfoUpdater.cs" />
     <Compile Include="StockDataDownload\DataServices\Trades\IInstrumentSplitter.cs" />
+    <Compile Include="StockDataDownload\DataServices\Serialization\IInstrumentsSerializer.cs" />
     <Compile Include="StockDataDownload\DataServices\Trades\TradesStatuses.cs" />
+    <Compile Include="StockDataDownload\DataServices\Serialization\XMLInstrumentSerializer.cs" />
     <Compile Include="StockDataDownload\Presenters\DounloadInstrumentPresenter.cs" />
     <Compile Include="StockDataDownload\Presenters\IDounloadInstrumentPresenter.cs" />
     <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamTradesDownloader.cs" />

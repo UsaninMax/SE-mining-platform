@@ -115,6 +115,12 @@ namespace TradePlatform.StockDataDownload.Presenters
 
             StartDownload();
         }
+
+        public bool Check()
+        {
+            StatusMessage = TradesStatuses.Checking;
+            return _downloadService.Check(_instrument);
+        }
     }
 }
 
