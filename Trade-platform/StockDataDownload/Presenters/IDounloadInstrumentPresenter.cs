@@ -5,6 +5,7 @@
         void StartDownload();
         void DeleteData();
         void ReloadData();
-        bool Check();
+        void CheckData();
+        bool InDownloadingProgress();
     }
 }

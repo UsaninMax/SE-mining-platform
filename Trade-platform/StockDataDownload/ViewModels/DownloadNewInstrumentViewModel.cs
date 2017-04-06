@@ -15,7 +15,7 @@ using TradePlatform.StockDataDownload.Presenters;
 
 namespace TradePlatform.StockDataDownload.ViewModels
 {
-    public class DownloadNewInstrumentViewModel : BindableBase, IDownloadNewInstrumentViewModel
+    public class FinamDownloadNewInstrumentViewModel : BindableBase, IDownloadNewInstrumentViewModel
     {
 
         private bool _hideWaitSpinnerBar;
@@ -146,11 +146,11 @@ namespace TradePlatform.StockDataDownload.ViewModels
         private readonly ISecuritiesInfoUpdater _suritiesInfoUpdater;
         private readonly SecuritiesInfoHolder _securitiesInfo;
 
-        public DownloadNewInstrumentViewModel()
+        public FinamDownloadNewInstrumentViewModel()
         {
-            this._securitiesInfo = ContainerBuilder.Container.Resolve<SecuritiesInfoHolder>();
-            this._suritiesInfoUpdater = ContainerBuilder.Container.Resolve<ISecuritiesInfoUpdater>();
-            this.AddNew = new DelegateCommand(AddNewInstrument);
+            _securitiesInfo = ContainerBuilder.Container.Resolve<SecuritiesInfoHolder>();
+            _suritiesInfoUpdater = ContainerBuilder.Container.Resolve<ISecuritiesInfoUpdater>();
+            AddNew = new DelegateCommand(AddNewInstrument);
         }
 
         public ICommand AddNew { get; private set; }
@@ -160,10 +160,11 @@ namespace TradePlatform.StockDataDownload.ViewModels
             IDounloadInstrumentPresenter presenter = new DounloadInstrumentPresenter(new Instrument.Builder()
                     .WithFrom(_dateFrom)
                     .WithTo(_dateTo)
-                    .WithCode(_selectedSecurity.Code)
-                    .WithMarketId(_selectedSecurity.Market.Id)
-                    .WithName(_selectedSecurity.Name)
-                    .WithId(_selectedSecurity.Id)
+                    .WithCode(_selectedSecurity?.Code)
+                    .WithMarketId(_selectedSecurity?.Market.Id)
+                    .WithName(_selectedSecurity?.Name)
+                    .WithId(_selectedSecurity?.Id)
+                    .WithDataProvider("FINAM")
                     .Build());
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<AddToList<IDounloadInstrumentPresenter>>().Publish(presenter);

@@ -17,10 +17,10 @@ namespace TradePlatform.StockDataDownload.Presenters
         private readonly IInstrumentDownloadService _downloadService;
         private CancellationTokenSource _cancellationTokenSource;
 
-        public Task Download
+        private Task Download
         {
             get;
-            private set;
+            set;
         }
 
         public DounloadInstrumentPresenter(Instrument instrument)
@@ -71,7 +71,7 @@ namespace TradePlatform.StockDataDownload.Presenters
                 }
                 else
                 {
-                    StatusMessage = TradesStatuses.Downloaded;
+                    StatusMessage = TradesStatuses.IsReady;
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
@@ -116,10 +116,42 @@ namespace TradePlatform.StockDataDownload.Presenters
             StartDownload();
         }
 
-        public bool Check()
+        public void CheckData()
         {
             StatusMessage = TradesStatuses.Checking;
-            return _downloadService.Check(_instrument);
+            var checkTask = new Task<bool>(() => _downloadService.CheckFiles(_instrument));
+            checkTask.ContinueWith(t =>
+            {
+                if (t.IsFaulted)
+                {
+                    StatusMessage = TradesStatuses.FailToCheck;
+
+                    //TODO
+                    Exception ex = t.Exception;
+                    while (ex is AggregateException && ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+                else
+                {
+                    if(t.Result)
+                    {
+                        StatusMessage = TradesStatuses.IsReady;
+                    } else
+                    {
+                        StatusMessage = TradesStatuses.DataIsCorrapted;
+                    }
+                }
+            });
+
+            checkTask.Start();
+        }
+
+        public bool InDownloadingProgress()
+        {
+            return Download != null && !Download.IsCompleted;
         }
     }
 }

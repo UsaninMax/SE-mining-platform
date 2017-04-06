@@ -14,13 +14,13 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
 
         public FinamInstrumentDownloadService()
         {
-            this._instrumentSplitter = ContainerBuilder.Container.Resolve<IInstrumentSplitter>();
+            _instrumentSplitter = ContainerBuilder.Container.Resolve<IInstrumentSplitter>();
         }
         // Finam can return data only synchronously
         public void Download(Instrument instrument, CancellationToken cancellationToken)
         {
-            DeleteFolder(instrument.Path);
-            CreateFolder(instrument.Path);
+            DeleteFolder(instrument);
+            CreateFolder(instrument);
 
             _instrumentSplitter.Split(instrument).ForEach(i =>
             {
@@ -41,25 +41,27 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
                 cancellationTokenSource.Cancel();
                 download.Wait();
             }
-            DeleteFolder(instrument.Path);
+            DeleteFolder(instrument);
         }
 
-        public bool Check(Instrument instrument)
+        public bool CheckFiles(Instrument instrument)
         {
             return Directory.Exists(instrument.Path) &&
-                _instrumentSplitter.Split(instrument).All(splitedInstrument => File.Exists(splitedInstrument.Path + "\\" + splitedInstrument.FileName + ".txt"));
+                _instrumentSplitter.Split(instrument).All(splitedInstrument => File.Exists(instrument.DataProvider + "\\" +instrument.DataProvider + "\\" + splitedInstrument.Path + "\\" + splitedInstrument.FileName + ".txt"));
         }
 
-        private static void DeleteFolder(string path)
+        private static void DeleteFolder(Instrument instrument)
         {
+            string path = instrument.DataProvider + "\\" + instrument.Path;
             if (Directory.Exists(path))
             {
                 Directory.Delete(path, true);
             }
         }
 
-        private static void CreateFolder(string path)
+        private static void CreateFolder(Instrument instrument)
         {
+            string path = instrument.DataProvider + "\\" + instrument.Path;
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);

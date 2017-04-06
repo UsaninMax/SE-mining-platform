@@ -8,6 +8,6 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades
     {
         void Download(Instrument instrument, CancellationToken cancellationToken);
         void Delete(Instrument instrument, Task download, CancellationTokenSource cancellationTokenSource);
-        bool Check(Instrument instrument);
+        bool CheckFiles(Instrument instrument);
     }
 }

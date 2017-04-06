@@ -11,6 +11,7 @@ namespace TradePlatform.Commons.Trades
         public string Code { get; private set; }
         public string Id { get; private set; }
         public string MarketId { get; private set; }
+        public string DataProvider { get; private set; }
         public string Path { get; private set; }
         public string FileName { get; private set; }
         public DateTime From { get; private set; }
@@ -21,6 +22,7 @@ namespace TradePlatform.Commons.Trades
             private string _name;
             private string _code;
             private string _id;
+            private string _dataProvider;
             private string _marketId;
             private DateTime _from;
             private DateTime _to;
@@ -47,6 +49,12 @@ namespace TradePlatform.Commons.Trades
             public Builder WithMarketId(string value)
             {
                 _marketId = value;
+                return this;
+            }
+
+            public Builder WithDataProvider(string value)
+            {
+                _dataProvider = value;
                 return this;
             }
 
@@ -83,6 +91,7 @@ namespace TradePlatform.Commons.Trades
                         From = _from,
                         To = _to,
                         Path = _parent.Path,
+                        DataProvider = _parent.DataProvider,
                         FileName = new StringBuilder()
                         .Append(_parent.Name)
                         .Append("_").Append(_from.ToString(DATE_FRORMAT))
@@ -99,6 +108,7 @@ namespace TradePlatform.Commons.Trades
                     MarketId = _marketId,
                     From = _from,
                     To = _to,
+                    DataProvider = _dataProvider,
                     Path = new StringBuilder()
                     .Append(_name)
                     .Append("_").Append(_from.ToString(DATE_FRORMAT))

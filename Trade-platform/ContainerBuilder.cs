@@ -39,7 +39,7 @@ namespace TradePlatform
             Container.RegisterType<IHistoryInstrumentsViewModel, HistoryInstrumentsViewModel>();
 
             Container.RegisterType<IDownloadedInstrumentsViewModel, DownloadedInstrumentsViewModel>();
-            Container.RegisterType<IDownloadNewInstrumentViewModel, DownloadNewInstrumentViewModel>();
+            Container.RegisterType<IDownloadNewInstrumentViewModel, FinamDownloadNewInstrumentViewModel>();
 
             Container.RegisterType<ISecuritiesInfoUpdater, FinamSecuritiesInfoUpdater>();
             Container.RegisterType<ISecuritiesInfoDownloader, FinamSecuritiesInfoDownloader>();

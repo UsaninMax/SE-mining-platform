@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,9 +9,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using TradePlatform.Commons.MessageSubscribers;
-using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.Serialization;
-using TradePlatform.StockDataDownload.DataServices.Trades;
 using TradePlatform.StockDataDownload.Presenters;
 
 namespace TradePlatform.StockDataDownload.ViewModels
@@ -26,10 +22,10 @@ namespace TradePlatform.StockDataDownload.ViewModels
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<AddToList<IDounloadInstrumentPresenter>>().Subscribe(AddItemItemToList, false);
             eventAggregator.GetEvent<RemoveFromList<IDounloadInstrumentPresenter>>().Subscribe(RemoveItemFromList, false);
-            this.RemoveCommand = new DelegateCommand<IDounloadInstrumentPresenter>(RemoveData, CanDoActionItemFromList);
-            this.ReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(ReloadData, CanDoActionItemFromList);
-            this.LoadedWindowCommand = new DelegateCommand(WindowLoaded);
-            this.ClosingWindowCommand = new DelegateCommand(WindowClosing);
+            RemoveCommand = new DelegateCommand<IDounloadInstrumentPresenter>(RemoveData, CanDoActionItemFromList);
+            ReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(ReloadData, CanDoActionItemFromList);
+            LoadedWindowCommand = new DelegateCommand(WindowLoaded);
+            ClosingWindowCommand = new DelegateCommand(WindowClosing);
         }
 
         private ObservableCollection<IDounloadInstrumentPresenter> _dounloadedInstruments = new ObservableCollection<IDounloadInstrumentPresenter>();
@@ -61,7 +57,7 @@ namespace TradePlatform.StockDataDownload.ViewModels
             {
                 InstrumentsInfo.Add(instrument);
 
-                if (IsExistActiveDownloading())
+                if (HasNoActiveDownloadingProces())
                 {
                     //TODO: add log
                     instrument.StartDownload();
@@ -69,13 +65,9 @@ namespace TradePlatform.StockDataDownload.ViewModels
             }
         }
         //Finam restriction for downloading 
-        private bool IsExistActiveDownloading()
+        private bool HasNoActiveDownloadingProces()
         {
-            return InstrumentsInfo.All(i =>
-            {
-                var instrument = i as DounloadInstrumentPresenter;
-                return instrument.Download == null || instrument.Download.IsCompleted;
-            });
+            return InstrumentsInfo.All(i => !i.InDownloadingProgress());
         }
 
         private void RemoveItemFromList(IDounloadInstrumentPresenter presenter)
@@ -91,10 +83,9 @@ namespace TradePlatform.StockDataDownload.ViewModels
 
         private void ReloadData(object param)
         {
-            var instrument = param as IDounloadInstrumentPresenter;
-            if (instrument != null)
+            if (param is IDounloadInstrumentPresenter instrument)
             {
-                if (IsExistActiveDownloading())
+                if (HasNoActiveDownloadingProces())
                 {
                     //TODO: add log
                     instrument.ReloadData();
@@ -113,7 +104,7 @@ namespace TradePlatform.StockDataDownload.ViewModels
                     .Select(i =>
                 {
                     var presenter = new DounloadInstrumentPresenter(i);
-                    presenter.Check();
+                    presenter.CheckData();
                     return presenter;
                 }).ToList());
             });
@@ -121,7 +112,7 @@ namespace TradePlatform.StockDataDownload.ViewModels
             {
                 if (t.IsFaulted)
                 {
-                    //TODO
+                    //TODO:
                     Exception ex = t.Exception;
                     while (ex is AggregateException && ex.InnerException != null)
                     {

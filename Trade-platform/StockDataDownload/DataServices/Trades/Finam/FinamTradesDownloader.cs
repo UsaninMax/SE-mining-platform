@@ -9,7 +9,7 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
 
         public void Download(Instrument instrument)
         {
-            new WebClient().DownloadFile(Url(instrument), instrument.Path +"\\"+ instrument.FileName + ".txt");
+            new WebClient().DownloadFile(Url(instrument), instrument.DataProvider + "\\" + instrument.Path +"\\"+ instrument.FileName + ".txt");
         }
 
         private string Url(Instrument instrument)
