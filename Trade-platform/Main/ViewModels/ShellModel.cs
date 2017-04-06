@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Mvvm;
 using TradePlatform.Commons.BaseModels;
@@ -17,8 +19,14 @@ namespace TradePlatform.Main.ViewModels
 
         private void HistoryInstrumentsPage()
         {
+            var window = Application.Current.Windows.OfType<HistoryInstrumentsView>().SingleOrDefault(x => x.IsInitialized);
+            if (window != null)
+            {
+                window.Activate();
+                return;
+            }
             IUnityContainer container = ContainerBuilder.Container;
-            container.Resolve<HistoryInstrumentsView>().ShowDialog();
+            container.Resolve<HistoryInstrumentsView>().Show();
         }
     }
 }
