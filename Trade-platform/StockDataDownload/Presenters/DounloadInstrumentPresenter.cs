@@ -15,8 +15,13 @@ namespace TradePlatform.StockDataDownload.Presenters
     {
         private readonly Instrument _instrument;
         private readonly IInstrumentDownloadService _downloadService;
-        private Task _download;
         private CancellationTokenSource _cancellationTokenSource;
+
+        public Task Download
+        {
+            get;
+            private set;
+        }
 
         public DounloadInstrumentPresenter(Instrument instrument)
         {
@@ -49,8 +54,8 @@ namespace TradePlatform.StockDataDownload.Presenters
         {
             StatusMessage = TradesStatuses.InProgress;
             _cancellationTokenSource = new CancellationTokenSource();
-            _download = new Task(() => _downloadService.Download(_instrument, _cancellationTokenSource.Token), _cancellationTokenSource.Token);
-            _download.ContinueWith(t =>
+            Download = new Task(() => _downloadService.Download(_instrument, _cancellationTokenSource.Token), _cancellationTokenSource.Token);
+            Download.ContinueWith(t =>
             {
                 if (t.IsFaulted)
                 {
@@ -70,13 +75,13 @@ namespace TradePlatform.StockDataDownload.Presenters
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
-            _download.Start();
+            Download.Start();
         }
 
         public void DeleteData()
         {
             StatusMessage = TradesStatuses.Deleteing;
-            var delete = new Task(() => _downloadService.Delete(_instrument, _download, _cancellationTokenSource));
+            var delete = new Task(() => _downloadService.Delete(_instrument, Download, _cancellationTokenSource));
             delete.ContinueWith(t =>
             {
                 if (t.IsFaulted)
@@ -102,8 +107,8 @@ namespace TradePlatform.StockDataDownload.Presenters
 
         public void ReloadData()
         {
-            if (_download != null
-                && !_download.IsCompleted)
+            if (Download != null
+                && !Download.IsCompleted)
             {
                 return;
             }

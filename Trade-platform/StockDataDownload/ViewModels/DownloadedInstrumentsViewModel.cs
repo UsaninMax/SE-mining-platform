@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
@@ -17,7 +18,7 @@ namespace TradePlatform.StockDataDownload.ViewModels
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<AddToList<IDounloadInstrumentPresenter>>().Subscribe(AddItemItemToList, false);
             eventAggregator.GetEvent<RemoveFromList<IDounloadInstrumentPresenter>>().Subscribe(RemoveItemFromList, false);
-            this.RemoveItem = new DelegateCommand<IDounloadInstrumentPresenter> (RemoveData, CanDoActionItemFromList);
+            this.RemoveItem = new DelegateCommand<IDounloadInstrumentPresenter>(RemoveData, CanDoActionItemFromList);
             this.ReloadItem = new DelegateCommand<IDounloadInstrumentPresenter>(ReloadData, CanDoActionItemFromList);
         }
 
@@ -27,7 +28,7 @@ namespace TradePlatform.StockDataDownload.ViewModels
 
         public ICommand RemoveItem { get; private set; }
 
-        public  ICommand ReloadItem { get; private set; }
+        public ICommand ReloadItem { get; private set; }
 
         private void AddItemItemToList(object param)
         {
@@ -35,8 +36,22 @@ namespace TradePlatform.StockDataDownload.ViewModels
             if (instrument != null)
             {
                 InstrumentsInfo.Add(instrument);
-                instrument.StartDownload();
+
+                if (IsExistActiveDownloading())
+                {
+                    //TODO: add log
+                    instrument.StartDownload();
+                }
             }
+        }
+        //Finam restriction for downloading 
+        private bool IsExistActiveDownloading()
+        {
+            return InstrumentsInfo.All(i =>
+            {
+                var instrument = i as DounloadInstrumentPresenter;
+                return instrument.Download == null || instrument.Download.IsCompleted;
+            });
         }
 
         private void RemoveItemFromList(IDounloadInstrumentPresenter presenter)
@@ -46,14 +61,21 @@ namespace TradePlatform.StockDataDownload.ViewModels
 
         private void RemoveData(object param)
         {
-            var instrument  = param as IDounloadInstrumentPresenter;
+            var instrument = param as IDounloadInstrumentPresenter;
             instrument?.DeleteData();
         }
 
         private void ReloadData(object param)
         {
             var instrument = param as IDounloadInstrumentPresenter;
-            instrument?.ReloadData();
+            if (instrument != null)
+            {
+                if (IsExistActiveDownloading())
+                {
+                    //TODO: add log
+                    instrument.ReloadData();
+                }
+            }
         }
 
         private bool CanDoActionItemFromList(object param)

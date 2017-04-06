@@ -36,7 +36,7 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
 
         public void Delete(Instrument instrument, Task download, CancellationTokenSource cancellationTokenSource)
         {
-            if (!download.IsCompleted)
+            if (download != null && !download.IsCompleted)
             {
                 cancellationTokenSource.Cancel();
                 download.Wait();
