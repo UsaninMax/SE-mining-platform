@@ -1,9 +1,9 @@
-﻿using System.Windows.Controls;
+﻿using System.ComponentModel;
+using System.Windows.Controls;
 using Microsoft.Practices.Unity;
-using System.ComponentModel;
 using TradePlatform.StockDataDownload.ViewModels;
 
-namespace TradePlatform.StockDataDownload.view
+namespace TradePlatform.StockDataDownload.Views
 {
     public partial class DownloadNewInstrumentView : UserControl
     {

@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Media.Animation;
 
-namespace TradePlatform.common.view
+namespace TradePlatform.Commons.Views
 {
     public partial class WaitSpinner : UserControl
     {

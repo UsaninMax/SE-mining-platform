@@ -18,17 +18,23 @@ namespace TradePlatform.StockDataDownload.ViewModels
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<AddToList<IDounloadInstrumentPresenter>>().Subscribe(AddItemItemToList, false);
             eventAggregator.GetEvent<RemoveFromList<IDounloadInstrumentPresenter>>().Subscribe(RemoveItemFromList, false);
-            this.RemoveItem = new DelegateCommand<IDounloadInstrumentPresenter>(RemoveData, CanDoActionItemFromList);
-            this.ReloadItem = new DelegateCommand<IDounloadInstrumentPresenter>(ReloadData, CanDoActionItemFromList);
+            this.RemoveCommand = new DelegateCommand<IDounloadInstrumentPresenter>(RemoveData, CanDoActionItemFromList);
+            this.ReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(ReloadData, CanDoActionItemFromList);
+            this.LoadedWindowCommand = new DelegateCommand(WindowLoaded);
+            this.ClosingWindowCommand = new DelegateCommand(WindowClosing);
         }
 
         private readonly ObservableCollection<IDounloadInstrumentPresenter> _dounloadedInstruments = new ObservableCollection<IDounloadInstrumentPresenter>();
 
         public ObservableCollection<IDounloadInstrumentPresenter> InstrumentsInfo => _dounloadedInstruments;
 
-        public ICommand RemoveItem { get; private set; }
+        public ICommand RemoveCommand { get; private set; }
 
-        public ICommand ReloadItem { get; private set; }
+        public ICommand ReloadCommand { get; private set; }
+
+        public ICommand LoadedWindowCommand { get; private set; }
+
+        public ICommand ClosingWindowCommand { get; private set; }
 
         private void AddItemItemToList(object param)
         {
@@ -76,6 +82,16 @@ namespace TradePlatform.StockDataDownload.ViewModels
                     instrument.ReloadData();
                 }
             }
+        }
+
+        private void WindowLoaded()
+        {
+            
+        }
+
+        private void WindowClosing()
+        {
+
         }
 
         private bool CanDoActionItemFromList(object param)
