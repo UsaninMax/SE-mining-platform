@@ -17,11 +17,7 @@ namespace TradePlatform.StockDataDownload.Presenters
         private readonly IInstrumentDownloadService _downloadService;
         private CancellationTokenSource _cancellationTokenSource;
 
-        private Task Download
-        {
-            get;
-            set;
-        }
+        private Task _download;
 
         public DounloadInstrumentPresenter(Instrument instrument)
         {
@@ -29,7 +25,7 @@ namespace TradePlatform.StockDataDownload.Presenters
             _downloadService = ContainerBuilder.Container.Resolve<IInstrumentDownloadService>();
         }
 
-        public string Instrument => _instrument.Name;
+        public string Name => _instrument.Name;
 
         public DateTime From => _instrument.From;
 
@@ -50,12 +46,17 @@ namespace TradePlatform.StockDataDownload.Presenters
             }
         }
 
-        public void StartDownload()
+        public void HardDownloadData()
         {
+            if (IsActiveDowloadTask())
+            {
+                return;
+            }
+
             StatusMessage = TradesStatuses.InProgress;
             _cancellationTokenSource = new CancellationTokenSource();
-            Download = new Task(() => _downloadService.Download(_instrument, _cancellationTokenSource.Token), _cancellationTokenSource.Token);
-            Download.ContinueWith(t =>
+            _download = new Task(() => _downloadService.Download(_instrument, _cancellationTokenSource.Token), _cancellationTokenSource.Token);
+            _download.ContinueWith(t =>
             {
                 if (t.IsFaulted)
                 {
@@ -75,13 +76,47 @@ namespace TradePlatform.StockDataDownload.Presenters
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
-            Download.Start();
+            _download.Start();
+        }
+
+        public void SoftDownloadData()
+        {
+            if (IsActiveDowloadTask())
+            {
+                return;
+            }
+
+            StatusMessage = TradesStatuses.InProgress;
+            _cancellationTokenSource = new CancellationTokenSource();
+            _download = new Task(() => _downloadService.SoftDownload(_instrument, _cancellationTokenSource.Token), _cancellationTokenSource.Token);
+            _download.ContinueWith(t =>
+            {
+                if (t.IsFaulted)
+                {
+                    StatusMessage = TradesStatuses.FailToDownloud;
+
+                    //TODO
+                    Exception ex = t.Exception;
+                    while (ex is AggregateException && ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+                else
+                {
+                    StatusMessage = TradesStatuses.IsReady;
+                }
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+
+            _download.Start();
+
         }
 
         public void DeleteData()
         {
             StatusMessage = TradesStatuses.Deleteing;
-            var delete = new Task(() => _downloadService.Delete(_instrument, Download, _cancellationTokenSource));
+            var delete = new Task(() => _downloadService.Delete(_instrument, _download, _cancellationTokenSource));
             delete.ContinueWith(t =>
             {
                 if (t.IsFaulted)
@@ -105,15 +140,20 @@ namespace TradePlatform.StockDataDownload.Presenters
             delete.Start();
         }
 
-        public void ReloadData()
+        private bool IsActiveDowloadTask()
         {
-            if (Download != null
-                && !Download.IsCompleted)
-            {
-                return;
-            }
+            return _download != null
+                   && !_download.IsCompleted;
+        }
 
-            StartDownload();
+        public void HardReloadData()
+        {
+            HardDownloadData();
+        }
+
+        public void SoftReloadData()
+        {
+            SoftDownloadData();
         }
 
         public void CheckData()
@@ -151,7 +191,17 @@ namespace TradePlatform.StockDataDownload.Presenters
 
         public bool InDownloadingProgress()
         {
-            return Download != null && !Download.IsCompleted;
+            return _download != null && !_download.IsCompleted;
+        }
+
+        public void StopDownload()
+        {
+            _cancellationTokenSource?.Cancel();
+        }
+
+        public Instrument Instrument()
+        {
+            return _instrument;
         }
     }
 }

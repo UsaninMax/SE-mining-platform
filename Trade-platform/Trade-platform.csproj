@@ -76,6 +76,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -121,9 +122,9 @@
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoUpdater.cs" />
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\ISecuritiesInfoUpdater.cs" />
     <Compile Include="StockDataDownload\DataServices\Trades\IInstrumentSplitter.cs" />
-    <Compile Include="StockDataDownload\DataServices\Serialization\IInstrumentsSerializer.cs" />
+    <Compile Include="StockDataDownload\DataServices\Serialization\IInstrumentsStorage.cs" />
     <Compile Include="StockDataDownload\DataServices\Trades\TradesStatuses.cs" />
-    <Compile Include="StockDataDownload\DataServices\Serialization\XMLInstrumentSerializer.cs" />
+    <Compile Include="StockDataDownload\DataServices\Serialization\XmlInstrumentStorage.cs" />
     <Compile Include="StockDataDownload\Presenters\DounloadInstrumentPresenter.cs" />
     <Compile Include="StockDataDownload\Presenters\IDounloadInstrumentPresenter.cs" />
     <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamTradesDownloader.cs" />

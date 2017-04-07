@@ -4,9 +4,9 @@ using TradePlatform.Commons.Trades;
 
 namespace TradePlatform.StockDataDownload.DataServices.Serialization
 {
-    interface IInstrumentsSerializer
+    interface IInstrumentsStorage
     {
-        void Serialize(IEnumerable<Instrument> instruments);
-        IList<Instrument> Deserialize();
+        void Store(IEnumerable<Instrument> instruments);
+        IList<Instrument> ReStore();
     }
 }

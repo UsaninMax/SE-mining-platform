@@ -3,12 +3,14 @@ using Microsoft.Practices.Unity;
 using Prism.Events;
 using System.Net;
 using TradePlatform.Commons.Securities;
+using TradePlatform.Commons.Trades;
 using TradePlatform.Main.ViewModels;
 using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo;
 using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam;
 using TradePlatform.StockDataDownload.DataServices.Serialization;
 using TradePlatform.StockDataDownload.DataServices.Trades;
 using TradePlatform.StockDataDownload.DataServices.Trades.Finam;
+using TradePlatform.StockDataDownload.Presenters;
 using TradePlatform.StockDataDownload.ViewModels;
 using TradePlatform.view;
 
@@ -54,7 +56,10 @@ namespace TradePlatform
 
             Container.RegisterType<ITradesDownloader, FinamTradesDownloader>();
 
-            Container.RegisterType<IInstrumentsSerializer, XmlInstrumentSerializer>();
+            Container.RegisterType<IInstrumentsStorage, XmlInstrumentStorage>();
+
+            Container.RegisterType<IDounloadInstrumentPresenter, DounloadInstrumentPresenter>(new InjectionConstructor(typeof(Instrument)));
         }
     }
 }
+

@@ -1,11 +1,16 @@
-﻿namespace TradePlatform.StockDataDownload.Presenters
+﻿using TradePlatform.Commons.Trades;
+
+namespace TradePlatform.StockDataDownload.Presenters
 {
     public interface IDounloadInstrumentPresenter 
     {
-        void StartDownload();
+        void SoftDownloadData();
         void DeleteData();
-        void ReloadData();
+        void SoftReloadData();
+        void HardReloadData();
         void CheckData();
         bool InDownloadingProgress();
+        void StopDownload();
+        Instrument Instrument();
     }
 }

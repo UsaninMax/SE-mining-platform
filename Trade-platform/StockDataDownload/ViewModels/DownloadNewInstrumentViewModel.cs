@@ -157,7 +157,9 @@ namespace TradePlatform.StockDataDownload.ViewModels
 
         private void AddNewInstrument()
         {
-            IDounloadInstrumentPresenter presenter = new DounloadInstrumentPresenter(new Instrument.Builder()
+            IDounloadInstrumentPresenter presenter = ContainerBuilder.Container.Resolve<IDounloadInstrumentPresenter>(
+                new DependencyOverride<Instrument>(
+                    new Instrument.Builder()
                     .WithFrom(_dateFrom)
                     .WithTo(_dateTo)
                     .WithCode(_selectedSecurity?.Code)
@@ -165,7 +167,7 @@ namespace TradePlatform.StockDataDownload.ViewModels
                     .WithName(_selectedSecurity?.Name)
                     .WithId(_selectedSecurity?.Id)
                     .WithDataProvider("FINAM")
-                    .Build());
+                    .Build()));
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<AddToList<IDounloadInstrumentPresenter>>().Publish(presenter);
         }

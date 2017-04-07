@@ -9,6 +9,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using TradePlatform.Commons.MessageSubscribers;
+using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.Serialization;
 using TradePlatform.StockDataDownload.Presenters;
 
@@ -23,7 +24,8 @@ namespace TradePlatform.StockDataDownload.ViewModels
             eventAggregator.GetEvent<AddToList<IDounloadInstrumentPresenter>>().Subscribe(AddItemItemToList, false);
             eventAggregator.GetEvent<RemoveFromList<IDounloadInstrumentPresenter>>().Subscribe(RemoveItemFromList, false);
             RemoveCommand = new DelegateCommand<IDounloadInstrumentPresenter>(RemoveData, CanDoActionItemFromList);
-            ReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(ReloadData, CanDoActionItemFromList);
+            SoftReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(SoftReloadData, CanDoActionItemFromList);
+            HardReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(HardReloadData, CanDoActionItemFromList);
             LoadedWindowCommand = new DelegateCommand(WindowLoaded);
             ClosingWindowCommand = new DelegateCommand(WindowClosing);
         }
@@ -44,7 +46,9 @@ namespace TradePlatform.StockDataDownload.ViewModels
 
         public ICommand RemoveCommand { get; private set; }
 
-        public ICommand ReloadCommand { get; private set; }
+        public ICommand SoftReloadCommand { get; private set; }
+
+        public ICommand HardReloadCommand { get; private set; }
 
         public ICommand LoadedWindowCommand { get; private set; }
 
@@ -60,7 +64,7 @@ namespace TradePlatform.StockDataDownload.ViewModels
                 if (HasNoActiveDownloadingProces())
                 {
                     //TODO: add log
-                    instrument.StartDownload();
+                    instrument.SoftDownloadData();
                 }
             }
         }
@@ -81,15 +85,25 @@ namespace TradePlatform.StockDataDownload.ViewModels
             instrument?.DeleteData();
         }
 
-        private void ReloadData(object param)
+        private void SoftReloadData(object param)
         {
-            if (param is IDounloadInstrumentPresenter instrument)
+            var instrument = param as IDounloadInstrumentPresenter;
+
+            if (HasNoActiveDownloadingProces())
             {
-                if (HasNoActiveDownloadingProces())
-                {
-                    //TODO: add log
-                    instrument.ReloadData();
-                }
+                //TODO: add log
+                instrument?.SoftReloadData();
+            }
+        }
+
+        private void HardReloadData(object param)
+        {
+            var instrument = param as IDounloadInstrumentPresenter;
+
+            if (HasNoActiveDownloadingProces())
+            {
+                //TODO: add log
+                instrument?.HardReloadData();
             }
         }
 
@@ -98,12 +112,12 @@ namespace TradePlatform.StockDataDownload.ViewModels
 
             var updateHistory = new Task<ObservableCollection<IDounloadInstrumentPresenter>>(() =>
             {
-                var serializer = ContainerBuilder.Container.Resolve<IInstrumentsSerializer>();
+                var serializer = ContainerBuilder.Container.Resolve<IInstrumentsStorage>();
                 return new ObservableCollection<IDounloadInstrumentPresenter>(serializer
-                    .Deserialize()
+                    .ReStore()
                     .Select(i =>
                 {
-                    var presenter = new DounloadInstrumentPresenter(i);
+                    var presenter = ContainerBuilder.Container.Resolve<IDounloadInstrumentPresenter>(new DependencyOverride<Instrument>(i));
                     presenter.CheckData();
                     return presenter;
                 }).ToList());
@@ -130,8 +144,29 @@ namespace TradePlatform.StockDataDownload.ViewModels
 
         private void WindowClosing()
         {
-          //  var serializer = ContainerBuilder.Container.Resolve<IInstrumentsSerializer>();
-
+            var storeHistory = new Task(() =>
+            {
+                var serializer = ContainerBuilder.Container.Resolve<IInstrumentsStorage>();
+                serializer.Store(InstrumentsInfo.Select(i =>
+                {
+                    i.StopDownload();
+                    return i.Instrument();
+                }).ToList());
+            });
+            storeHistory.ContinueWith(t =>
+            {
+                if (t.IsFaulted)
+                {
+                    //TODO:
+                    Exception ex = t.Exception;
+                    while (ex is AggregateException && ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+            });
+            storeHistory.Start();
         }
 
         private bool CanDoActionItemFromList(object param)

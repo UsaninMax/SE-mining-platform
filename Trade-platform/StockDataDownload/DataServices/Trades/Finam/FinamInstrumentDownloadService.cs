@@ -34,6 +34,22 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
             });
         }
 
+        public void SoftDownload(Instrument instrument, CancellationToken cancellationToken)
+        {
+            CreateFolder(instrument);
+
+            _instrumentSplitter.Split(instrument).ForEach(i =>
+            {
+                if (cancellationToken.IsCancellationRequested || FileExist(i))
+                {
+                    return;
+                }
+
+                var downloader = ContainerBuilder.Container.Resolve<ITradesDownloader>();
+                downloader.Download(i);
+            });
+        }
+
         public void Delete(Instrument instrument, Task download, CancellationTokenSource cancellationTokenSource)
         {
             if (download != null && !download.IsCompleted)
@@ -46,8 +62,13 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
 
         public bool CheckFiles(Instrument instrument)
         {
-            return Directory.Exists(instrument.Path) &&
-                _instrumentSplitter.Split(instrument).All(splitedInstrument => File.Exists(instrument.DataProvider + "\\" +instrument.DataProvider + "\\" + splitedInstrument.Path + "\\" + splitedInstrument.FileName + ".txt"));
+            return Directory.Exists(instrument.DataProvider + "\\" + instrument.Path) &&
+                _instrumentSplitter.Split(instrument).All(FileExist);
+        }
+
+        private bool FileExist(Instrument instrument)
+        {
+            return File.Exists(instrument.DataProvider + "\\" + instrument.Path + "\\" + instrument.FileName + ".txt");
         }
 
         private static void DeleteFolder(Instrument instrument)

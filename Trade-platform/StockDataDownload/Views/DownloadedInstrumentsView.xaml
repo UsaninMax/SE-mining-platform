@@ -21,8 +21,11 @@
     <DataGrid IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding InstrumentsInfo}">
         <DataGrid.ContextMenu>
             <ContextMenu>
-                <MenuItem Header="Reload"
-                          Command="{Binding ReloadCommand}"
+                <MenuItem Header="Soft reload"
+                          Command="{Binding SoftReloadCommand}"
+                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+                <MenuItem Header="Hard reload"
+                          Command="{Binding HardReloadCommand}"
                           CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
                 <MenuItem Header="Remove"
                     Command="{Binding RemoveCommand}"
@@ -30,7 +33,7 @@
             </ContextMenu>
         </DataGrid.ContextMenu>
         <DataGrid.Columns>
-            <DataGridTextColumn  Header="Instrument" Binding="{Binding Instrument}" />
+            <DataGridTextColumn  Header="Instrument" Binding="{Binding Name}" />
             <DataGridTextColumn  Header="From" Binding="{Binding From}" />
             <DataGridTextColumn  Header="To" Binding="{Binding To}" />
             <DataGridTextColumn  Header="Status" Binding="{Binding StatusMessage}" />

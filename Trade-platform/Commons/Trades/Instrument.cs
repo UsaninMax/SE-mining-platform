@@ -1,20 +1,30 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace TradePlatform.Commons.Trades
 {
+    [DataContract()]
     public class Instrument
     {
         private Instrument() { }
-
+        [DataMember()]
         public string Name { get; private set; }
+        [DataMember()]
         public string Code { get; private set; }
+        [DataMember()]
         public string Id { get; private set; }
+        [DataMember()]
         public string MarketId { get; private set; }
+        [DataMember()]
         public string DataProvider { get; private set; }
+        [DataMember()]
         public string Path { get; private set; }
+        [DataMember()]
         public string FileName { get; private set; }
+        [DataMember()]
         public DateTime From { get; private set; }
+        [DataMember()]
         public DateTime To { get; private set; }
 
         public class Builder
