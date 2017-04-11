@@ -15,7 +15,7 @@ namespace TradePlatform.Main.ViewModels
             this.LoadInstrumentCommand = new DelegateCommand(o => this.HistoryInstrumentsPage());
         }
 
-        public ICommand LoadInstrumentCommand { get; private set; }
+        private ICommand LoadInstrumentCommand { get; set; }
 
         private void HistoryInstrumentsPage()
         {
