@@ -199,6 +199,18 @@ namespace TradePlatform.StockDataDownload.Presenters
             _cancellationTokenSource?.Cancel();
         }
 
+        public void ShowDataInFolder()
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(_instrument.DataProvider + "\\" + _instrument.Path);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
         public Instrument Instrument()
         {
             return _instrument;

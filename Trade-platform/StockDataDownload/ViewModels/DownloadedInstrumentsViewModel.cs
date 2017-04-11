@@ -26,6 +26,7 @@ namespace TradePlatform.StockDataDownload.ViewModels
             RemoveCommand = new DelegateCommand<IDounloadInstrumentPresenter>(RemoveData, CanDoActionItemFromList);
             SoftReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(SoftReloadData, CanDoActionItemFromList);
             HardReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(HardReloadData, CanDoActionItemFromList);
+            OpenFolderCommand = new DelegateCommand<IDounloadInstrumentPresenter>(OpenFolderWithData , CanDoActionItemFromList);
             LoadedWindowCommand = new DelegateCommand(WindowLoaded);
             ClosingWindowCommand = new DelegateCommand(WindowClosing);
         }
@@ -43,6 +44,8 @@ namespace TradePlatform.StockDataDownload.ViewModels
                 RaisePropertyChanged();
             }
         }
+
+        public ICommand OpenFolderCommand { get; private set; }
 
         public ICommand RemoveCommand { get; private set; }
 
@@ -77,6 +80,12 @@ namespace TradePlatform.StockDataDownload.ViewModels
         private void RemoveItemFromList(IDounloadInstrumentPresenter presenter)
         {
             InstrumentsInfo.Remove(presenter);
+        }
+
+        private void OpenFolderWithData(object param)
+        {
+            var instrument = param as IDounloadInstrumentPresenter;
+            instrument?.ShowDataInFolder();
         }
 
         private void RemoveData(object param)

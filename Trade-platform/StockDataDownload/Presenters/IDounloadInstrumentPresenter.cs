@@ -11,6 +11,7 @@ namespace TradePlatform.StockDataDownload.Presenters
         void CheckData();
         bool InDownloadingProgress();
         void StopDownload();
+        void ShowDataInFolder();
         Instrument Instrument();
     }
 }
