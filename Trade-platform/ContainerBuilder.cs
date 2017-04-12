@@ -5,6 +5,7 @@ using System.Net;
 using TradePlatform.Commons.Securities;
 using TradePlatform.Commons.Trades;
 using TradePlatform.Main.ViewModels;
+using TradePlatform.Main.Views;
 using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo;
 using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam;
 using TradePlatform.StockDataDownload.DataServices.Serialization;
@@ -12,17 +13,23 @@ using TradePlatform.StockDataDownload.DataServices.Trades;
 using TradePlatform.StockDataDownload.DataServices.Trades.Finam;
 using TradePlatform.StockDataDownload.Presenters;
 using TradePlatform.StockDataDownload.ViewModels;
-using TradePlatform.view;
 
 namespace TradePlatform
 {
-    class ContainerBuilder
-    {    
-        public static IUnityContainer Container { get; private set; }
+    public static class ContainerBuilder
+    {
+
+        private static IUnityContainer _container;
+
+        public static IUnityContainer Container
+        {
+            set { _container = value; }
+            get { return _container ?? (_container = new UnityContainer()); }
+
+        }
 
         public static void Initialize()
         {
-            Container = new UnityContainer();
             InitializeShell();
         }
 

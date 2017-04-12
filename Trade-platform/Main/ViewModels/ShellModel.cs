@@ -12,10 +12,10 @@ namespace TradePlatform.Main.ViewModels
     {
         public ShellModel()
         {
-            this.LoadInstrumentCommand = new DelegateCommand(o => this.HistoryInstrumentsPage());
+            LoadInstrumentCommand = new DelegateCommand(o => HistoryInstrumentsPage());
         }
 
-        private ICommand LoadInstrumentCommand { get; set; }
+        public ICommand LoadInstrumentCommand { get; set; }
 
         private void HistoryInstrumentsPage()
         {

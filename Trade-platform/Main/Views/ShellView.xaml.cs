@@ -2,7 +2,7 @@
 using Microsoft.Practices.Unity;
 using TradePlatform.Main.ViewModels;
 
-namespace TradePlatform.view
+namespace TradePlatform.Main.Views
 {
     public partial class ShellView : Window
     {

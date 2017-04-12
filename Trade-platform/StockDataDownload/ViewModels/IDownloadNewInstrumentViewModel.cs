@@ -1,6 +1,6 @@
 ﻿namespace TradePlatform.StockDataDownload.ViewModels
 {
-    internal interface IDownloadNewInstrumentViewModel
+    public interface IDownloadNewInstrumentViewModel
     {
         void UpdateSecuritiesInfo();
     }
