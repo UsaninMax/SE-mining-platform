@@ -10,22 +10,16 @@ namespace TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam
         private string[] _names;
         private string[] _codes;
         private string[] _markets;
-        private string[] _decp;
-        private string[] _emitentChild;
-        private string[] _emitentUrls;
 
         public IList<Security> Parse(string message)
         {
             string[] sets = message.Split('=');
-            _ids = CustomSplit(sets[1], new string[] {"','",","});
-            _names = CustomSplit(sets[2], new string[] {"','"});
-            _codes = CustomSplit(sets[3], new string[] {"','"});
-            _markets = CustomSplit(sets[4], new string[] {","});
-            _decp = CustomSplit(sets[5], new string[] { "," });
-            _emitentChild = CustomSplit(sets[7], new string[] { "," });
-            _emitentUrls = CustomSplit(sets[8], new string[] { "," });
+            _ids = CustomSplit(sets[1], new string[] { "','", "," });
+            _names = CustomSplit(sets[2], new string[] { "','" });
+            _codes = CustomSplit(sets[3], new string[] { "','" });
+            _markets = CustomSplit(sets[4], new string[] { "," });
 
-            if(!ParseChecker())
+            if (!ParseChecker())
             {
                 throw new Exception("Securities info parsing has mistakes!");
             }
@@ -60,10 +54,7 @@ namespace TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam
                     Id = _ids[i],
                     Name = _names[i],
                     Code = _codes[i],
-                    Market = new Market() { Name = FinamMarketHelper.Markets[_markets[i]], Id = _markets[i] },
-                    Decp = _decp[i].Split(':')[1],
-                    EmitentChild = _emitentChild[i],
-                    Url = _emitentUrls[i].Split(':')[1]
+                    Market = new Market() { Name = FinamMarketHelper.Markets[_markets[i]], Id = _markets[i] }
                 });
             }
             return securities;
@@ -74,10 +65,7 @@ namespace TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam
             return
                 _names.Length == baseLength &&
                 _codes.Length == baseLength &&
-                _markets.Length == baseLength &&
-                _decp.Length == baseLength &&
-                _emitentChild.Length == baseLength &&
-                _emitentUrls.Length == baseLength; 
+                _markets.Length == baseLength;
         }
     }
 }

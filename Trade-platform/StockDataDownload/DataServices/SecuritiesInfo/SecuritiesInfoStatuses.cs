@@ -1,7 +1,7 @@
 ﻿namespace TradePlatform.StockDataDownload.DataServices.SecuritiesInfo
 {
     //TODO: from property file
-    internal static class SecuritiesInfoStatuses
+    public static class SecuritiesInfoStatuses
     {
         public static string FailToUpdateSecuritiesInfo => "Fail to update securities info";
 
