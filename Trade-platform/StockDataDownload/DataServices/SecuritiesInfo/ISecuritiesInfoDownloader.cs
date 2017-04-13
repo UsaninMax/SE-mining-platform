@@ -1,7 +1,7 @@
 ﻿
 namespace TradePlatform.StockDataDownload.DataServices.SecuritiesInfo
 {
-    internal interface ISecuritiesInfoDownloader
+    public interface ISecuritiesInfoDownloader
     {
         string Download();
     }

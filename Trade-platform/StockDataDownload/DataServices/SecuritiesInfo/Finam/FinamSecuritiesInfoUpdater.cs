@@ -3,7 +3,7 @@ using TradePlatform.Commons.Securities;
 
 namespace TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam
 {
-    class FinamSecuritiesInfoUpdater : ISecuritiesInfoUpdater
+    public class FinamSecuritiesInfoUpdater : ISecuritiesInfoUpdater
     {
         private readonly ISecuritiesInfoDownloader _securitiesInfoDownloader;
         private readonly ISecuritiesInfoParser _securitiesInfoParser;

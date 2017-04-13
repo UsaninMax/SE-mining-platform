@@ -3,7 +3,7 @@ using TradePlatform.Commons.Securities;
 
 namespace TradePlatform.StockDataDownload.DataServices.SecuritiesInfo
 {
-    internal interface ISecuritiesInfoParser
+    public interface ISecuritiesInfoParser
     {
         IList<Security> Parse(string message);
     }
