@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Castle.Core.Internal;
 using TradePlatform.Commons.Securities;
 
 namespace TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam
 {
-    class FinamSecuritiesInfoParser : ISecuritiesInfoParser
+    public class FinamSecuritiesInfoParser : ISecuritiesInfoParser
     {
         private string[] _ids;
         private string[] _names;
@@ -13,11 +14,23 @@ namespace TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam
 
         public IList<Security> Parse(string message)
         {
-            string[] sets = message.Split('=');
-            _ids = CustomSplit(sets[1], new string[] { "','", "," });
-            _names = CustomSplit(sets[2], new string[] { "','" });
-            _codes = CustomSplit(sets[3], new string[] { "','" });
-            _markets = CustomSplit(sets[4], new string[] { "," });
+            if (message.IsNullOrEmpty())
+            {
+                throw new Exception("Securities info parsing has mistakes!");
+            }
+
+            try
+            {
+                string[] sets = message.Split('=');
+                _ids = CustomSplit(sets[1], new[] {"','", ","});
+                _names = CustomSplit(sets[2], new[] {"','"});
+                _codes = CustomSplit(sets[3], new[] {"','"});
+                _markets = CustomSplit(sets[4], new[] {","});
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Securities info parsing has mistakes!");
+            }
 
             if (!ParseChecker())
             {
