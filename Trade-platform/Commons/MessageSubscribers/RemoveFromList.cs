@@ -1,7 +1,7 @@
 ﻿using Prism.Events;
 namespace TradePlatform.Commons.MessageSubscribers
 {
-    class RemoveFromList<TDounloadInstrumentPresenter> : PubSubEvent<TDounloadInstrumentPresenter>
+    public class RemoveFromList<IDounloadInstrumentPresenter> : PubSubEvent<IDounloadInstrumentPresenter>
     {
     }
 }

@@ -27,7 +27,7 @@ namespace TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam
                 _codes = CustomSplit(sets[3], new[] {"','"});
                 _markets = CustomSplit(sets[4], new[] {","});
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new Exception("Securities info parsing has mistakes!");
             }

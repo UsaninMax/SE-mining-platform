@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
@@ -150,12 +149,12 @@ namespace TradePlatform.StockDataDownload.ViewModels
         {
             _securitiesInfo = ContainerBuilder.Container.Resolve<SecuritiesInfoHolder>();
             _suritiesInfoUpdater = ContainerBuilder.Container.Resolve<ISecuritiesInfoUpdater>();
-            AddNew = new DelegateCommand(AddNewInstrument);
+            AddNewCommand = new DelegateCommand(AddNewInstrument);
         }
 
-        public ICommand AddNew { get; private set; }
+        public ICommand AddNewCommand { get; private set; }
 
-        private void AddNewInstrument()
+        public void AddNewInstrument()
         {
             IDounloadInstrumentPresenter presenter = ContainerBuilder.Container.Resolve<IDounloadInstrumentPresenter>(
                 new DependencyOverride<Instrument>(
@@ -188,16 +187,17 @@ namespace TradePlatform.StockDataDownload.ViewModels
                     {
                         ex = ex.InnerException;
                     }
-                    MessageBox.Show("Error: " + ex.Message);
+                    //MessageBox.Show("Error: " + ex.Message);
                 }
                 else
                 {
                     Markets = new ObservableCollection<Market>(_securitiesInfo.Markets());
                     StatusMessage = SecuritiesInfoStatuses.SecuritiesInfoUpdated;
+                    IsEnabledPanel = true;
                 }
 
                 HideWaitSpinnerBar = true;
-                IsEnabledPanel = true;
+                
             });
             downloadTask.Start();
         }
