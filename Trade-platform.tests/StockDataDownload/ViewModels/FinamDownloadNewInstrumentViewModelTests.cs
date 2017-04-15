@@ -85,7 +85,7 @@ namespace Trade_platform.tests.StockDataDownload.ViewModels
         }
 
         [Test]
-        public void WhenAddNewInstrumentWillPublishInAgregatorFilledPresenter()
+        public void WhenAddNewInstrumentFilledPresenterWillPublishInAgregator()
         {
             ContainerBuilder.Container.RegisterType<IDounloadInstrumentPresenter, DounloadInstrumentPresenter>(new InjectionConstructor(typeof(Instrument)));
             ContainerBuilder.Container.RegisterInstance(new Mock<SecuritiesInfoHolder>().Object);
@@ -125,6 +125,37 @@ namespace Trade_platform.tests.StockDataDownload.ViewModels
                 security.Id.Equals(m.Instrument().Id) &&
                 security.Code.Equals(m.Instrument().Code) &&
                 security.Name.Equals(m.Instrument().Name))), Times.Once);
+        }
+
+        [Test]
+        public void WhenAddNewInstrumentWillFilledPresenterPublishInAgregatorWithoutSelectedSecurity()
+        {
+            ContainerBuilder.Container.RegisterType<IDounloadInstrumentPresenter, DounloadInstrumentPresenter>(new InjectionConstructor(typeof(Instrument)));
+            ContainerBuilder.Container.RegisterInstance(new Mock<SecuritiesInfoHolder>().Object);
+            ContainerBuilder.Container.RegisterInstance(new Mock<ISecuritiesInfoUpdater>().Object);
+            ContainerBuilder.Container.RegisterInstance(new Mock<IInstrumentDownloadService>().Object);
+            Mock<IEventAggregator> fakeEventAggregator = new Mock<IEventAggregator>();
+            ContainerBuilder.Container.RegisterInstance(fakeEventAggregator.Object);
+            FinamDownloadNewInstrumentViewModel newInstrumentViewModel = new FinamDownloadNewInstrumentViewModel();
+
+            DateTime currentDate = DateTime.Now;
+            newInstrumentViewModel.DateFrom = currentDate;
+            newInstrumentViewModel.DateTo = currentDate;
+            fakeEventAggregator.Setup(x => x.GetEvent<AddToList<IDounloadInstrumentPresenter>>()
+            .Publish(It.IsAny<IDounloadInstrumentPresenter>()));
+
+            newInstrumentViewModel.AddNewInstrument();
+            fakeEventAggregator.Verify(x => x.GetEvent<AddToList<IDounloadInstrumentPresenter>>()
+            .Publish(It.Is<IDounloadInstrumentPresenter>(
+                m =>
+                "FINAM".Equals(m.Instrument().DataProvider) &&
+                currentDate.Equals(m.Instrument().From) &&
+                currentDate.Equals(m.Instrument().To) &&
+                m.Instrument().MarketId == null &&
+                m.Instrument().Id == null &&
+                m.Instrument().Code == null  &&
+                m.Instrument().Name == null
+                )), Times.Once);
         }
     }
 }
