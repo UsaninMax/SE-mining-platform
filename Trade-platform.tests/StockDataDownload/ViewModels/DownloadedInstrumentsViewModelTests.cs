@@ -1,0 +1,243 @@
+﻿using Microsoft.Practices.Unity;
+using Moq;
+using NUnit.Framework;
+using Prism.Events;
+using TradePlatform;
+using TradePlatform.Commons.MessageSubscribers;
+using TradePlatform.StockDataDownload.DataServices.Trades;
+using TradePlatform.StockDataDownload.Presenters;
+using TradePlatform.StockDataDownload.ViewModels;
+
+namespace Trade_platform.tests.StockDataDownload.ViewModels
+{
+    [TestFixture]
+    public class DownloadedInstrumentsViewModelTests
+    {
+        [SetUp]
+        public void SetUp()
+        {
+            ContainerBuilder
+            .Container
+            .RegisterType<IEventAggregator, EventAggregator>(new ContainerControlledLifetimeManager());
+        }
+
+
+        [Test]
+        public void WhenReceivePresenterAddHeToHistoryTable()
+        {
+            IEventAggregator eventAggregator = new EventAggregator();
+            ContainerBuilder.Container.RegisterInstance(eventAggregator);
+            ContainerBuilder.Container.RegisterInstance(new Mock<IInstrumentDownloadService>().Object);
+
+            var viewModel = new DownloadedInstrumentsViewModel();
+            var presenterMock = new Mock<IDounloadInstrumentPresenter>();
+            presenterMock.Setup(x => x.SoftDownloadData());
+
+            eventAggregator
+                .GetEvent<AddToList<IDounloadInstrumentPresenter>>()
+                .Publish(presenterMock.Object);
+
+            Assert.That(viewModel.InstrumentsInfo.Count, Is.EqualTo(1));
+            Assert.That(viewModel.InstrumentsInfo[0], Is.EqualTo(presenterMock.Object));
+        }
+
+        [Test]
+        public void WhenReceivePresenterAddHeToHistoryTableIfNotNull()
+        {
+            IEventAggregator eventAggregator = new EventAggregator();
+            ContainerBuilder.Container.RegisterInstance(eventAggregator);
+            ContainerBuilder.Container.RegisterInstance(new Mock<IInstrumentDownloadService>().Object);
+
+            var viewModel = new DownloadedInstrumentsViewModel();
+            eventAggregator
+                .GetEvent<AddToList<IDounloadInstrumentPresenter>>()
+                .Publish(null);
+
+            Assert.That(viewModel.InstrumentsInfo.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void WhenReceivePresenterStartDownloadingProcess()
+        {
+            IEventAggregator eventAggregator = new EventAggregator();
+            ContainerBuilder.Container.RegisterInstance(eventAggregator);
+            ContainerBuilder.Container.RegisterInstance(new Mock<IInstrumentDownloadService>().Object);
+
+            var viewModel = new DownloadedInstrumentsViewModel();
+            var presenterMock = new Mock<IDounloadInstrumentPresenter>();
+            presenterMock.Setup(x => x.SoftDownloadData());
+
+            eventAggregator
+                .GetEvent<AddToList<IDounloadInstrumentPresenter>>()
+                .Publish(presenterMock.Object);
+
+            presenterMock.Verify(x => x.SoftDownloadData(), Times.Once);
+        }
+
+        [Test]
+        public void WhenReceivePresenterDoNotStartDownloadingProcessWhenProcessIsExist()
+        {
+            IEventAggregator eventAggregator = new EventAggregator();
+            ContainerBuilder.Container.RegisterInstance(eventAggregator);
+            ContainerBuilder.Container.RegisterInstance(new Mock<IInstrumentDownloadService>().Object);
+
+            var viewModel = new DownloadedInstrumentsViewModel();
+
+            var storedPresenterMock = new Mock<IDounloadInstrumentPresenter>();
+            storedPresenterMock.Setup(x => x.InDownloadingProgress()).Returns(true);
+            viewModel.InstrumentsInfo.Add(storedPresenterMock.Object);
+
+            var presenterMock = new Mock<IDounloadInstrumentPresenter>();
+            presenterMock.Setup(x => x.SoftDownloadData());
+
+            eventAggregator
+                .GetEvent<AddToList<IDounloadInstrumentPresenter>>()
+                .Publish(presenterMock.Object);
+
+            presenterMock.Verify(x => x.SoftDownloadData(), Times.Never);
+
+        }
+
+        [Test]
+        public void CheckOpenDataFolderCommand()
+        {
+            var viewModel = new DownloadedInstrumentsViewModel();
+            var presenterMock = new Mock<IDounloadInstrumentPresenter>();
+            viewModel.OpenFolderCommand.Execute(presenterMock.Object);
+            presenterMock.Verify(x => x.ShowDataInFolder(), Times.Once);
+        }
+
+        [Test]
+        public void CheckOpenDataFolderCommandIfNull()
+        {
+            var viewModel = new DownloadedInstrumentsViewModel();
+
+            Assert.DoesNotThrow(() =>
+            {
+                viewModel.OpenFolderCommand.Execute(null);
+            });
+        }
+
+        [Test]
+        public void CheckRemoveDataCommand()
+        {
+            var viewModel = new DownloadedInstrumentsViewModel();
+            var presenterMock = new Mock<IDounloadInstrumentPresenter>();
+         
+            viewModel.RemoveCommand.Execute(presenterMock.Object);
+            presenterMock.Verify(x => x.DeleteData(), Times.Once);
+        }
+
+
+        [Test]
+        public void CheckRemoveDataCommandIfNull()
+        {
+            var viewModel = new DownloadedInstrumentsViewModel();
+
+            Assert.DoesNotThrow(() =>
+            {
+                viewModel.RemoveCommand.Execute(null);
+            });
+        }
+
+        [Test]
+        public void CheckHardReloadCommand()
+        {
+            var viewModel = new DownloadedInstrumentsViewModel();
+            var presenterMock = new Mock<IDounloadInstrumentPresenter>();
+            viewModel.HardReloadCommand.Execute(presenterMock.Object);
+            presenterMock.Verify(x => x.HardReloadData(), Times.Once);
+        }
+
+        [Test]
+        public void CheckHardReloadCommandIfNull()
+        {
+            var viewModel = new DownloadedInstrumentsViewModel();
+
+            Assert.DoesNotThrow(() =>
+            {
+                viewModel.HardReloadCommand.Execute(null);
+            });
+        }
+
+        [Test]
+        public void HardReloadCommandWillNotStartWhenExistDownloadingProcess()
+        {
+            var viewModel = new DownloadedInstrumentsViewModel();
+            var presenterMock = new Mock<IDounloadInstrumentPresenter>();
+
+            var storedPresenterMock = new Mock<IDounloadInstrumentPresenter>();
+            storedPresenterMock.Setup(x => x.InDownloadingProgress()).Returns(true);
+            viewModel.InstrumentsInfo.Add(storedPresenterMock.Object);
+
+            viewModel.HardReloadCommand.Execute(presenterMock.Object);
+            presenterMock.Verify(x => x.HardReloadData(), Times.Never);
+
+        }
+
+        [Test]
+        public void CheckSoftReloadCommand()
+        {
+            var viewModel = new DownloadedInstrumentsViewModel();
+            var presenterMock = new Mock<IDounloadInstrumentPresenter>();
+            viewModel.SoftReloadCommand.Execute(presenterMock.Object);
+            presenterMock.Verify(x => x.SoftReloadData(), Times.Once);
+        }
+
+        [Test]
+        public void CheckSoftReloadCommandIfNull()
+        {
+            var viewModel = new DownloadedInstrumentsViewModel();
+
+            Assert.DoesNotThrow(() =>
+            {
+                viewModel.SoftReloadCommand.Execute(null);
+            });
+        }
+
+        [Test]
+        public void SoftReloadCommandWillNotStartWhenExistDownloadingProcess()
+        {
+            var viewModel = new DownloadedInstrumentsViewModel();
+            var presenterMock = new Mock<IDounloadInstrumentPresenter>();
+
+            var storedPresenterMock = new Mock<IDounloadInstrumentPresenter>();
+            storedPresenterMock.Setup(x => x.InDownloadingProgress()).Returns(true);
+            viewModel.InstrumentsInfo.Add(storedPresenterMock.Object);
+
+            viewModel.SoftReloadCommand.Execute(presenterMock.Object);
+            presenterMock.Verify(x => x.SoftReloadData(), Times.Never);
+
+        }
+
+        [Test]
+        public void CheckLoadWindowHistoryCommand()
+        {
+
+
+        }
+
+        [Test]
+        public void WhenLoadWindowHistoryWillStartHistoryChecker()
+        {
+
+
+        }
+
+        [Test]
+        public void CheckSaveWindowHistoryCommand()
+        {
+
+
+        }
+
+        [Test]
+        public void WhenSaveWindowHistoryWillStartStopDownloadingProcess()
+        {
+
+
+        }
+
+
+    }
+}
