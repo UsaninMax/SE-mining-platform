@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Practices.Unity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TradePlatform;
 using TradePlatform.Commons.Securities;
 using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo;
 using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam;
+using NUnit.Framework;
 
 namespace Trade_platform.tests.StockDataDownload.DataServices.SecuritiesInfo.Finam
 {
-    [TestClass]
+    [TestFixture]
     public class FinamSecuritiesInfoUpdaterTests
     {
-        [TestMethod]
+        [Test]
         public void ParserWillStoreDataToSecuritiesInfoHolder()
         {
             SecuritiesInfoHolder infoHolder = new SecuritiesInfoHolder();

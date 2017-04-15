@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using Microsoft.Practices.Unity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo;
 using Moq;
 using Prism.Events;
@@ -13,13 +12,14 @@ using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.Trades;
 using TradePlatform.StockDataDownload.Presenters;
 using TradePlatform.StockDataDownload.ViewModels;
+using NUnit.Framework;
 
 namespace Trade_platform.tests.StockDataDownload.ViewModels
 {
-    [TestClass]
+    [TestFixture]
     public class FinamDownloadNewInstrumentViewModelTests
     {
-        [TestMethod]
+        [Test]
         public void WhenUpdateSecurityInfoWillFaildStatusWillChangedOnFail()
         {
             Mock<ISecuritiesInfoUpdater> infoUpdaterMock = new Mock<ISecuritiesInfoUpdater>();
@@ -28,15 +28,16 @@ namespace Trade_platform.tests.StockDataDownload.ViewModels
             FinamDownloadNewInstrumentViewModel newInstrumentViewModel = new FinamDownloadNewInstrumentViewModel();
             newInstrumentViewModel.UpdateSecuritiesInfo();
             Thread.Sleep(500);
-            Assert.IsTrue(SecuritiesInfoStatuses.FailToUpdateSecuritiesInfo.Equals(newInstrumentViewModel.StatusMessage));
-            Assert.IsTrue(newInstrumentViewModel.HideWaitSpinnerBar);
-            Assert.IsFalse(newInstrumentViewModel.IsEnabledPanel);
+
+            Assert.That(SecuritiesInfoStatuses.FailToUpdateSecuritiesInfo, Is.EqualTo(newInstrumentViewModel.StatusMessage));
+            Assert.That(newInstrumentViewModel.HideWaitSpinnerBar, Is.True);
+            Assert.That(newInstrumentViewModel.IsEnabledPanel, Is.False);
         }
 
-        [TestMethod]
+        [Test]
         public void WhenUpdateSecurityInfoWillNotFaildInformationWillUpdated()
         {
-            Market market = new Market() {Id = "1234", Name = "Name"};
+            Market market = new Market() { Id = "1234", Name = "Name" };
             Mock<ISecuritiesInfoUpdater> infoUpdaterMock = new Mock<ISecuritiesInfoUpdater>();
             SecuritiesInfoHolder infoHolder = new SecuritiesInfoHolder();
             infoHolder.Securities = new List<Security>
@@ -55,15 +56,15 @@ namespace Trade_platform.tests.StockDataDownload.ViewModels
             newInstrumentViewModel.UpdateSecuritiesInfo();
             Thread.Sleep(500);
 
-            Assert.IsTrue(newInstrumentViewModel.HideWaitSpinnerBar);
-            Assert.IsTrue(newInstrumentViewModel.IsEnabledPanel);
-            Assert.IsTrue(SecuritiesInfoStatuses.SecuritiesInfoUpdated.Equals(newInstrumentViewModel.StatusMessage));
-            Assert.IsTrue(newInstrumentViewModel.Markets.Count == 1);
-            Assert.IsTrue(market.Equals(newInstrumentViewModel.Markets[0]));
+            Assert.That(market, Is.EqualTo(newInstrumentViewModel.Markets[0]));
+            Assert.That(newInstrumentViewModel.Markets.Count, Is.EqualTo(1));
+            Assert.That(SecuritiesInfoStatuses.SecuritiesInfoUpdated, Is.EqualTo(newInstrumentViewModel.StatusMessage));
+            Assert.That(newInstrumentViewModel.IsEnabledPanel, Is.True);
+            Assert.That(newInstrumentViewModel.HideWaitSpinnerBar, Is.True);
         }
 
-        [TestMethod]
-        public void WhenAddNewInstrumentWillPublishToAgregator()
+        [Test]
+        public void WhenAddNewInstrumentWillPublishInAgregator()
         {
             ContainerBuilder.Container.RegisterType<IDounloadInstrumentPresenter, DounloadInstrumentPresenter>(new InjectionConstructor(typeof(Instrument)));
             ContainerBuilder.Container.RegisterInstance(new Mock<SecuritiesInfoHolder>().Object);
@@ -81,6 +82,49 @@ namespace Trade_platform.tests.StockDataDownload.ViewModels
             fakeEventAggregator.Verify(x => x
                 .GetEvent<AddToList<IDounloadInstrumentPresenter>>()
                 .Publish(It.IsAny<IDounloadInstrumentPresenter>()), Times.Once);
+        }
+
+        [Test]
+        public void WhenAddNewInstrumentWillPublishInAgregatorFilledPresenter()
+        {
+            ContainerBuilder.Container.RegisterType<IDounloadInstrumentPresenter, DounloadInstrumentPresenter>(new InjectionConstructor(typeof(Instrument)));
+            ContainerBuilder.Container.RegisterInstance(new Mock<SecuritiesInfoHolder>().Object);
+            ContainerBuilder.Container.RegisterInstance(new Mock<ISecuritiesInfoUpdater>().Object);
+            ContainerBuilder.Container.RegisterInstance(new Mock<IInstrumentDownloadService>().Object);
+            Mock<IEventAggregator> fakeEventAggregator = new Mock<IEventAggregator>();
+            ContainerBuilder.Container.RegisterInstance(fakeEventAggregator.Object);
+            FinamDownloadNewInstrumentViewModel newInstrumentViewModel = new FinamDownloadNewInstrumentViewModel();
+
+            DateTime currentDate = DateTime.Now;
+            Security security = new Security
+            {
+                Id = "id",
+                Code = "2344",
+                Name = "name",
+                Market = new Market
+                {
+                    Id = "33",
+                    Name = "ff"
+                }
+            };
+
+            newInstrumentViewModel.DateFrom = currentDate;
+            newInstrumentViewModel.DateTo = currentDate;
+            newInstrumentViewModel.SelectedSecurity = security;
+            fakeEventAggregator.Setup(x => x.GetEvent<AddToList<IDounloadInstrumentPresenter>>()
+            .Publish(It.IsAny<IDounloadInstrumentPresenter>()));
+
+            newInstrumentViewModel.AddNewInstrument();
+            fakeEventAggregator.Verify(x => x.GetEvent<AddToList<IDounloadInstrumentPresenter>>()
+            .Publish(It.Is<IDounloadInstrumentPresenter>(
+                m =>
+                "FINAM".Equals(m.Instrument().DataProvider) &&
+                currentDate.Equals(m.Instrument().From) &&
+                currentDate.Equals(m.Instrument().To) &&
+                security.Market.Id.Equals(m.Instrument().MarketId) &&
+                security.Id.Equals(m.Instrument().Id) &&
+                security.Code.Equals(m.Instrument().Code) &&
+                security.Name.Equals(m.Instrument().Name))), Times.Once);
         }
     }
 }
