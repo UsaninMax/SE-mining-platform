@@ -2,7 +2,7 @@
 
 namespace TradePlatform.StockDataDownload.DataServices.Trades
 {
-    internal interface ITradesDownloader
+    public interface ITradesDownloader
     {
         void Download(Instrument instrument);
     }

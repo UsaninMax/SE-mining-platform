@@ -1,20 +1,22 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using TradePlatform.Commons.Trades;
+using TradePlatform.Commons.Sistem;
 
 namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
 {
-    class FinamInstrumentDownloadService : IInstrumentDownloadService
+    public class FinamInstrumentDownloadService : IInstrumentDownloadService
     {
         private readonly IInstrumentSplitter _instrumentSplitter;
+        private readonly IFileManager _fileManager;
 
         public FinamInstrumentDownloadService()
         {
             _instrumentSplitter = ContainerBuilder.Container.Resolve<IInstrumentSplitter>();
+            _fileManager = ContainerBuilder.Container.Resolve<IFileManager>();
         }
         // Finam can return data only synchronously
         public void Download(Instrument instrument, CancellationToken cancellationToken)
@@ -62,31 +64,23 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
 
         public bool CheckFiles(Instrument instrument)
         {
-            return Directory.Exists(instrument.DataProvider + "\\" + instrument.Path) &&
+            return _fileManager.IsDirectoryExist(instrument.DataProvider + "\\" + instrument.Path) &&
                 _instrumentSplitter.Split(instrument).All(FileExist);
         }
 
         private bool FileExist(Instrument instrument)
         {
-            return File.Exists(instrument.DataProvider + "\\" + instrument.Path + "\\" + instrument.FileName + ".txt");
+            return _fileManager.IsFileExist(instrument.DataProvider + "\\" + instrument.Path + "\\" + instrument.FileName + ".txt");
         }
 
-        private static void DeleteFolder(Instrument instrument)
+        private void DeleteFolder(Instrument instrument)
         {
-            string path = instrument.DataProvider + "\\" + instrument.Path;
-            if (Directory.Exists(path))
-            {
-                Directory.Delete(path, true);
-            }
+            _fileManager.DeleteFolder(instrument.DataProvider + "\\" + instrument.Path);
         }
 
-        private static void CreateFolder(Instrument instrument)
+        private void CreateFolder(Instrument instrument)
         {
-            string path = instrument.DataProvider + "\\" + instrument.Path;
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
+            _fileManager.CreateFolder(instrument.DataProvider + "\\" + instrument.Path);
         }
     }
 }
