@@ -105,6 +105,8 @@
     <Compile Include="Commons\Securities\Security.cs" />
     <Compile Include="Commons\Securities\Market.cs" />
     <Compile Include="Commons\Securities\SecuritiesInfoHolder.cs" />
+    <Compile Include="Commons\Sistem\FileManager.cs" />
+    <Compile Include="Commons\Sistem\IFileManager.cs" />
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\SecuritiesInfoStatuses.cs" />
     <Compile Include="Commons\Views\WaitSpinner.xaml.cs">
       <DependentUpon>WaitSpinner.xaml</DependentUpon>

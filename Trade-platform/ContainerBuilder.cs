@@ -3,6 +3,7 @@ using Microsoft.Practices.Unity;
 using Prism.Events;
 using System.Net;
 using TradePlatform.Commons.Securities;
+using TradePlatform.Commons.Sistem;
 using TradePlatform.Commons.Trades;
 using TradePlatform.Main.ViewModels;
 using TradePlatform.Main.Views;
@@ -66,6 +67,9 @@ namespace TradePlatform
             Container.RegisterType<IInstrumentsStorage, XmlInstrumentStorage>();
 
             Container.RegisterType<IDounloadInstrumentPresenter, DounloadInstrumentPresenter>(new InjectionConstructor(typeof(Instrument)));
+
+            Container.RegisterType<IFileManager, FileManager>();
+            
         }
     }
 }

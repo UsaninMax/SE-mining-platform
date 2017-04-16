@@ -8,6 +8,7 @@ using System.Windows;
 using Prism.Events;
 using TradePlatform.Commons.MessageSubscribers;
 using TradePlatform.Commons.Trades;
+using TradePlatform.Commons.Sistem;
 
 namespace TradePlatform.StockDataDownload.Presenters
 {
@@ -203,7 +204,8 @@ namespace TradePlatform.StockDataDownload.Presenters
         {
             try
             {
-                System.Diagnostics.Process.Start(_instrument.DataProvider + "\\" + _instrument.Path);
+                var fileManager = ContainerBuilder.Container.Resolve<IFileManager>();
+                fileManager.OpenFolder(_instrument.DataProvider + "\\" + _instrument.Path);
             }
             catch (Exception ex)
             {
