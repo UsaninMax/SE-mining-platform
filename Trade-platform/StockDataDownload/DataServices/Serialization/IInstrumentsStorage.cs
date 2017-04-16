@@ -4,7 +4,7 @@ using TradePlatform.Commons.Trades;
 
 namespace TradePlatform.StockDataDownload.DataServices.Serialization
 {
-    interface IInstrumentsStorage
+    public interface IInstrumentsStorage
     {
         void Store(IEnumerable<Instrument> instruments);
         IList<Instrument> ReStore();

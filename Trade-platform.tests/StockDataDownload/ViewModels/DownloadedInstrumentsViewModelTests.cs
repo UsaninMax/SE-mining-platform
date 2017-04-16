@@ -2,8 +2,13 @@
 using Moq;
 using NUnit.Framework;
 using Prism.Events;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading;
 using TradePlatform;
 using TradePlatform.Commons.MessageSubscribers;
+using TradePlatform.Commons.Trades;
+using TradePlatform.StockDataDownload.DataServices.Serialization;
 using TradePlatform.StockDataDownload.DataServices.Trades;
 using TradePlatform.StockDataDownload.Presenters;
 using TradePlatform.StockDataDownload.ViewModels;
@@ -19,6 +24,7 @@ namespace Trade_platform.tests.StockDataDownload.ViewModels
             ContainerBuilder
             .Container
             .RegisterType<IEventAggregator, EventAggregator>(new ContainerControlledLifetimeManager());
+            SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
         }
 
 
@@ -123,7 +129,7 @@ namespace Trade_platform.tests.StockDataDownload.ViewModels
         {
             var viewModel = new DownloadedInstrumentsViewModel();
             var presenterMock = new Mock<IDounloadInstrumentPresenter>();
-         
+
             viewModel.RemoveCommand.Execute(presenterMock.Object);
             presenterMock.Verify(x => x.DeleteData(), Times.Once);
         }
@@ -211,33 +217,44 @@ namespace Trade_platform.tests.StockDataDownload.ViewModels
         }
 
         [Test]
-        public void CheckLoadWindowHistoryCommand()
+        public void CheckLoadWindowHistory()
         {
+            var serializer = new Mock<IInstrumentsStorage>();
+            Instrument instr = new Instrument.Builder().WithId("12").Build();
+            IList<Instrument> instruments = new List<Instrument> { instr, instr };
+            serializer.Setup(x => x.ReStore()).Returns(instruments);
 
+            var presenterMock = new Mock<IDounloadInstrumentPresenter>();
+            ContainerBuilder.Container.RegisterInstance(presenterMock.Object);
+            ContainerBuilder.Container.RegisterInstance(serializer.Object);
 
+            var viewModel = new DownloadedInstrumentsViewModel();
+            viewModel.LoadedWindowCommand.Execute(null);
+            Thread.Sleep(500);
+
+            presenterMock.Verify(x => x.CheckData(), Times.Exactly(2));
+            Assert.That(viewModel.InstrumentsInfo.Count, Is.EqualTo(2));
         }
 
         [Test]
-        public void WhenLoadWindowHistoryWillStartHistoryChecker()
+        public void CheckSaveWindowHistory()
         {
+            var serializer = new Mock<IInstrumentsStorage>();
+            serializer.Setup(x => x.Store(It.IsAny<IEnumerable<Instrument>>()));
 
+            var presenterMock = new Mock<IDounloadInstrumentPresenter>();
+            ContainerBuilder.Container.RegisterInstance(serializer.Object);
 
+            var viewModel = new DownloadedInstrumentsViewModel();
+            viewModel.InstrumentsInfo = new ObservableCollection<IDounloadInstrumentPresenter>(
+                new List<IDounloadInstrumentPresenter> {
+                    presenterMock.Object,
+                    presenterMock.Object
+                });
+            viewModel.ClosingWindowCommand.Execute(null);
+            Thread.Sleep(500);
+
+            presenterMock.Verify(x => x.StopDownload(), Times.Exactly(2));
         }
-
-        [Test]
-        public void CheckSaveWindowHistoryCommand()
-        {
-
-
-        }
-
-        [Test]
-        public void WhenSaveWindowHistoryWillStartStopDownloadingProcess()
-        {
-
-
-        }
-
-
     }
 }
