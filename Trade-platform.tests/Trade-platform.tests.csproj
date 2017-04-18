@@ -97,6 +97,7 @@
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoParserTest.cs" />
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoUpdaterTests.cs" />
     <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamInstrumentDownloadServiceTests.cs" />
+    <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamInstrumentSplitterTests.cs" />
     <Compile Include="StockDataDownload\Presenters\DounloadInstrumentPresenterTests.cs" />
     <Compile Include="StockDataDownload\ViewModels\DownloadedInstrumentsViewModelTests.cs" />
     <Compile Include="StockDataDownload\ViewModels\FinamDownloadNewInstrumentViewModelTests.cs" />

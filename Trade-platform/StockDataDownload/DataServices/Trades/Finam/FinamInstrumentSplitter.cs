@@ -4,7 +4,7 @@ using TradePlatform.Commons.Trades;
 
 namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
 {
-    class FinamInstrumentSplitter : IInstrumentSplitter
+    public class FinamInstrumentSplitter : IInstrumentSplitter
     {
         public IEnumerable<Instrument> Split(Instrument instrument)
         {
