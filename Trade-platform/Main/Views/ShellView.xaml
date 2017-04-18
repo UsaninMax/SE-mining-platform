@@ -5,16 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TradePlatform"
         mc:Ignorable="d"
-        Title="Trade platform" Height="350" Width="632.348">
+        Title="Trade platform"  SizeToContent="WidthAndHeight">
 
-    <DockPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
         <Menu DockPanel.Dock="Top" Height="25">
             <MenuItem Header="Data source">
                 <MenuItem Command="{Binding LoadInstrumentCommand}" Header="Downloaded data"/>
             </MenuItem>
         </Menu>
-        <Grid>
-        </Grid>
-    </DockPanel>
+    </Grid>
 </Window>
 
