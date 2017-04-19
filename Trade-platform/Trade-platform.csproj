@@ -101,6 +101,7 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Commons\Info\InfoItem.cs" />
+    <Compile Include="Commons\Info\InfoTab.cs" />
     <Compile Include="Commons\Info\ViewModels\IInfoViewModel.cs" />
     <Compile Include="Commons\Info\ViewModels\InfoViewModel.cs" />
     <Compile Include="Commons\Info\Views\InfoView.xaml.cs">

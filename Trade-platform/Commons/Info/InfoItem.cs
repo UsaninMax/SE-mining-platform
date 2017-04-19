@@ -1,8 +1,12 @@
-﻿namespace TradePlatform.Commons.Info
+﻿using System;
+using Prism.Mvvm;
+
+namespace TradePlatform.Commons.Info
 {
-    public class InfoItem
+    public class InfoItem : BindableBase
     {
-        public string Header { get; set; }
-        public string Content { get; set; }
+        public DateTime Date { get; set; }
+        public string Message { get; set; }
+
     }
 }

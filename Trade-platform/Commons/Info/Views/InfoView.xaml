@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       Title="Info:" Height="300" Width="{x:Static SystemParameters.PrimaryScreenWidth}">
 
-    <TabControl
+    <TabControl SelectedIndex="0"
         ItemsSource="{Binding Tabs}">
         <TabControl.ItemTemplate>
             <DataTemplate>
@@ -17,8 +17,12 @@
         </TabControl.ItemTemplate>
         <TabControl.ContentTemplate>
             <DataTemplate>
-                <TextBlock
-                    Text="{Binding Content}" />
+                <DataGrid IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding Messages}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn  Header="Date" Binding="{Binding Date}" />
+                        <DataGridTextColumn  Width="*" Header="Message" Binding="{Binding Message}" />
+                    </DataGrid.Columns>
+                </DataGrid>
             </DataTemplate>
         </TabControl.ContentTemplate>
     </TabControl>
