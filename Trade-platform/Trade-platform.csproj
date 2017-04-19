@@ -100,20 +100,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Commons\Info\InfoItem.cs" />
-    <Compile Include="Commons\Info\InfoTab.cs" />
+    <Compile Include="Commons\Info\Exception\ExceptionHandler.cs" />
+    <Compile Include="Commons\Info\Model\IInfoTab.cs" />
+    <Compile Include="Commons\Info\Model\InfoItem.cs" />
+    <Compile Include="Commons\Info\Model\InfoTab.cs" />
+    <Compile Include="Commons\Info\Model\InfoTypes.cs" />
     <Compile Include="Commons\Info\ViewModels\IInfoViewModel.cs" />
     <Compile Include="Commons\Info\ViewModels\InfoViewModel.cs" />
     <Compile Include="Commons\Info\Views\InfoView.xaml.cs">
       <DependentUpon>InfoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Commons\MessageSubscribers\AddToList.cs" />
-    <Compile Include="Commons\MessageSubscribers\RemoveFromList.cs" />
+    <Compile Include="Commons\MessageEvents\PuplishInfo.cs" />
+    <Compile Include="Commons\MessageEvents\AddToList.cs" />
+    <Compile Include="Commons\MessageEvents\RemoveFromList.cs" />
     <Compile Include="Commons\Securities\Security.cs" />
     <Compile Include="Commons\Securities\Market.cs" />
     <Compile Include="Commons\Securities\SecuritiesInfoHolder.cs" />
     <Compile Include="Commons\Sistem\FileManager.cs" />
     <Compile Include="Commons\Sistem\IFileManager.cs" />
+    <Compile Include="Commons\Utils\FixedSizeObservableCollection.cs" />
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\SecuritiesInfoStatuses.cs" />
     <Compile Include="Commons\Views\WaitSpinner.xaml.cs">
       <DependentUpon>WaitSpinner.xaml</DependentUpon>

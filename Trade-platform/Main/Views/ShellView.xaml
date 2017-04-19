@@ -16,6 +16,9 @@
             <MenuItem Header="Data source">
                 <MenuItem Command="{Binding LoadInstrumentCommand}" Header="Downloaded data"/>
             </MenuItem>
+            <MenuItem Header="Info">
+                <MenuItem Command="{Binding ShowInfoCommand}" Header="Show info panel"/>
+            </MenuItem>
         </Menu>
     </Grid>
 </Window>

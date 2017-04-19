@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Threading;
+using Microsoft.Practices.Unity;
+using Prism.Events;
 using Prism.Mvvm;
+using TradePlatform.Commons.MessageEvents;
 
 namespace TradePlatform.Commons.Info.ViewModels
 {
     public class InfoViewModel : BindableBase, IInfoViewModel
     {
-        private ObservableCollection<InfoTab> _tabs = new ObservableCollection<InfoTab>();
-        public ObservableCollection<InfoTab> Tabs
+        private readonly Dispatcher _dispatcher;
+        private ObservableCollection<IInfoTab> _tabs = new ObservableCollection<IInfoTab>();
+        public ObservableCollection<IInfoTab> Tabs
         {
             get
             {
@@ -22,26 +28,30 @@ namespace TradePlatform.Commons.Info.ViewModels
 
         public InfoViewModel()
         {
-            Tabs.Add(new InfoTab {
+            _dispatcher = Dispatcher.CurrentDispatcher;
+            IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
+            eventAggregator.GetEvent<PuplishInfo<InfoItem>>().Subscribe(PublishInfo, false);
+        }
 
-                Header = "One",
-                Messages = new ObservableCollection<InfoItem>()
+        private void PublishInfo(object param)
+        {
+            var item = param as InfoItem;
+            if (item == null)
             {
-                new InfoItem() {Date = DateTime.Today, Message = "24werwerwrwer"},
-                new InfoItem() {Date = DateTime.Today, Message = "ferfaff"},
-                new InfoItem() {Date = DateTime.Today, Message = "rttryhrtyrty"}
+                return;
             }
-            });
-            Tabs.Add(new InfoTab
+
+            _dispatcher.BeginInvoke((Action)(() =>
             {
-                Header = "Two",
-                Messages = new ObservableCollection<InfoItem>()
+                var tab = Tabs.FirstOrDefault(x => x.TabID().Equals(item.TabId));
+                if (tab == null)
                 {
-                    new InfoItem() {Date = DateTime.Today, Message = "retertert"},
-                    new InfoItem() {Date = DateTime.Today, Message = "345345345345"},
-                    new InfoItem() {Date = DateTime.Today, Message = "hfghfghfhfh"}
+                    tab = new InfoTab(item.TabId);
+                    Tabs.Add(tab);
                 }
-            });
+
+                tab.Add(item);
+            }));
         }
     }
 }

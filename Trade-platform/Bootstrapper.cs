@@ -22,7 +22,6 @@ namespace TradePlatform
         {
             Application.Current.MainWindow = (Window)Shell;
             Application.Current.MainWindow.Show();
-            ContainerBuilder.Container.Resolve<InfoView>().Show();
         }
     }
 }

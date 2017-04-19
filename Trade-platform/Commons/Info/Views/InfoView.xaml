@@ -5,14 +5,14 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TradePlatform.Commons.Info.Views"
       mc:Ignorable="d" 
-      Title="Info:" Height="300" Width="{x:Static SystemParameters.PrimaryScreenWidth}">
+      Title="Info:" Height="300" Width="1000">
 
     <TabControl SelectedIndex="0"
         ItemsSource="{Binding Tabs}">
         <TabControl.ItemTemplate>
             <DataTemplate>
                 <TextBlock
-                    Text="{Binding Header}" />
+                    Text="{Binding Id}" />
             </DataTemplate>
         </TabControl.ItemTemplate>
         <TabControl.ContentTemplate>

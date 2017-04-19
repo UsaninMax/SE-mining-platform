@@ -6,7 +6,7 @@ using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using TradePlatform.Commons.MessageSubscribers;
+using TradePlatform.Commons.MessageEvents;
 using TradePlatform.Commons.Securities;
 using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo;

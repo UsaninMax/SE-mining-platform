@@ -1,8 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
+using Prism.Events;
+using TradePlatform.Commons.Info;
+using TradePlatform.Commons.Info.Model;
+using TradePlatform.Commons.MessageEvents;
 using TradePlatform.Commons.Trades;
 using TradePlatform.Commons.Sistem;
 
@@ -33,6 +38,11 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
 
                 var downloader = ContainerBuilder.Container.Resolve<ITradesDownloader>();
                 downloader.Download(i);
+                IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
+                eventAggregator.GetEvent<PuplishInfo<InfoItem>>().Publish(new InfoItem(InfoTypes.FinamDownload.ToString())
+                {
+                    Message = i + " was downloaded"
+                });
             });
         }
 

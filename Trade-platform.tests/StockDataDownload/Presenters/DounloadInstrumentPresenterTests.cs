@@ -6,7 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using TradePlatform;
-using TradePlatform.Commons.MessageSubscribers;
+using TradePlatform.Commons.MessageEvents;
 using TradePlatform.Commons.Sistem;
 using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.Trades;

@@ -6,13 +6,13 @@ using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo;
 using Moq;
 using Prism.Events;
 using TradePlatform;
-using TradePlatform.Commons.MessageSubscribers;
 using TradePlatform.Commons.Securities;
 using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.Trades;
 using TradePlatform.StockDataDownload.Presenters;
 using TradePlatform.StockDataDownload.ViewModels;
 using NUnit.Framework;
+using TradePlatform.Commons.MessageEvents;
 
 namespace Trade_platform.tests.StockDataDownload.ViewModels
 {
