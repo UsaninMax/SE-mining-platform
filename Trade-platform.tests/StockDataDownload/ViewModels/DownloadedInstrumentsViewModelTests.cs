@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using TradePlatform;
-using TradePlatform.Commons.MessageEvents;
 using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.Serialization;
 using TradePlatform.StockDataDownload.DataServices.Trades;
+using TradePlatform.StockDataDownload.MessageEvents;
 using TradePlatform.StockDataDownload.Presenters;
 using TradePlatform.StockDataDownload.ViewModels;
 

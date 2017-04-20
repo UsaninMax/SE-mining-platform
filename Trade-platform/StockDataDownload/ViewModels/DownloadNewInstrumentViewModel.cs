@@ -6,11 +6,13 @@ using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using TradePlatform.Commons.MessageEvents;
 using TradePlatform.Commons.Securities;
 using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo;
 using TradePlatform.StockDataDownload.Presenters;
+using TradePlatform.Commons.Info.MessageEvents;
+using TradePlatform.Commons.Info.Model.Message;
+using TradePlatform.StockDataDownload.MessageEvents;
 
 namespace TradePlatform.StockDataDownload.ViewModels
 {
@@ -144,11 +146,13 @@ namespace TradePlatform.StockDataDownload.ViewModels
 
         private readonly ISecuritiesInfoUpdater _suritiesInfoUpdater;
         private readonly SecuritiesInfoHolder _securitiesInfo;
+        private readonly IEventAggregator _eventAggregator;
 
         public FinamDownloadNewInstrumentViewModel()
         {
             _securitiesInfo = ContainerBuilder.Container.Resolve<SecuritiesInfoHolder>();
             _suritiesInfoUpdater = ContainerBuilder.Container.Resolve<ISecuritiesInfoUpdater>();
+            _eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             AddNewCommand = new DelegateCommand(AddNewInstrument);
         }
 
@@ -187,7 +191,10 @@ namespace TradePlatform.StockDataDownload.ViewModels
                     {
                         ex = ex.InnerException;
                     }
-                    //MessageBox.Show("Error: " + ex.Message);
+
+                    if (ex != null)
+                        _eventAggregator.GetEvent<PuplishExceptionInfo<ExceptionInfo>>()
+                            .Publish(new ExceptionInfo() {Message = ex.ToString()});
                 }
                 else
                 {

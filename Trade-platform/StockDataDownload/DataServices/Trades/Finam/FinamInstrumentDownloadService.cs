@@ -1,15 +1,14 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using TradePlatform.Commons.Info;
-using TradePlatform.Commons.Info.Model;
-using TradePlatform.Commons.MessageEvents;
+using TradePlatform.Commons.Info.MessageEvents;
 using TradePlatform.Commons.Trades;
 using TradePlatform.Commons.Sistem;
+using TradePlatform.Commons.Info.Model.Message;
 
 namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
 {
@@ -17,11 +16,13 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
     {
         private readonly IInstrumentSplitter _instrumentSplitter;
         private readonly IFileManager _fileManager;
+        private readonly IEventAggregator _eventAggregator;
 
         public FinamInstrumentDownloadService()
         {
             _instrumentSplitter = ContainerBuilder.Container.Resolve<IInstrumentSplitter>();
             _fileManager = ContainerBuilder.Container.Resolve<IFileManager>();
+            _eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
         }
         // Finam can return data only synchronously
         public void Download(Instrument instrument, CancellationToken cancellationToken)
@@ -38,8 +39,8 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
 
                 var downloader = ContainerBuilder.Container.Resolve<ITradesDownloader>();
                 downloader.Download(i);
-                IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
-                eventAggregator.GetEvent<PuplishInfo<InfoItem>>().Publish(new InfoItem(InfoTypes.FinamDownload.ToString())
+
+                _eventAggregator.GetEvent<PuplishInfo<InfoItem>>().Publish(new DownloadInfo()
                 {
                     Message = i + " was downloaded"
                 });

@@ -1,19 +1,18 @@
 ﻿using System.Collections.ObjectModel;
 using Prism.Mvvm;
+using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.Commons.Utils;
 
-namespace TradePlatform.Commons.Info
+namespace TradePlatform.Commons.Info.Model
 {
     public class InfoTab : BindableBase, IInfoTab
     {
         public string Id { get; private set; }
         private ObservableCollection<InfoItem> _messages = new FixedSizeObservableCollection<InfoItem>(1000);
+
         public ObservableCollection<InfoItem> Messages
         {
-            get
-            {
-                return _messages;
-            }
+            get => _messages;
             set
             {
                 _messages = value;
@@ -21,13 +20,13 @@ namespace TradePlatform.Commons.Info
             }
         }
 
-        public InfoTab(string Id)
+        public InfoTab(string id)
         {
-            this.Id = Id;
+            this.Id = id;
         }
 
 
-        public string TabID()
+        public string TabId()
         {
             return Id;
         }

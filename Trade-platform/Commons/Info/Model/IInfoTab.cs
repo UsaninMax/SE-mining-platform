@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using TradePlatform.Commons.Info.Model.Message;
 
-namespace TradePlatform.Commons.Info
+namespace TradePlatform.Commons.Info.Model
 {
     public interface IInfoTab
     {
-        string TabID();
+        string TabId();
         void Add(InfoItem item);
-        int MessageCount();
     }
 }

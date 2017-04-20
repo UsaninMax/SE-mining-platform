@@ -2,8 +2,10 @@
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using System.Net;
+using TradePlatform.Commons.Info.Exception;
 using TradePlatform.Commons.Info.ViewModels;
 using TradePlatform.Commons.Securities;
+using TradePlatform.Commons.Setting;
 using TradePlatform.Commons.Sistem;
 using TradePlatform.Commons.Trades;
 using TradePlatform.Main.ViewModels;
@@ -72,6 +74,11 @@ namespace TradePlatform
             Container.RegisterType<IFileManager, FileManager>();
 
             Container.RegisterType<IInfoViewModel, InfoViewModel>();
+
+            Container.RegisterInstance(new ExceptionActualizer());
+
+            Container.RegisterType<ISettingSerializer, XMLSettingSerializer>();
+
         }
     }
 }

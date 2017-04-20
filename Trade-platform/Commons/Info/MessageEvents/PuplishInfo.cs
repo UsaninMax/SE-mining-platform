@@ -1,7 +1,7 @@
 ﻿
 using Prism.Events;
 
-namespace TradePlatform.Commons.MessageEvents
+namespace TradePlatform.Commons.Info.MessageEvents
 {
     public class PuplishInfo<InfoItem> : PubSubEvent<InfoItem>
     {

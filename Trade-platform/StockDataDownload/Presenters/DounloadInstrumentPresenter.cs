@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using TradePlatform.StockDataDownload.DataServices.Trades;
 using System.Windows;
 using Prism.Events;
-using TradePlatform.Commons.MessageEvents;
 using TradePlatform.Commons.Trades;
 using TradePlatform.Commons.Sistem;
+using TradePlatform.StockDataDownload.MessageEvents;
 
 namespace TradePlatform.StockDataDownload.Presenters
 {

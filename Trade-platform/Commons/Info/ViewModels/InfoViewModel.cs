@@ -5,7 +5,9 @@ using System.Windows.Threading;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;
-using TradePlatform.Commons.MessageEvents;
+using TradePlatform.Commons.Info.MessageEvents;
+using TradePlatform.Commons.Info.Model;
+using TradePlatform.Commons.Info.Model.Message;
 
 namespace TradePlatform.Commons.Info.ViewModels
 {
@@ -13,12 +15,10 @@ namespace TradePlatform.Commons.Info.ViewModels
     {
         private readonly Dispatcher _dispatcher;
         private ObservableCollection<IInfoTab> _tabs = new ObservableCollection<IInfoTab>();
+
         public ObservableCollection<IInfoTab> Tabs
         {
-            get
-            {
-                return _tabs;
-            }
+            get => _tabs;
             set
             {
                 _tabs = value;
@@ -43,7 +43,7 @@ namespace TradePlatform.Commons.Info.ViewModels
 
             _dispatcher.BeginInvoke((Action)(() =>
             {
-                var tab = Tabs.FirstOrDefault(x => x.TabID().Equals(item.TabId));
+                var tab = Tabs.FirstOrDefault(x => x.TabId().Equals(item.TabId));
                 if (tab == null)
                 {
                     tab = new InfoTab(item.TabId);
