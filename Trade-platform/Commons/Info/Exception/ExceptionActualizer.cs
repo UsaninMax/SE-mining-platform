@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using TradePlatform.Commons.Info.Views;
 using System;
+using TradePlatform.Commons.Info.Events;
 using TradePlatform.Commons.Info.MessageEvents;
 
 namespace TradePlatform.Commons.Info.Exception

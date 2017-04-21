@@ -1,7 +1,7 @@
 ﻿
 using Prism.Events;
 
-namespace TradePlatform.Commons.Info.MessageEvents
+namespace TradePlatform.Commons.Info.Events
 {
     public class PuplishExceptionInfo<ExceptionInfo> : PubSubEvent<ExceptionInfo>
     {

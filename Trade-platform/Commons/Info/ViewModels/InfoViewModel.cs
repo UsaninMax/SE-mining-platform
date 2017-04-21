@@ -5,6 +5,7 @@ using System.Windows.Threading;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;
+using TradePlatform.Commons.Info.Events;
 using TradePlatform.Commons.Info.MessageEvents;
 using TradePlatform.Commons.Info.Model;
 using TradePlatform.Commons.Info.Model.Message;
@@ -18,7 +19,7 @@ namespace TradePlatform.Commons.Info.ViewModels
 
         public ObservableCollection<IInfoTab> Tabs
         {
-            get => _tabs;
+            get { return _tabs; }
             set
             {
                 _tabs = value;
@@ -31,6 +32,12 @@ namespace TradePlatform.Commons.Info.ViewModels
             _dispatcher = Dispatcher.CurrentDispatcher;
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<PuplishInfo<InfoItem>>().Subscribe(PublishInfo, false);
+            eventAggregator.GetEvent<CloseTabEvent<InfoTab>>().Subscribe(DeleteInfoTab, false);
+        }
+
+        private void DeleteInfoTab(IInfoTab infoTab)
+        {
+            Tabs.Remove(infoTab);
         }
 
         private void PublishInfo(object param)

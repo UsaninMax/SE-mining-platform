@@ -10,7 +10,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.Serialization;
-using TradePlatform.StockDataDownload.MessageEvents;
+using TradePlatform.StockDataDownload.Events;
 using TradePlatform.StockDataDownload.Presenters;
 
 namespace TradePlatform.StockDataDownload.ViewModels

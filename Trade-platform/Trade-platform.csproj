@@ -101,7 +101,8 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Commons\Info\Exception\ExceptionActualizer.cs" />
-    <Compile Include="Commons\Info\MessageEvents\PuplishExceptionInfo.cs" />
+    <Compile Include="Commons\Info\Events\CloseTabEvent.cs" />
+    <Compile Include="Commons\Info\Events\PuplishExceptionInfo.cs" />
     <Compile Include="Commons\Info\Model\IInfoTab.cs" />
     <Compile Include="Commons\Info\Model\Message\DownloadInfo.cs" />
     <Compile Include="Commons\Info\Model\Message\ExceptionInfo.cs" />
@@ -112,9 +113,9 @@
     <Compile Include="Commons\Info\Views\InfoView.xaml.cs">
       <DependentUpon>InfoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Commons\Info\MessageEvents\PuplishInfo.cs" />
-    <Compile Include="StockDataDownload\MessageEvents\AddItemToList.cs" />
-    <Compile Include="StockDataDownload\MessageEvents\RemoveItemFromList.cs" />
+    <Compile Include="Commons\Info\Events\PuplishInfo.cs" />
+    <Compile Include="StockDataDownload\Events\AddItemToList.cs" />
+    <Compile Include="StockDataDownload\Events\RemoveItemFromList.cs" />
     <Compile Include="Commons\Securities\Security.cs" />
     <Compile Include="Commons\Securities\Market.cs" />
     <Compile Include="Commons\Securities\SecuritiesInfoHolder.cs" />

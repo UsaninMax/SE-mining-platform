@@ -6,13 +6,14 @@ using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using TradePlatform.Commons.Info.Events;
 using TradePlatform.Commons.Securities;
 using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo;
 using TradePlatform.StockDataDownload.Presenters;
 using TradePlatform.Commons.Info.MessageEvents;
 using TradePlatform.Commons.Info.Model.Message;
-using TradePlatform.StockDataDownload.MessageEvents;
+using TradePlatform.StockDataDownload.Events;
 
 namespace TradePlatform.StockDataDownload.ViewModels
 {

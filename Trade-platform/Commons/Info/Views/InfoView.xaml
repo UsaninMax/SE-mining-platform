@@ -11,8 +11,14 @@
         ItemsSource="{Binding Tabs}">
         <TabControl.ItemTemplate>
             <DataTemplate>
-                <TextBlock
-                    Text="{Binding Id}" />
+                <TextBlock Text="{Binding Id}">
+                    <TextBlock.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Close"
+                              Command="{Binding CloseTabCommand}" />
+                        </ContextMenu>
+                    </TextBlock.ContextMenu>
+                </TextBlock>
             </DataTemplate>
         </TabControl.ItemTemplate>
         <TabControl.ContentTemplate>

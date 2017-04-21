@@ -8,7 +8,7 @@ using System.Windows;
 using Prism.Events;
 using TradePlatform.Commons.Trades;
 using TradePlatform.Commons.Sistem;
-using TradePlatform.StockDataDownload.MessageEvents;
+using TradePlatform.StockDataDownload.Events;
 
 namespace TradePlatform.StockDataDownload.Presenters
 {

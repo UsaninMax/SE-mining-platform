@@ -9,7 +9,7 @@ using TradePlatform;
 using TradePlatform.Commons.Sistem;
 using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.Trades;
-using TradePlatform.StockDataDownload.MessageEvents;
+using TradePlatform.StockDataDownload.Events;
 using TradePlatform.StockDataDownload.Presenters;
 
 namespace Trade_platform.tests.StockDataDownload.Presenters

@@ -12,7 +12,7 @@ using TradePlatform.StockDataDownload.DataServices.Trades;
 using TradePlatform.StockDataDownload.Presenters;
 using TradePlatform.StockDataDownload.ViewModels;
 using NUnit.Framework;
-using TradePlatform.StockDataDownload.MessageEvents;
+using TradePlatform.StockDataDownload.Events;
 
 namespace Trade_platform.tests.StockDataDownload.ViewModels
 {
