@@ -103,6 +103,8 @@
     <Compile Include="Commons\Info\Exception\ExceptionActualizer.cs" />
     <Compile Include="Commons\Info\Events\CloseTabEvent.cs" />
     <Compile Include="Commons\Info\Events\PuplishExceptionInfo.cs" />
+    <Compile Include="Commons\Info\IInfoPublisher.cs" />
+    <Compile Include="Commons\Info\InfoPublisher.cs" />
     <Compile Include="Commons\Info\Model\IInfoTab.cs" />
     <Compile Include="Commons\Info\Model\Message\DownloadInfo.cs" />
     <Compile Include="Commons\Info\Model\Message\ExceptionInfo.cs" />

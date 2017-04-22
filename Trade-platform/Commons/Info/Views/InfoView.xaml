@@ -26,7 +26,13 @@
                 <DataGrid IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding Messages}">
                     <DataGrid.Columns>
                         <DataGridTextColumn  Header="Date" Binding="{Binding Date}" />
-                        <DataGridTextColumn  Width="*" Header="Message" Binding="{Binding Message}" />
+                        <DataGridTextColumn  Width="*" Header="Message" Binding="{Binding Message}" >
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </DataTemplate>

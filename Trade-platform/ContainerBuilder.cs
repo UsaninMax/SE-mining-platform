@@ -2,6 +2,7 @@
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using System.Net;
+using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Info.Exception;
 using TradePlatform.Commons.Info.ViewModels;
 using TradePlatform.Commons.Securities;
@@ -79,6 +80,7 @@ namespace TradePlatform
 
             Container.RegisterType<ISettingSerializer, XMLSettingSerializer>();
 
+            Container.RegisterType<IInfoPublisher, InfoPublisher>();
         }
     }
 }

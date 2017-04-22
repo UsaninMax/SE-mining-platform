@@ -4,8 +4,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using TradePlatform.StockDataDownload.DataServices.Trades;
-using System.Windows;
 using Prism.Events;
+using TradePlatform.Commons.Info;
+using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.Commons.Trades;
 using TradePlatform.Commons.Sistem;
 using TradePlatform.StockDataDownload.Events;
@@ -17,6 +18,7 @@ namespace TradePlatform.StockDataDownload.Presenters
         private readonly Instrument _instrument;
         private readonly IInstrumentDownloadService _downloadService;
         private CancellationTokenSource _cancellationTokenSource;
+        private readonly IInfoPublisher _infoPublisher;
 
         private Task _download;
 
@@ -24,6 +26,7 @@ namespace TradePlatform.StockDataDownload.Presenters
         {
             _instrument = instrument;
             _downloadService = ContainerBuilder.Container.Resolve<IInstrumentDownloadService>();
+            _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
         }
 
         public string Name => _instrument.Name;
@@ -62,14 +65,11 @@ namespace TradePlatform.StockDataDownload.Presenters
                 if (t.IsFaulted)
                 {
                     StatusMessage = TradesStatuses.FailToDownloud;
-
-                    //TODO
                     Exception ex = t.Exception;
                     while (ex is AggregateException && ex.InnerException != null)
                     {
-                        ex = ex.InnerException;
+                        _infoPublisher.PublishException(ex.InnerException.ToString());
                     }
-                    MessageBox.Show("Error: " + ex.Message);
                 }
                 else
                 {
@@ -95,14 +95,11 @@ namespace TradePlatform.StockDataDownload.Presenters
                 if (t.IsFaulted)
                 {
                     StatusMessage = TradesStatuses.FailToDownloud;
-
-                    //TODO
                     Exception ex = t.Exception;
                     while (ex is AggregateException && ex.InnerException != null)
                     {
-                        ex = ex.InnerException;
+                        _infoPublisher.PublishException(ex.InnerException.ToString());
                     }
-                    MessageBox.Show("Error: " + ex.Message);
                 }
                 else
                 {
@@ -123,13 +120,11 @@ namespace TradePlatform.StockDataDownload.Presenters
                 if (t.IsFaulted)
                 {
                     StatusMessage = TradesStatuses.FailToDelete;
-                    //TODO
                     Exception ex = t.Exception;
                     while (ex is AggregateException && ex.InnerException != null)
                     {
-                        ex = ex.InnerException;
+                        _infoPublisher.PublishException(ex.InnerException.ToString());
                     }
-                    MessageBox.Show("Error: " + ex.Message);
                 }
                 else
                 {
@@ -143,8 +138,13 @@ namespace TradePlatform.StockDataDownload.Presenters
 
         private bool IsActiveDowloadTask()
         {
-            return _download != null
-                   && !_download.IsCompleted;
+            bool isActive = _download != null
+                            && !_download.IsCompleted;
+            if (isActive)
+            {
+                _infoPublisher.PublishInfo(new DownloadInfo {Message = this + "- currently in active download process"});
+            }
+            return isActive;
         }
 
         public void HardReloadData()
@@ -166,14 +166,11 @@ namespace TradePlatform.StockDataDownload.Presenters
                 if (t.IsFaulted)
                 {
                     StatusMessage = TradesStatuses.FailToCheck;
-
-                    //TODO
                     Exception ex = t.Exception;
                     while (ex is AggregateException && ex.InnerException != null)
                     {
-                        ex = ex.InnerException;
+                        _infoPublisher.PublishException(ex.InnerException.ToString());
                     }
-                    MessageBox.Show("Error: " + ex.Message);
                 }
                 else
                 {
@@ -209,13 +206,22 @@ namespace TradePlatform.StockDataDownload.Presenters
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                _infoPublisher.PublishException(ex.ToString());
             }
         }
 
         public Instrument Instrument()
         {
             return _instrument;
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(_instrument)}: {_instrument}," +
+                   $" {nameof(Name)}: {Name}," +
+                   $" {nameof(From)}: {From}," +
+                   $" {nameof(To)}: {To}," +
+                   $" {nameof(StatusMessage)}: {StatusMessage}";
         }
     }
 }

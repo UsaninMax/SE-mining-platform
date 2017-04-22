@@ -27,6 +27,19 @@ namespace TradePlatform.Commons.Trades
         [DataMember()]
         public DateTime To { get; private set; }
 
+        public override string ToString()
+        {
+            return $"{nameof(Name)}: {Name}," +
+                   $" {nameof(Code)}: {Code}," +
+                   $" {nameof(Id)}: {Id}," +
+                   $" {nameof(MarketId)}: {MarketId}," +
+                   $" {nameof(DataProvider)}: {DataProvider}," +
+                   $" {nameof(Path)}: {Path}," +
+                   $" {nameof(FileName)}: {FileName}," +
+                   $" {nameof(From)}: {From}," +
+                   $" {nameof(To)}: {To}";
+        }
+
         public class Builder
         {
             private string _name;
