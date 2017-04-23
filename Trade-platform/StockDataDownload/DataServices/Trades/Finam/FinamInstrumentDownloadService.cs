@@ -3,8 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
+using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Trades;
 using TradePlatform.Commons.Sistem;
+using TradePlatform.Commons.Info.Model.Message;
 
 namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
 {
@@ -12,11 +14,13 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
     {
         private readonly IInstrumentSplitter _instrumentSplitter;
         private readonly IFileManager _fileManager;
+        private readonly IInfoPublisher _infoPublisher;
 
         public FinamInstrumentDownloadService()
         {
             _instrumentSplitter = ContainerBuilder.Container.Resolve<IInstrumentSplitter>();
             _fileManager = ContainerBuilder.Container.Resolve<IFileManager>();
+            _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
         }
         // Finam can return data only synchronously
         public void Download(Instrument instrument, CancellationToken cancellationToken)
@@ -30,9 +34,9 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
                 {
                     return;
                 }
-
                 var downloader = ContainerBuilder.Container.Resolve<ITradesDownloader>();
                 downloader.Download(i);
+                _infoPublisher.PublishInfo(new DownloadInfo { Message = i + "- was downloaded" });
             });
         }
 
@@ -46,9 +50,9 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
                 {
                     return;
                 }
-
                 var downloader = ContainerBuilder.Container.Resolve<ITradesDownloader>();
                 downloader.Download(i);
+                _infoPublisher.PublishInfo(new DownloadInfo { Message = i + "- was soft downloaded" });
             });
         }
 
@@ -56,10 +60,12 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
         {
             if (download != null && !download.IsCompleted)
             {
+                _infoPublisher.PublishInfo(new DownloadInfo { Message = instrument + "- cancellation will wait till download task will finish" });
                 cancellationTokenSource.Cancel();
                 download.Wait();
             }
             DeleteFolder(instrument);
+            _infoPublisher.PublishInfo(new DownloadInfo { Message = instrument + "- is deleted" });
         }
 
         public bool CheckFiles(Instrument instrument)

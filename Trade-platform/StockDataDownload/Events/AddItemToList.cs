@@ -1,6 +1,6 @@
 ﻿using Prism.Events;
 
-namespace TradePlatform.Commons.MessageSubscribers
+namespace TradePlatform.StockDataDownload.Events
 {
     public class AddToList<TDounloadInstrumentPresenter> : PubSubEvent<TDounloadInstrumentPresenter>
     {

@@ -100,13 +100,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Commons\MessageSubscribers\AddToList.cs" />
-    <Compile Include="Commons\MessageSubscribers\RemoveFromList.cs" />
+    <Compile Include="Commons\Info\Exception\ExceptionActualizer.cs" />
+    <Compile Include="Commons\Info\Events\CloseTabEvent.cs" />
+    <Compile Include="Commons\Info\Events\PuplishExceptionInfo.cs" />
+    <Compile Include="Commons\Info\IInfoPublisher.cs" />
+    <Compile Include="Commons\Info\InfoPublisher.cs" />
+    <Compile Include="Commons\Info\Model\IInfoTab.cs" />
+    <Compile Include="Commons\Info\Model\Message\DownloadInfo.cs" />
+    <Compile Include="Commons\Info\Model\Message\ExceptionInfo.cs" />
+    <Compile Include="Commons\Info\Model\Message\InfoItem.cs" />
+    <Compile Include="Commons\Info\Model\InfoTab.cs" />
+    <Compile Include="Commons\Info\ViewModels\IInfoViewModel.cs" />
+    <Compile Include="Commons\Info\ViewModels\InfoViewModel.cs" />
+    <Compile Include="Commons\Info\Views\InfoView.xaml.cs">
+      <DependentUpon>InfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Commons\Info\Events\PuplishInfo.cs" />
+    <Compile Include="StockDataDownload\Events\AddItemToList.cs" />
+    <Compile Include="StockDataDownload\Events\RemoveItemFromList.cs" />
     <Compile Include="Commons\Securities\Security.cs" />
     <Compile Include="Commons\Securities\Market.cs" />
     <Compile Include="Commons\Securities\SecuritiesInfoHolder.cs" />
+    <Compile Include="Commons\Setting\ISettingSerializer.cs" />
     <Compile Include="Commons\Sistem\FileManager.cs" />
     <Compile Include="Commons\Sistem\IFileManager.cs" />
+    <Compile Include="Commons\Utils\FixedSizeObservableCollection.cs" />
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\SecuritiesInfoStatuses.cs" />
     <Compile Include="Commons\Views\WaitSpinner.xaml.cs">
       <DependentUpon>WaitSpinner.xaml</DependentUpon>
@@ -119,6 +137,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoDownloader.cs" />
+    <Compile Include="Commons\Setting\SettingSerializer.cs" />
     <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamInstrumentDownloadService.cs" />
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoParser.cs" />
     <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamInstrumentSplitter.cs" />
@@ -143,6 +162,10 @@
     <Compile Include="StockDataDownload\Views\HistoryInstrumentsView.xaml.cs">
       <DependentUpon>HistoryInstrumentsView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Commons\Info\Views\InfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Commons\Views\WaitSpinner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

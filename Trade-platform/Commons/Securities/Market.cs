@@ -20,5 +20,11 @@
 
             return this.Id.Equals(item.Id);
         }
+
+        public override string ToString()
+        {
+            return $"{nameof(Name)}: {Name}," +
+                   $" {nameof(Id)}: {Id}";
+        }
     }
 }

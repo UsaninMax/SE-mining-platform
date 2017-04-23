@@ -6,11 +6,13 @@ using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using TradePlatform.Commons.MessageSubscribers;
+using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Securities;
 using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo;
 using TradePlatform.StockDataDownload.Presenters;
+using TradePlatform.Commons.Info.Model.Message;
+using TradePlatform.StockDataDownload.Events;
 
 namespace TradePlatform.StockDataDownload.ViewModels
 {
@@ -144,11 +146,13 @@ namespace TradePlatform.StockDataDownload.ViewModels
 
         private readonly ISecuritiesInfoUpdater _suritiesInfoUpdater;
         private readonly SecuritiesInfoHolder _securitiesInfo;
+        private readonly IInfoPublisher _infoPublisher;
 
         public FinamDownloadNewInstrumentViewModel()
         {
             _securitiesInfo = ContainerBuilder.Container.Resolve<SecuritiesInfoHolder>();
             _suritiesInfoUpdater = ContainerBuilder.Container.Resolve<ISecuritiesInfoUpdater>();
+            _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
             AddNewCommand = new DelegateCommand(AddNewInstrument);
         }
 
@@ -175,29 +179,23 @@ namespace TradePlatform.StockDataDownload.ViewModels
         {
             StatusMessage = SecuritiesInfoStatuses.SecuritiesInfoUpdateInProgress;
             var downloadTask = new Task(() => _suritiesInfoUpdater.Update());
-            downloadTask.ContinueWith((t) =>
+            downloadTask.ContinueWith(t =>
             {
                 if (t.IsFaulted)
                 {
                     StatusMessage = SecuritiesInfoStatuses.FailToUpdateSecuritiesInfo;
-
-                    //TODO
-                    Exception ex = t.Exception;
-                    while (ex is AggregateException && ex.InnerException != null)
-                    {
-                        ex = ex.InnerException;
-                    }
-                    //MessageBox.Show("Error: " + ex.Message);
+                    _infoPublisher.PublishException(t.Exception);
                 }
                 else
                 {
                     Markets = new ObservableCollection<Market>(_securitiesInfo.Markets());
                     StatusMessage = SecuritiesInfoStatuses.SecuritiesInfoUpdated;
                     IsEnabledPanel = true;
+                    _infoPublisher.PublishInfo(new DownloadInfo { Message = "Securities were updated" });
                 }
 
                 HideWaitSpinnerBar = true;
-                
+
             });
             downloadTask.Start();
         }

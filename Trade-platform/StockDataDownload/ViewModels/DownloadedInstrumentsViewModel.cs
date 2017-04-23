@@ -2,35 +2,22 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using TradePlatform.Commons.MessageSubscribers;
+using TradePlatform.Commons.Info;
+using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.Serialization;
+using TradePlatform.StockDataDownload.Events;
 using TradePlatform.StockDataDownload.Presenters;
 
 namespace TradePlatform.StockDataDownload.ViewModels
 {
     public class DownloadedInstrumentsViewModel : BindableBase, IDownloadedInstrumentsViewModel
     {
-
-        public DownloadedInstrumentsViewModel()
-        {
-            IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
-            eventAggregator.GetEvent<AddToList<IDounloadInstrumentPresenter>>().Subscribe(AddItemItemToList, false);
-            eventAggregator.GetEvent<RemoveFromList<IDounloadInstrumentPresenter>>().Subscribe(RemoveItemFromList, false);
-            RemoveCommand = new DelegateCommand<IDounloadInstrumentPresenter>(RemoveData, CanDoActionItemFromList);
-            SoftReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(SoftReloadData, CanDoActionItemFromList);
-            HardReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(HardReloadData, CanDoActionItemFromList);
-            OpenFolderCommand = new DelegateCommand<IDounloadInstrumentPresenter>(OpenFolderWithData , CanDoActionItemFromList);
-            LoadedWindowCommand = new DelegateCommand(WindowLoaded);
-            ClosingWindowCommand = new DelegateCommand(WindowClosing);
-        }
-
         private ObservableCollection<IDounloadInstrumentPresenter> _dounloadedInstruments = new ObservableCollection<IDounloadInstrumentPresenter>();
         public ObservableCollection<IDounloadInstrumentPresenter> InstrumentsInfo
         {
@@ -57,6 +44,22 @@ namespace TradePlatform.StockDataDownload.ViewModels
 
         public ICommand ClosingWindowCommand { get; private set; }
 
+        private readonly IInfoPublisher _infoPublisher;
+
+        public DownloadedInstrumentsViewModel()
+        {
+            IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
+            eventAggregator.GetEvent<AddToList<IDounloadInstrumentPresenter>>().Subscribe(AddItemItemToList, false);
+            eventAggregator.GetEvent<RemoveFromList<IDounloadInstrumentPresenter>>().Subscribe(RemoveItemFromList, false);
+            RemoveCommand = new DelegateCommand<IDounloadInstrumentPresenter>(RemoveData, CanDoActionItemFromList);
+            SoftReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(SoftReloadData, CanDoActionItemFromList);
+            HardReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(HardReloadData, CanDoActionItemFromList);
+            OpenFolderCommand = new DelegateCommand<IDounloadInstrumentPresenter>(OpenFolderWithData , CanDoActionItemFromList);
+            LoadedWindowCommand = new DelegateCommand(WindowLoaded);
+            ClosingWindowCommand = new DelegateCommand(WindowClosing);
+            _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
+        }
+
         private void AddItemItemToList(object param)
         {
             var instrument = param as IDounloadInstrumentPresenter;
@@ -64,17 +67,22 @@ namespace TradePlatform.StockDataDownload.ViewModels
             {
                 InstrumentsInfo.Add(instrument);
 
-                if (HasNoActiveDownloadingProces())
+                if (HasNoActiveDownloadingProcess())
                 {
-                    //TODO: add log
                     instrument.SoftDownloadData();
                 }
             }
         }
-        //Finam restriction for downloading 
-        private bool HasNoActiveDownloadingProces()
+
+        private bool HasNoActiveDownloadingProcess()
         {
-            return InstrumentsInfo.All(i => !i.InDownloadingProgress());
+            bool isOk = InstrumentsInfo.All(i => !i.InDownloadingProgress());
+            if (!isOk)
+            {
+                _infoPublisher.PublishInfo(
+                    new DownloadInfo {Message = "Finam allow you to download one file at one time"});
+            }
+            return isOk;
         }
 
         private void RemoveItemFromList(IDounloadInstrumentPresenter presenter)
@@ -98,9 +106,8 @@ namespace TradePlatform.StockDataDownload.ViewModels
         {
             var instrument = param as IDounloadInstrumentPresenter;
 
-            if (HasNoActiveDownloadingProces())
+            if (HasNoActiveDownloadingProcess())
             {
-                //TODO: add log
                 instrument?.SoftReloadData();
             }
         }
@@ -109,16 +116,14 @@ namespace TradePlatform.StockDataDownload.ViewModels
         {
             var instrument = param as IDounloadInstrumentPresenter;
 
-            if (HasNoActiveDownloadingProces())
+            if (HasNoActiveDownloadingProcess())
             {
-                //TODO: add log
                 instrument?.HardReloadData();
             }
         }
 
         private void WindowLoaded()
         {
-
             var updateHistory = new Task<ObservableCollection<IDounloadInstrumentPresenter>>(() =>
             {
                 var serializer = ContainerBuilder.Container.Resolve<IInstrumentsStorage>();
@@ -135,13 +140,7 @@ namespace TradePlatform.StockDataDownload.ViewModels
             {
                 if (t.IsFaulted)
                 {
-                    //TODO:
-                    Exception ex = t.Exception;
-                    while (ex is AggregateException && ex.InnerException != null)
-                    {
-                        ex = ex.InnerException;
-                    }
-                    MessageBox.Show("Error: " + ex.Message);
+                    _infoPublisher.PublishException(t.Exception);
                 }
                 else
                 {
@@ -155,8 +154,8 @@ namespace TradePlatform.StockDataDownload.ViewModels
         {
             var storeHistory = new Task(() =>
             {
-                var serializer = ContainerBuilder.Container.Resolve<IInstrumentsStorage>();
-                serializer.Store(InstrumentsInfo.Select(i =>
+                var xmlStorage = ContainerBuilder.Container.Resolve<IInstrumentsStorage>();
+                xmlStorage.Store(InstrumentsInfo.Select(i =>
                 {
                     i.StopDownload();
                     return i.Instrument();
@@ -166,13 +165,7 @@ namespace TradePlatform.StockDataDownload.ViewModels
             {
                 if (t.IsFaulted)
                 {
-                    //TODO:
-                    Exception ex = t.Exception;
-                    while (ex is AggregateException && ex.InnerException != null)
-                    {
-                        ex = ex.InnerException;
-                    }
-                    MessageBox.Show("Error: " + ex.Message);
+                    _infoPublisher.PublishException(t.Exception);
                 }
             });
             storeHistory.Start();

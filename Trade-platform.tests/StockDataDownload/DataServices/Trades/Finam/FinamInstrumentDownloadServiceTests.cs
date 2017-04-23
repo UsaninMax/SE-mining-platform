@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using TradePlatform;
+using TradePlatform.Commons.Info;
+using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.Commons.Sistem;
 using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.Trades;
@@ -27,6 +29,8 @@ namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
                .WithFrom(DateTime.Now)
                .WithTo(DateTime.Now)
                .Build();
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
         }
 
         [Test]
@@ -38,6 +42,8 @@ namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
             ContainerBuilder.Container.RegisterInstance(splitter.Object);
             ContainerBuilder.Container.RegisterInstance(fileManager.Object);
             ContainerBuilder.Container.RegisterInstance(downloader.Object);
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
 
             var downloadService = new FinamInstrumentDownloadService();
             var cancellationTokenSource = new CancellationTokenSource();
@@ -61,6 +67,7 @@ namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
             fileManager.Verify(x => x.CreateFolder(It.IsAny<string>()), Times.Once);
             splitter.Verify(x => x.Split(It.IsAny<Instrument>()), Times.Once);
             downloader.Verify(x => x.Download(It.IsAny<Instrument>()), Times.Once);
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Once);
 
             Assert.That(expectedDeletePath, Is.EqualTo(_instrument.DataProvider + "\\" + _instrument.Path));
             Assert.That(expectedCreatePath, Is.EqualTo(_instrument.DataProvider + "\\" + _instrument.Path));
@@ -76,6 +83,8 @@ namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
             ContainerBuilder.Container.RegisterInstance(splitter.Object);
             ContainerBuilder.Container.RegisterInstance(fileManager.Object);
             ContainerBuilder.Container.RegisterInstance(downloader.Object);
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
 
             var downloadService = new FinamInstrumentDownloadService();
             var cancellationTokenSource = new CancellationTokenSource();
@@ -92,6 +101,7 @@ namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
             cancellationTokenSource.Cancel();
             downloadService.Download(_instrument, cancellationTokenSource.Token);
 
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Never);
             fileManager.Verify(x => x.DeleteFolder(It.IsAny<string>()), Times.Once);
             fileManager.Verify(x => x.CreateFolder(It.IsAny<string>()), Times.Once);
             splitter.Verify(x => x.Split(It.IsAny<Instrument>()), Times.Once);
@@ -111,6 +121,8 @@ namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
             ContainerBuilder.Container.RegisterInstance(splitter.Object);
             ContainerBuilder.Container.RegisterInstance(fileManager.Object);
             ContainerBuilder.Container.RegisterInstance(downloader.Object);
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
 
             var downloadService = new FinamInstrumentDownloadService();
             var cancellationTokenSource = new CancellationTokenSource();
@@ -134,6 +146,7 @@ namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
             fileManager.Verify(x => x.CreateFolder(It.IsAny<string>()), Times.Once);
             splitter.Verify(x => x.Split(It.IsAny<Instrument>()), Times.Once);
             downloader.Verify(x => x.Download(It.IsAny<Instrument>()), Times.Once);
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Once);
 
             Assert.That(expectedIsExistPath, Is.EqualTo(_instrument.DataProvider + "\\" + _instrument.Path + "\\" + _instrument.FileName + ".txt"));
             Assert.That(expectedCreatePath, Is.EqualTo(_instrument.DataProvider + "\\" + _instrument.Path));
@@ -150,6 +163,8 @@ namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
             ContainerBuilder.Container.RegisterInstance(splitter.Object);
             ContainerBuilder.Container.RegisterInstance(fileManager.Object);
             ContainerBuilder.Container.RegisterInstance(downloader.Object);
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
 
             var downloadService = new FinamInstrumentDownloadService();
             var cancellationTokenSource = new CancellationTokenSource();
@@ -165,6 +180,7 @@ namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
             cancellationTokenSource.Cancel();
             downloadService.SoftDownload(_instrument, cancellationTokenSource.Token);
 
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Never);
             fileManager.Verify(x => x.IsFileExist(It.IsAny<string>()), Times.Never);
             fileManager.Verify(x => x.CreateFolder(It.IsAny<string>()), Times.Once);
             splitter.Verify(x => x.Split(It.IsAny<Instrument>()), Times.Once);
@@ -214,6 +230,8 @@ namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
         [Test]
         public void CheckDelete()
         {
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
             var splitter = new Mock<IInstrumentSplitter>();
             ContainerBuilder.Container.RegisterInstance(splitter.Object);
             var fileManager = new Mock<IFileManager>();
@@ -222,11 +240,15 @@ namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
             var cancellationTokenSource = new CancellationTokenSource();
             downloadService.Delete(_instrument,null, cancellationTokenSource);
             fileManager.Verify(x => x.DeleteFolder(It.IsAny<string>()), Times.Once);
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Once);
+
         }
 
         [Test]
         public void DeleteIfDownloadTaskRunning()
         {
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
             var splitter = new Mock<IInstrumentSplitter>();
             ContainerBuilder.Container.RegisterInstance(splitter.Object);
             var fileManager = new Mock<IFileManager>();
@@ -238,6 +260,7 @@ namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
             downloadTask.Start();
             downloadService.Delete(_instrument, downloadTask, cancellationTokenSource);
             fileManager.Verify(x => x.DeleteFolder(It.IsAny<string>()), Times.Once);
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Exactly(2));
             Assert.That(cancellationTokenSource.Token.IsCancellationRequested, Is.True);
         }
 

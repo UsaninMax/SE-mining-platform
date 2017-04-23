@@ -6,26 +6,32 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using TradePlatform;
-using TradePlatform.Commons.MessageSubscribers;
+using TradePlatform.Commons.Info;
+using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.Commons.Sistem;
 using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.Trades;
+using TradePlatform.StockDataDownload.Events;
 using TradePlatform.StockDataDownload.Presenters;
 
 namespace Trade_platform.tests.StockDataDownload.Presenters
 {
     [TestFixture]
-    class DounloadInstrumentPresenterTests
+    public class DounloadInstrumentPresenterTests
     {
         [SetUp]
         public void SetUp()
         {
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
         }
 
         [Test]
         public void CheckHardDownloadData()
         {
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
             var downloadService = new Mock<IInstrumentDownloadService>();
             ContainerBuilder.Container.RegisterInstance(downloadService.Object);
 
@@ -35,12 +41,15 @@ namespace Trade_platform.tests.StockDataDownload.Presenters
             downloadService.Verify(x => x.Download(It.IsAny<Instrument>(),
                 It.IsAny<CancellationToken>()),
                 Times.Exactly(1));
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Once);
             Assert.That(presenter.StatusMessage, Is.EqualTo(TradesStatuses.IsReady));
         }
 
         [Test]
         public void CheckHardDownloadDataWithFail()
         {
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
             var downloadService = new Mock<IInstrumentDownloadService>();
             ContainerBuilder.Container.RegisterInstance(downloadService.Object);
             var presenter = new DounloadInstrumentPresenter(new Instrument.Builder().Build());
@@ -52,6 +61,7 @@ namespace Trade_platform.tests.StockDataDownload.Presenters
             downloadService.Verify(x => x.Download(It.IsAny<Instrument>(),
                 It.IsAny<CancellationToken>()),
                 Times.Exactly(1));
+            infoPublisher.Verify(x => x.PublishException(It.IsAny<AggregateException>()), Times.Once);
             Assert.That(presenter.StatusMessage, Is.EqualTo(TradesStatuses.FailToDownloud));
         }
 
@@ -59,6 +69,8 @@ namespace Trade_platform.tests.StockDataDownload.Presenters
         [Test]
         public void IfIsActiveDowloadTaskPresentHardDownloadDataWillNotStart()
         {
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
             var downloadService = new Mock<IInstrumentDownloadService>();
             ContainerBuilder.Container.RegisterInstance(downloadService.Object);
             var presenter = new DounloadInstrumentPresenter(new Instrument.Builder().Build());
@@ -69,6 +81,7 @@ namespace Trade_platform.tests.StockDataDownload.Presenters
             presenter.HardDownloadData();
             presenter.HardDownloadData();
             Thread.Sleep(1000);
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Exactly(2));
             downloadService.Verify(x => x.Download(It.IsAny<Instrument>(),
                 It.IsAny<CancellationToken>()),
                 Times.Exactly(1));
@@ -77,6 +90,8 @@ namespace Trade_platform.tests.StockDataDownload.Presenters
         [Test]
         public void CheckSoftDownloadData()
         {
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
             var downloadService = new Mock<IInstrumentDownloadService>();
             ContainerBuilder.Container.RegisterInstance(downloadService.Object);
             var presenter = new DounloadInstrumentPresenter(new Instrument.Builder().Build());
@@ -85,6 +100,7 @@ namespace Trade_platform.tests.StockDataDownload.Presenters
             downloadService.Verify(x => x.SoftDownload(It.IsAny<Instrument>(),
                 It.IsAny<CancellationToken>()),
                 Times.Exactly(1));
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Once);
             Assert.That(presenter.StatusMessage, Is.EqualTo(TradesStatuses.IsReady));
 
         }
@@ -92,6 +108,8 @@ namespace Trade_platform.tests.StockDataDownload.Presenters
         [Test]
         public void CheckSoftDownloadDataWithFail()
         {
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
             var downloadService = new Mock<IInstrumentDownloadService>();
             ContainerBuilder.Container.RegisterInstance(downloadService.Object);
             var presenter = new DounloadInstrumentPresenter(new Instrument.Builder().Build());
@@ -103,6 +121,7 @@ namespace Trade_platform.tests.StockDataDownload.Presenters
             downloadService.Verify(x => x.SoftDownload(It.IsAny<Instrument>(),
                It.IsAny<CancellationToken>()),
                Times.Exactly(1));
+            infoPublisher.Verify(x => x.PublishException(It.IsAny<AggregateException>()), Times.Once);
             Assert.That(presenter.StatusMessage, Is.EqualTo(TradesStatuses.FailToDownloud));
         }
 
@@ -110,6 +129,8 @@ namespace Trade_platform.tests.StockDataDownload.Presenters
         [Test]
         public void IfIsActiveDowloadTaskPresentSoftDownloadDataWillNotStart()
         {
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
             var downloadService = new Mock<IInstrumentDownloadService>();
             ContainerBuilder.Container.RegisterInstance(downloadService.Object);
             var presenter = new DounloadInstrumentPresenter(new Instrument.Builder().Build());
@@ -120,6 +141,7 @@ namespace Trade_platform.tests.StockDataDownload.Presenters
             presenter.SoftDownloadData();
             presenter.SoftDownloadData();
             Thread.Sleep(1000);
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Exactly(2));
             downloadService.Verify(x => x.SoftDownload(It.IsAny<Instrument>(),
                 It.IsAny<CancellationToken>()),
                 Times.Exactly(1));
@@ -150,6 +172,8 @@ namespace Trade_platform.tests.StockDataDownload.Presenters
         [Test]
         public void DeleteDataWithFail()
         {
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
             var downloadService = new Mock<IInstrumentDownloadService>();
             ContainerBuilder.Container.RegisterInstance(downloadService.Object);
             var presenter = new DounloadInstrumentPresenter(new Instrument.Builder().Build());
@@ -165,12 +189,15 @@ namespace Trade_platform.tests.StockDataDownload.Presenters
                 It.IsAny<Task>(),
                 It.IsAny<CancellationTokenSource>()),
                 Times.Exactly(1));
+            infoPublisher.Verify(x => x.PublishException(It.IsAny<AggregateException>()), Times.Once);
             Assert.That(presenter.StatusMessage, Is.EqualTo(TradesStatuses.FailToDelete));
         }
 
         [Test]
         public void CheckDataWithFail()
         {
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
             var downloadService = new Mock<IInstrumentDownloadService>();
             ContainerBuilder.Container.RegisterInstance(downloadService.Object);
             var presenter = new DounloadInstrumentPresenter(new Instrument.Builder().Build());
@@ -178,6 +205,7 @@ namespace Trade_platform.tests.StockDataDownload.Presenters
             presenter.CheckData();
             Thread.Sleep(500);
             downloadService.Verify(x => x.CheckFiles(It.IsAny<Instrument>()), Times.Once);
+            infoPublisher.Verify(x => x.PublishException(It.IsAny<AggregateException>()), Times.Once);
             Assert.That(presenter.StatusMessage, Is.EqualTo(TradesStatuses.FailToCheck));
 
         }
@@ -252,5 +280,23 @@ namespace Trade_platform.tests.StockDataDownload.Presenters
             Assert.That(expectedResult, Is.EqualTo(instrument.DataProvider + "\\" + instrument.Path));
         }
 
+
+        [Test]
+        public void ShowDataInFolderWithFail()
+        {
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
+            var downloadService = new Mock<IInstrumentDownloadService>();
+            ContainerBuilder.Container.RegisterInstance(downloadService.Object); 
+            var presenter = new DounloadInstrumentPresenter(new Instrument.Builder().Build());
+            var fileManager = new Mock<IFileManager>();
+            ContainerBuilder.Container.RegisterInstance(fileManager.Object);
+            fileManager.Setup(x => x.OpenFolder(It.IsAny<string>())).Throws(new Exception());
+
+
+            presenter.ShowDataInFolder();
+            fileManager.Verify(x => x.OpenFolder(It.IsAny<string>()), Times.Once);
+            infoPublisher.Verify(x => x.PublishException(It.IsAny<Exception>()), Times.Once);
+        }
     }
 }
