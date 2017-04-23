@@ -59,17 +59,14 @@ namespace TradePlatform.StockDataDownload.Presenters
 
             StatusMessage = TradesStatuses.InProgress;
             _cancellationTokenSource = new CancellationTokenSource();
+            _infoPublisher.PublishInfo(new DownloadInfo { Message = _instrument + "- start hard download" });
             _download = new Task(() => _downloadService.Download(_instrument, _cancellationTokenSource.Token), _cancellationTokenSource.Token);
             _download.ContinueWith(t =>
             {
                 if (t.IsFaulted)
                 {
                     StatusMessage = TradesStatuses.FailToDownloud;
-                    Exception ex = t.Exception;
-                    while (ex is AggregateException && ex.InnerException != null)
-                    {
-                        _infoPublisher.PublishException(ex.InnerException.ToString());
-                    }
+                    _infoPublisher.PublishException(t.Exception);
                 }
                 else
                 {
@@ -89,17 +86,14 @@ namespace TradePlatform.StockDataDownload.Presenters
 
             StatusMessage = TradesStatuses.InProgress;
             _cancellationTokenSource = new CancellationTokenSource();
+            _infoPublisher.PublishInfo(new DownloadInfo { Message = _instrument + "- start soft download" });
             _download = new Task(() => _downloadService.SoftDownload(_instrument, _cancellationTokenSource.Token), _cancellationTokenSource.Token);
             _download.ContinueWith(t =>
             {
                 if (t.IsFaulted)
                 {
                     StatusMessage = TradesStatuses.FailToDownloud;
-                    Exception ex = t.Exception;
-                    while (ex is AggregateException && ex.InnerException != null)
-                    {
-                        _infoPublisher.PublishException(ex.InnerException.ToString());
-                    }
+                    _infoPublisher.PublishException(t.Exception);
                 }
                 else
                 {
@@ -120,11 +114,7 @@ namespace TradePlatform.StockDataDownload.Presenters
                 if (t.IsFaulted)
                 {
                     StatusMessage = TradesStatuses.FailToDelete;
-                    Exception ex = t.Exception;
-                    while (ex is AggregateException && ex.InnerException != null)
-                    {
-                        _infoPublisher.PublishException(ex.InnerException.ToString());
-                    }
+                    _infoPublisher.PublishException(t.Exception);
                 }
                 else
                 {
@@ -166,11 +156,7 @@ namespace TradePlatform.StockDataDownload.Presenters
                 if (t.IsFaulted)
                 {
                     StatusMessage = TradesStatuses.FailToCheck;
-                    Exception ex = t.Exception;
-                    while (ex is AggregateException && ex.InnerException != null)
-                    {
-                        _infoPublisher.PublishException(ex.InnerException.ToString());
-                    }
+                    _infoPublisher.PublishException(t.Exception);
                 }
                 else
                 {
@@ -206,7 +192,7 @@ namespace TradePlatform.StockDataDownload.Presenters
             }
             catch (Exception ex)
             {
-                _infoPublisher.PublishException(ex.ToString());
+                _infoPublisher.PublishException(ex);
             }
         }
 

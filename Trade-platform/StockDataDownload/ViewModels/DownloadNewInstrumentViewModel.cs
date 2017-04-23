@@ -184,12 +184,7 @@ namespace TradePlatform.StockDataDownload.ViewModels
                 if (t.IsFaulted)
                 {
                     StatusMessage = SecuritiesInfoStatuses.FailToUpdateSecuritiesInfo;
-
-                    Exception ex = t.Exception;
-                    while (ex is AggregateException && ex.InnerException != null)
-                    {
-                        _infoPublisher.PublishException(ex.InnerException.ToString());
-                    }
+                    _infoPublisher.PublishException(t.Exception);
                 }
                 else
                 {

@@ -6,6 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using TradePlatform;
+using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Sistem;
 using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.Trades;
@@ -21,6 +22,8 @@ namespace Trade_platform.tests.StockDataDownload.Presenters
         public void SetUp()
         {
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
         }
 
         [Test]

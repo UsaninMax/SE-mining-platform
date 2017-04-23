@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Unity;
+﻿using System;
+using Microsoft.Practices.Unity;
 using Prism.Events;
 using TradePlatform.Commons.Info.Events;
 using TradePlatform.Commons.Info.MessageEvents;
@@ -16,10 +17,20 @@ namespace TradePlatform.Commons.Info
             _eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
         }
 
-        public void PublishException(string message)
+        public void PublishException(AggregateException exceptions)
+        {
+            foreach (var ex in exceptions.InnerExceptions)
+            {
+                _eventAggregator.GetEvent<PuplishExceptionInfo<ExceptionInfo>>()
+                    .Publish(new ExceptionInfo { Message = ex.GetType().Name + ", - " + ex.Message });
+            }
+        }
+
+        public void PublishException(System.Exception exception)
         {
             _eventAggregator.GetEvent<PuplishExceptionInfo<ExceptionInfo>>()
-                .Publish(new ExceptionInfo { Message = message });
+                .Publish(new ExceptionInfo { Message = exception.GetType().Name + ", - " + exception.Message });
+
         }
 
         public void PublishInfo(InfoItem infoItem)

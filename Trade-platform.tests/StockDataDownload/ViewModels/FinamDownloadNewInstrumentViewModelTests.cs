@@ -12,6 +12,7 @@ using TradePlatform.StockDataDownload.DataServices.Trades;
 using TradePlatform.StockDataDownload.Presenters;
 using TradePlatform.StockDataDownload.ViewModels;
 using NUnit.Framework;
+using TradePlatform.Commons.Info;
 using TradePlatform.StockDataDownload.Events;
 
 namespace Trade_platform.tests.StockDataDownload.ViewModels
@@ -19,6 +20,12 @@ namespace Trade_platform.tests.StockDataDownload.ViewModels
     [TestFixture]
     public class FinamDownloadNewInstrumentViewModelTests
     {
+        [SetUp]
+        public void SetUp()
+        {
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
+        }
         [Test]
         public void WhenUpdateSecurityInfoWillFaildStatusWillChangedOnFail()
         {

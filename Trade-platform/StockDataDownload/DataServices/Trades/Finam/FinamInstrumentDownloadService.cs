@@ -34,7 +34,6 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
                 {
                     return;
                 }
-                _infoPublisher.PublishInfo(new DownloadInfo { Message = i + "- start download" });
                 var downloader = ContainerBuilder.Container.Resolve<ITradesDownloader>();
                 downloader.Download(i);
                 _infoPublisher.PublishInfo(new DownloadInfo { Message = i + "- was downloaded" });
@@ -51,7 +50,6 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
                 {
                     return;
                 }
-                _infoPublisher.PublishInfo(new DownloadInfo { Message = i + "- start soft download" });
                 var downloader = ContainerBuilder.Container.Resolve<ITradesDownloader>();
                 downloader.Download(i);
                 _infoPublisher.PublishInfo(new DownloadInfo { Message = i + "- was soft downloaded" });
@@ -62,7 +60,7 @@ namespace TradePlatform.StockDataDownload.DataServices.Trades.Finam
         {
             if (download != null && !download.IsCompleted)
             {
-                _infoPublisher.PublishInfo(new DownloadInfo { Message = instrument + "- cancellation will wait wait till download task will finish" });
+                _infoPublisher.PublishInfo(new DownloadInfo { Message = instrument + "- cancellation will wait till download task will finish" });
                 cancellationTokenSource.Cancel();
                 download.Wait();
             }

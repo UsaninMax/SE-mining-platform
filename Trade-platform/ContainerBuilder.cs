@@ -80,7 +80,7 @@ namespace TradePlatform
 
             Container.RegisterType<ISettingSerializer, XMLSettingSerializer>();
 
-            Container.RegisterType<IInfoPublisher, InfoPublisher>();
+            Container.RegisterType<IInfoPublisher, InfoPublisher>(new ContainerControlledLifetimeManager());
         }
     }
 }

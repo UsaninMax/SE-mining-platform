@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using TradePlatform;
+using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Sistem;
 using TradePlatform.Commons.Trades;
 using TradePlatform.StockDataDownload.DataServices.Trades;
@@ -27,6 +28,8 @@ namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
                .WithFrom(DateTime.Now)
                .WithTo(DateTime.Now)
                .Build();
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
         }
 
         [Test]

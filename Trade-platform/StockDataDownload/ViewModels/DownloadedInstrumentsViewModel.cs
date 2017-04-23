@@ -140,11 +140,7 @@ namespace TradePlatform.StockDataDownload.ViewModels
             {
                 if (t.IsFaulted)
                 {
-                    Exception ex = t.Exception;
-                    while (ex is AggregateException && ex.InnerException != null)
-                    {
-                        _infoPublisher.PublishException(ex.InnerException.ToString());
-                    }
+                    _infoPublisher.PublishException(t.Exception);
                 }
                 else
                 {
@@ -169,11 +165,7 @@ namespace TradePlatform.StockDataDownload.ViewModels
             {
                 if (t.IsFaulted)
                 {
-                    Exception ex = t.Exception;
-                    while (ex is AggregateException && ex.InnerException != null)
-                    {
-                        _infoPublisher.PublishException(ex.InnerException.ToString());
-                    }
+                    _infoPublisher.PublishException(t.Exception);
                 }
             });
             storeHistory.Start();
