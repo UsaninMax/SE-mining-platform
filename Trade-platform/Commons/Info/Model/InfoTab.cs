@@ -13,7 +13,7 @@ namespace TradePlatform.Commons.Info.Model
     public class InfoTab : BindableBase, IInfoTab
     {
         public string Id { get; private set; }
-        private ObservableCollection<InfoItem> _messages = new FixedSizeObservableCollection<InfoItem>(2);
+        private ObservableCollection<InfoItem> _messages = new FixedSizeObservableCollection<InfoItem>(1000);
         public ICommand CloseTabCommand { get; private set; }
 
         public ObservableCollection<InfoItem> Messages
