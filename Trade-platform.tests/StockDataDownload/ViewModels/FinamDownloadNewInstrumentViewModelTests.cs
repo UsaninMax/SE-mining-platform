@@ -13,6 +13,7 @@ using TradePlatform.StockDataDownload.Presenters;
 using TradePlatform.StockDataDownload.ViewModels;
 using NUnit.Framework;
 using TradePlatform.Commons.Info;
+using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.StockDataDownload.Events;
 
 namespace Trade_platform.tests.StockDataDownload.ViewModels
@@ -29,6 +30,8 @@ namespace Trade_platform.tests.StockDataDownload.ViewModels
         [Test]
         public void WhenUpdateSecurityInfoWillFaildStatusWillChangedOnFail()
         {
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
             Mock<ISecuritiesInfoUpdater> infoUpdaterMock = new Mock<ISecuritiesInfoUpdater>();
             infoUpdaterMock.Setup(m => m.Update()).Throws(new Exception());
             ContainerBuilder.Container.RegisterInstance(infoUpdaterMock.Object);
@@ -36,6 +39,8 @@ namespace Trade_platform.tests.StockDataDownload.ViewModels
             newInstrumentViewModel.UpdateSecuritiesInfo();
             Thread.Sleep(500);
 
+            infoPublisher.Verify(x => x.PublishException(It.IsAny<AggregateException>()), Times.Once);
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Never);
             Assert.That(SecuritiesInfoStatuses.FailToUpdateSecuritiesInfo, Is.EqualTo(newInstrumentViewModel.StatusMessage));
             Assert.That(newInstrumentViewModel.HideWaitSpinnerBar, Is.True);
             Assert.That(newInstrumentViewModel.IsEnabledPanel, Is.False);
@@ -44,6 +49,8 @@ namespace Trade_platform.tests.StockDataDownload.ViewModels
         [Test]
         public void WhenUpdateSecurityInfoWillNotFaildInformationWillUpdated()
         {
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
             Market market = new Market() { Id = "1234", Name = "Name" };
             Mock<ISecuritiesInfoUpdater> infoUpdaterMock = new Mock<ISecuritiesInfoUpdater>();
             SecuritiesInfoHolder infoHolder = new SecuritiesInfoHolder();
@@ -62,6 +69,9 @@ namespace Trade_platform.tests.StockDataDownload.ViewModels
             FinamDownloadNewInstrumentViewModel newInstrumentViewModel = new FinamDownloadNewInstrumentViewModel();
             newInstrumentViewModel.UpdateSecuritiesInfo();
             Thread.Sleep(500);
+
+            infoPublisher.Verify(x => x.PublishException(It.IsAny<AggregateException>()), Times.Never);
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Once);
 
             Assert.That(market, Is.EqualTo(newInstrumentViewModel.Markets[0]));
             Assert.That(newInstrumentViewModel.Markets.Count, Is.EqualTo(1));

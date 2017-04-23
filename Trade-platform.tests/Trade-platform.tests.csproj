@@ -93,9 +93,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Commons\Utils\FixedSizeObservableCollectionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoParserTest.cs" />
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoUpdaterTests.cs" />
+    <Compile Include="StockDataDownload\DataServices\Serialization\XmlInstrumentStorageTests.cs" />
     <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamInstrumentDownloadServiceTests.cs" />
     <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamInstrumentSplitterTests.cs" />
     <Compile Include="StockDataDownload\Presenters\DounloadInstrumentPresenterTests.cs" />

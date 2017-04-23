@@ -67,14 +67,14 @@ namespace TradePlatform.StockDataDownload.ViewModels
             {
                 InstrumentsInfo.Add(instrument);
 
-                if (HasNoActiveDownloadingProces())
+                if (HasNoActiveDownloadingProcess())
                 {
                     instrument.SoftDownloadData();
                 }
             }
         }
 
-        private bool HasNoActiveDownloadingProces()
+        private bool HasNoActiveDownloadingProcess()
         {
             bool isOk = InstrumentsInfo.All(i => !i.InDownloadingProgress());
             if (!isOk)
@@ -106,7 +106,7 @@ namespace TradePlatform.StockDataDownload.ViewModels
         {
             var instrument = param as IDounloadInstrumentPresenter;
 
-            if (HasNoActiveDownloadingProces())
+            if (HasNoActiveDownloadingProcess())
             {
                 instrument?.SoftReloadData();
             }
@@ -116,7 +116,7 @@ namespace TradePlatform.StockDataDownload.ViewModels
         {
             var instrument = param as IDounloadInstrumentPresenter;
 
-            if (HasNoActiveDownloadingProces())
+            if (HasNoActiveDownloadingProcess())
             {
                 instrument?.HardReloadData();
             }
@@ -154,8 +154,8 @@ namespace TradePlatform.StockDataDownload.ViewModels
         {
             var storeHistory = new Task(() =>
             {
-                var serializer = ContainerBuilder.Container.Resolve<IInstrumentsStorage>();
-                serializer.Store(InstrumentsInfo.Select(i =>
+                var xmlStorage = ContainerBuilder.Container.Resolve<IInstrumentsStorage>();
+                xmlStorage.Store(InstrumentsInfo.Select(i =>
                 {
                     i.StopDownload();
                     return i.Instrument();
