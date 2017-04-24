@@ -79,6 +79,7 @@
       <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -93,6 +94,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Commons\Info\ViewModels\InfoViewModelTests.cs" />
     <Compile Include="Commons\Utils\FixedSizeObservableCollectionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoParserTest.cs" />

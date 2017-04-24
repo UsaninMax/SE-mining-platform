@@ -29,13 +29,7 @@ namespace TradePlatform.Commons.Info.Model
         public InfoTab(string id)
         {
             this.Id = id;
-            CloseTabCommand = new DelegateCommand(CloseTab);
-        }
-
-        private void CloseTab()
-        {
-            IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
-            eventAggregator.GetEvent<CloseTabEvent<InfoTab>>().Publish(this);
+            CloseTabCommand = new DelegateCommand(Close);
         }
 
         public string TabId()
@@ -46,6 +40,17 @@ namespace TradePlatform.Commons.Info.Model
         public void Add(InfoItem item)
         {
             Messages.Add(item);
+        }
+
+        public void Close()
+        {
+            IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
+            eventAggregator.GetEvent<CloseTabEvent<InfoTab>>().Publish(this);
+        }
+
+        public int MessageCount()
+        {
+            return _messages.Count;
         }
     }
 }

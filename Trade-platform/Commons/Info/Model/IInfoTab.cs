@@ -6,5 +6,7 @@ namespace TradePlatform.Commons.Info.Model
     {
         string TabId();
         void Add(InfoItem item);
+        void Close();
+        int MessageCount();
     }
 }
