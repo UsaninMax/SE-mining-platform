@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TradePlatform.StockDataDownload.DataServices.Trades;
 using Prism.Events;
+using TradePlatform.Commons.Holders;
 using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.Commons.Trades;
@@ -19,7 +20,7 @@ namespace TradePlatform.StockDataDownload.Presenters
         private readonly IInstrumentDownloadService _downloadService;
         private CancellationTokenSource _cancellationTokenSource;
         private readonly IInfoPublisher _infoPublisher;
-
+        private readonly IDownloadedInstrumentsHolder _instrumentsHolder;
         private Task _download;
 
         public DounloadInstrumentPresenter(Instrument instrument)
@@ -27,6 +28,7 @@ namespace TradePlatform.StockDataDownload.Presenters
             _instrument = instrument;
             _downloadService = ContainerBuilder.Container.Resolve<IInstrumentDownloadService>();
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
+            _instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
         }
 
         public string Name => _instrument.Name;
@@ -70,6 +72,7 @@ namespace TradePlatform.StockDataDownload.Presenters
                 }
                 else
                 {
+                    _instrumentsHolder.Put(_instrument);
                     StatusMessage = TradesStatuses.IsReady;
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
@@ -97,6 +100,7 @@ namespace TradePlatform.StockDataDownload.Presenters
                 }
                 else
                 {
+                    _instrumentsHolder.Put(_instrument);
                     StatusMessage = TradesStatuses.IsReady;
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
@@ -118,9 +122,9 @@ namespace TradePlatform.StockDataDownload.Presenters
                 }
                 else
                 {
+                    _instrumentsHolder.Remove(_instrument);
                     var eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
                     eventAggregator.GetEvent<RemoveFromList<IDounloadInstrumentPresenter>>().Publish(this);
-
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
             delete.Start();
