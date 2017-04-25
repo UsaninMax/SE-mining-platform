@@ -5,7 +5,7 @@ using Microsoft.Practices.Unity;
 using Prism.Mvvm;
 using TradePlatform.Commons.BaseModels;
 using TradePlatform.Commons.Info.Views;
-using HistoryInstrumentsView = TradePlatform.StockDataDownload.Views.HistoryInstrumentsView;
+using HistoryInstrumentsView = TradePlatform.StockData.Views.HistoryInstrumentsView;
 
 namespace TradePlatform.Main.ViewModels
 {

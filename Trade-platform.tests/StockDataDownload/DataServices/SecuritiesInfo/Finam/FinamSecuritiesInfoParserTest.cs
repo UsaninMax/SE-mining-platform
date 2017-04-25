@@ -1,6 +1,6 @@
 ﻿using System;
-using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam;
 using NUnit.Framework;
+using TradePlatform.StockData.DataServices.SecuritiesInfo.Finam;
 
 namespace Trade_platform.tests.StockDataDownload.DataServices.SecuritiesInfo.Finam
 {

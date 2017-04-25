@@ -2,23 +2,22 @@
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using System.Net;
-using TradePlatform.Commons.Holders;
 using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Info.Exception;
 using TradePlatform.Commons.Info.ViewModels;
-using TradePlatform.Commons.Securities;
 using TradePlatform.Commons.Setting;
 using TradePlatform.Commons.Sistem;
-using TradePlatform.Commons.Trades;
 using TradePlatform.Main.ViewModels;
 using TradePlatform.Main.Views;
-using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo;
-using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam;
-using TradePlatform.StockDataDownload.DataServices.Serialization;
-using TradePlatform.StockDataDownload.DataServices.Trades;
-using TradePlatform.StockDataDownload.DataServices.Trades.Finam;
-using TradePlatform.StockDataDownload.Presenters;
-using TradePlatform.StockDataDownload.ViewModels;
+using TradePlatform.StockData.DataServices.SecuritiesInfo;
+using TradePlatform.StockData.DataServices.SecuritiesInfo.Finam;
+using TradePlatform.StockData.DataServices.Serialization;
+using TradePlatform.StockData.DataServices.Trades;
+using TradePlatform.StockData.DataServices.Trades.Finam;
+using TradePlatform.StockData.Holders;
+using TradePlatform.StockData.Models;
+using TradePlatform.StockData.Presenters;
+using TradePlatform.StockData.ViewModels;
 
 namespace TradePlatform
 {

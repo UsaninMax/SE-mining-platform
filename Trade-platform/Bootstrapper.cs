@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 using Prism.Unity;
 using Microsoft.Practices.Unity;
-using TradePlatform.Commons.Holders;
 using TradePlatform.Main.Views;
+using TradePlatform.StockData.Holders;
 
 namespace TradePlatform
 {

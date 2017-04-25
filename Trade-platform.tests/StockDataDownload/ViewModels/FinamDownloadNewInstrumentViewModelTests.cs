@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Threading;
 using Microsoft.Practices.Unity;
-using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo;
 using Moq;
 using Prism.Events;
 using TradePlatform;
-using TradePlatform.Commons.Securities;
-using TradePlatform.Commons.Trades;
-using TradePlatform.StockDataDownload.DataServices.Trades;
-using TradePlatform.StockDataDownload.Presenters;
-using TradePlatform.StockDataDownload.ViewModels;
 using NUnit.Framework;
 using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Info.Model.Message;
-using TradePlatform.StockDataDownload.Events;
+using TradePlatform.StockData.DataServices.SecuritiesInfo;
+using TradePlatform.StockData.DataServices.Trades;
+using TradePlatform.StockData.Events;
+using TradePlatform.StockData.Holders;
+using TradePlatform.StockData.Models;
+using TradePlatform.StockData.Presenters;
+using TradePlatform.StockData.ViewModels;
 
 namespace Trade_platform.tests.StockDataDownload.ViewModels
 {

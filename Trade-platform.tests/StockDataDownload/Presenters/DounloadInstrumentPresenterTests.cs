@@ -9,10 +9,11 @@ using TradePlatform;
 using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.Commons.Sistem;
-using TradePlatform.Commons.Trades;
-using TradePlatform.StockDataDownload.DataServices.Trades;
-using TradePlatform.StockDataDownload.Events;
-using TradePlatform.StockDataDownload.Presenters;
+using TradePlatform.StockData.DataServices.Trades;
+using TradePlatform.StockData.Events;
+using TradePlatform.StockData.Holders;
+using TradePlatform.StockData.Models;
+using TradePlatform.StockData.Presenters;
 
 namespace Trade_platform.tests.StockDataDownload.Presenters
 {
@@ -25,6 +26,8 @@ namespace Trade_platform.tests.StockDataDownload.Presenters
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
             var infoPublisher = new Mock<IInfoPublisher>();
             ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
+            var downloadedInstrumentsHolder = new Mock<IDownloadedInstrumentsHolder>();
+            ContainerBuilder.Container.RegisterInstance(downloadedInstrumentsHolder.Object);
         }
 
         [Test]

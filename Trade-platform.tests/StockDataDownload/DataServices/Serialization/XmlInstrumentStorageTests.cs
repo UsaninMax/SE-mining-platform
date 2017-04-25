@@ -5,8 +5,8 @@ using NUnit.Framework;
 using TradePlatform;
 using TradePlatform.Commons.Setting;
 using TradePlatform.Commons.Sistem;
-using TradePlatform.Commons.Trades;
-using TradePlatform.StockDataDownload.DataServices.Serialization;
+using TradePlatform.StockData.DataServices.Serialization;
+using TradePlatform.StockData.Models;
 
 namespace Trade_platform.tests.StockDataDownload.DataServices.Serialization
 {

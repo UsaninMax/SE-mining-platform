@@ -100,8 +100,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Commons\Holders\DownloadedInstrumentsHolder.cs" />
-    <Compile Include="Commons\Holders\IDownloadedInstrumentsHolder.cs" />
+    <Compile Include="StockData\Holders\DownloadedInstrumentsHolder.cs" />
+    <Compile Include="StockData\Holders\IDownloadedInstrumentsHolder.cs" />
     <Compile Include="Commons\Info\Exception\ExceptionActualizer.cs" />
     <Compile Include="Commons\Info\Events\CloseTabEvent.cs" />
     <Compile Include="Commons\Info\Events\PuplishExceptionInfo.cs" />
@@ -118,16 +118,16 @@
       <DependentUpon>InfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Commons\Info\Events\PuplishInfo.cs" />
-    <Compile Include="StockDataDownload\Events\AddItemToList.cs" />
-    <Compile Include="StockDataDownload\Events\RemoveItemFromList.cs" />
-    <Compile Include="Commons\Securities\Security.cs" />
-    <Compile Include="Commons\Securities\Market.cs" />
-    <Compile Include="Commons\Securities\SecuritiesInfoHolder.cs" />
+    <Compile Include="StockData\Events\AddItemToList.cs" />
+    <Compile Include="StockData\Events\RemoveItemFromList.cs" />
+    <Compile Include="StockData\Models\Security.cs" />
+    <Compile Include="StockData\Models\Market.cs" />
+    <Compile Include="StockData\Holders\SecuritiesInfoHolder.cs" />
     <Compile Include="Commons\Setting\ISettingSerializer.cs" />
     <Compile Include="Commons\Sistem\FileManager.cs" />
     <Compile Include="Commons\Sistem\IFileManager.cs" />
     <Compile Include="Commons\Utils\FixedSizeObservableCollection.cs" />
-    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\SecuritiesInfoStatuses.cs" />
+    <Compile Include="StockData\DataServices\SecuritiesInfo\SecuritiesInfoStatuses.cs" />
     <Compile Include="Commons\Views\WaitSpinner.xaml.cs">
       <DependentUpon>WaitSpinner.xaml</DependentUpon>
     </Compile>
@@ -138,30 +138,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoDownloader.cs" />
+    <Compile Include="StockData\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoDownloader.cs" />
     <Compile Include="Commons\Setting\SettingSerializer.cs" />
-    <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamInstrumentDownloadService.cs" />
-    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoParser.cs" />
-    <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamInstrumentSplitter.cs" />
-    <Compile Include="StockDataDownload\DataServices\Trades\IInstrumentDownloadService.cs" />
-    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\ISecuritiesInfoParser.cs" />
-    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamMarketHelper.cs" />
-    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoUpdater.cs" />
-    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\ISecuritiesInfoUpdater.cs" />
-    <Compile Include="StockDataDownload\DataServices\Trades\IInstrumentSplitter.cs" />
-    <Compile Include="StockDataDownload\DataServices\Serialization\IInstrumentsStorage.cs" />
-    <Compile Include="StockDataDownload\DataServices\Trades\TradesStatuses.cs" />
-    <Compile Include="StockDataDownload\DataServices\Serialization\XmlInstrumentStorage.cs" />
-    <Compile Include="StockDataDownload\Presenters\DounloadInstrumentPresenter.cs" />
-    <Compile Include="StockDataDownload\Presenters\IDounloadInstrumentPresenter.cs" />
-    <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamTradesDownloader.cs" />
-    <Compile Include="StockDataDownload\DataServices\Trades\ITradesDownloader.cs" />
-    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\ISecuritiesInfoDownloader.cs" />
-    <Compile Include="StockDataDownload\ViewModels\HistoryInstrumentsViewModel.cs" />
-    <Compile Include="StockDataDownload\ViewModels\IDownloadedInstrumentsViewModel.cs" />
-    <Compile Include="StockDataDownload\ViewModels\IDownloadNewInstrumentViewModel.cs" />
-    <Compile Include="StockDataDownload\ViewModels\IHistoryInstrumentsViewModel.cs" />
-    <Compile Include="StockDataDownload\Views\HistoryInstrumentsView.xaml.cs">
+    <Compile Include="StockData\DataServices\Trades\Finam\FinamInstrumentDownloadService.cs" />
+    <Compile Include="StockData\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoParser.cs" />
+    <Compile Include="StockData\DataServices\Trades\Finam\FinamInstrumentSplitter.cs" />
+    <Compile Include="StockData\DataServices\Trades\IInstrumentDownloadService.cs" />
+    <Compile Include="StockData\DataServices\SecuritiesInfo\ISecuritiesInfoParser.cs" />
+    <Compile Include="StockData\DataServices\SecuritiesInfo\Finam\FinamMarketHelper.cs" />
+    <Compile Include="StockData\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoUpdater.cs" />
+    <Compile Include="StockData\DataServices\SecuritiesInfo\ISecuritiesInfoUpdater.cs" />
+    <Compile Include="StockData\DataServices\Trades\IInstrumentSplitter.cs" />
+    <Compile Include="StockData\DataServices\Serialization\IInstrumentsStorage.cs" />
+    <Compile Include="StockData\DataServices\Trades\TradesStatuses.cs" />
+    <Compile Include="StockData\DataServices\Serialization\XmlInstrumentStorage.cs" />
+    <Compile Include="StockData\Presenters\DounloadInstrumentPresenter.cs" />
+    <Compile Include="StockData\Presenters\IDounloadInstrumentPresenter.cs" />
+    <Compile Include="StockData\DataServices\Trades\Finam\FinamTradesDownloader.cs" />
+    <Compile Include="StockData\DataServices\Trades\ITradesDownloader.cs" />
+    <Compile Include="StockData\DataServices\SecuritiesInfo\ISecuritiesInfoDownloader.cs" />
+    <Compile Include="StockData\ViewModels\HistoryInstrumentsViewModel.cs" />
+    <Compile Include="StockData\ViewModels\IDownloadedInstrumentsViewModel.cs" />
+    <Compile Include="StockData\ViewModels\IDownloadNewInstrumentViewModel.cs" />
+    <Compile Include="StockData\ViewModels\IHistoryInstrumentsViewModel.cs" />
+    <Compile Include="StockData\Views\HistoryInstrumentsView.xaml.cs">
       <DependentUpon>HistoryInstrumentsView.xaml</DependentUpon>
     </Compile>
     <Page Include="Commons\Info\Views\InfoView.xaml">
@@ -176,11 +176,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="StockDataDownload\Views\DownloadedInstrumentsView.xaml">
+    <Page Include="StockData\Views\DownloadedInstrumentsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="StockDataDownload\Views\DownloadNewInstrumentView.xaml">
+    <Page Include="StockData\Views\DownloadNewInstrumentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -190,17 +190,17 @@
     <Compile Include="Main\Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Commons\Trades\Instrument.cs" />
+    <Compile Include="StockData\Models\Instrument.cs" />
     <Compile Include="Commons\BaseModels\DelegateCommand.cs" />
-    <Compile Include="StockDataDownload\ViewModels\DownloadedInstrumentsViewModel.cs" />
-    <Compile Include="StockDataDownload\ViewModels\DownloadNewInstrumentViewModel.cs" />
-    <Compile Include="StockDataDownload\Views\DownloadedInstrumentsView.xaml.cs">
+    <Compile Include="StockData\ViewModels\DownloadedInstrumentsViewModel.cs" />
+    <Compile Include="StockData\ViewModels\DownloadNewInstrumentViewModel.cs" />
+    <Compile Include="StockData\Views\DownloadedInstrumentsView.xaml.cs">
       <DependentUpon>DownloadedInstrumentsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StockDataDownload\Views\DownloadNewInstrumentView.xaml.cs">
+    <Compile Include="StockData\Views\DownloadNewInstrumentView.xaml.cs">
       <DependentUpon>DownloadNewInstrumentView.xaml</DependentUpon>
     </Compile>
-    <Page Include="StockDataDownload\Views\HistoryInstrumentsView.xaml">
+    <Page Include="StockData\Views\HistoryInstrumentsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -237,7 +237,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\" />
+    <Folder Include="DataSet\DataServices\" />
+    <Folder Include="DataSet\Presenters\" />
+    <Folder Include="DataSet\ViewModel\" />
+    <Folder Include="DataSet\View\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

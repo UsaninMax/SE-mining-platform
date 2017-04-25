@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using TradePlatform.Commons.Trades;
-using TradePlatform.StockDataDownload.DataServices.Trades.Finam;
+using TradePlatform.StockData.DataServices.Trades.Finam;
+using TradePlatform.StockData.Models;
 
 namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
 {

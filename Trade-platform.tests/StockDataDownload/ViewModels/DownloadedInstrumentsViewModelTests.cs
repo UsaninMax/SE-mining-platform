@@ -9,12 +9,12 @@ using System.Threading;
 using TradePlatform;
 using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Info.Model.Message;
-using TradePlatform.Commons.Trades;
-using TradePlatform.StockDataDownload.DataServices.Serialization;
-using TradePlatform.StockDataDownload.DataServices.Trades;
-using TradePlatform.StockDataDownload.Events;
-using TradePlatform.StockDataDownload.Presenters;
-using TradePlatform.StockDataDownload.ViewModels;
+using TradePlatform.StockData.DataServices.Serialization;
+using TradePlatform.StockData.DataServices.Trades;
+using TradePlatform.StockData.Events;
+using TradePlatform.StockData.Models;
+using TradePlatform.StockData.Presenters;
+using TradePlatform.StockData.ViewModels;
 
 namespace Trade_platform.tests.StockDataDownload.ViewModels
 {

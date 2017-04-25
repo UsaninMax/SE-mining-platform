@@ -9,9 +9,9 @@ using TradePlatform;
 using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.Commons.Sistem;
-using TradePlatform.Commons.Trades;
-using TradePlatform.StockDataDownload.DataServices.Trades;
-using TradePlatform.StockDataDownload.DataServices.Trades.Finam;
+using TradePlatform.StockData.DataServices.Trades;
+using TradePlatform.StockData.DataServices.Trades.Finam;
+using TradePlatform.StockData.Models;
 
 namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
 {
