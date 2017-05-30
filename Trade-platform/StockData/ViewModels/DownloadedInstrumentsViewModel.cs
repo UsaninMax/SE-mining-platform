@@ -8,10 +8,10 @@ using Prism.Events;
 using Prism.Mvvm;
 using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Info.Model.Message;
-using TradePlatform.StockData.DataServices.Serialization;
 using TradePlatform.StockData.Events;
 using TradePlatform.StockData.Models;
 using TradePlatform.StockData.Presenters;
+using TradePlatform.StockData.Holders;
 
 namespace TradePlatform.StockData.ViewModels
 {
@@ -41,8 +41,6 @@ namespace TradePlatform.StockData.ViewModels
 
         public ICommand LoadedWindowCommand { get; private set; }
 
-        public ICommand ClosingWindowCommand { get; private set; }
-
         private readonly IInfoPublisher _infoPublisher;
 
         public DownloadedInstrumentsViewModel()
@@ -55,7 +53,6 @@ namespace TradePlatform.StockData.ViewModels
             HardReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(HardReloadData, CanDoActionItemFromList);
             OpenFolderCommand = new DelegateCommand<IDounloadInstrumentPresenter>(OpenFolderWithData , CanDoActionItemFromList);
             LoadedWindowCommand = new DelegateCommand(WindowLoaded);
-            ClosingWindowCommand = new DelegateCommand(WindowClosing);
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
         }
 
@@ -125,15 +122,16 @@ namespace TradePlatform.StockData.ViewModels
         {
             var updateHistory = new Task<ObservableCollection<IDounloadInstrumentPresenter>>(() =>
             {
-                var serializer = ContainerBuilder.Container.Resolve<IInstrumentsStorage>();
-                return new ObservableCollection<IDounloadInstrumentPresenter>(serializer
-                    .ReStore()
-                    .Select(i =>
-                {
-                    var presenter = ContainerBuilder.Container.Resolve<IDounloadInstrumentPresenter>(new DependencyOverride<Instrument>(i));
-                    presenter.CheckData();
-                    return presenter;
-                }).ToList());
+                var instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
+                return  new ObservableCollection<IDounloadInstrumentPresenter>(instrumentsHolder.GetAll()
+                        .Select(i =>
+                        {
+                            var presenter = ContainerBuilder.Container
+                            .Resolve<IDounloadInstrumentPresenter>(new DependencyOverride<Instrument>(i));
+                            presenter.CheckData();
+                            return presenter;
+                        })
+                        .ToList());
             });
             updateHistory.ContinueWith(t =>
             {
@@ -147,27 +145,6 @@ namespace TradePlatform.StockData.ViewModels
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
             updateHistory.Start();
-        }
-
-        private void WindowClosing()
-        {
-            var storeHistory = new Task(() =>
-            {
-                var xmlStorage = ContainerBuilder.Container.Resolve<IInstrumentsStorage>();
-                xmlStorage.Store(InstrumentsInfo.Select(i =>
-                {
-                    i.StopDownload();
-                    return i.Instrument();
-                }).ToList());
-            });
-            storeHistory.ContinueWith(t =>
-            {
-                if (t.IsFaulted)
-                {
-                    _infoPublisher.PublishException(t.Exception);
-                }
-            });
-            storeHistory.Start();
         }
 
         private bool CanDoActionItemFromList(object param)

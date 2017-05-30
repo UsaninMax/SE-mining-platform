@@ -3,6 +3,7 @@ using Prism.Unity;
 using Microsoft.Practices.Unity;
 using TradePlatform.Main.Views;
 using TradePlatform.StockData.Holders;
+using System.Threading.Tasks;
 
 namespace TradePlatform
 {
@@ -27,8 +28,10 @@ namespace TradePlatform
 
         private void InitializeHolders()
         {
-            var instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
-            instrumentsHolder.RestoreFromSettings();
+            Task.Factory.StartNew(() => {
+                var instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
+                instrumentsHolder.Restore();
+            });
         }
     }
 }

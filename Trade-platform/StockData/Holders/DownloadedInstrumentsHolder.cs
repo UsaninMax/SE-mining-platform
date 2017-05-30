@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.Unity;
 using TradePlatform.StockData.DataServices.Serialization;
-using TradePlatform.StockData.DataServices.Trades;
 using TradePlatform.StockData.Models;
 
 namespace TradePlatform.StockData.Holders
 {
     public class DownloadedInstrumentsHolder : IDownloadedInstrumentsHolder
     {
-        private readonly IInstrumentDownloadService _downloadService;
         private readonly HashSet<Instrument> _instrumnnets = new HashSet<Instrument>();
-        public DownloadedInstrumentsHolder()
+        private readonly IInstrumentsStorage _instrumentsStorage;
+
+        public DownloadedInstrumentsHolder ()
         {
-            _downloadService = ContainerBuilder.Container.Resolve<IInstrumentDownloadService>();
+            _instrumentsStorage = ContainerBuilder.Container.Resolve<IInstrumentsStorage>();
         }
 
         public void Put(Instrument instrument)
@@ -32,16 +32,26 @@ namespace TradePlatform.StockData.Holders
             return _instrumnnets;
         }
 
-        public void RestoreFromSettings()
+        public void Restore()
         {
             try
             {
-                var serializer = ContainerBuilder.Container.Resolve<IInstrumentsStorage>();
-                serializer
+                    _instrumentsStorage
                     .ReStore()
-                    .Where(i => _downloadService.CheckFiles(i))
                     .Select(i => _instrumnnets.Add(i))
                     .ToArray();
+            }
+            catch (Exception e)
+            {
+                //TODO: log
+            }
+        }
+
+        public void Store()
+        {
+            try
+            {
+                _instrumentsStorage.Store(_instrumnnets);
             }
             catch (Exception e)
             {

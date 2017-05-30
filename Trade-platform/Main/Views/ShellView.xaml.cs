@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Microsoft.Practices.Unity;
 using TradePlatform.Main.ViewModels;
+using TradePlatform.StockData.Holders;
 
 namespace TradePlatform.Main.Views
 {
@@ -10,6 +11,13 @@ namespace TradePlatform.Main.Views
         {
             this.InitializeComponent();
             this.DataContext = ContainerBuilder.Container.Resolve<IShellModel>();
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            var instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
+            instrumentsHolder.Store();
+            Application.Current.Shutdown();
         }
     }
 }

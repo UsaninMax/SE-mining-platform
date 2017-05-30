@@ -275,7 +275,7 @@ namespace Trade_platform.tests.StockDataDownload.ViewModels
                     presenterMock.Object,
                     presenterMock.Object
                 });
-            viewModel.ClosingWindowCommand.Execute(null);
+            //viewModel.ClosingWindowCommand.Execute(null);
             Thread.Sleep(500);
 
             presenterMock.Verify(x => x.StopDownload(), Times.Exactly(2));
@@ -290,7 +290,7 @@ namespace Trade_platform.tests.StockDataDownload.ViewModels
             xmlStorage.Setup(x => x.Store(It.IsAny<IEnumerable<Instrument>>())).Throws(new Exception());
             ContainerBuilder.Container.RegisterInstance(xmlStorage.Object);
             var viewModel = new DownloadedInstrumentsViewModel();
-            viewModel.ClosingWindowCommand.Execute(null);
+           // viewModel.ClosingWindowCommand.Execute(null);
             Thread.Sleep(500);
 
             infoPublisher.Verify(x => x.PublishException(It.IsAny<AggregateException>()), Times.Once);
