@@ -20,7 +20,6 @@ namespace TradePlatform.StockData.Presenters
         private readonly IInstrumentDownloadService _downloadService;
         private CancellationTokenSource _cancellationTokenSource;
         private readonly IInfoPublisher _infoPublisher;
-        private readonly IDownloadedInstrumentsHolder _instrumentsHolder;
         private Task _download;
 
         public DounloadInstrumentPresenter(Instrument instrument)
@@ -28,7 +27,6 @@ namespace TradePlatform.StockData.Presenters
             _instrument = instrument;
             _downloadService = ContainerBuilder.Container.Resolve<IInstrumentDownloadService>();
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
-            _instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
         }
 
         public string Name => _instrument.Name;
@@ -72,7 +70,6 @@ namespace TradePlatform.StockData.Presenters
                 }
                 else
                 {
-                    _instrumentsHolder.Put(_instrument);
                     StatusMessage = TradesStatuses.IsReady;
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
@@ -100,7 +97,6 @@ namespace TradePlatform.StockData.Presenters
                 }
                 else
                 {
-                    _instrumentsHolder.Put(_instrument);
                     StatusMessage = TradesStatuses.IsReady;
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
@@ -122,7 +118,6 @@ namespace TradePlatform.StockData.Presenters
                 }
                 else
                 {
-                    _instrumentsHolder.Remove(_instrument);
                     var eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
                     eventAggregator.GetEvent<RemoveFromList<IDounloadInstrumentPresenter>>().Publish(this);
                 }
