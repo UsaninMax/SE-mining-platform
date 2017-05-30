@@ -100,6 +100,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="DataSet\View\DataSetElement.xaml.cs">
+      <DependentUpon>DataSetElement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet\View\DataSetList.xaml.cs">
+      <DependentUpon>DataSetList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="StockData\Holders\DownloadedInstrumentsHolder.cs" />
     <Compile Include="StockData\Holders\IDownloadedInstrumentsHolder.cs" />
     <Compile Include="Commons\Info\Exception\ExceptionActualizer.cs" />
@@ -172,6 +178,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="DataSet\View\DataSetElement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DataSet\View\DataSetList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Main\Views\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -240,7 +254,6 @@
     <Folder Include="DataSet\DataServices\" />
     <Folder Include="DataSet\Presenters\" />
     <Folder Include="DataSet\ViewModel\" />
-    <Folder Include="DataSet\View\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
