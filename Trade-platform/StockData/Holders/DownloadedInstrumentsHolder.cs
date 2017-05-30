@@ -27,7 +27,7 @@ namespace TradePlatform.StockData.Holders
             _instrumnnets.Remove(instrument);
         }
 
-        public HashSet<Instrument> GetAll()
+        public ISet<Instrument> GetAll()
         {
             return _instrumnnets;
         }
@@ -52,6 +52,7 @@ namespace TradePlatform.StockData.Holders
             try
             {
                 _instrumentsStorage.Store(_instrumnnets);
+               
             }
             catch (Exception e)
             {

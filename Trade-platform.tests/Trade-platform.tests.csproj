@@ -97,14 +97,16 @@
     <Compile Include="Commons\Info\ViewModels\InfoViewModelTests.cs" />
     <Compile Include="Commons\Utils\FixedSizeObservableCollectionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoParserTest.cs" />
-    <Compile Include="StockDataDownload\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoUpdaterTests.cs" />
-    <Compile Include="StockDataDownload\DataServices\Serialization\XmlInstrumentStorageTests.cs" />
-    <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamInstrumentDownloadServiceTests.cs" />
-    <Compile Include="StockDataDownload\DataServices\Trades\Finam\FinamInstrumentSplitterTests.cs" />
-    <Compile Include="StockDataDownload\Presenters\DounloadInstrumentPresenterTests.cs" />
-    <Compile Include="StockDataDownload\ViewModels\DownloadedInstrumentsViewModelTests.cs" />
-    <Compile Include="StockDataDownload\ViewModels\FinamDownloadNewInstrumentViewModelTests.cs" />
+    <Compile Include="StockData\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoParserTest.cs" />
+    <Compile Include="StockData\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoUpdaterTests.cs" />
+    <Compile Include="StockData\DataServices\Serialization\XmlInstrumentStorageTests.cs" />
+    <Compile Include="StockData\DataServices\Trades\Finam\FinamInstrumentDownloadServiceTests.cs" />
+    <Compile Include="StockData\DataServices\Trades\Finam\FinamInstrumentSplitterTests.cs" />
+    <Compile Include="StockData\Holders\DownloadedInstrumentsHolderTests.cs" />
+    <Compile Include="StockData\Holders\SecuritiesInfoHolderTests.cs" />
+    <Compile Include="StockData\Presenters\DounloadInstrumentPresenterTests.cs" />
+    <Compile Include="StockData\ViewModels\DownloadedInstrumentsViewModelTests.cs" />
+    <Compile Include="StockData\ViewModels\FinamDownloadNewInstrumentViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Trade-platform\Trade-platform.csproj">
@@ -115,6 +117,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

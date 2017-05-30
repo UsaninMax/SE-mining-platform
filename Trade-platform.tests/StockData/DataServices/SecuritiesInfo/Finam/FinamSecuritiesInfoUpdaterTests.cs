@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Practices.Unity;
 using Moq;
-using TradePlatform;
 using NUnit.Framework;
+using TradePlatform;
 using TradePlatform.StockData.DataServices.SecuritiesInfo;
 using TradePlatform.StockData.DataServices.SecuritiesInfo.Finam;
 using TradePlatform.StockData.Holders;
 using TradePlatform.StockData.Models;
 
-namespace Trade_platform.tests.StockDataDownload.DataServices.SecuritiesInfo.Finam
+namespace Trade_platform.tests.StockData.DataServices.SecuritiesInfo.Finam
 {
     [TestFixture]
     public class FinamSecuritiesInfoUpdaterTests

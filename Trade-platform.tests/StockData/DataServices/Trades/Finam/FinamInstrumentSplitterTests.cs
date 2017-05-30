@@ -5,7 +5,7 @@ using NUnit.Framework;
 using TradePlatform.StockData.DataServices.Trades.Finam;
 using TradePlatform.StockData.Models;
 
-namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
+namespace Trade_platform.tests.StockData.DataServices.Trades.Finam
 {
     [TestFixture]
     public class FinamInstrumentSplitterTests

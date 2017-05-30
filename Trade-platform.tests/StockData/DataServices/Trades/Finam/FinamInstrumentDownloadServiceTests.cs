@@ -1,19 +1,20 @@
-﻿using Microsoft.Practices.Unity;
-using Moq;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Practices.Unity;
+using Moq;
+using NUnit.Framework;
 using TradePlatform;
 using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.Commons.Sistem;
 using TradePlatform.StockData.DataServices.Trades;
 using TradePlatform.StockData.DataServices.Trades.Finam;
+using TradePlatform.StockData.Holders;
 using TradePlatform.StockData.Models;
 
-namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
+namespace Trade_platform.tests.StockData.DataServices.Trades.Finam
 {
     [TestFixture]
     public class FinamInstrumentDownloadServiceTests
@@ -30,7 +31,9 @@ namespace Trade_platform.tests.StockDataDownload.DataServices.Trades.Finam
                .WithTo(DateTime.Now)
                .Build();
             var infoPublisher = new Mock<IInfoPublisher>();
+            var holder = new Mock<IDownloadedInstrumentsHolder>();
             ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
+            ContainerBuilder.Container.RegisterInstance(holder.Object);
         }
 
         [Test]

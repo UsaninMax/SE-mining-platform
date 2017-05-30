@@ -1,10 +1,10 @@
-﻿using Microsoft.Practices.Unity;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
 using Prism.Events;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using TradePlatform;
 using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Info.Model.Message;
@@ -15,7 +15,7 @@ using TradePlatform.StockData.Holders;
 using TradePlatform.StockData.Models;
 using TradePlatform.StockData.Presenters;
 
-namespace Trade_platform.tests.StockDataDownload.Presenters
+namespace Trade_platform.tests.StockData.Presenters
 {
     [TestFixture]
     public class DounloadInstrumentPresenterTests

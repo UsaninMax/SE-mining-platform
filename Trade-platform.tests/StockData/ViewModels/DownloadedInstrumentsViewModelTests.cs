@@ -1,22 +1,20 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Threading;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
 using Prism.Events;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading;
 using TradePlatform;
 using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Info.Model.Message;
-using TradePlatform.StockData.DataServices.Serialization;
 using TradePlatform.StockData.DataServices.Trades;
 using TradePlatform.StockData.Events;
+using TradePlatform.StockData.Holders;
 using TradePlatform.StockData.Models;
 using TradePlatform.StockData.Presenters;
 using TradePlatform.StockData.ViewModels;
 
-namespace Trade_platform.tests.StockDataDownload.ViewModels
+namespace Trade_platform.tests.StockData.ViewModels
 {
     [TestFixture]
     public class DownloadedInstrumentsViewModelTests
@@ -226,74 +224,21 @@ namespace Trade_platform.tests.StockDataDownload.ViewModels
         [Test]
         public void CheckLoadWindowHistory()
         {
-            var serializer = new Mock<IInstrumentsStorage>();
+            var holder = new Mock<IDownloadedInstrumentsHolder>();
             Instrument instr = new Instrument.Builder().WithId("12").Build();
-            IList<Instrument> instruments = new List<Instrument> { instr, instr };
-            serializer.Setup(x => x.ReStore()).Returns(instruments);
+            HashSet<Instrument> instruments = new HashSet<Instrument> { instr, instr };
+            holder.Setup(x => x.GetAll()).Returns(instruments);
 
             var presenterMock = new Mock<IDounloadInstrumentPresenter>();
             ContainerBuilder.Container.RegisterInstance(presenterMock.Object);
-            ContainerBuilder.Container.RegisterInstance(serializer.Object);
+            ContainerBuilder.Container.RegisterInstance(holder.Object);
 
             var viewModel = new DownloadedInstrumentsViewModel();
             viewModel.LoadedWindowCommand.Execute(null);
             Thread.Sleep(500);
 
-            presenterMock.Verify(x => x.CheckData(), Times.Exactly(2));
-            Assert.That(viewModel.InstrumentsInfo.Count, Is.EqualTo(2));
-        }
-
-        [Test]
-        public void CheckLoadWindowHistoryThrowException()
-        {
-            var serializer = new Mock<IInstrumentsStorage>();
-            serializer.Setup(x => x.ReStore()).Throws(new Exception());
-            ContainerBuilder.Container.RegisterInstance(serializer.Object);
-            var infoPublisher = new Mock<IInfoPublisher>();
-            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
-
-            var viewModel = new DownloadedInstrumentsViewModel();
-            viewModel.LoadedWindowCommand.Execute(null);
-            Thread.Sleep(500);
-
-            infoPublisher.Verify(x => x.PublishException(It.IsAny<AggregateException>()), Times.Once);
-            Assert.That(viewModel.InstrumentsInfo.Count, Is.EqualTo(0));
-        }
-
-        [Test]
-        public void CheckSaveWindowHistory()
-        {
-            var xmlStorage = new Mock<IInstrumentsStorage>();
-            xmlStorage.Setup(x => x.Store(It.IsAny<IEnumerable<Instrument>>()));
-
-            var presenterMock = new Mock<IDounloadInstrumentPresenter>();
-            ContainerBuilder.Container.RegisterInstance(xmlStorage.Object);
-
-            var viewModel = new DownloadedInstrumentsViewModel();
-            viewModel.InstrumentsInfo = new ObservableCollection<IDounloadInstrumentPresenter>(
-                new List<IDounloadInstrumentPresenter> {
-                    presenterMock.Object,
-                    presenterMock.Object
-                });
-            //viewModel.ClosingWindowCommand.Execute(null);
-            Thread.Sleep(500);
-
-            presenterMock.Verify(x => x.StopDownload(), Times.Exactly(2));
-        }
-
-        [Test]
-        public void CheckSaveWindowHistoryThrowException()
-        {
-            var infoPublisher = new Mock<IInfoPublisher>();
-            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
-            var xmlStorage = new Mock<IInstrumentsStorage>();
-            xmlStorage.Setup(x => x.Store(It.IsAny<IEnumerable<Instrument>>())).Throws(new Exception());
-            ContainerBuilder.Container.RegisterInstance(xmlStorage.Object);
-            var viewModel = new DownloadedInstrumentsViewModel();
-           // viewModel.ClosingWindowCommand.Execute(null);
-            Thread.Sleep(500);
-
-            infoPublisher.Verify(x => x.PublishException(It.IsAny<AggregateException>()), Times.Once);
+            presenterMock.Verify(x => x.CheckData(), Times.Exactly(1));
+            Assert.That(viewModel.InstrumentsInfo.Count, Is.EqualTo(1));
         }
     }
 }

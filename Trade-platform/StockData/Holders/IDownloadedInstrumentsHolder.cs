@@ -7,7 +7,7 @@ namespace TradePlatform.StockData.Holders
     {
         void Put(Instrument instrument);
         void Remove(Instrument instrument);
-        HashSet<Instrument> GetAll();
+        ISet<Instrument> GetAll();
         void Restore();
         void Store();
     }

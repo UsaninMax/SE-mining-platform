@@ -8,7 +8,7 @@ using TradePlatform.Commons.Sistem;
 using TradePlatform.StockData.DataServices.Serialization;
 using TradePlatform.StockData.Models;
 
-namespace Trade_platform.tests.StockDataDownload.DataServices.Serialization
+namespace Trade_platform.tests.StockData.DataServices.Serialization
 {
     [TestFixture]
     public class XmlInstrumentStorageTests

@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using TradePlatform.StockData.DataServices.SecuritiesInfo.Finam;
 
-namespace Trade_platform.tests.StockDataDownload.DataServices.SecuritiesInfo.Finam
+namespace Trade_platform.tests.StockData.DataServices.SecuritiesInfo.Finam
 {
     [TestFixture]
     public class FinamSecuritiesInfoParserTest

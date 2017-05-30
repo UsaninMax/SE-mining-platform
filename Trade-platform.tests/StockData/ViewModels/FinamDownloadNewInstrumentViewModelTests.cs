@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading;
 using Microsoft.Practices.Unity;
 using Moq;
+using NUnit.Framework;
 using Prism.Events;
 using TradePlatform;
-using NUnit.Framework;
 using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.StockData.DataServices.SecuritiesInfo;
@@ -16,7 +16,7 @@ using TradePlatform.StockData.Models;
 using TradePlatform.StockData.Presenters;
 using TradePlatform.StockData.ViewModels;
 
-namespace Trade_platform.tests.StockDataDownload.ViewModels
+namespace Trade_platform.tests.StockData.ViewModels
 {
     [TestFixture]
     public class FinamDownloadNewInstrumentViewModelTests
