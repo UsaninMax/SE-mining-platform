@@ -100,11 +100,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="DataSet\View\DataSetElement.xaml.cs">
-      <DependentUpon>DataSetElement.xaml</DependentUpon>
+    <Compile Include="DataSet\ViewModel\DataSetElementViewModel.cs" />
+    <Compile Include="DataSet\ViewModel\DataSetListViewModel.cs.cs" />
+    <Compile Include="DataSet\ViewModel\IDataSetElementViewModel.cs" />
+    <Compile Include="DataSet\ViewModel\IDataSetListViewModel.cs" />
+    <Compile Include="DataSet\ViewModel\IInstrumentChooseListViewModel.cs" />
+    <Compile Include="DataSet\ViewModel\InstrumentChooseListViewModel.cs" />
+    <Compile Include="DataSet\View\DataSetElementView.xaml.cs">
+      <DependentUpon>DataSetElementView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DataSet\View\DataSetList.xaml.cs">
-      <DependentUpon>DataSetList.xaml</DependentUpon>
+    <Compile Include="DataSet\View\DataSetListView.xaml.cs">
+      <DependentUpon>DataSetListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet\View\InstrumentChooseListView.xaml.cs">
+      <DependentUpon>InstrumentChooseListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="StockData\Holders\DownloadedInstrumentsHolder.cs" />
     <Compile Include="StockData\Holders\IDownloadedInstrumentsHolder.cs" />
@@ -178,11 +187,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DataSet\View\DataSetElement.xaml">
+    <Page Include="DataSet\View\DataSetElementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DataSet\View\DataSetList.xaml">
+    <Page Include="DataSet\View\DataSetListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DataSet\View\InstrumentChooseListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -253,7 +266,6 @@
   <ItemGroup>
     <Folder Include="DataSet\DataServices\" />
     <Folder Include="DataSet\Presenters\" />
-    <Folder Include="DataSet\ViewModel\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -6,6 +6,7 @@ using Prism.Mvvm;
 using TradePlatform.Commons.BaseModels;
 using TradePlatform.Commons.Info.Views;
 using HistoryInstrumentsView = TradePlatform.StockData.Views.HistoryInstrumentsView;
+using TradePlatform.DataSet.View;
 
 namespace TradePlatform.Main.ViewModels
 {
@@ -14,11 +15,13 @@ namespace TradePlatform.Main.ViewModels
 
         public ICommand LoadInstrumentCommand { get; set; }
         public ICommand ShowInfoCommand { get; set; }
+        public ICommand ShowDataSetListCommand { get; set; }
 
         public ShellModel()
         {
             LoadInstrumentCommand = new DelegateCommand(o => HistoryInstrumentsPage());
             ShowInfoCommand = new DelegateCommand(o => ShowInfoPage());
+            ShowDataSetListCommand = new DelegateCommand(o => ShowDataSetListPage());
         }
 
         private void HistoryInstrumentsPage()
@@ -41,6 +44,17 @@ namespace TradePlatform.Main.ViewModels
                 return;
             }
             ContainerBuilder.Container.Resolve<InfoView>().Show();
+        }
+
+        private void ShowDataSetListPage()
+        {
+            var window = Application.Current.Windows.OfType<DataSetListView>().SingleOrDefault(x => x.IsInitialized);
+            if (window != null)
+            {
+                window.Activate();
+                return;
+            }
+            ContainerBuilder.Container.Resolve<DataSetListView>().Show();
         }
     }
 }
