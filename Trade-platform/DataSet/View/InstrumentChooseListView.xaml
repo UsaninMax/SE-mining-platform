@@ -3,15 +3,32 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:TradePlatform.DataSet.View"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300">
+        Title="Instruments:" Height="500" Width="300">
 
-    <DataGrid IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding }">
-        <DataGrid.Columns>
-            <DataGridTextColumn  Header="Instrument" Binding="{Binding }" />
-            <DataGridTextColumn  Header="From" Binding="{Binding }" />
-            <DataGridTextColumn  Header="To" Binding="{Binding }" />
-        </DataGrid.Columns>
-    </DataGrid>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <DataGrid Grid.Column="0" 
+                  Grid.Row="0" 
+                  Margin="5" 
+                  Grid.ColumnSpan="3"
+                  IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding }">
+            <DataGrid.Columns>
+                <DataGridTextColumn  Header="Instrument" Binding="{Binding }" />
+                <DataGridTextColumn  Header="From" Binding="{Binding }" />
+                <DataGridTextColumn  Header="To" Binding="{Binding }" />
+            </DataGrid.Columns>
+
+        </DataGrid>
+        <Button Grid.Column="1" Grid.Row="1" Margin="5" Content="Choose" Command="{Binding }"/>
+    </Grid>
 </Window>
