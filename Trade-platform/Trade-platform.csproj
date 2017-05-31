@@ -81,6 +81,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -100,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="DataSet\Events\AddInstrumentToDatatSet.cs" />
     <Compile Include="DataSet\ViewModel\DataSetElementViewModel.cs" />
     <Compile Include="DataSet\ViewModel\DataSetListViewModel.cs.cs" />
     <Compile Include="DataSet\ViewModel\IDataSetElementViewModel.cs" />
@@ -133,7 +135,7 @@
       <DependentUpon>InfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Commons\Info\Events\PuplishInfo.cs" />
-    <Compile Include="StockData\Events\AddItemToList.cs" />
+    <Compile Include="StockData\Events\AddPresenterToList.cs" />
     <Compile Include="StockData\Events\RemoveItemFromList.cs" />
     <Compile Include="StockData\Models\Security.cs" />
     <Compile Include="StockData\Models\Market.cs" />

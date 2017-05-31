@@ -24,18 +24,29 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <DataGrid Grid.Column="0" 
+        <DataGrid 
+                  x:Name="ItemsGrid"
+                  SelectionMode="Extended"
+                  Grid.Column="0" 
                   Grid.Row="0" 
                   Margin="5" 
                   Grid.ColumnSpan="3"
-                  IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding InstrumentsInfo}">
+                  IsReadOnly="True" 
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding InstrumentsInfo}">
             <DataGrid.Columns>
-                <DataGridTextColumn  Header="Instrument" Binding="{Binding Name}" />
+                <DataGridTextColumn  Header="Code" Binding="{Binding Code}" />
+                <DataGridTextColumn  Header="Name" Binding="{Binding Name}" />
                 <DataGridTextColumn  Header="From" Binding="{Binding From}" />
                 <DataGridTextColumn  Header="To" Binding="{Binding To}" />
             </DataGrid.Columns>
 
         </DataGrid>
-        <Button Grid.Column="1" Grid.Row="1" Margin="5" Content="Choose" Command="{Binding }"/>
+        <Button Grid.Column="1" 
+                Grid.Row="1" 
+                Margin="5" 
+                Content="Choose" 
+                Command="{Binding AddSelectedItemsCommand}"
+                CommandParameter="{Binding ElementName=ItemsGrid, Path=SelectedItems}"/>
     </Grid>
 </Window>

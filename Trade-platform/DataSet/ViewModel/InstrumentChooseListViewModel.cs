@@ -1,11 +1,15 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using TradePlatform.Commons.Info;
+using TradePlatform.DataSet.Events;
 using TradePlatform.StockData.DataServices.Trades;
 using TradePlatform.StockData.Holders;
 using TradePlatform.StockData.Models;
@@ -15,6 +19,7 @@ namespace TradePlatform.DataSet.ViewModel
     public class InstrumentChooseListViewModel : BindableBase, IInstrumentChooseListViewModel
     {
         public ICommand LoadedWindowCommand { get; private set; }
+        public ICommand AddSelectedItemsCommand { get; private set; }
 
         private ObservableCollection<Instrument> _instrumentsInfo = new ObservableCollection<Instrument>();
         public ObservableCollection<Instrument> InstrumentsInfo
@@ -31,12 +36,19 @@ namespace TradePlatform.DataSet.ViewModel
         }
 
         private readonly IInfoPublisher _infoPublisher;
-
-
+        private readonly IEventAggregator _eventAggregator;
         public InstrumentChooseListViewModel()
         {
             LoadedWindowCommand = new DelegateCommand(WindowLoaded);
+            AddSelectedItemsCommand = new DelegateCommand<IList>(AddSelectedItems);
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
+            _eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
+        }
+
+        private void AddSelectedItems(IList parameter)
+        {
+            var selectedInstruments = parameter.Cast<Instrument>().ToList();
+            _eventAggregator.GetEvent<AddInstrumentToDatatSet>().Publish(selectedInstruments);
         }
 
         private void WindowLoaded()

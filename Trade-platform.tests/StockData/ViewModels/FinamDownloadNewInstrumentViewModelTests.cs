@@ -89,7 +89,7 @@ namespace Trade_platform.tests.StockData.ViewModels
             ContainerBuilder.Container.RegisterInstance(new Mock<IInstrumentDownloadService>().Object);
 
             Mock<IEventAggregator> fakeEventAggregator = new Mock<IEventAggregator>();
-            fakeEventAggregator.Setup(x => x.GetEvent<AddToList<IDounloadInstrumentPresenter>>()
+            fakeEventAggregator.Setup(x => x.GetEvent<AddPresenterToList>()
                 .Publish(It.IsAny<IDounloadInstrumentPresenter>()));
 
             ContainerBuilder.Container.RegisterInstance(fakeEventAggregator.Object);
@@ -97,7 +97,7 @@ namespace Trade_platform.tests.StockData.ViewModels
             newInstrumentViewModel.AddNewInstrument();
 
             fakeEventAggregator.Verify(x => x
-                .GetEvent<AddToList<IDounloadInstrumentPresenter>>()
+                .GetEvent<AddPresenterToList>()
                 .Publish(It.IsAny<IDounloadInstrumentPresenter>()), Times.Once);
         }
 
@@ -128,11 +128,11 @@ namespace Trade_platform.tests.StockData.ViewModels
             newInstrumentViewModel.DateFrom = currentDate;
             newInstrumentViewModel.DateTo = currentDate;
             newInstrumentViewModel.SelectedSecurity = security;
-            fakeEventAggregator.Setup(x => x.GetEvent<AddToList<IDounloadInstrumentPresenter>>()
+            fakeEventAggregator.Setup(x => x.GetEvent<AddPresenterToList>()
             .Publish(It.IsAny<IDounloadInstrumentPresenter>()));
 
             newInstrumentViewModel.AddNewInstrument();
-            fakeEventAggregator.Verify(x => x.GetEvent<AddToList<IDounloadInstrumentPresenter>>()
+            fakeEventAggregator.Verify(x => x.GetEvent<AddPresenterToList>()
             .Publish(It.Is<IDounloadInstrumentPresenter>(
                 m =>
                 "FINAM".Equals(m.Instrument().DataProvider) &&
@@ -158,11 +158,11 @@ namespace Trade_platform.tests.StockData.ViewModels
             DateTime currentDate = DateTime.Now;
             newInstrumentViewModel.DateFrom = currentDate;
             newInstrumentViewModel.DateTo = currentDate;
-            fakeEventAggregator.Setup(x => x.GetEvent<AddToList<IDounloadInstrumentPresenter>>()
+            fakeEventAggregator.Setup(x => x.GetEvent<AddPresenterToList>()
             .Publish(It.IsAny<IDounloadInstrumentPresenter>()));
 
             newInstrumentViewModel.AddNewInstrument();
-            fakeEventAggregator.Verify(x => x.GetEvent<AddToList<IDounloadInstrumentPresenter>>()
+            fakeEventAggregator.Verify(x => x.GetEvent<AddPresenterToList>()
             .Publish(It.Is<IDounloadInstrumentPresenter>(
                 m =>
                 "FINAM".Equals(m.Instrument().DataProvider) &&

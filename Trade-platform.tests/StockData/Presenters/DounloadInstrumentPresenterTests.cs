@@ -157,7 +157,7 @@ namespace Trade_platform.tests.StockData.Presenters
             ContainerBuilder.Container.RegisterInstance(downloadService.Object);
             var presenter = new DounloadInstrumentPresenter(new Instrument.Builder().Build());
             var eventAggregator = new Mock<IEventAggregator>();
-            eventAggregator.Setup(x => x.GetEvent<RemoveFromList<IDounloadInstrumentPresenter>>()
+            eventAggregator.Setup(x => x.GetEvent<RemovePresenterFromList>()
                 .Publish(It.IsAny<IDounloadInstrumentPresenter>()));
 
             ContainerBuilder.Container.RegisterInstance(eventAggregator.Object);
@@ -168,7 +168,7 @@ namespace Trade_platform.tests.StockData.Presenters
                 It.IsAny<Task>(),
                 It.IsAny<CancellationTokenSource>()),
                 Times.Exactly(1));
-            eventAggregator.Verify(x => x.GetEvent<RemoveFromList<IDounloadInstrumentPresenter>>()
+            eventAggregator.Verify(x => x.GetEvent<RemovePresenterFromList>()
             .Publish(It.IsAny<IDounloadInstrumentPresenter>()), Times.Once);
         }
 

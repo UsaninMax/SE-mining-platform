@@ -118,7 +118,7 @@ namespace TradePlatform.StockData.Presenters
                 else
                 {
                     var eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
-                    eventAggregator.GetEvent<RemoveFromList<IDounloadInstrumentPresenter>>().Publish(this);
+                    eventAggregator.GetEvent<RemovePresenterFromList>().Publish(this);
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
             delete.Start();

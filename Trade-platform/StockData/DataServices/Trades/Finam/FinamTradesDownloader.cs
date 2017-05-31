@@ -17,7 +17,7 @@ namespace TradePlatform.StockData.DataServices.Trades.Finam
             StringBuilder urlBuilder = new StringBuilder();
             urlBuilder
                 .Append("http://")
-                .Append("78.41.196.47")
+                .Append("export.finam.ru")
                 .Append("/")
                 .Append(instrument.FileName)
                 .Append(".txt?")

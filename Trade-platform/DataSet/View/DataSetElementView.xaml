@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
-      Title="Create new set:" Height="300" Width="300">
+      Title="Create new set:" Height="300" Width="500">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -22,15 +22,12 @@
         <TextBox  Grid.Column="1" Grid.Row="0" Margin="5"/>
         <DataGrid 
                   AutoGenerateColumns="False" 
-                  ItemsSource="{Binding }"
+                  ItemsSource="{Binding InstrumentsInfo}"
                   Grid.ColumnSpan="3" 
                     Grid.Column="0"
                     Grid.Row="1">
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Open folder"
-                          Command="{Binding }"
-                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
                     <MenuItem Header="Choose instrument" Command="{Binding ChooseInstrumentCommand}" />
                     <MenuItem Header="Remove"
                     Command="{Binding }"
@@ -38,9 +35,9 @@
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
-                <DataGridTextColumn  Header="Instrument" Binding="{Binding }" />
-                <DataGridTextColumn  Header="From" Binding="{Binding }" />
-                <DataGridTextColumn  Header="To" Binding="{Binding }" />
+                <DataGridTextColumn  Header="Instrument" Binding="{Binding Name}" />
+                <DataGridTextColumn  Header="From" Binding="{Binding From}" />
+                <DataGridTextColumn  Header="To" Binding="{Binding To}" />
             </DataGrid.Columns>
         </DataGrid>
         <Button Grid.Column="1" Grid.Row="2" Margin="5" Content="Add" Command="{Binding }"/>
