@@ -42,6 +42,7 @@ namespace TradePlatform.StockData.ViewModels
         public ICommand LoadedWindowCommand { get; private set; }
 
         private readonly IInfoPublisher _infoPublisher;
+        private readonly IDownloadedInstrumentsHolder _instrumentsHolder;
 
         public DownloadedInstrumentsViewModel()
         {
@@ -54,6 +55,7 @@ namespace TradePlatform.StockData.ViewModels
             OpenFolderCommand = new DelegateCommand<IDounloadInstrumentPresenter>(OpenFolderWithData , CanDoActionItemFromList);
             LoadedWindowCommand = new DelegateCommand(WindowLoaded);
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
+            _instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
         }
 
         private void AddItemItemToList(object param)
@@ -62,6 +64,7 @@ namespace TradePlatform.StockData.ViewModels
             if (instrument != null)
             {
                 InstrumentsInfo.Add(instrument);
+                _instrumentsHolder.Put(instrument.Instrument());
 
                 if (HasNoActiveDownloadingProcess())
                 {

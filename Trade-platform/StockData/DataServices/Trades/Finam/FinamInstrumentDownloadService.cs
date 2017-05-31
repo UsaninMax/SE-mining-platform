@@ -16,14 +16,13 @@ namespace TradePlatform.StockData.DataServices.Trades.Finam
         private readonly IInstrumentSplitter _instrumentSplitter;
         private readonly IFileManager _fileManager;
         private readonly IInfoPublisher _infoPublisher;
-        private readonly IDownloadedInstrumentsHolder _instrumentsHolder;
 
         public FinamInstrumentDownloadService()
         {
             _instrumentSplitter = ContainerBuilder.Container.Resolve<IInstrumentSplitter>();
             _fileManager = ContainerBuilder.Container.Resolve<IFileManager>();
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
-            _instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
+           
         }
         // Finam can return data only synchronously
         public void Download(Instrument instrument, CancellationToken cancellationToken)
@@ -39,7 +38,6 @@ namespace TradePlatform.StockData.DataServices.Trades.Finam
                 }
                 var downloader = ContainerBuilder.Container.Resolve<ITradesDownloader>();
                 downloader.Download(i);
-                _instrumentsHolder.Put(instrument);
                 _infoPublisher.PublishInfo(new DownloadInfo { Message = i + "- was downloaded" });
             });
         }
@@ -56,7 +54,6 @@ namespace TradePlatform.StockData.DataServices.Trades.Finam
                 }
                 var downloader = ContainerBuilder.Container.Resolve<ITradesDownloader>();
                 downloader.Download(i);
-                _instrumentsHolder.Put(instrument);
                 _infoPublisher.PublishInfo(new DownloadInfo { Message = i + "- was soft downloaded" });
             });
         }
@@ -70,7 +67,8 @@ namespace TradePlatform.StockData.DataServices.Trades.Finam
                 download.Wait();
             }
             DeleteFolder(instrument);
-            _instrumentsHolder.Remove(instrument);
+            var instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
+            instrumentsHolder.Remove(instrument);
             _infoPublisher.PublishInfo(new DownloadInfo { Message = instrument + "- is deleted" });
         }
 
