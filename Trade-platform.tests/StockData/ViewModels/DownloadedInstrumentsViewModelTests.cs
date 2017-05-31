@@ -32,7 +32,7 @@ namespace Trade_platform.tests.StockData.ViewModels
 
 
         [Test]
-        public void WhenReceivePresenterAddHeToHistoryTable()
+        public void WhenReceivePresenterAddItToHistoryTable()
         {
             IEventAggregator eventAggregator = new EventAggregator();
             ContainerBuilder.Container.RegisterInstance(eventAggregator);
@@ -51,7 +51,7 @@ namespace Trade_platform.tests.StockData.ViewModels
         }
 
         [Test]
-        public void WhenReceivePresenterAddHeToHistoryTableIfNotNull()
+        public void WhenReceivePresenterAddToHistoryTableIfNotNull()
         {
             IEventAggregator eventAggregator = new EventAggregator();
             ContainerBuilder.Container.RegisterInstance(eventAggregator);
@@ -72,6 +72,8 @@ namespace Trade_platform.tests.StockData.ViewModels
             ContainerBuilder.Container.RegisterInstance(eventAggregator);
             ContainerBuilder.Container.RegisterInstance(new Mock<IInstrumentDownloadService>().Object);
 
+            var holderMock = new Mock<IDownloadedInstrumentsHolder>();
+            ContainerBuilder.Container.RegisterInstance(holderMock.Object);
             var viewModel = new DownloadedInstrumentsViewModel();
             var presenterMock = new Mock<IDounloadInstrumentPresenter>();
             presenterMock.Setup(x => x.SoftDownloadData());
@@ -81,6 +83,7 @@ namespace Trade_platform.tests.StockData.ViewModels
                 .Publish(presenterMock.Object);
 
             presenterMock.Verify(x => x.SoftDownloadData(), Times.Once);
+            holderMock.Verify(x => x.Put(It.IsAny <Instrument>()), Times.Once);
         }
 
         [Test]

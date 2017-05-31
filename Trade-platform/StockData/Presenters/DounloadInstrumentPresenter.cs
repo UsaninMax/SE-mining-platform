@@ -9,7 +9,6 @@ using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.Commons.Sistem;
 using TradePlatform.StockData.DataServices.Trades;
 using TradePlatform.StockData.Events;
-using TradePlatform.StockData.Holders;
 using TradePlatform.StockData.Models;
 
 namespace TradePlatform.StockData.Presenters

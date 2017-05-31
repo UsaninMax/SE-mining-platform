@@ -239,11 +239,14 @@ namespace Trade_platform.tests.StockData.DataServices.Trades.Finam
             ContainerBuilder.Container.RegisterInstance(splitter.Object);
             var fileManager = new Mock<IFileManager>();
             ContainerBuilder.Container.RegisterInstance(fileManager.Object);
+            var holderMock = new Mock<IDownloadedInstrumentsHolder>();
+            ContainerBuilder.Container.RegisterInstance(holderMock.Object);
             var downloadService = new FinamInstrumentDownloadService();
             var cancellationTokenSource = new CancellationTokenSource();
             downloadService.Delete(_instrument,null, cancellationTokenSource);
             fileManager.Verify(x => x.DeleteFolder(It.IsAny<string>()), Times.Once);
             infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Once);
+            holderMock.Verify(x => x.Remove(It.IsAny<Instrument>()), Times.Once);
 
         }
 
