@@ -28,10 +28,10 @@
                     Grid.Row="1">
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Choose instrument" Command="{Binding ChooseInstrumentCommand}" />
+                    <MenuItem Header="Choose instrument" Command="{Binding ChooseSubInstrumentCommand}" />
                     <MenuItem Header="Remove"
-                    Command="{Binding }"
-                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+                              Command="{Binding RemoveSubInstrumentCommand}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>

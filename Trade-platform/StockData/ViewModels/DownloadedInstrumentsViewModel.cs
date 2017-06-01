@@ -49,10 +49,10 @@ namespace TradePlatform.StockData.ViewModels
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<AddPresenterToList>().Subscribe(AddItemItemToList, false);
             eventAggregator.GetEvent<RemovePresenterFromList>().Subscribe(RemoveItemFromList, false);
-            RemoveCommand = new DelegateCommand<IDounloadInstrumentPresenter>(RemoveData, CanDoActionItemFromList);
-            SoftReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(SoftReloadData, CanDoActionItemFromList);
-            HardReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(HardReloadData, CanDoActionItemFromList);
-            OpenFolderCommand = new DelegateCommand<IDounloadInstrumentPresenter>(OpenFolderWithData , CanDoActionItemFromList);
+            RemoveCommand = new DelegateCommand<IDounloadInstrumentPresenter>(RemoveData, CanDoAction);
+            SoftReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(SoftReloadData, CanDoAction);
+            HardReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(HardReloadData, CanDoAction);
+            OpenFolderCommand = new DelegateCommand<IDounloadInstrumentPresenter>(OpenFolderWithData , CanDoAction);
             LoadedWindowCommand = new DelegateCommand(WindowLoaded);
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
             _instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
@@ -89,35 +89,29 @@ namespace TradePlatform.StockData.ViewModels
             InstrumentsInfo.Remove(presenter);
         }
 
-        private void OpenFolderWithData(object param)
+        private void OpenFolderWithData(IDounloadInstrumentPresenter presenter)
         {
-            var instrument = param as IDounloadInstrumentPresenter;
-            instrument?.ShowDataInFolder();
+            presenter.ShowDataInFolder();
         }
 
-        private void RemoveData(object param)
+        private void RemoveData(IDounloadInstrumentPresenter presenter)
         {
-            var instrument = param as IDounloadInstrumentPresenter;
-            instrument?.DeleteData();
+            presenter.DeleteData();
         }
 
-        private void SoftReloadData(object param)
+        private void SoftReloadData(IDounloadInstrumentPresenter presenter)
         {
-            var instrument = param as IDounloadInstrumentPresenter;
-
             if (HasNoActiveDownloadingProcess())
             {
-                instrument?.SoftReloadData();
+                presenter.SoftReloadData();
             }
         }
 
-        private void HardReloadData(object param)
+        private void HardReloadData(IDounloadInstrumentPresenter presenter)
         {
-            var instrument = param as IDounloadInstrumentPresenter;
-
             if (HasNoActiveDownloadingProcess())
             {
-                instrument?.HardReloadData();
+                presenter.HardReloadData();
             }
         }
 
@@ -150,9 +144,9 @@ namespace TradePlatform.StockData.ViewModels
             updateHistory.Start();
         }
 
-        private bool CanDoActionItemFromList(object param)
+        private bool CanDoAction(IDounloadInstrumentPresenter presenter)
         {
-            return param != null;
+            return presenter != null;
         }
     }
 }

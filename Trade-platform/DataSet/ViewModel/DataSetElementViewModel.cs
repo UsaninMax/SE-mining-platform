@@ -9,6 +9,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using TradePlatform.DataSet.Events;
+using TradePlatform.DataSet.Models;
 using TradePlatform.DataSet.View;
 using TradePlatform.StockData.Models;
 
@@ -16,10 +17,11 @@ namespace TradePlatform.DataSet.ViewModel
 {
     public class DataSetElementViewModel : BindableBase, IDataSetElementViewModel
     {
-        public ICommand ChooseInstrumentCommand { get; private set; }
+        public ICommand ChooseSubInstrumentCommand { get; private set; }
+        public ICommand RemoveSubInstrumentCommand { get; private set; }
 
-        private ObservableCollection<Instrument> _instrumentsInfo = new ObservableCollection<Instrument>();
-        public ObservableCollection<Instrument> InstrumentsInfo
+        private ObservableCollection<SubInstrument> _instrumentsInfo = new ObservableCollection<SubInstrument>();
+        public ObservableCollection<SubInstrument> InstrumentsInfo
         {
             get
             {
@@ -35,17 +37,22 @@ namespace TradePlatform.DataSet.ViewModel
 
         public DataSetElementViewModel()
         {
-            ChooseInstrumentCommand = new DelegateCommand(ChooseInstrument);
+            ChooseSubInstrumentCommand = new DelegateCommand(ChooseSubInstrument);
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<AddInstrumentToDatatSet>().Subscribe(AddSelectedInstruments, false);
+            RemoveSubInstrumentCommand = new DelegateCommand<SubInstrument>(RemoveSubInstrument);
         }
 
         private void AddSelectedInstruments(IList<Instrument> instruments)
         {
-            instruments?.ForEach(InstrumentsInfo.Add); 
+            instruments?.ForEach(i =>
+            {
+                InstrumentsInfo.Add(new SubInstrument(i));
+
+            });
         }
 
-        private void ChooseInstrument()
+        private void ChooseSubInstrument()
         {
             var window = Application.Current.Windows.OfType<InstrumentChooseListView>().SingleOrDefault(x => x.IsInitialized);
             if (window != null)
@@ -56,7 +63,9 @@ namespace TradePlatform.DataSet.ViewModel
             ContainerBuilder.Container.Resolve<InstrumentChooseListView>().Show();
         }
 
-
-
+        private void RemoveSubInstrument(SubInstrument subInstrument)
+        {
+            InstrumentsInfo.Remove(subInstrument);
+        }
     }
 }

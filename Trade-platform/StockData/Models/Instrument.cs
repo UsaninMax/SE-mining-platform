@@ -8,6 +8,20 @@ namespace TradePlatform.StockData.Models
     public class Instrument
     {
         private Instrument() { }
+
+        protected Instrument(Instrument instrument)
+        {
+            this.Name = instrument.Name;
+            this.Code = instrument.Code;
+            this.Id = instrument.Id;
+            this.MarketId = instrument.MarketId;
+            this.DataProvider = instrument.DataProvider;
+            this.Path = instrument.Path;
+            this.FileName = instrument.FileName;
+            this.From = instrument.From;
+            this.To = instrument.To;
+
+        }
         [DataMember()]
         public string Name { get; private set; }
         [DataMember()]
