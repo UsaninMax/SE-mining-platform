@@ -8,16 +8,19 @@ using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using TradePlatform.Commons.BaseModels;
 using TradePlatform.Commons.Info;
 using TradePlatform.DataSet.Events;
 using TradePlatform.StockData.DataServices.Trades;
 using TradePlatform.StockData.Holders;
 using TradePlatform.StockData.Models;
+using DelegateCommand = Prism.Commands.DelegateCommand;
 
 namespace TradePlatform.DataSet.ViewModel
 {
-    public class InstrumentChooseListViewModel : BindableBase, IInstrumentChooseListViewModel
+    public class InstrumentChooseListViewModel : BindableBase, IInstrumentChooseListViewModel, IClosableWindow
     {
+        public event EventHandler CloseWindowNotification;
         public ICommand LoadedWindowCommand { get; private set; }
         public ICommand AddSelectedItemsCommand { get; private set; }
 
@@ -49,6 +52,7 @@ namespace TradePlatform.DataSet.ViewModel
         {
             var selectedInstruments = parameter.Cast<Instrument>().ToList();
             _eventAggregator.GetEvent<AddInstrumentToDatatSet>().Publish(selectedInstruments);
+            CloseWindowNotify();
         }
 
         private void WindowLoaded()
@@ -71,6 +75,11 @@ namespace TradePlatform.DataSet.ViewModel
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
             updateHistory.Start();
+        }
+
+        private void CloseWindowNotify()
+        {
+            CloseWindowNotification?.Invoke(this, EventArgs.Empty);
         }
     }
 }

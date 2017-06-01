@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Commons\BaseModels\IClosableWindow.cs" />
     <Compile Include="DataSet\Events\AddInstrumentToDatatSet.cs" />
     <Compile Include="DataSet\ViewModel\DataSetElementViewModel.cs" />
     <Compile Include="DataSet\ViewModel\DataSetListViewModel.cs.cs" />
