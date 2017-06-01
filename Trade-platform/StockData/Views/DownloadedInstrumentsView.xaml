@@ -34,8 +34,8 @@
         </DataGrid.ContextMenu>
         <DataGrid.Columns>
             <DataGridTextColumn  Header="Instrument" Binding="{Binding Name}" />
-            <DataGridTextColumn  Header="From" Binding="{Binding From}" />
-            <DataGridTextColumn  Header="To" Binding="{Binding To}" />
+            <DataGridTextColumn  Header="From" Binding="{Binding From, StringFormat='dd-MM-yyyy'}" />
+            <DataGridTextColumn  Header="To" Binding="{Binding To, StringFormat='dd-MM-yyyy'}" />
             <DataGridTextColumn  Header="Status" Binding="{Binding StatusMessage}" />
         </DataGrid.Columns>
     </DataGrid>

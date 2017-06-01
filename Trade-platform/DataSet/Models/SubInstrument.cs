@@ -9,9 +9,9 @@ namespace TradePlatform.DataSet.Models
     public class SubInstrument : Instrument
     {
         [DataMember()]
-        public DateTime SelectedFrom { get; private set; }
+        public DateTime SelectedFrom { get; set; }
         [DataMember()]
-        public DateTime SelectedTo { get; private set; }
+        public DateTime SelectedTo { get; set; }
 
         public SubInstrument(Instrument instrument) : base(instrument) { }
 

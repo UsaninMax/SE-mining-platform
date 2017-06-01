@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
-      Title="Create new set:" Height="300" Width="500">
+      Title="Create new set:" Height="300" Width="600">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -35,9 +35,11 @@
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
-                <DataGridTextColumn  Header="Instrument" Binding="{Binding Name}" />
-                <DataGridTextColumn  Header="From" Binding="{Binding From}" />
-                <DataGridTextColumn  Header="To" Binding="{Binding To}" />
+                <DataGridTextColumn  Header="Instrument" Binding="{Binding Name}" IsReadOnly="True" />
+                <DataGridTextColumn  Header="From" Binding="{Binding From, StringFormat='dd-MM-yyyy'}" IsReadOnly="True" />
+                <DataGridTextColumn  Header="To" Binding="{Binding To, StringFormat='dd-MM-yyyy'}"  IsReadOnly="True" />
+                <DataGridTextColumn  Header="Select From" Binding="{Binding SelectedFrom, Mode=TwoWay}"/>
+                <DataGridTextColumn  Header="Select To" Binding="{Binding SelectedTo, Mode=TwoWay}" />
             </DataGrid.Columns>
         </DataGrid>
         <Button Grid.Column="1" Grid.Row="2" Margin="5" Content="Add" Command="{Binding }"/>
