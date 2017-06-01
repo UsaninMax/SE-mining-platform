@@ -103,7 +103,10 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Commons\BaseModels\IClosableWindow.cs" />
     <Compile Include="DataSet\Events\AddInstrumentToDatatSet.cs" />
-    <Compile Include="DataSet\Models\DataSet.cs" />
+    <Compile Include="DataSet\Events\CreateDataSetItem.cs" />
+    <Compile Include="DataSet\Holders\DataSetHolder.cs" />
+    <Compile Include="DataSet\Holders\IDataSetHolder.cs" />
+    <Compile Include="DataSet\Models\DataSetItem.cs" />
     <Compile Include="DataSet\Models\SubInstrument.cs" />
     <Compile Include="DataSet\ViewModel\DataSetElementViewModel.cs" />
     <Compile Include="DataSet\ViewModel\DataSetListViewModel.cs.cs" />

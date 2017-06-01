@@ -3,7 +3,10 @@ using System.Windows;
 using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
+using TradePlatform.DataSet.Events;
+using TradePlatform.DataSet.Models;
 using TradePlatform.DataSet.View;
 
 namespace TradePlatform.DataSet.ViewModel
@@ -15,6 +18,8 @@ namespace TradePlatform.DataSet.ViewModel
         public DataSetListViewModel()
         {
             CreateNewDataSetCommand = new DelegateCommand(CreateNewDataSet);
+            var eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
+            eventAggregator.GetEvent<CreateDataSetItem>().Subscribe(ProcessCreation, false);
         }
 
         private void CreateNewDataSet()
@@ -26,6 +31,10 @@ namespace TradePlatform.DataSet.ViewModel
                 return;
             }
             ContainerBuilder.Container.Resolve<DataSetElementView>().Show();
+        }
+
+        private void ProcessCreation(DataSetItem item)
+        {
         }
     }
 }

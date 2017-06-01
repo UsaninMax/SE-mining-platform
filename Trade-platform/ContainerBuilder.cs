@@ -7,6 +7,7 @@ using TradePlatform.Commons.Info.Exception;
 using TradePlatform.Commons.Info.ViewModels;
 using TradePlatform.Commons.Setting;
 using TradePlatform.Commons.Sistem;
+using TradePlatform.DataSet.Holders;
 using TradePlatform.DataSet.ViewModel;
 using TradePlatform.Main.ViewModels;
 using TradePlatform.Main.Views;
@@ -65,6 +66,7 @@ namespace TradePlatform
             Container.RegisterType<IDataSetElementViewModel, DataSetElementViewModel>();
             Container.RegisterType<IDataSetListViewModel, DataSetListViewModel>();
             Container.RegisterType<IInstrumentChooseListViewModel, InstrumentChooseListViewModel>();
+            Container.RegisterType<IDataSetHolder, DataSetHolder>(new ContainerControlledLifetimeManager());
         }
     }
 }

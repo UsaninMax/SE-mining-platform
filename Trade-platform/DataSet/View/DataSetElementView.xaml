@@ -19,7 +19,7 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" Text="unique name"/>
-        <TextBox  Grid.Column="1" Grid.Row="0" Margin="5"/>
+        <TextBox  Grid.Column="1" Grid.Row="0" Margin="5" Text="{Binding Path=UniqueId}"/>
         <DataGrid 
                   AutoGenerateColumns="False" 
                   ItemsSource="{Binding InstrumentsInfo}"
@@ -42,6 +42,6 @@
                 <DataGridTextColumn  Header="Select To" Binding="{Binding SelectedTo, Mode=TwoWay}" />
             </DataGrid.Columns>
         </DataGrid>
-        <Button Grid.Column="1" Grid.Row="2" Margin="5" Content="Add" Command="{Binding }"/>
+        <Button Grid.Column="1" Grid.Row="2" Margin="5" Content="Create" Command="{Binding CreateNewCommand}"/>
     </Grid>
 </Window>
