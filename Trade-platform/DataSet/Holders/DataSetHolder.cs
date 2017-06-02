@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using TradePlatform.DataSet.DataServices.Serialization;
 using TradePlatform.DataSet.Models;
@@ -52,11 +53,9 @@ namespace TradePlatform.DataSet.Holders
         {
             try
             {
-                _dataSetStorage.ReStore().Select(i =>
-                {
-                    _dataSet.Add(i.Id, i);
-                    return true;
-                }).ToArray();
+                _dataSetStorage
+                    .ReStore()
+                    .ForEach(i => _dataSet.Add(i.Id, i));
             }
             catch (Exception e)
             {

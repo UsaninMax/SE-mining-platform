@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using TradePlatform.StockData.DataServices.Serialization;
 using TradePlatform.StockData.Models;
@@ -37,9 +37,8 @@ namespace TradePlatform.StockData.Holders
             try
             {
                 _instrumentsStorage
-                .ReStore()
-                .Select(i => _instrumnnets.Add(i))
-                .ToArray();
+                    .ReStore()
+                    .ForEach(i => _instrumnnets.Add(i));
             }
             catch (Exception e)
             {
