@@ -47,8 +47,8 @@ namespace TradePlatform.StockData.ViewModels
         public DownloadedInstrumentsViewModel()
         {
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
-            eventAggregator.GetEvent<AddPresenterToList>().Subscribe(AddItemItemToList, false);
-            eventAggregator.GetEvent<RemovePresenterFromList>().Subscribe(RemoveItemFromList, false);
+            eventAggregator.GetEvent<AddPresenterToListEvent>().Subscribe(AddItemItemToList, false);
+            eventAggregator.GetEvent<RemovePresenterFromListEvent>().Subscribe(RemoveItemFromList, false);
             RemoveCommand = new DelegateCommand<IDounloadInstrumentPresenter>(RemoveData, CanDoAction);
             SoftReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(SoftReloadData, CanDoAction);
             HardReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(HardReloadData, CanDoAction);

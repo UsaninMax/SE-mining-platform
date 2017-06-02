@@ -3,7 +3,7 @@ using TradePlatform.DataSet.Models;
 
 namespace TradePlatform.DataSet.Events
 {
-    public class CreateDataSetItem : PubSubEvent<DataSetItem>
+    public class CopyDataSetEvent : PubSubEvent<DataSetItem>
     {
     }
 }

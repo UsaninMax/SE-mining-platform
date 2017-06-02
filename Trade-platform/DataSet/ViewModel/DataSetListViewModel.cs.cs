@@ -9,11 +9,11 @@ using TradePlatform.DataSet.Models;
 using TradePlatform.DataSet.Presenters;
 using TradePlatform.DataSet.View;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Prism.Commands;
 using TradePlatform.Commons.Info;
 using TradePlatform.DataSet.Holders;
-using DelegateCommand = Prism.Commands.DelegateCommand;
 
 namespace TradePlatform.DataSet.ViewModel
 {
@@ -22,7 +22,10 @@ namespace TradePlatform.DataSet.ViewModel
         public ICommand CreateNewDataSetCommand { get; private set; }
         public ICommand RemoveDataSetCommand { get; private set; }
         public ICommand LoadedWindowCommand { get; private set; }
+        public ICommand OpenFolderCommand { get; private set; }
+        public ICommand CopyDataSetCommand { get; private set; }
         private readonly IInfoPublisher _infoPublisher;
+        private readonly IEventAggregator _eventAggregator;
 
         private ObservableCollection<IDataSetPresenter> _dataSetPresenter = new ObservableCollection<IDataSetPresenter>();
         public ObservableCollection<IDataSetPresenter> DataSetPresenterInfo
@@ -37,15 +40,16 @@ namespace TradePlatform.DataSet.ViewModel
                 RaisePropertyChanged();
             }
         }
-
-
+ 
         public DataSetListViewModel()
         {
             CreateNewDataSetCommand = new DelegateCommand(CreateNewDataSet);
-            RemoveDataSetCommand = new DelegateCommand<IDataSetPresenter>(RemoveDataSet);
+            RemoveDataSetCommand = new DelegateCommand<IDataSetPresenter>(RemoveDataSet, CanDoAction);
+            CopyDataSetCommand = new DelegateCommand<IDataSetPresenter>(CopyDataSet, CanDoAction);
+            OpenFolderCommand = new DelegateCommand<IDataSetPresenter>(OpenFolder, CanDoAction);
             LoadedWindowCommand = new DelegateCommand(WindowLoaded);
-            var eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
-            eventAggregator.GetEvent<CreateDataSetItem>().Subscribe(ProcessCreation, false);
+            _eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
+            _eventAggregator.GetEvent<CreateDataSetItemEvent>().Subscribe(ProcessCreation, false);
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
         }
 
@@ -100,6 +104,28 @@ namespace TradePlatform.DataSet.ViewModel
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
             updateHistory.Start();
+        }
+
+        private void CopyDataSet(IDataSetPresenter item)
+        {
+            var window = Application.Current.Windows.OfType<DataSetElementView>().SingleOrDefault(x => x.IsInitialized);
+            if (window != null)
+            {
+                window.Close();
+                return;
+            }
+            ContainerBuilder.Container.Resolve<DataSetElementView>().Show();
+            _eventAggregator.GetEvent<CopyDataSetEvent>().Publish(item.DataSet().Clone() as DataSetItem);
+        }
+
+        private void OpenFolder(IDataSetPresenter item)
+        {
+
+        }
+
+        private bool CanDoAction(IDataSetPresenter presenter)
+        {
+            return presenter != null;
         }
     }
 }

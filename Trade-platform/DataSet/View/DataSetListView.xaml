@@ -17,15 +17,16 @@
         <DataGrid.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Open folder"
-                          Command="{Binding }"
-                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+                          Command="{Binding OpenFolderCommand}"
+                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}"/>
                 <MenuItem Header="Copy"
-                          Command="{Binding }"
-                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
-                <MenuItem Header="Create new" Command="{Binding CreateNewDataSetCommand}" />
+                          Command="{Binding CopyDataSetCommand}"
+                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}"/>
+                <MenuItem Header="Create new" 
+                          Command="{Binding CreateNewDataSetCommand}"/>
                 <MenuItem Header="Remove"
                           Command="{Binding RemoveDataSetCommand}"
-                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}"/>
             </ContextMenu>
         </DataGrid.ContextMenu>
         <DataGrid.Columns>

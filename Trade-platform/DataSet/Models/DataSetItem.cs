@@ -1,18 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace TradePlatform.DataSet.Models
 {
     [DataContract()]
-    public class DataSetItem
+    public class DataSetItem : ICloneable
     {
         [DataMember()]
         public string Id { get; private set; }
 
         [DataMember()]
-        public string Patch {
+        public string Patch
+        {
             get { return Id; }
             set { }
+        }
+
+        private DataSetItem()
+        {
         }
 
         [DataMember()]
@@ -38,7 +45,7 @@ namespace TradePlatform.DataSet.Models
 
             public DataSetItem Build()
             {
-                return new DataSetItem() {Id = _id, SubInstruments = _subInstruments};
+                return new DataSetItem() { Id = _id, SubInstruments = _subInstruments };
             }
 
         }
@@ -58,12 +65,20 @@ namespace TradePlatform.DataSet.Models
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((DataSetItem) obj);
+            return Equals((DataSetItem)obj);
         }
 
         public override int GetHashCode()
         {
             return (Id != null ? Id.GetHashCode() : 0);
+        }
+
+        public object Clone()
+        {
+            return new DataSetItem()
+            {
+                SubInstruments = SubInstruments.Select(s => s.Clone() as SubInstrument).ToList()
+            };
         }
     }
 }

@@ -4,7 +4,7 @@ using TradePlatform.StockData.Models;
 
 namespace TradePlatform.DataSet.Events
 {
-    public class AddInstrumentToDatatSet : PubSubEvent<IList<Instrument>>
+    public class AddInstrumentToDatatSetEvent : PubSubEvent<IList<Instrument>>
     {
     }
 }

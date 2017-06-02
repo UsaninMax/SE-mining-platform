@@ -43,7 +43,7 @@ namespace Trade_platform.tests.StockData.ViewModels
             presenterMock.Setup(x => x.SoftDownloadData());
 
             eventAggregator
-                .GetEvent<AddPresenterToList>()
+                .GetEvent<AddPresenterToListEvent>()
                 .Publish(presenterMock.Object);
 
             Assert.That(viewModel.InstrumentsInfo.Count, Is.EqualTo(1));
@@ -59,7 +59,7 @@ namespace Trade_platform.tests.StockData.ViewModels
 
             var viewModel = new DownloadedInstrumentsViewModel();
             eventAggregator
-                .GetEvent<AddPresenterToList>()
+                .GetEvent<AddPresenterToListEvent>()
                 .Publish(null);
 
             Assert.That(viewModel.InstrumentsInfo.Count, Is.EqualTo(0));
@@ -79,7 +79,7 @@ namespace Trade_platform.tests.StockData.ViewModels
             presenterMock.Setup(x => x.SoftDownloadData());
 
             eventAggregator
-                .GetEvent<AddPresenterToList>()
+                .GetEvent<AddPresenterToListEvent>()
                 .Publish(presenterMock.Object);
 
             presenterMock.Verify(x => x.SoftDownloadData(), Times.Once);
@@ -105,7 +105,7 @@ namespace Trade_platform.tests.StockData.ViewModels
             presenterMock.Setup(x => x.SoftDownloadData());
 
             eventAggregator
-                .GetEvent<AddPresenterToList>()
+                .GetEvent<AddPresenterToListEvent>()
                 .Publish(presenterMock.Object);
             infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Once);
             presenterMock.Verify(x => x.SoftDownloadData(), Times.Never);

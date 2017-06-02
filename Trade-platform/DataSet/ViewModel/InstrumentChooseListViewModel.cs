@@ -51,7 +51,7 @@ namespace TradePlatform.DataSet.ViewModel
         private void AddSelectedItems(IList parameter)
         {
             var selectedInstruments = parameter.Cast<Instrument>().ToList();
-            _eventAggregator.GetEvent<AddInstrumentToDatatSet>().Publish(selectedInstruments);
+            _eventAggregator.GetEvent<AddInstrumentToDatatSetEvent>().Publish(selectedInstruments);
             CloseWindowNotify();
         }
 

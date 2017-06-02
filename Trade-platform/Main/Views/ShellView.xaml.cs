@@ -18,17 +18,16 @@ namespace TradePlatform.Main.Views
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             Task.Factory.StartNew(() =>
-                        {
-                            var instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
-                            instrumentsHolder.Store();
-                        });
+            {
+                var instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
+                instrumentsHolder.Store();
+            });
 
             Task.Factory.StartNew(() =>
-                        {
-                            var dataSetHolder = ContainerBuilder.Container.Resolve<IDataSetHolder>();
-                            dataSetHolder.Store();
-
-                        });
+            {
+                var dataSetHolder = ContainerBuilder.Container.Resolve<IDataSetHolder>();
+                dataSetHolder.Store();
+            });
         }
     }
 }

@@ -6,7 +6,7 @@ using TradePlatform.StockData.Models;
 namespace TradePlatform.DataSet.Models
 {
     [DataContract()]
-    public class SubInstrument : Instrument
+    public class SubInstrument : Instrument, ICloneable
     {
         [DataMember()]
         public DateTime SelectedFrom { get; set; }
@@ -18,6 +18,15 @@ namespace TradePlatform.DataSet.Models
         public override string ToString()
         {
             return $"{base.ToString()}, {nameof(SelectedFrom)}: {SelectedFrom}, {nameof(SelectedTo)}: {SelectedTo}";
+        }
+
+        public object Clone()
+        {
+            return new SubInstrument(this)
+            {
+                SelectedFrom = SelectedFrom,
+                SelectedTo = SelectedTo
+            };
         }
     }
 }

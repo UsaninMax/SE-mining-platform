@@ -172,7 +172,7 @@ namespace TradePlatform.StockData.ViewModels
                     .WithDataProvider("FINAM")
                     .Build()));
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
-            eventAggregator.GetEvent<AddPresenterToList>().Publish(presenter);
+            eventAggregator.GetEvent<AddPresenterToListEvent>().Publish(presenter);
         }
 
         public void UpdateSecuritiesInfo()

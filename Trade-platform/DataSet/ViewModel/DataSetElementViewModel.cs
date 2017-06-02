@@ -17,7 +17,6 @@ using TradePlatform.DataSet.Holders;
 using TradePlatform.DataSet.Models;
 using TradePlatform.DataSet.View;
 using TradePlatform.StockData.Models;
-using DelegateCommand = Prism.Commands.DelegateCommand;
 
 namespace TradePlatform.DataSet.ViewModel
 {
@@ -51,7 +50,8 @@ namespace TradePlatform.DataSet.ViewModel
             _holder = ContainerBuilder.Container.Resolve<IDataSetHolder>();
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
             _eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
-            _eventAggregator.GetEvent<AddInstrumentToDatatSet>().Subscribe(AddSelectedInstruments, false);
+            _eventAggregator.GetEvent<AddInstrumentToDatatSetEvent>().Subscribe(AddSelectedInstruments, false);
+            _eventAggregator.GetEvent<CopyDataSetEvent>().Subscribe(CopyDataSet, false);
             ChooseSubInstrumentCommand = new DelegateCommand(ChooseSubInstrument);
             RemoveSubInstrumentCommand = new DelegateCommand<SubInstrument>(RemoveSubInstrument);
             CreateNewCommand = new DelegateCommand(CreateNew);
@@ -91,7 +91,7 @@ namespace TradePlatform.DataSet.ViewModel
                 .WithSubInstruments(InstrumentsInfo)
                 .Build();
             _holder.Put(dataSet);
-            _eventAggregator.GetEvent<CreateDataSetItem>().Publish(dataSet);
+            _eventAggregator.GetEvent<CreateDataSetItemEvent>().Publish(dataSet);
 
             CloseWindowNotify();
         }
@@ -110,6 +110,11 @@ namespace TradePlatform.DataSet.ViewModel
         private void CloseWindowNotify()
         {
             CloseWindowNotification?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void CopyDataSet(DataSetItem item)
+        {
+            item.SubInstruments.ForEach(InstrumentsInfo.Add);
         }
     }
 }

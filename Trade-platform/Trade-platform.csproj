@@ -104,8 +104,9 @@
     <Compile Include="Commons\BaseModels\IClosableWindow.cs" />
     <Compile Include="DataSet\DataServices\Serialization\XmlDataSetStorage.cs" />
     <Compile Include="DataSet\DataServices\Serialization\IDataSetStorage.cs" />
-    <Compile Include="DataSet\Events\AddInstrumentToDatatSet.cs" />
-    <Compile Include="DataSet\Events\CreateDataSetItem.cs" />
+    <Compile Include="DataSet\Events\AddInstrumentToDatatSetEvent.cs" />
+    <Compile Include="DataSet\Events\CopyDataSetEvent.cs" />
+    <Compile Include="DataSet\Events\CreateDataSetItemEvent.cs" />
     <Compile Include="DataSet\Holders\DataSetHolder.cs" />
     <Compile Include="DataSet\Holders\IDataSetHolder.cs" />
     <Compile Include="DataSet\Models\DataSetItem.cs" />
@@ -145,7 +146,7 @@
       <DependentUpon>InfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Commons\Info\Events\PuplishInfo.cs" />
-    <Compile Include="StockData\Events\AddPresenterToList.cs" />
+    <Compile Include="StockData\Events\AddPresenterToListEvent.cs" />
     <Compile Include="StockData\Events\RemoveItemFromList.cs" />
     <Compile Include="StockData\Models\Security.cs" />
     <Compile Include="StockData\Models\Market.cs" />
@@ -230,7 +231,6 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="StockData\Models\Instrument.cs" />
-    <Compile Include="Commons\BaseModels\DelegateCommand.cs" />
     <Compile Include="StockData\ViewModels\DownloadedInstrumentsViewModel.cs" />
     <Compile Include="StockData\ViewModels\DownloadNewInstrumentViewModel.cs" />
     <Compile Include="StockData\Views\DownloadedInstrumentsView.xaml.cs">

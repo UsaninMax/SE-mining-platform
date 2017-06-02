@@ -2,8 +2,8 @@
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Practices.Unity;
+using Prism.Commands;
 using Prism.Mvvm;
-using TradePlatform.Commons.BaseModels;
 using TradePlatform.Commons.Info.Views;
 using HistoryInstrumentsView = TradePlatform.StockData.Views.HistoryInstrumentsView;
 using TradePlatform.DataSet.View;
@@ -19,9 +19,9 @@ namespace TradePlatform.Main.ViewModels
 
         public ShellModel()
         {
-            LoadInstrumentCommand = new DelegateCommand(o => HistoryInstrumentsPage());
-            ShowInfoCommand = new DelegateCommand(o => ShowInfoPage());
-            ShowDataSetListCommand = new DelegateCommand(o => ShowDataSetListPage());
+            LoadInstrumentCommand = new DelegateCommand(HistoryInstrumentsPage);
+            ShowInfoCommand = new DelegateCommand(ShowInfoPage);
+            ShowDataSetListCommand = new DelegateCommand(ShowDataSetListPage);
         }
 
         private void HistoryInstrumentsPage()
