@@ -13,10 +13,7 @@ namespace TradePlatform.DataSet.View
             this.InitializeComponent();
             var modelWiew = ContainerBuilder.Container.Resolve<IDataSetElementViewModel>();
             this.DataContext = modelWiew;
-
-
             IClosableWindow closableWindow = modelWiew as IClosableWindow;
-
 
             if (closableWindow != null)
             {

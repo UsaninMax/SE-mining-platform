@@ -10,6 +10,11 @@ namespace TradePlatform.DataSet.Models
         public string Id { get; private set; }
 
         [DataMember()]
+        public string Patch {
+            get { return Id; }
+        }
+
+        [DataMember()]
         public IList<SubInstrument> SubInstruments { get; private set; }
 
         public class Builder

@@ -6,13 +6,13 @@
         mc:Ignorable="d" 
         Title="Data sets" Height="400" Width="300">
 
-    <DataGrid IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding }">
+    <DataGrid IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding DataSetPresenterInfo}">
         <DataGrid.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Open folder"
                           Command="{Binding }"
                           CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
-                <MenuItem Header="Change"
+                <MenuItem Header="Copy"
                           Command="{Binding }"
                           CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
                 <MenuItem Header="Create new" Command="{Binding CreateNewDataSetCommand}" />
@@ -22,8 +22,8 @@
             </ContextMenu>
         </DataGrid.ContextMenu>
         <DataGrid.Columns>
-            <DataGridTextColumn  Header="Unique name" Binding="{Binding }" />
-            <DataGridTextColumn  Header="Status" Binding="{Binding }" />
+            <DataGridTextColumn  Header="Unique name" Binding="{Binding DataSetId}" />
+            <DataGridTextColumn  Header="Status" Binding="{Binding StatusMessage}" />
         </DataGrid.Columns>
     </DataGrid>
 </Window>
