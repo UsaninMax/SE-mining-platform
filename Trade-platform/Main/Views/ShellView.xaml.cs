@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
 using Microsoft.Practices.Unity;
+using TradePlatform.DataSet.Holders;
 using TradePlatform.Main.ViewModels;
 using TradePlatform.StockData.Holders;
 
@@ -15,9 +17,18 @@ namespace TradePlatform.Main.Views
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            var instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
-            instrumentsHolder.Store();
-            Application.Current.Shutdown();
+            Task.Factory.StartNew(() =>
+                        {
+                            var instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
+                            instrumentsHolder.Store();
+                        });
+
+            Task.Factory.StartNew(() =>
+                        {
+                            var dataSetHolder = ContainerBuilder.Container.Resolve<IDataSetHolder>();
+                            dataSetHolder.Store();
+
+                        });
         }
     }
 }

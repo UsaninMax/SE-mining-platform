@@ -4,6 +4,7 @@ using Microsoft.Practices.Unity;
 using TradePlatform.Main.Views;
 using TradePlatform.StockData.Holders;
 using System.Threading.Tasks;
+using TradePlatform.DataSet.Holders;
 
 namespace TradePlatform
 {
@@ -31,6 +32,11 @@ namespace TradePlatform
             Task.Factory.StartNew(() => {
                 var instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
                 instrumentsHolder.Restore();
+            });
+
+            Task.Factory.StartNew(() => {
+                var dataSetsHolder = ContainerBuilder.Container.Resolve<IDataSetHolder>();
+                dataSetsHolder.Restore();
             });
         }
     }

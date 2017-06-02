@@ -12,6 +12,7 @@ namespace TradePlatform.DataSet.Models
         [DataMember()]
         public string Patch {
             get { return Id; }
+            set { }
         }
 
         [DataMember()]

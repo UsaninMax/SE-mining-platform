@@ -12,7 +12,7 @@ namespace TradePlatform.StockData.Holders
         private readonly HashSet<Instrument> _instrumnnets = new HashSet<Instrument>();
         private readonly IInstrumentsStorage _instrumentsStorage;
 
-        public DownloadedInstrumentsHolder ()
+        public DownloadedInstrumentsHolder()
         {
             _instrumentsStorage = ContainerBuilder.Container.Resolve<IInstrumentsStorage>();
         }
@@ -36,10 +36,10 @@ namespace TradePlatform.StockData.Holders
         {
             try
             {
-                    _instrumentsStorage
-                    .ReStore()
-                    .Select(i => _instrumnnets.Add(i))
-                    .ToArray();
+                _instrumentsStorage
+                .ReStore()
+                .Select(i => _instrumnnets.Add(i))
+                .ToArray();
             }
             catch (Exception e)
             {
@@ -49,15 +49,7 @@ namespace TradePlatform.StockData.Holders
 
         public void Store()
         {
-            try
-            {
-                _instrumentsStorage.Store(_instrumnnets);
-               
-            }
-            catch (Exception e)
-            {
-                //TODO: log
-            }
+            _instrumentsStorage.Store(_instrumnnets);
         }
     }
 }

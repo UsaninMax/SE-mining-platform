@@ -9,6 +9,6 @@ namespace TradePlatform.DataSet.Presenters
         void CheckData();
         bool InPrepareDataProgress();
         void ShowDataInFolder();
-        DataSetItem Instrument();
+        DataSetItem DataSet();
     }
 }

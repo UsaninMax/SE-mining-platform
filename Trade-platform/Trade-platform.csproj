@@ -102,6 +102,8 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Commons\BaseModels\IClosableWindow.cs" />
+    <Compile Include="DataSet\DataServices\Serialization\XmlDataSetStorage.cs" />
+    <Compile Include="DataSet\DataServices\Serialization\IDataSetStorage.cs" />
     <Compile Include="DataSet\Events\AddInstrumentToDatatSet.cs" />
     <Compile Include="DataSet\Events\CreateDataSetItem.cs" />
     <Compile Include="DataSet\Holders\DataSetHolder.cs" />
@@ -273,9 +275,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataSet\DataServices\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

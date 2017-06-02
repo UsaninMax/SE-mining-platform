@@ -34,12 +34,12 @@ namespace TradePlatform.DataSet.Presenters
 
         public void DeleteData()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void CheckData()
         {
-            throw new System.NotImplementedException();
+      
         }
 
         public bool InPrepareDataProgress()
@@ -52,9 +52,9 @@ namespace TradePlatform.DataSet.Presenters
             throw new System.NotImplementedException();
         }
 
-        public DataSetItem Instrument()
+        public DataSetItem DataSet()
         {
-            throw new System.NotImplementedException();
+            return _dataSet;
         }
     }
 }

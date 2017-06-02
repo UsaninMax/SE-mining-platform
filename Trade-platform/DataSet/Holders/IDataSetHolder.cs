@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TradePlatform.DataSet.Models;
 namespace TradePlatform.DataSet.Holders
 {
-    interface IDataSetHolder
+    public interface IDataSetHolder
     {
         bool CheckIfExist(String uniqueId);
         void Put(DataSetItem dataSet);
@@ -11,6 +11,6 @@ namespace TradePlatform.DataSet.Holders
         DataSetItem GetById(String id);
         IList<DataSetItem> GetAll();
         void Store();
-        void ReStore();
+        void Restore();
     }
 }
