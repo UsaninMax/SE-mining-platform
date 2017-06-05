@@ -56,5 +56,10 @@ namespace TradePlatform.DataSet.Presenters
         {
             return _dataSet;
         }
+
+        public override string ToString()
+        {
+            return $"{nameof(_dataSet)}: {_dataSet}, {nameof(_statusMessage)}: {_statusMessage}, {nameof(StatusMessage)}: {StatusMessage}, {nameof(DataSetId)}: {DataSetId}";
+        }
     }
 }
