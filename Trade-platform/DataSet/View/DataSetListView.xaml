@@ -19,6 +19,8 @@
               SelectedItem="{Binding SelectedSetPresenter}">
         <DataGrid.ContextMenu>
             <ContextMenu>
+                <MenuItem Header="Show"
+                          Command="{Binding ShowStructureCommand}"/>
                 <MenuItem Header="Open folder"
                           Command="{Binding OpenFolderCommand}"/>
                 <MenuItem Header="Copy"

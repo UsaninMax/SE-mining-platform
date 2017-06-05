@@ -67,6 +67,7 @@ namespace TradePlatform
             Container.RegisterType<IDownloadedInstrumentsHolder, DownloadedInstrumentsHolder>(new ContainerControlledLifetimeManager());
 
             Container.RegisterType<IDataSetElementViewModel, DataSetElementViewModel>();
+            Container.RegisterType<IShowDataSetElementViewModel, ShowDataSetElementViewModel>();
             Container.RegisterType<IDataSetListViewModel, DataSetListViewModel>();
             Container.RegisterType<IInstrumentChooseListViewModel, InstrumentChooseListViewModel>();
             Container.RegisterType<IDataSetHolder, DataSetHolder>(new ContainerControlledLifetimeManager());

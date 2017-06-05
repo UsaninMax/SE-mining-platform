@@ -26,7 +26,18 @@ namespace TradePlatform.DataSet.ViewModel
         public ICommand ChooseSubInstrumentCommand { get; private set; }
         public ICommand RemoveSubInstrumentCommand { get; private set; }
         public ICommand CreateNewCommand { get; private set; }
-        public string UniqueId { get; set; }
+        public string UniqueId {
+            get
+            {
+                return _uniqueId;
+            }
+            set
+            {
+                _uniqueId = value;
+                RaisePropertyChanged();
+            }
+        }
+        public string _uniqueId;
         private readonly IDataSetHolder _holder;
         private readonly IInfoPublisher _infoPublisher;
         private readonly IEventAggregator _eventAggregator;
@@ -128,6 +139,7 @@ namespace TradePlatform.DataSet.ViewModel
         {
             item.SubInstruments.ForEach(InstrumentsInfo.Add);
         }
+
         private void UpdateVisibilityOfContextMenu()
         {
             (RemoveSubInstrumentCommand as DelegateCommand)?.RaiseCanExecuteChanged();

@@ -23,6 +23,7 @@ namespace TradePlatform.DataSet.ViewModel
         public ICommand LoadedWindowCommand { get; private set; }
         public ICommand OpenFolderCommand { get; private set; }
         public ICommand CopyDataSetCommand { get; private set; }
+        public ICommand ShowStructureCommand { get; private set; }
         private readonly IInfoPublisher _infoPublisher;
         private readonly IEventAggregator _eventAggregator;
 
@@ -59,6 +60,7 @@ namespace TradePlatform.DataSet.ViewModel
             RemoveDataSetCommand = new DelegateCommand(RemoveDataSet, CanDoAction);
             CopyDataSetCommand = new DelegateCommand(CopyDataSet, CanDoAction);
             OpenFolderCommand = new DelegateCommand(OpenFolder, CanDoAction);
+            ShowStructureCommand = new DelegateCommand(ShowStructure, CanDoAction);
             LoadedWindowCommand = new DelegateCommand(WindowLoaded);
             _eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             _eventAggregator.GetEvent<CreateDataSetItemEvent>().Subscribe(ProcessCreation, false);
@@ -135,12 +137,18 @@ namespace TradePlatform.DataSet.ViewModel
 
         }
 
+        private void ShowStructure()
+        {
+            ContainerBuilder.Container.Resolve<ShowDataSetElementView>().Show();
+            _eventAggregator.GetEvent<ShowDataSetEvent>().Publish(_selectedSetPresenter.DataSet());
+        }
+
         private void UpdateVisibilityOfContextMenu()
         {
             (RemoveDataSetCommand as DelegateCommand)?.RaiseCanExecuteChanged();
             (CopyDataSetCommand as DelegateCommand)?.RaiseCanExecuteChanged();
             (OpenFolderCommand as DelegateCommand)?.RaiseCanExecuteChanged();
-            (OpenFolderCommand as DelegateCommand)?.RaiseCanExecuteChanged();
+            (ShowStructureCommand as DelegateCommand)?.RaiseCanExecuteChanged();
         }
 
         private bool CanDoAction()
