@@ -40,7 +40,7 @@ namespace TradePlatform.DataSet.ViewModel
         public string _uniqueId;
         private readonly IDataSetHolder _holder;
         private readonly IInfoPublisher _infoPublisher;
-        private readonly IEventAggregator _eventAggregator;
+        protected readonly IEventAggregator _eventAggregator;
 
         private ObservableCollection<SubInstrument> _instrumentsInfo = new ObservableCollection<SubInstrument>();
         public ObservableCollection<SubInstrument> InstrumentsInfo
@@ -74,7 +74,6 @@ namespace TradePlatform.DataSet.ViewModel
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
             _eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             _eventAggregator.GetEvent<AddInstrumentToDatatSetEvent>().Subscribe(AddSelectedInstruments, false);
-            _eventAggregator.GetEvent<CopyDataSetEvent>().Subscribe(CopyDataSet, false);
             ChooseSubInstrumentCommand = new DelegateCommand(ChooseSubInstrument);
             RemoveSubInstrumentCommand = new DelegateCommand(RemoveSubInstrument, CanDoAction);
             CreateNewCommand = new DelegateCommand(CreateNew);
@@ -133,11 +132,6 @@ namespace TradePlatform.DataSet.ViewModel
         private void CloseWindowNotify()
         {
             CloseWindowNotification?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void CopyDataSet(DataSetItem item)
-        {
-            item.SubInstruments.ForEach(InstrumentsInfo.Add);
         }
 
         private void UpdateVisibilityOfContextMenu()

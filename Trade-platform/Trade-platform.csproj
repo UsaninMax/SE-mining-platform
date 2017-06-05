@@ -114,14 +114,17 @@
     <Compile Include="DataSet\Models\SubInstrument.cs" />
     <Compile Include="DataSet\Presenters\DataSetPresenter.cs" />
     <Compile Include="DataSet\Presenters\IDataSetPresenter.cs" />
+    <Compile Include="DataSet\ViewModel\CopyDataSetElementViewModel.cs" />
     <Compile Include="DataSet\ViewModel\DataSetElementViewModel.cs" />
     <Compile Include="DataSet\ViewModel\DataSetListViewModel.cs" />
     <Compile Include="DataSet\ViewModel\IDataSetElementViewModel.cs" />
     <Compile Include="DataSet\ViewModel\IDataSetListViewModel.cs" />
     <Compile Include="DataSet\ViewModel\IInstrumentChooseListViewModel.cs" />
     <Compile Include="DataSet\ViewModel\InstrumentChooseListViewModel.cs" />
-    <Compile Include="DataSet\ViewModel\IShowDataSetElementViewModel.cs" />
     <Compile Include="DataSet\ViewModel\ShowDataSetElementViewModel.cs" />
+    <Compile Include="DataSet\View\CopyDataSetElementView.xaml.cs">
+      <DependentUpon>CopyDataSetElementView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataSet\View\ShowDataSetElementView.xaml.cs">
       <DependentUpon>ShowDataSetElementView.xaml</DependentUpon>
     </Compile>
@@ -203,6 +206,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Commons\Views\WaitSpinner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DataSet\View\CopyDataSetElementView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

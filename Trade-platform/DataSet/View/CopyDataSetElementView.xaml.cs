@@ -6,12 +6,12 @@ using TradePlatform.Commons.BaseModels;
 
 namespace TradePlatform.DataSet.View
 {
-    public partial class DataSetElementView : Window
+    public partial class CopyDataSetElementView : Window
     {
-        public DataSetElementView()
+        public CopyDataSetElementView()
         {
             this.InitializeComponent();
-            var modelWiew = ContainerBuilder.Container.Resolve<IDataSetElementViewModel>("DataSet");
+            var modelWiew = ContainerBuilder.Container.Resolve<IDataSetElementViewModel>("CopyDataSet");
             this.DataContext = modelWiew;
             IClosableWindow closableWindow = modelWiew as IClosableWindow;
 

@@ -9,7 +9,7 @@ namespace TradePlatform.DataSet.View
         public ShowDataSetElementView()
         {
             this.InitializeComponent();
-            this.DataContext = ContainerBuilder.Container.Resolve<IShowDataSetElementViewModel>();
+            this.DataContext = ContainerBuilder.Container.Resolve<IDataSetElementViewModel>("ShowDataSet");
         }
     }
 }

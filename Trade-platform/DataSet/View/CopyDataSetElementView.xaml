@@ -1,0 +1,47 @@
+﻿<Window x:Class="TradePlatform.DataSet.View.CopyDataSetElementView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        mc:Ignorable="d" 
+        Title="Copy set:" Height="300" Width="600">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" Text="unique name"/>
+        <TextBox  Grid.Column="1" Grid.Row="0" Margin="5" Text="{Binding Path=UniqueId}"/>
+        <DataGrid 
+            AutoGenerateColumns="False" 
+            ItemsSource="{Binding InstrumentsInfo}"
+            SelectedItem="{Binding SelectedSubInstrument}"
+            Grid.ColumnSpan="3" 
+            Grid.Column="0"
+            Grid.Row="1">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Choose instrument" Command="{Binding ChooseSubInstrumentCommand}" />
+                    <MenuItem Header="Remove"
+                              Command="{Binding RemoveSubInstrumentCommand}"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+            <DataGrid.Columns>
+                <DataGridTextColumn  Header="Instrument" Binding="{Binding Name}" IsReadOnly="True" />
+                <DataGridTextColumn  Header="From" Binding="{Binding From, StringFormat='dd-MM-yyyy'}" IsReadOnly="True" />
+                <DataGridTextColumn  Header="To" Binding="{Binding To, StringFormat='dd-MM-yyyy'}"  IsReadOnly="True" />
+                <DataGridTextColumn  Header="Select From" Binding="{Binding SelectedFrom, Mode=TwoWay}"/>
+                <DataGridTextColumn  Header="Select To" Binding="{Binding SelectedTo, Mode=TwoWay}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Grid.Column="1" Grid.Row="2" Margin="5" Content="Create" Command="{Binding CreateNewCommand}"/>
+    </Grid>
+</Window>

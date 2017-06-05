@@ -66,8 +66,9 @@ namespace TradePlatform
             Container.RegisterType<IDounloadInstrumentPresenter, DounloadInstrumentPresenter>(new InjectionConstructor(typeof(Instrument)));
             Container.RegisterType<IDownloadedInstrumentsHolder, DownloadedInstrumentsHolder>(new ContainerControlledLifetimeManager());
 
-            Container.RegisterType<IDataSetElementViewModel, DataSetElementViewModel>();
-            Container.RegisterType<IShowDataSetElementViewModel, ShowDataSetElementViewModel>();
+            Container.RegisterType<IDataSetElementViewModel, DataSetElementViewModel>("DataSet");
+            Container.RegisterType<IDataSetElementViewModel, ShowDataSetElementViewModel>("ShowDataSet");
+            Container.RegisterType<IDataSetElementViewModel, CopyDataSetElementViewModel>("CopyDataSet");
             Container.RegisterType<IDataSetListViewModel, DataSetListViewModel>();
             Container.RegisterType<IInstrumentChooseListViewModel, InstrumentChooseListViewModel>();
             Container.RegisterType<IDataSetHolder, DataSetHolder>(new ContainerControlledLifetimeManager());

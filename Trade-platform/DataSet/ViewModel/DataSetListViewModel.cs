@@ -122,13 +122,8 @@ namespace TradePlatform.DataSet.ViewModel
 
         private void CopyDataSet()
         {
-            var window = Application.Current.Windows.OfType<DataSetElementView>().SingleOrDefault(x => x.IsInitialized);
-            if (window != null)
-            {
-                window.Close();
-                return;
-            }
-            ContainerBuilder.Container.Resolve<DataSetElementView>().Show();
+            Application.Current.Windows.OfType<CopyDataSetElementView>().SingleOrDefault(x => x.IsInitialized)?.Close();
+            ContainerBuilder.Container.Resolve<CopyDataSetElementView>().Show();
             _eventAggregator.GetEvent<CopyDataSetEvent>().Publish(_selectedSetPresenter.DataSet().Clone() as DataSetItem);
         }
 
