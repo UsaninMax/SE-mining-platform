@@ -45,6 +45,18 @@ namespace TradePlatform.DataSet.ViewModel
             }
         }
 
+        private SubInstrument _selectedInstrument;
+        public SubInstrument SelectedSubInstrument
+        {
+            get { return _selectedInstrument; }
+            set
+            {
+                _selectedInstrument = value;
+                RaisePropertyChanged();
+                UpdateVisibilityOfContextMenu();
+            }
+        }
+
         public DataSetElementViewModel()
         {
             _holder = ContainerBuilder.Container.Resolve<IDataSetHolder>();
@@ -53,7 +65,7 @@ namespace TradePlatform.DataSet.ViewModel
             _eventAggregator.GetEvent<AddInstrumentToDatatSetEvent>().Subscribe(AddSelectedInstruments, false);
             _eventAggregator.GetEvent<CopyDataSetEvent>().Subscribe(CopyDataSet, false);
             ChooseSubInstrumentCommand = new DelegateCommand(ChooseSubInstrument);
-            RemoveSubInstrumentCommand = new DelegateCommand<SubInstrument>(RemoveSubInstrument);
+            RemoveSubInstrumentCommand = new DelegateCommand(RemoveSubInstrument, CanDoAction);
             CreateNewCommand = new DelegateCommand(CreateNew);
         }
 
@@ -81,7 +93,7 @@ namespace TradePlatform.DataSet.ViewModel
         {
             if (UniqueIdIsWrong())
             {
-                _infoPublisher.PublishException( new Exception("Attempt to add new data set: Unique Id - " + UniqueId + " - is not unique."));
+                _infoPublisher.PublishException(new Exception("Attempt to add new data set: Unique Id - " + UniqueId + " - is not unique."));
                 return;
             }
 
@@ -102,9 +114,9 @@ namespace TradePlatform.DataSet.ViewModel
                 _holder.CheckIfExist(UniqueId);
         }
 
-        private void RemoveSubInstrument(SubInstrument subInstrument)
+        private void RemoveSubInstrument()
         {
-            InstrumentsInfo.Remove(subInstrument);
+            InstrumentsInfo.Remove(_selectedInstrument);
         }
 
         private void CloseWindowNotify()
@@ -115,6 +127,15 @@ namespace TradePlatform.DataSet.ViewModel
         private void CopyDataSet(DataSetItem item)
         {
             item.SubInstruments.ForEach(InstrumentsInfo.Add);
+        }
+        private void UpdateVisibilityOfContextMenu()
+        {
+            (RemoveSubInstrumentCommand as DelegateCommand)?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanDoAction()
+        {
+            return _selectedInstrument != null;
         }
     }
 }

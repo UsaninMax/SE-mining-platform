@@ -15,21 +15,20 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <DataGrid IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding InstrumentsInfo}">
+    <DataGrid IsReadOnly="True" 
+              AutoGenerateColumns="False" 
+              ItemsSource="{Binding InstrumentsInfo}" 
+              SelectedItem="{Binding SelectedPresenter}" >
         <DataGrid.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Open folder"
-                          Command="{Binding OpenFolderCommand}"
-                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+                          Command="{Binding OpenFolderCommand}"/>
                 <MenuItem Header="Soft reload"
-                          Command="{Binding SoftReloadCommand}"
-                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+                          Command="{Binding SoftReloadCommand}"/>
                 <MenuItem Header="Hard reload"
-                          Command="{Binding HardReloadCommand}"
-                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+                          Command="{Binding HardReloadCommand}"/>
                 <MenuItem Header="Remove"
-                    Command="{Binding RemoveCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+                          Command="{Binding RemoveCommand}"/>
             </ContextMenu>
         </DataGrid.ContextMenu>
         <DataGrid.Columns>

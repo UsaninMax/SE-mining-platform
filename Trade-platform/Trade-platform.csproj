@@ -114,7 +114,7 @@
     <Compile Include="DataSet\Presenters\DataSetPresenter.cs" />
     <Compile Include="DataSet\Presenters\IDataSetPresenter.cs" />
     <Compile Include="DataSet\ViewModel\DataSetElementViewModel.cs" />
-    <Compile Include="DataSet\ViewModel\DataSetListViewModel.cs.cs" />
+    <Compile Include="DataSet\ViewModel\DataSetListViewModel.cs" />
     <Compile Include="DataSet\ViewModel\IDataSetElementViewModel.cs" />
     <Compile Include="DataSet\ViewModel\IDataSetListViewModel.cs" />
     <Compile Include="DataSet\ViewModel\IInstrumentChooseListViewModel.cs" />

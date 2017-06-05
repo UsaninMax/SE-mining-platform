@@ -13,20 +13,20 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <DataGrid IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding DataSetPresenterInfo}">
+    <DataGrid IsReadOnly="True" 
+              AutoGenerateColumns="False" 
+              ItemsSource="{Binding DataSetPresenterInfo}"
+              SelectedItem="{Binding SelectedSetPresenter}">
         <DataGrid.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Open folder"
-                          Command="{Binding OpenFolderCommand}"
-                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}"/>
+                          Command="{Binding OpenFolderCommand}"/>
                 <MenuItem Header="Copy"
-                          Command="{Binding CopyDataSetCommand}"
-                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}"/>
+                          Command="{Binding CopyDataSetCommand}"/>
                 <MenuItem Header="Create new" 
                           Command="{Binding CreateNewDataSetCommand}"/>
                 <MenuItem Header="Remove"
-                          Command="{Binding RemoveDataSetCommand}"
-                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}"/>
+                          Command="{Binding RemoveDataSetCommand}"/>
             </ContextMenu>
         </DataGrid.ContextMenu>
         <DataGrid.Columns>

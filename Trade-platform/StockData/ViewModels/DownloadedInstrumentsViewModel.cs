@@ -31,6 +31,18 @@ namespace TradePlatform.StockData.ViewModels
             }
         }
 
+        private IDounloadInstrumentPresenter _selectedPresenter;
+        public IDounloadInstrumentPresenter SelectedPresenter
+        {
+            get { return _selectedPresenter; }
+            set
+            {
+                _selectedPresenter = value;
+                RaisePropertyChanged();
+                UpdateVisibilityOfContextMenu();
+            }
+        }
+
         public ICommand OpenFolderCommand { get; private set; }
 
         public ICommand RemoveCommand { get; private set; }
@@ -49,10 +61,10 @@ namespace TradePlatform.StockData.ViewModels
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<AddPresenterToListEvent>().Subscribe(AddItemItemToList, false);
             eventAggregator.GetEvent<RemovePresenterFromListEvent>().Subscribe(RemoveItemFromList, false);
-            RemoveCommand = new DelegateCommand<IDounloadInstrumentPresenter>(RemoveData, CanDoAction);
-            SoftReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(SoftReloadData, CanDoAction);
-            HardReloadCommand = new DelegateCommand<IDounloadInstrumentPresenter>(HardReloadData, CanDoAction);
-            OpenFolderCommand = new DelegateCommand<IDounloadInstrumentPresenter>(OpenFolderWithData , CanDoAction);
+            RemoveCommand = new DelegateCommand(RemoveData, CanDoAction);
+            SoftReloadCommand = new DelegateCommand(SoftReloadData, CanDoAction);
+            HardReloadCommand = new DelegateCommand(HardReloadData, CanDoAction);
+            OpenFolderCommand = new DelegateCommand(OpenFolderWithData , CanDoAction);
             LoadedWindowCommand = new DelegateCommand(WindowLoaded);
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
             _instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
@@ -89,29 +101,29 @@ namespace TradePlatform.StockData.ViewModels
             InstrumentsInfo.Remove(presenter);
         }
 
-        private void OpenFolderWithData(IDounloadInstrumentPresenter presenter)
+        private void OpenFolderWithData()
         {
-            presenter.ShowDataInFolder();
+            _selectedPresenter.ShowDataInFolder();
         }
 
-        private void RemoveData(IDounloadInstrumentPresenter presenter)
+        private void RemoveData()
         {
-            presenter.DeleteData();
+            _selectedPresenter.DeleteData();
         }
 
-        private void SoftReloadData(IDounloadInstrumentPresenter presenter)
+        private void SoftReloadData()
         {
             if (HasNoActiveDownloadingProcess())
             {
-                presenter.SoftReloadData();
+                _selectedPresenter.SoftReloadData();
             }
         }
 
-        private void HardReloadData(IDounloadInstrumentPresenter presenter)
+        private void HardReloadData()
         {
             if (HasNoActiveDownloadingProcess())
             {
-                presenter.HardReloadData();
+                _selectedPresenter.HardReloadData();
             }
         }
 
@@ -144,9 +156,17 @@ namespace TradePlatform.StockData.ViewModels
             updateHistory.Start();
         }
 
-        private bool CanDoAction(IDounloadInstrumentPresenter presenter)
+        private void UpdateVisibilityOfContextMenu()
         {
-            return presenter != null;
+            (RemoveCommand as DelegateCommand)?.RaiseCanExecuteChanged();
+            (SoftReloadCommand as DelegateCommand)?.RaiseCanExecuteChanged();
+            (HardReloadCommand as DelegateCommand)?.RaiseCanExecuteChanged();
+            (OpenFolderCommand as DelegateCommand)?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanDoAction()
+        {
+            return _selectedPresenter != null;
         }
     }
 }

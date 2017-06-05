@@ -9,7 +9,6 @@ using TradePlatform.DataSet.Models;
 using TradePlatform.DataSet.Presenters;
 using TradePlatform.DataSet.View;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using Prism.Commands;
 using TradePlatform.Commons.Info;
@@ -27,26 +26,39 @@ namespace TradePlatform.DataSet.ViewModel
         private readonly IInfoPublisher _infoPublisher;
         private readonly IEventAggregator _eventAggregator;
 
-        private ObservableCollection<IDataSetPresenter> _dataSetPresenter = new ObservableCollection<IDataSetPresenter>();
+        private ObservableCollection<IDataSetPresenter> _dataSetPresenterInfo = new ObservableCollection<IDataSetPresenter>();
         public ObservableCollection<IDataSetPresenter> DataSetPresenterInfo
         {
             get
             {
-                return _dataSetPresenter;
+                return _dataSetPresenterInfo;
             }
             set
             {
-                _dataSetPresenter = value;
+                _dataSetPresenterInfo = value;
                 RaisePropertyChanged();
             }
         }
- 
+
+
+        private IDataSetPresenter _selectedSetPresenter;
+        public IDataSetPresenter SelectedSetPresenter
+        {
+            get { return _selectedSetPresenter; }
+            set
+            {
+                _selectedSetPresenter = value;
+                RaisePropertyChanged();
+                UpdateVisibilityOfContextMenu();
+            }
+        }
+
         public DataSetListViewModel()
         {
             CreateNewDataSetCommand = new DelegateCommand(CreateNewDataSet);
-            RemoveDataSetCommand = new DelegateCommand<IDataSetPresenter>(RemoveDataSet, CanDoAction);
-            CopyDataSetCommand = new DelegateCommand<IDataSetPresenter>(CopyDataSet, CanDoAction);
-            OpenFolderCommand = new DelegateCommand<IDataSetPresenter>(OpenFolder, CanDoAction);
+            RemoveDataSetCommand = new DelegateCommand(RemoveDataSet, CanDoAction);
+            CopyDataSetCommand = new DelegateCommand(CopyDataSet, CanDoAction);
+            OpenFolderCommand = new DelegateCommand(OpenFolder, CanDoAction);
             LoadedWindowCommand = new DelegateCommand(WindowLoaded);
             _eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             _eventAggregator.GetEvent<CreateDataSetItemEvent>().Subscribe(ProcessCreation, false);
@@ -72,9 +84,9 @@ namespace TradePlatform.DataSet.ViewModel
             DataSetPresenterInfo.Add(presenter);
         }
 
-        private void RemoveDataSet(IDataSetPresenter item)
+        private void RemoveDataSet()
         {
-            item?.DeleteData();
+            _selectedSetPresenter?.DeleteData();
         }
 
         private void WindowLoaded()
@@ -106,7 +118,7 @@ namespace TradePlatform.DataSet.ViewModel
             updateHistory.Start();
         }
 
-        private void CopyDataSet(IDataSetPresenter item)
+        private void CopyDataSet()
         {
             var window = Application.Current.Windows.OfType<DataSetElementView>().SingleOrDefault(x => x.IsInitialized);
             if (window != null)
@@ -115,17 +127,25 @@ namespace TradePlatform.DataSet.ViewModel
                 return;
             }
             ContainerBuilder.Container.Resolve<DataSetElementView>().Show();
-            _eventAggregator.GetEvent<CopyDataSetEvent>().Publish(item.DataSet().Clone() as DataSetItem);
+            _eventAggregator.GetEvent<CopyDataSetEvent>().Publish(_selectedSetPresenter.DataSet().Clone() as DataSetItem);
         }
 
-        private void OpenFolder(IDataSetPresenter item)
+        private void OpenFolder()
         {
 
         }
 
-        private bool CanDoAction(IDataSetPresenter presenter)
+        private void UpdateVisibilityOfContextMenu()
         {
-            return presenter != null;
+            (RemoveDataSetCommand as DelegateCommand)?.RaiseCanExecuteChanged();
+            (CopyDataSetCommand as DelegateCommand)?.RaiseCanExecuteChanged();
+            (OpenFolderCommand as DelegateCommand)?.RaiseCanExecuteChanged();
+            (OpenFolderCommand as DelegateCommand)?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanDoAction()
+        {
+            return _selectedSetPresenter != null;
         }
     }
 }

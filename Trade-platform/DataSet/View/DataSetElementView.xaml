@@ -23,6 +23,7 @@
         <DataGrid 
                   AutoGenerateColumns="False" 
                   ItemsSource="{Binding InstrumentsInfo}"
+                  SelectedItem="{Binding SelectedSubInstrument}"
                   Grid.ColumnSpan="3" 
                     Grid.Column="0"
                     Grid.Row="1">
@@ -30,8 +31,7 @@
                 <ContextMenu>
                     <MenuItem Header="Choose instrument" Command="{Binding ChooseSubInstrumentCommand}" />
                     <MenuItem Header="Remove"
-                              Command="{Binding RemoveSubInstrumentCommand}"
-                              CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+                              Command="{Binding RemoveSubInstrumentCommand}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
