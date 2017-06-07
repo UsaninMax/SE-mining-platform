@@ -13,11 +13,6 @@ namespace TradePlatform.DataSet.ViewModel
 
         private void ShowStructure(DataSetItem item)
         {
-            if (_uniqueId != null)
-            {
-                return;
-            }
-
             UniqueId = item.Id;
             item.SubInstruments.ForEach(InstrumentsInfo.Add);
         }

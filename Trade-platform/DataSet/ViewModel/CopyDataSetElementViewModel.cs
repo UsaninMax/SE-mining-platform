@@ -14,7 +14,6 @@ namespace TradePlatform.DataSet.ViewModel
 
         private void CopyDataSet(DataSetItem item)
         {
-            System.Diagnostics.Trace.WriteLine("copy");
             item.SubInstruments.ForEach(InstrumentsInfo.Add);
         }
 
