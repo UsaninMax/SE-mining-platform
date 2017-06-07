@@ -20,7 +20,7 @@ using TradePlatform.StockData.Models;
 
 namespace TradePlatform.DataSet.ViewModel
 {
-    public class DataSetElementViewModel : BindableBase, IDataSetElementViewModel, IClosableWindow
+    public class DataSetElementViewModel : BindableBase, IDataSetElementViewModel, IClosableWindow, IDisposable
     {
         public event EventHandler CloseWindowNotification;
         public ICommand ChooseSubInstrumentCommand { get; private set; }
@@ -73,7 +73,7 @@ namespace TradePlatform.DataSet.ViewModel
             _holder = ContainerBuilder.Container.Resolve<IDataSetHolder>();
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
             _eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
-            _eventAggregator.GetEvent<AddInstrumentToDatatSetEvent>().Subscribe(AddSelectedInstruments, false);
+            _eventAggregator.GetEvent<AddInstrumentToDatatSetEvent>().Subscribe(AddSelectedInstruments);
             ChooseSubInstrumentCommand = new DelegateCommand(ChooseSubInstrument);
             RemoveSubInstrumentCommand = new DelegateCommand(RemoveSubInstrument, CanDoAction);
             CreateNewCommand = new DelegateCommand(CreateNew);
@@ -142,6 +142,11 @@ namespace TradePlatform.DataSet.ViewModel
         private bool CanDoAction()
         {
             return _selectedInstrument != null;
+        }
+
+        public virtual void Dispose()
+        {
+            _eventAggregator.GetEvent<AddInstrumentToDatatSetEvent>().Unsubscribe(AddSelectedInstruments);
         }
     }
 }

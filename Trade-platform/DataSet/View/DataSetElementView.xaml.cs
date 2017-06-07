@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using TradePlatform.DataSet.ViewModel;
 using Microsoft.Practices.Unity;
 using System.Windows;
@@ -24,6 +25,13 @@ namespace TradePlatform.DataSet.View
         private void CloseWindowNotificationHandler(object source, EventArgs e)
         {
             Close();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            var disposable = this.DataContext as IDisposable;
+            disposable?.Dispose();
+            base.OnClosing(e);
         }
     }
 }

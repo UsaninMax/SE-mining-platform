@@ -9,12 +9,19 @@ namespace TradePlatform.DataSet.ViewModel
 
         public CopyDataSetElementViewModel()
         {
-            _eventAggregator.GetEvent<CopyDataSetEvent>().Subscribe(CopyDataSet, false);
+            _eventAggregator.GetEvent<CopyDataSetEvent>().Subscribe(CopyDataSet);
         }
 
         private void CopyDataSet(DataSetItem item)
         {
+            System.Diagnostics.Trace.WriteLine("copy");
             item.SubInstruments.ForEach(InstrumentsInfo.Add);
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            _eventAggregator.GetEvent<CopyDataSetEvent>().Unsubscribe(CopyDataSet);
         }
     }
 }
