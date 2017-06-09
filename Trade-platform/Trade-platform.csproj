@@ -102,10 +102,14 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Commons\BaseModels\IClosableWindow.cs" />
+    <Compile Include="DataSet\DataServices\DataSetCombiner.cs" />
     <Compile Include="DataSet\DataServices\DataSetService.cs" />
+    <Compile Include="DataSet\DataServices\IDataSetCombiner.cs" />
     <Compile Include="DataSet\DataServices\IDataSetService.cs" />
+    <Compile Include="DataSet\DataServices\Serialization\IDataTickStorage.cs" />
     <Compile Include="DataSet\DataServices\Serialization\XmlDataSetStorage.cs" />
     <Compile Include="DataSet\DataServices\Serialization\IDataSetStorage.cs" />
+    <Compile Include="DataSet\DataServices\Serialization\XmlDataTickStorage.cs" />
     <Compile Include="DataSet\Events\AddInstrumentToDatatSetEvent.cs" />
     <Compile Include="DataSet\Events\CopyDataSetEvent.cs" />
     <Compile Include="DataSet\Events\CreateDataSetItemEvent.cs" />
@@ -114,6 +118,7 @@
     <Compile Include="DataSet\Holders\DataSetHolder.cs" />
     <Compile Include="DataSet\Holders\IDataSetHolder.cs" />
     <Compile Include="DataSet\Models\DataSetItem.cs" />
+    <Compile Include="DataSet\Models\DataTick.cs" />
     <Compile Include="DataSet\Models\SubInstrument.cs" />
     <Compile Include="DataSet\Presenters\DataSetPresenter.cs" />
     <Compile Include="DataSet\Presenters\IDataSetPresenter.cs" />

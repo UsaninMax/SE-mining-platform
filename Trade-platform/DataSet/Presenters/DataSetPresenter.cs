@@ -128,14 +128,12 @@ namespace TradePlatform.DataSet.Presenters
             return isActive;
         }
 
-        private const string _rootFolder = "DATASETS";
-
         public void ShowDataInFolder()
         {
             try
             {
                 var fileManager = ContainerBuilder.Container.Resolve<IFileManager>();
-                fileManager.OpenFolder(_rootFolder + "\\" + _dataSet.Patch);
+                fileManager.OpenFolder(DataSetItem.RootPath + "\\" + _dataSet.Path);
             }
             catch (Exception ex)
             {

@@ -12,10 +12,15 @@ namespace TradePlatform.DataSet.Models
         public string Id { get; private set; }
 
         [DataMember()]
-        public string Patch
+        public string Path
         {
             get { return Id; }
             set { }
+        }
+
+        public static string RootPath
+        {
+            get { return "DATASETS"; }
         }
 
         private DataSetItem()
