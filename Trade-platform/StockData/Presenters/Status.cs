@@ -1,6 +1,6 @@
-﻿namespace TradePlatform.StockData.DataServices.Trades
+﻿namespace TradePlatform.StockData.Presenters
 {
-    public static class TradesStatuses
+    public static class Status
     {
         public static string FailToDownloud => "Fail to download";
 

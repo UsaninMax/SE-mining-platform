@@ -4,7 +4,7 @@ using TradePlatform.StockData.Models;
 
 namespace TradePlatform.StockData.DataServices.Trades
 {
-    public interface IInstrumentDownloadService
+    public interface IInstrumentService
     {
         void Download(Instrument instrument, CancellationToken cancellationToken);
         void SoftDownload(Instrument instrument, CancellationToken cancellationToken);

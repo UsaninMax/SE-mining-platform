@@ -48,7 +48,7 @@ namespace Trade_platform.tests.StockData.DataServices.Trades.Finam
             var infoPublisher = new Mock<IInfoPublisher>();
             ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
 
-            var downloadService = new FinamInstrumentDownloadService();
+            var downloadService = new FinamInstrumentService();
             var cancellationTokenSource = new CancellationTokenSource();
 
             String expectedDeletePath = null;
@@ -89,7 +89,7 @@ namespace Trade_platform.tests.StockData.DataServices.Trades.Finam
             var infoPublisher = new Mock<IInfoPublisher>();
             ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
 
-            var downloadService = new FinamInstrumentDownloadService();
+            var downloadService = new FinamInstrumentService();
             var cancellationTokenSource = new CancellationTokenSource();
 
             String expectedDeletePath = null;
@@ -127,7 +127,7 @@ namespace Trade_platform.tests.StockData.DataServices.Trades.Finam
             var infoPublisher = new Mock<IInfoPublisher>();
             ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
 
-            var downloadService = new FinamInstrumentDownloadService();
+            var downloadService = new FinamInstrumentService();
             var cancellationTokenSource = new CancellationTokenSource();
 
             String expectedIsExistPath = null;
@@ -169,7 +169,7 @@ namespace Trade_platform.tests.StockData.DataServices.Trades.Finam
             var infoPublisher = new Mock<IInfoPublisher>();
             ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
 
-            var downloadService = new FinamInstrumentDownloadService();
+            var downloadService = new FinamInstrumentService();
             var cancellationTokenSource = new CancellationTokenSource();
 
             String expectedCreatePath = null;
@@ -203,7 +203,7 @@ namespace Trade_platform.tests.StockData.DataServices.Trades.Finam
             ContainerBuilder.Container.RegisterInstance(fileManager.Object);
             ContainerBuilder.Container.RegisterInstance(downloader.Object);
 
-            var downloadService = new FinamInstrumentDownloadService();
+            var downloadService = new FinamInstrumentService();
             var cancellationTokenSource = new CancellationTokenSource();
 
             String expectedIsExistPath = null;
@@ -241,7 +241,7 @@ namespace Trade_platform.tests.StockData.DataServices.Trades.Finam
             ContainerBuilder.Container.RegisterInstance(fileManager.Object);
             var holderMock = new Mock<IDownloadedInstrumentsHolder>();
             ContainerBuilder.Container.RegisterInstance(holderMock.Object);
-            var downloadService = new FinamInstrumentDownloadService();
+            var downloadService = new FinamInstrumentService();
             var cancellationTokenSource = new CancellationTokenSource();
             downloadService.Delete(_instrument,null, cancellationTokenSource);
             fileManager.Verify(x => x.DeleteFolder(It.IsAny<string>()), Times.Once);
@@ -259,7 +259,7 @@ namespace Trade_platform.tests.StockData.DataServices.Trades.Finam
             ContainerBuilder.Container.RegisterInstance(splitter.Object);
             var fileManager = new Mock<IFileManager>();
             ContainerBuilder.Container.RegisterInstance(fileManager.Object);
-            var downloadService = new FinamInstrumentDownloadService();
+            var downloadService = new FinamInstrumentService();
             var cancellationTokenSource = new CancellationTokenSource();
             fileManager.Setup(x => x.DeleteFolder(It.IsAny<string>()));
             var downloadTask = new Task(() => Thread.Sleep(1000));
@@ -277,7 +277,7 @@ namespace Trade_platform.tests.StockData.DataServices.Trades.Finam
             ContainerBuilder.Container.RegisterInstance(splitter.Object);
             var fileManager = new Mock<IFileManager>();
             ContainerBuilder.Container.RegisterInstance(fileManager.Object);
-            var downloadService = new FinamInstrumentDownloadService();
+            var downloadService = new FinamInstrumentService();
 
             String expectedIsExistPath = null;
             String expectedIsExistDirectoryPath = null;
@@ -311,7 +311,7 @@ namespace Trade_platform.tests.StockData.DataServices.Trades.Finam
             ContainerBuilder.Container.RegisterInstance(splitter.Object);
             var fileManager = new Mock<IFileManager>();
             ContainerBuilder.Container.RegisterInstance(fileManager.Object);
-            var downloadService = new FinamInstrumentDownloadService();
+            var downloadService = new FinamInstrumentService();
 
             fileManager.Setup(x => x.IsFileExist(It.IsAny<string>()))
                 .Returns(false);
@@ -331,7 +331,7 @@ namespace Trade_platform.tests.StockData.DataServices.Trades.Finam
             ContainerBuilder.Container.RegisterInstance(splitter.Object);
             var fileManager = new Mock<IFileManager>();
             ContainerBuilder.Container.RegisterInstance(fileManager.Object);
-            var downloadService = new FinamInstrumentDownloadService();
+            var downloadService = new FinamInstrumentService();
 
             fileManager.Setup(x => x.IsFileExist(It.IsAny<string>()))
                 .Returns(true);
@@ -351,7 +351,7 @@ namespace Trade_platform.tests.StockData.DataServices.Trades.Finam
             ContainerBuilder.Container.RegisterInstance(splitter.Object);
             var fileManager = new Mock<IFileManager>();
             ContainerBuilder.Container.RegisterInstance(fileManager.Object);
-            var downloadService = new FinamInstrumentDownloadService();
+            var downloadService = new FinamInstrumentService();
 
             fileManager.Setup(x => x.IsFileExist(It.IsAny<string>()))
                 .Returns(false);

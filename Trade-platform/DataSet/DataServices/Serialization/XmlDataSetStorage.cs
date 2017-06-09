@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Practices.Unity;
 using TradePlatform.Commons.Setting;
 using TradePlatform.Commons.Sistem;

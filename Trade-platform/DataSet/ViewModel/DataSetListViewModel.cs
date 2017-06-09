@@ -64,6 +64,7 @@ namespace TradePlatform.DataSet.ViewModel
             LoadedWindowCommand = new DelegateCommand(WindowLoaded);
             _eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             _eventAggregator.GetEvent<CreateDataSetItemEvent>().Subscribe(ProcessCreation, false);
+            _eventAggregator.GetEvent<RemovePresenterFromListEvent>().Subscribe(RemovePresenmterFromList, false);
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
         }
 
@@ -82,8 +83,13 @@ namespace TradePlatform.DataSet.ViewModel
         {
             IDataSetPresenter presenter = ContainerBuilder.Container.Resolve<IDataSetPresenter>(
                 new DependencyOverride<DataSetItem>(item));
-            presenter.PrepareData();
             DataSetPresenterInfo.Add(presenter);
+            presenter.PrepareData();
+        }
+
+        private void RemovePresenmterFromList(IDataSetPresenter presenter)
+        {
+            DataSetPresenterInfo.Remove(presenter);
         }
 
         private void RemoveDataSet()
@@ -129,7 +135,7 @@ namespace TradePlatform.DataSet.ViewModel
 
         private void OpenFolder()
         {
-
+            _selectedSetPresenter?.ShowDataInFolder();
         }
 
         private void ShowStructure()

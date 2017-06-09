@@ -64,24 +64,22 @@ namespace TradePlatform.StockData.ViewModels
             RemoveCommand = new DelegateCommand(RemoveData, CanDoAction);
             SoftReloadCommand = new DelegateCommand(SoftReloadData, CanDoAction);
             HardReloadCommand = new DelegateCommand(HardReloadData, CanDoAction);
-            OpenFolderCommand = new DelegateCommand(OpenFolderWithData , CanDoAction);
+            OpenFolderCommand = new DelegateCommand(OpenFolderWithData, CanDoAction);
             LoadedWindowCommand = new DelegateCommand(WindowLoaded);
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
             _instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
         }
 
-        private void AddItemItemToList(object param)
+        private void AddItemItemToList(Instrument instrument)
         {
-            var instrument = param as IDounloadInstrumentPresenter;
-            if (instrument != null)
-            {
-                InstrumentsInfo.Add(instrument);
-                _instrumentsHolder.Put(instrument.Instrument());
+            IDounloadInstrumentPresenter presenter = ContainerBuilder.Container.Resolve<IDounloadInstrumentPresenter>(
+                new DependencyOverride<Instrument>(instrument));
+            InstrumentsInfo.Add(presenter);
+            _instrumentsHolder.Put(presenter.Instrument());
 
-                if (HasNoActiveDownloadingProcess())
-                {
-                    instrument.SoftDownloadData();
-                }
+            if (HasNoActiveDownloadingProcess())
+            {
+                presenter.SoftDownloadData();
             }
         }
 
@@ -91,7 +89,7 @@ namespace TradePlatform.StockData.ViewModels
             if (!isOk)
             {
                 _infoPublisher.PublishInfo(
-                    new DownloadInfo {Message = "Finam allow you to download one file at one time"});
+                    new DownloadInfo { Message = "Finam allow you to download one file at one time" });
             }
             return isOk;
         }
@@ -132,7 +130,7 @@ namespace TradePlatform.StockData.ViewModels
             var updateHistory = new Task<ObservableCollection<IDounloadInstrumentPresenter>>(() =>
             {
                 var instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
-                return  new ObservableCollection<IDounloadInstrumentPresenter>(instrumentsHolder.GetAll()
+                return new ObservableCollection<IDounloadInstrumentPresenter>(instrumentsHolder.GetAll()
                         .Select(i =>
                         {
                             var presenter = ContainerBuilder.Container

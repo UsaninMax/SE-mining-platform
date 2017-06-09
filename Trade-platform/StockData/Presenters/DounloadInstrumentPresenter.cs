@@ -16,7 +16,7 @@ namespace TradePlatform.StockData.Presenters
     public class DounloadInstrumentPresenter : BindableBase, IDounloadInstrumentPresenter
     {
         private readonly Instrument _instrument;
-        private readonly IInstrumentDownloadService _downloadService;
+        private readonly IInstrumentService _service;
         private CancellationTokenSource _cancellationTokenSource;
         private readonly IInfoPublisher _infoPublisher;
         private Task _download;
@@ -24,7 +24,7 @@ namespace TradePlatform.StockData.Presenters
         public DounloadInstrumentPresenter(Instrument instrument)
         {
             _instrument = instrument;
-            _downloadService = ContainerBuilder.Container.Resolve<IInstrumentDownloadService>();
+            _service = ContainerBuilder.Container.Resolve<IInstrumentService>();
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
         }
 
@@ -56,20 +56,20 @@ namespace TradePlatform.StockData.Presenters
                 return;
             }
 
-            StatusMessage = TradesStatuses.InProgress;
+            StatusMessage = Status.InProgress;
             _cancellationTokenSource = new CancellationTokenSource();
             _infoPublisher.PublishInfo(new DownloadInfo { Message = _instrument + "- start hard download" });
-            _download = new Task(() => _downloadService.Download(_instrument, _cancellationTokenSource.Token), _cancellationTokenSource.Token);
+            _download = new Task(() => _service.Download(_instrument, _cancellationTokenSource.Token), _cancellationTokenSource.Token);
             _download.ContinueWith(t =>
             {
                 if (t.IsFaulted)
                 {
-                    StatusMessage = TradesStatuses.FailToDownloud;
+                    StatusMessage = Status.FailToDownloud;
                     _infoPublisher.PublishException(t.Exception);
                 }
                 else
                 {
-                    StatusMessage = TradesStatuses.IsReady;
+                    StatusMessage = Status.IsReady;
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
@@ -83,20 +83,20 @@ namespace TradePlatform.StockData.Presenters
                 return;
             }
 
-            StatusMessage = TradesStatuses.InProgress;
+            StatusMessage = Status.InProgress;
             _cancellationTokenSource = new CancellationTokenSource();
             _infoPublisher.PublishInfo(new DownloadInfo { Message = _instrument + "- start soft download" });
-            _download = new Task(() => _downloadService.SoftDownload(_instrument, _cancellationTokenSource.Token), _cancellationTokenSource.Token);
+            _download = new Task(() => _service.SoftDownload(_instrument, _cancellationTokenSource.Token), _cancellationTokenSource.Token);
             _download.ContinueWith(t =>
             {
                 if (t.IsFaulted)
                 {
-                    StatusMessage = TradesStatuses.FailToDownloud;
+                    StatusMessage = Status.FailToDownloud;
                     _infoPublisher.PublishException(t.Exception);
                 }
                 else
                 {
-                    StatusMessage = TradesStatuses.IsReady;
+                    StatusMessage = Status.IsReady;
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
@@ -106,13 +106,13 @@ namespace TradePlatform.StockData.Presenters
 
         public void DeleteData()
         {
-            StatusMessage = TradesStatuses.Deleteing;
-            var delete = new Task(() => _downloadService.Delete(_instrument, _download, _cancellationTokenSource));
+            StatusMessage = Status.Deleteing;
+            var delete = new Task(() => _service.Delete(_instrument, _download, _cancellationTokenSource));
             delete.ContinueWith(t =>
             {
                 if (t.IsFaulted)
                 {
-                    StatusMessage = TradesStatuses.FailToDelete;
+                    StatusMessage = Status.FailToDelete;
                     _infoPublisher.PublishException(t.Exception);
                 }
                 else
@@ -147,23 +147,23 @@ namespace TradePlatform.StockData.Presenters
 
         public void CheckData()
         {
-            StatusMessage = TradesStatuses.Checking;
-            var checkTask = new Task<bool>(() => _downloadService.CheckFiles(_instrument));
+            StatusMessage = Status.Checking;
+            var checkTask = new Task<bool>(() => _service.CheckFiles(_instrument));
             checkTask.ContinueWith(t =>
             {
                 if (t.IsFaulted)
                 {
-                    StatusMessage = TradesStatuses.FailToCheck;
+                    StatusMessage = Status.FailToCheck;
                     _infoPublisher.PublishException(t.Exception);
                 }
                 else
                 {
                     if(t.Result)
                     {
-                        StatusMessage = TradesStatuses.IsReady;
+                        StatusMessage = Status.IsReady;
                     } else
                     {
-                        StatusMessage = TradesStatuses.DataIsCorrapted;
+                        StatusMessage = Status.DataIsCorrapted;
                     }
                 }
             });

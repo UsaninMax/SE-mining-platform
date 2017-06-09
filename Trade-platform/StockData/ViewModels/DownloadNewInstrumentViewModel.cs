@@ -12,7 +12,6 @@ using TradePlatform.StockData.DataServices.SecuritiesInfo;
 using TradePlatform.StockData.Events;
 using TradePlatform.StockData.Holders;
 using TradePlatform.StockData.Models;
-using TradePlatform.StockData.Presenters;
 
 namespace TradePlatform.StockData.ViewModels
 {
@@ -20,6 +19,7 @@ namespace TradePlatform.StockData.ViewModels
     {
 
         private bool _hideWaitSpinnerBar;
+        private readonly IDownloadedInstrumentsHolder _instrumentsHolder;
         public bool HideWaitSpinnerBar
         {
             get
@@ -153,6 +153,7 @@ namespace TradePlatform.StockData.ViewModels
             _securitiesInfo = ContainerBuilder.Container.Resolve<SecuritiesInfoHolder>();
             _suritiesInfoUpdater = ContainerBuilder.Container.Resolve<ISecuritiesInfoUpdater>();
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
+            _instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
             AddNewCommand = new DelegateCommand(AddNewInstrument);
         }
 
@@ -160,19 +161,16 @@ namespace TradePlatform.StockData.ViewModels
 
         public void AddNewInstrument()
         {
-            IDounloadInstrumentPresenter presenter = ContainerBuilder.Container.Resolve<IDounloadInstrumentPresenter>(
-                new DependencyOverride<Instrument>(
-                    new Instrument.Builder()
-                    .WithFrom(_dateFrom)
-                    .WithTo(_dateTo)
-                    .WithCode(_selectedSecurity?.Code)
-                    .WithMarketId(_selectedSecurity?.Market.Id)
-                    .WithName(_selectedSecurity?.Name)
-                    .WithId(_selectedSecurity?.Id)
-                    .WithDataProvider("FINAM")
-                    .Build()));
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
-            eventAggregator.GetEvent<AddPresenterToListEvent>().Publish(presenter);
+            eventAggregator.GetEvent<AddPresenterToListEvent>().Publish(new Instrument.Builder()
+                .WithFrom(_dateFrom)
+                .WithTo(_dateTo)
+                .WithCode(_selectedSecurity?.Code)
+                .WithMarketId(_selectedSecurity?.Market.Id)
+                .WithName(_selectedSecurity?.Name)
+                .WithId(_selectedSecurity?.Id)
+                .WithDataProvider("FINAM")
+                .Build());
         }
 
         public void UpdateSecuritiesInfo()

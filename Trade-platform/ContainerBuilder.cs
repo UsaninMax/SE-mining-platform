@@ -7,6 +7,7 @@ using TradePlatform.Commons.Info.Exception;
 using TradePlatform.Commons.Info.ViewModels;
 using TradePlatform.Commons.Setting;
 using TradePlatform.Commons.Sistem;
+using TradePlatform.DataSet.DataServices;
 using TradePlatform.DataSet.DataServices.Serialization;
 using TradePlatform.DataSet.Holders;
 using TradePlatform.DataSet.Models;
@@ -60,7 +61,7 @@ namespace TradePlatform
             Container.RegisterType<ISecuritiesInfoParser, FinamSecuritiesInfoParser>();
             Container.RegisterType<SecuritiesInfoHolder>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IInstrumentSplitter, FinamInstrumentSplitter>();
-            Container.RegisterType<IInstrumentDownloadService, FinamInstrumentDownloadService>();
+            Container.RegisterType<IInstrumentService, FinamInstrumentService>();
             Container.RegisterType<ITradesDownloader, FinamTradesDownloader>();
             Container.RegisterType<IInstrumentsStorage, XmlInstrumentStorage>();
             Container.RegisterType<IDounloadInstrumentPresenter, DounloadInstrumentPresenter>(new InjectionConstructor(typeof(Instrument)));
@@ -74,6 +75,7 @@ namespace TradePlatform
             Container.RegisterType<IDataSetHolder, DataSetHolder>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IDataSetPresenter, DataSetPresenter>(new InjectionConstructor(typeof(DataSetItem)));
             Container.RegisterType<IDataSetStorage, XmlDataSetStorage>();
+            Container.RegisterType<IDataSetService, DataSetService>();
         }
     }
 }

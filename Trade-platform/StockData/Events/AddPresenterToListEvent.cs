@@ -1,9 +1,9 @@
 ﻿using Prism.Events;
-using TradePlatform.StockData.Presenters;
+using TradePlatform.StockData.Models;
 
 namespace TradePlatform.StockData.Events
 {
-    public class AddPresenterToListEvent : PubSubEvent<IDounloadInstrumentPresenter>
+    public class AddPresenterToListEvent : PubSubEvent<Instrument>
     {
     }
 }

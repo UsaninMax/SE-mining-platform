@@ -11,13 +11,13 @@ using TradePlatform.StockData.Holders;
 
 namespace TradePlatform.StockData.DataServices.Trades.Finam
 {
-    public class FinamInstrumentDownloadService : IInstrumentDownloadService
+    public class FinamInstrumentService : IInstrumentService
     {
         private readonly IInstrumentSplitter _instrumentSplitter;
         private readonly IFileManager _fileManager;
         private readonly IInfoPublisher _infoPublisher;
 
-        public FinamInstrumentDownloadService()
+        public FinamInstrumentService()
         {
             _instrumentSplitter = ContainerBuilder.Container.Resolve<IInstrumentSplitter>();
             _fileManager = ContainerBuilder.Container.Resolve<IFileManager>();

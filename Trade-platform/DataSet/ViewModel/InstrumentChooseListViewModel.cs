@@ -60,7 +60,7 @@ namespace TradePlatform.DataSet.ViewModel
             var updateHistory = new Task<ObservableCollection<Instrument>>(() =>
             {
                 var instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
-                var downloadService = ContainerBuilder.Container.Resolve<IInstrumentDownloadService>();
+                var downloadService = ContainerBuilder.Container.Resolve<IInstrumentService>();
                 return new ObservableCollection<Instrument>(instrumentsHolder.GetAll().Where(i =>downloadService.CheckFiles(i)));
             });
             updateHistory.ContinueWith(t =>

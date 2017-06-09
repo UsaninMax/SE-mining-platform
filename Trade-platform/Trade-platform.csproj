@@ -102,11 +102,14 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Commons\BaseModels\IClosableWindow.cs" />
+    <Compile Include="DataSet\DataServices\DataSetService.cs" />
+    <Compile Include="DataSet\DataServices\IDataSetService.cs" />
     <Compile Include="DataSet\DataServices\Serialization\XmlDataSetStorage.cs" />
     <Compile Include="DataSet\DataServices\Serialization\IDataSetStorage.cs" />
     <Compile Include="DataSet\Events\AddInstrumentToDatatSetEvent.cs" />
     <Compile Include="DataSet\Events\CopyDataSetEvent.cs" />
     <Compile Include="DataSet\Events\CreateDataSetItemEvent.cs" />
+    <Compile Include="DataSet\Events\RemoveItemFromList.cs" />
     <Compile Include="DataSet\Events\ShowDataSetEvent.cs" />
     <Compile Include="DataSet\Holders\DataSetHolder.cs" />
     <Compile Include="DataSet\Holders\IDataSetHolder.cs" />
@@ -114,6 +117,7 @@
     <Compile Include="DataSet\Models\SubInstrument.cs" />
     <Compile Include="DataSet\Presenters\DataSetPresenter.cs" />
     <Compile Include="DataSet\Presenters\IDataSetPresenter.cs" />
+    <Compile Include="DataSet\Presenters\Status.cs" />
     <Compile Include="DataSet\ViewModel\CopyDataSetElementViewModel.cs" />
     <Compile Include="DataSet\ViewModel\DataSetElementViewModel.cs" />
     <Compile Include="DataSet\ViewModel\DataSetListViewModel.cs" />
@@ -137,6 +141,7 @@
     <Compile Include="DataSet\View\InstrumentChooseListView.xaml.cs">
       <DependentUpon>InstrumentChooseListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StockData\Presenters\Status.cs" />
     <Compile Include="StockData\Holders\DownloadedInstrumentsHolder.cs" />
     <Compile Include="StockData\Holders\IDownloadedInstrumentsHolder.cs" />
     <Compile Include="Commons\Info\Exception\ExceptionActualizer.cs" />
@@ -177,17 +182,16 @@
     </ApplicationDefinition>
     <Compile Include="StockData\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoDownloader.cs" />
     <Compile Include="Commons\Setting\SettingSerializer.cs" />
-    <Compile Include="StockData\DataServices\Trades\Finam\FinamInstrumentDownloadService.cs" />
+    <Compile Include="StockData\DataServices\Trades\Finam\FinamInstrumentService.cs" />
     <Compile Include="StockData\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoParser.cs" />
     <Compile Include="StockData\DataServices\Trades\Finam\FinamInstrumentSplitter.cs" />
-    <Compile Include="StockData\DataServices\Trades\IInstrumentDownloadService.cs" />
+    <Compile Include="StockData\DataServices\Trades\IInstrumentService.cs" />
     <Compile Include="StockData\DataServices\SecuritiesInfo\ISecuritiesInfoParser.cs" />
     <Compile Include="StockData\DataServices\SecuritiesInfo\Finam\FinamMarketHelper.cs" />
     <Compile Include="StockData\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoUpdater.cs" />
     <Compile Include="StockData\DataServices\SecuritiesInfo\ISecuritiesInfoUpdater.cs" />
     <Compile Include="StockData\DataServices\Trades\IInstrumentSplitter.cs" />
     <Compile Include="StockData\DataServices\Serialization\IInstrumentsStorage.cs" />
-    <Compile Include="StockData\DataServices\Trades\TradesStatuses.cs" />
     <Compile Include="StockData\DataServices\Serialization\XmlInstrumentStorage.cs" />
     <Compile Include="StockData\Presenters\DounloadInstrumentPresenter.cs" />
     <Compile Include="StockData\Presenters\IDounloadInstrumentPresenter.cs" />

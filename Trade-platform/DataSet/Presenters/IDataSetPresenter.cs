@@ -7,7 +7,6 @@ namespace TradePlatform.DataSet.Presenters
         void PrepareData();
         void DeleteData();
         void CheckData();
-        bool InPrepareDataProgress();
         void ShowDataInFolder();
         DataSetItem DataSet();
     }
