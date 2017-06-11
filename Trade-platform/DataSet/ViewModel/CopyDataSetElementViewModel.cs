@@ -14,6 +14,8 @@ namespace TradePlatform.DataSet.ViewModel
 
         private void CopyDataSet(DataSetItem item)
         {
+            WarrantyCoverage = item.WarrantyCoverage;
+            StepSize = item.StepSize;
             item.SubInstruments.ForEach(InstrumentsInfo.Add);
         }
 

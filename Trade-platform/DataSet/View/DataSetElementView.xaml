@@ -9,6 +9,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="*" />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
@@ -18,15 +20,22 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" Text="unique name"/>
+        <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" Text="Unique name"/>
         <TextBox  Grid.Column="1" Grid.Row="0" Margin="5" Text="{Binding Path=UniqueId}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="1" Margin="5" Text="Warranty coverage"/>
+        <TextBox  Grid.Column="1" Grid.Row="1" Margin="5" Text="{Binding Path=WarrantyCoverage}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="2" Margin="5" Text="Step size"/>
+        <TextBox  Grid.Column="1" Grid.Row="2" Margin="5" Text="{Binding Path=StepSize}"/>
+
         <DataGrid 
                   AutoGenerateColumns="False" 
                   ItemsSource="{Binding InstrumentsInfo}"
                   SelectedItem="{Binding SelectedSubInstrument}"
                   Grid.ColumnSpan="3" 
                     Grid.Column="0"
-                    Grid.Row="1">
+                    Grid.Row="3">
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Choose instrument" Command="{Binding ChooseSubInstrumentCommand}" />
@@ -42,6 +51,6 @@
                 <DataGridTextColumn  Header="Select To" Binding="{Binding SelectedTo, Mode=TwoWay}" />
             </DataGrid.Columns>
         </DataGrid>
-        <Button Grid.Column="1" Grid.Row="2" Margin="5" Content="Create" Command="{Binding CreateNewCommand}"/>
+        <Button Grid.Column="1" Grid.Row="4" Margin="5" Content="Create" Command="{Binding CreateNewCommand}"/>
     </Grid>
 </Window>

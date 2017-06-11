@@ -12,6 +12,12 @@ namespace TradePlatform.DataSet.Models
         public string Id { get; private set; }
 
         [DataMember()]
+        public double WarrantyCoverage { get; private set; }
+
+        [DataMember()]
+        public double StepSize { get; private set; }
+
+        [DataMember()]
         public string Path
         {
             get { return Id; }
@@ -33,12 +39,26 @@ namespace TradePlatform.DataSet.Models
         public class Builder
         {
             private string _id;
+            private double _warrantyCoverage;
+            private double _stepSize;
             private IList<SubInstrument> _subInstruments;
 
 
             public Builder WithId(string value)
             {
                 _id = value;
+                return this;
+            }
+
+            public Builder WithWarrantyCoverage(double value)
+            {
+                _warrantyCoverage = value;
+                return this;
+            }
+
+            public Builder WithStepSize(double value)
+            {
+                _stepSize = value;
                 return this;
             }
 
@@ -50,20 +70,27 @@ namespace TradePlatform.DataSet.Models
 
             public DataSetItem Build()
             {
-                return new DataSetItem() { Id = _id, SubInstruments = _subInstruments };
+                return new DataSetItem() {
+                    Id = _id,
+                    SubInstruments = _subInstruments,
+                    WarrantyCoverage = _warrantyCoverage,
+                    StepSize = _stepSize
+                };
             }
 
         }
 
         public override string ToString()
         {
-            return $"{nameof(Id)}: {Id}, {nameof(SubInstruments)}: {SubInstruments}";
+            return $"{nameof(Id)}: {Id}, {nameof(SubInstruments)}: {SubInstruments}, {nameof(StepSize)}: {StepSize}, {nameof(WarrantyCoverage)}: {WarrantyCoverage}";
         }
 
         public object Clone()
         {
             return new DataSetItem()
             {
+                StepSize = StepSize,
+                WarrantyCoverage = WarrantyCoverage,
                 SubInstruments = SubInstruments.Select(s => s.Clone() as SubInstrument).ToList()
             };
         }

@@ -14,6 +14,8 @@ namespace TradePlatform.DataSet.ViewModel
         private void ShowStructure(DataSetItem item)
         {
             UniqueId = item.Id;
+            WarrantyCoverage = item.WarrantyCoverage;
+            StepSize = item.StepSize;
             item.SubInstruments.ForEach(InstrumentsInfo.Add);
         }
 

@@ -3,14 +3,14 @@ using System.Runtime.Serialization;
 
 namespace TradePlatform.Commons.BaseModels
 {
-    [DataContract()]
+    [DataContract(Name = "DT")]
     public class DataTick
     {
-        [DataMember()]
+        [DataMember(Name = "D")]
         public DateTime Date { get; set; }
-        [DataMember()]
+        [DataMember(Name = "P")]
         public double  Price { get; set; }
-        [DataMember()]
+        [DataMember(Name = "V")]
         public int Volume { get; set; }
 
         public override string ToString()

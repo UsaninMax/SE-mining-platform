@@ -38,6 +38,35 @@ namespace TradePlatform.DataSet.ViewModel
             }
         }
         public string _uniqueId;
+
+        public double WarrantyCoverage
+        {
+            get
+            {
+                return _warrantyCoverage;
+            }
+            set
+            {
+                _warrantyCoverage = value;
+                RaisePropertyChanged();
+            }
+        }
+        public double _warrantyCoverage;
+
+        public double StepSize
+        {
+            get
+            {
+                return _stepSize;
+            }
+            set
+            {
+                _stepSize = value;
+                RaisePropertyChanged();
+            }
+        }
+        public double _stepSize;
+
         private readonly IDataSetHolder _holder;
         private readonly IInfoPublisher _infoPublisher;
         protected readonly IEventAggregator _eventAggregator;
@@ -110,6 +139,8 @@ namespace TradePlatform.DataSet.ViewModel
             DataSetItem dataSet = new DataSetItem
                 .Builder()
                 .WithId(UniqueId)
+                .WithStepSize(StepSize)
+                .WithWarrantyCoverage(WarrantyCoverage)
                 .WithSubInstruments(InstrumentsInfo)
                 .Build();
             _holder.Put(dataSet);

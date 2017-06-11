@@ -34,6 +34,8 @@ namespace TradePlatform.DataSet.Presenters
             }
         }
         public String DataSetId => _dataSet.Id;
+        public double WarrantyCoverage => _dataSet.WarrantyCoverage;
+        public double StepSize => _dataSet.StepSize;
 
         public DataSetPresenter(DataSetItem dataSet)
         {

@@ -32,7 +32,9 @@
             </ContextMenu>
         </DataGrid.ContextMenu>
         <DataGrid.Columns>
-            <DataGridTextColumn  Header="Unique name" Binding="{Binding DataSetId}" />
+            <DataGridTextColumn  Header="Id" Binding="{Binding DataSetId}" />
+            <DataGridTextColumn  Header="Warranty coverage" Binding="{Binding WarrantyCoverage}" />
+            <DataGridTextColumn  Header="Step size" Binding="{Binding StepSize}" />
             <DataGridTextColumn  Header="Status" Binding="{Binding StatusMessage}" />
         </DataGrid.Columns>
     </DataGrid>
