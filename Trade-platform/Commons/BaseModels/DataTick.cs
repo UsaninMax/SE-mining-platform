@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace TradePlatform.DataSet.Models
+namespace TradePlatform.Commons.BaseModels
 {
     [DataContract()]
     public class DataTick
@@ -9,11 +9,13 @@ namespace TradePlatform.DataSet.Models
         [DataMember()]
         public DateTime Date { get; set; }
         [DataMember()]
-        public double  Value { get; set; }
+        public double  Price { get; set; }
+        [DataMember()]
+        public int Volume { get; set; }
 
         public override string ToString()
         {
-            return $"{nameof(Date)}: {Date}, {nameof(Value)}: {Value}";
+            return $"{nameof(Date)}: {Date}, {nameof(Price)}: {Price}, {nameof(Volume)}: {Volume}";
         }
     }
 }

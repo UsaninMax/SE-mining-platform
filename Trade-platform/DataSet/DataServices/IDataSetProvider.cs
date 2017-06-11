@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using TradePlatform.Commons.BaseModels;
 using TradePlatform.DataSet.Models;
 
 namespace TradePlatform.DataSet.DataServices
 {
-    interface IDataSetCombiner
+    interface IDataSetProvider
     {
-        IList<DataTick> Combine(DataSetItem item);
+        IList<DataTick> Get(DataSetItem item);
     }
 }

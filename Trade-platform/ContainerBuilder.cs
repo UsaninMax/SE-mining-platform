@@ -76,8 +76,9 @@ namespace TradePlatform
             Container.RegisterType<IDataSetPresenter, DataSetPresenter>(new InjectionConstructor(typeof(DataSetItem)));
             Container.RegisterType<IDataSetStorage, XmlDataSetStorage>();
             Container.RegisterType<IDataSetService, DataSetService>();
-            Container.RegisterType<IDataSetCombiner, DataSetCombiner>();
+            Container.RegisterType<IDataSetProvider, DataSetProvider>();
             Container.RegisterType<IDataTickStorage, XmlDataTickStorage>();
+            Container.RegisterType<IDataTickParser, DataTickParser>();
         }
     }
 }

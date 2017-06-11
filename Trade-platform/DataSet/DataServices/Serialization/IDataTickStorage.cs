@@ -1,6 +1,6 @@
 ﻿
 using System.Collections.Generic;
-using TradePlatform.DataSet.Models;
+using TradePlatform.Commons.BaseModels;
 
 namespace TradePlatform.DataSet.DataServices.Serialization
 {

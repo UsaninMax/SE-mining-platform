@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Practices.Unity;
 using TradePlatform.Commons.Setting;
 using TradePlatform.Commons.Sistem;
-using TradePlatform.DataSet.Models;
+using TradePlatform.Commons.BaseModels;
 
 namespace TradePlatform.DataSet.DataServices.Serialization
 {
