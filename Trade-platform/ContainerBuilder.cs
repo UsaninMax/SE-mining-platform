@@ -78,7 +78,7 @@ namespace TradePlatform
             Container.RegisterType<IDataSetService, DataSetService>();
             Container.RegisterType<IDataSetProvider, DataSetProvider>();
             Container.RegisterType<IDataTickStorage, XmlDataTickStorage>();
-            Container.RegisterType<IDataTickParser, DataTickParser>();
+            Container.RegisterType<IDataTickParser, FinamDataTickParser>();
         }
     }
 }

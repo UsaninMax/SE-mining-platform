@@ -188,7 +188,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="StockData\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoDownloader.cs" />
-    <Compile Include="Commons\Setting\SettingSerializer.cs" />
+    <Compile Include="Commons\Setting\XMLSettingSerializer.cs" />
     <Compile Include="StockData\DataServices\Trades\Finam\FinamInstrumentService.cs" />
     <Compile Include="StockData\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoParser.cs" />
     <Compile Include="StockData\DataServices\Trades\Finam\FinamInstrumentSplitter.cs" />

@@ -8,11 +8,11 @@ using System.Globalization;
 
 namespace TradePlatform.StockData.DataServices.Trades.Finam
 {
-    public class DataTickParser : IDataTickParser
+    public class FinamDataTickParser : IDataTickParser
     {
         private readonly IInstrumentSplitter _splitter;
 
-        public DataTickParser ()
+        public FinamDataTickParser ()
         {
             _splitter = ContainerBuilder.Container.Resolve<IInstrumentSplitter>();
         }
