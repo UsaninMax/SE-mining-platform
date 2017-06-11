@@ -45,10 +45,10 @@
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn  Header="Instrument" Binding="{Binding Name}" IsReadOnly="True" />
-                <DataGridTextColumn  Header="From" Binding="{Binding From, StringFormat='dd-MM-yyyy'}" IsReadOnly="True" />
-                <DataGridTextColumn  Header="To" Binding="{Binding To, StringFormat='dd-MM-yyyy'}"  IsReadOnly="True" />
-                <DataGridTextColumn  Header="Select From" Binding="{Binding SelectedFrom, Mode=TwoWay}"/>
-                <DataGridTextColumn  Header="Select To" Binding="{Binding SelectedTo, Mode=TwoWay}" />
+                <DataGridTextColumn  Header="From" Binding="{Binding From, StringFormat=d}" IsReadOnly="True" />
+                <DataGridTextColumn  Header="To" Binding="{Binding To, StringFormat=d}"  IsReadOnly="True" />
+                <DataGridTextColumn  Header="Select From" Binding="{Binding SelectedFrom, Mode=TwoWay, StringFormat=d}"/>
+                <DataGridTextColumn  Header="Select To" Binding="{Binding SelectedTo, Mode=TwoWay, StringFormat=d}" />
             </DataGrid.Columns>
         </DataGrid>
         <Button Grid.Column="1" Grid.Row="4" Margin="5" Content="Create" Command="{Binding CreateNewCommand}"/>

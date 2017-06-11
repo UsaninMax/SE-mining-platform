@@ -13,7 +13,10 @@ namespace TradePlatform.DataSet.Models
         [DataMember()]
         public DateTime SelectedTo { get; set; }
 
-        public SubInstrument(Instrument instrument) : base(instrument) { }
+        public SubInstrument(Instrument instrument) : base(instrument) {
+            SelectedFrom = instrument.From;
+            SelectedTo = instrument.To;
+        }
 
         public override string ToString()
         {

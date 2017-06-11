@@ -38,10 +38,10 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn  Header="Instrument" Binding="{Binding Name}" />
-                <DataGridTextColumn  Header="From" Binding="{Binding From, StringFormat='dd-MM-yyyy'}"/>
-                <DataGridTextColumn  Header="To" Binding="{Binding To, StringFormat='dd-MM-yyyy'}"  />
-                <DataGridTextColumn  Header="Select From" Binding="{Binding SelectedFrom}"/>
-                <DataGridTextColumn  Header="Select To" Binding="{Binding SelectedTo}" />
+                <DataGridTextColumn  Header="From" Binding="{Binding From, StringFormat=d}"/>
+                <DataGridTextColumn  Header="To" Binding="{Binding To, StringFormat=d}"  />
+                <DataGridTextColumn  Header="Select From" Binding="{Binding SelectedFrom, StringFormat=d}"/>
+                <DataGridTextColumn  Header="Select To" Binding="{Binding SelectedTo, StringFormat=d}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
