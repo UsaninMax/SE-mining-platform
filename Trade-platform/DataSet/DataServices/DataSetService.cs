@@ -33,8 +33,8 @@ namespace TradePlatform.DataSet.DataServices
             {
                 return;
             }
-            var downloader = ContainerBuilder.Container.Resolve<IDataSetProvider>();
-            _tickStorage.Store(downloader.Get(item), DataSetItem.RootPath + "\\" + item.Path, item.Path);
+            var tickProvider = ContainerBuilder.Container.Resolve<IDataTickProvider>();
+            _tickStorage.Store(tickProvider.Get(item), DataSetItem.RootPath + "\\" + item.Path, item.Path);
             _infoPublisher.PublishInfo(new DownloadInfo { Message = item + "- was created" });
         }
 

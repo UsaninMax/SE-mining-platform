@@ -4,7 +4,7 @@ using TradePlatform.DataSet.Models;
 
 namespace TradePlatform.DataSet.DataServices
 {
-    interface IDataSetProvider
+    interface IDataTickProvider
     {
         IList<DataTick> Get(DataSetItem item);
     }

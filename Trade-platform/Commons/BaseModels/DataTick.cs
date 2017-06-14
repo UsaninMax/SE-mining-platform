@@ -17,5 +17,24 @@ namespace TradePlatform.Commons.BaseModels
         {
             return $"{nameof(Date)}: {Date}, {nameof(Price)}: {Price}, {nameof(Volume)}: {Volume}";
         }
+
+        public override bool Equals(object obj)
+        {
+            var item = obj as DataTick;
+
+            if (item == null)
+            {
+                return false;
+            }
+
+            return Date.Equals(item.Date) &&
+                Price.Equals(item.Price) &&
+                Volume.Equals(item.Volume);
+        }
+
+        public override int GetHashCode()
+        {
+            return Date.GetHashCode() ^ Price.GetHashCode() ^ Volume.GetHashCode();
+        }
     }
 }

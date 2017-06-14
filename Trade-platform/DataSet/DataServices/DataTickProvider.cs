@@ -7,11 +7,11 @@ using TradePlatform.StockData.DataServices.Trades;
 
 namespace TradePlatform.DataSet.DataServices
 {
-    public class DataSetProvider : IDataSetProvider
+    public class DataTickProvider : IDataTickProvider
     {
         private readonly IDataTickParser _parser;
 
-        public DataSetProvider()
+        public DataTickProvider()
         {
             _parser = ContainerBuilder.Container.Resolve<IDataTickParser>();
         }

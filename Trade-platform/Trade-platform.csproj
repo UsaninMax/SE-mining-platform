@@ -102,9 +102,9 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Commons\BaseModels\IClosableWindow.cs" />
-    <Compile Include="DataSet\DataServices\DataSetProvider.cs" />
+    <Compile Include="DataSet\DataServices\DataTickProvider.cs" />
     <Compile Include="DataSet\DataServices\DataSetService.cs" />
-    <Compile Include="DataSet\DataServices\IDataSetProvider.cs" />
+    <Compile Include="DataSet\DataServices\IDataTickProvider.cs" />
     <Compile Include="DataSet\DataServices\IDataSetService.cs" />
     <Compile Include="StockData\DataServices\Trades\Finam\FinamDataTickParser.cs" />
     <Compile Include="StockData\DataServices\Trades\IDataTickParser.cs" />

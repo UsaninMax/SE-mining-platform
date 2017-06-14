@@ -96,7 +96,7 @@
   <ItemGroup>
     <Compile Include="Commons\Info\ViewModels\InfoViewModelTests.cs" />
     <Compile Include="Commons\Utils\FixedSizeObservableCollectionTests.cs" />
-    <Compile Include="DataSet\DataServices\DataSetProviderTest.cs" />
+    <Compile Include="DataSet\DataServices\DataTickProviderTest.cs" />
     <Compile Include="DataSet\DataServices\DataSetServiceTest.cs" />
     <Compile Include="DataSet\DataServices\Serialization\XmlDataSetStorageTest.cs" />
     <Compile Include="DataSet\DataServices\Serialization\XmlDataTickStorageTest.cs" />
