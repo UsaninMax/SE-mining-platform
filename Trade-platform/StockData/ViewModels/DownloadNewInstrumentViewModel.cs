@@ -19,7 +19,6 @@ namespace TradePlatform.StockData.ViewModels
     {
 
         private bool _hideWaitSpinnerBar;
-        private readonly IDownloadedInstrumentsHolder _instrumentsHolder;
         public bool HideWaitSpinnerBar
         {
             get
@@ -153,7 +152,6 @@ namespace TradePlatform.StockData.ViewModels
             _securitiesInfo = ContainerBuilder.Container.Resolve<SecuritiesInfoHolder>();
             _suritiesInfoUpdater = ContainerBuilder.Container.Resolve<ISecuritiesInfoUpdater>();
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
-            _instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
             AddNewCommand = new DelegateCommand(AddNewInstrument);
         }
 
@@ -162,7 +160,7 @@ namespace TradePlatform.StockData.ViewModels
         public void AddNewInstrument()
         {
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
-            eventAggregator.GetEvent<AddPresenterToListEvent>().Publish(new Instrument.Builder()
+            eventAggregator.GetEvent<AddInstrumentToListEvent>().Publish(new Instrument.Builder()
                 .WithFrom(_dateFrom)
                 .WithTo(_dateTo)
                 .WithCode(_selectedSecurity?.Code)

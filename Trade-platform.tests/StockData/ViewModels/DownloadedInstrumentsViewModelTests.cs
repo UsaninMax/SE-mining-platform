@@ -12,6 +12,7 @@ using TradePlatform.StockData.Holders;
 using TradePlatform.StockData.Models;
 using TradePlatform.StockData.Presenters;
 using TradePlatform.StockData.ViewModels;
+using TradePlatform.Commons.Info.Model.Message;
 
 namespace Trade_platform.tests.StockData.ViewModels
 {
@@ -29,148 +30,109 @@ namespace Trade_platform.tests.StockData.ViewModels
             ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
         }
 
-//
-//        [Test]
-//        public void WhenReceivePresenterAddItToHistoryTable()
-//        {
-//            IEventAggregator eventAggregator = new EventAggregator();
-//            ContainerBuilder.Container.RegisterInstance(eventAggregator);
-//            ContainerBuilder.Container.RegisterInstance(new Mock<IInstrumentService>().Object);
-//
-//            var viewModel = new DownloadedInstrumentsViewModel();
-//            var presenterMock = new Mock<IDounloadInstrumentPresenter>();
-//            presenterMock.Setup(x => x.SoftDownloadData());
-//
-//            eventAggregator
-//                .GetEvent<AddPresenterToListEvent>()
-//                .Publish(presenterMock.Object);
-//
-//            Assert.That(viewModel.InstrumentsInfo.Count, Is.EqualTo(1));
-//            Assert.That(viewModel.InstrumentsInfo[0], Is.EqualTo(presenterMock.Object));
-//        }
 
         [Test]
-        public void WhenReceivePresenterAddToHistoryTableIfNotNull()
+        public void WhenReceivePresenterAddItToHistoryTable()
         {
+            ContainerBuilder.Container.RegisterType<IDounloadInstrumentPresenter, DounloadInstrumentPresenter>(new InjectionConstructor(typeof(Instrument)));
+            ContainerBuilder.Container.RegisterInstance(new Mock<IDownloadedInstrumentsHolder>().Object);
             IEventAggregator eventAggregator = new EventAggregator();
             ContainerBuilder.Container.RegisterInstance(eventAggregator);
             ContainerBuilder.Container.RegisterInstance(new Mock<IInstrumentService>().Object);
 
             var viewModel = new DownloadedInstrumentsViewModel();
-            eventAggregator
-                .GetEvent<AddPresenterToListEvent>()
-                .Publish(null);
 
-            Assert.That(viewModel.InstrumentsInfo.Count, Is.EqualTo(0));
+            Instrument instrument = new Instrument.Builder().WithId("1122").Build();
+            eventAggregator
+                .GetEvent<AddInstrumentToListEvent>()
+                .Publish(instrument);
+
+            Assert.That(viewModel.InstrumentsInfo.Count, Is.EqualTo(1));
+            Assert.That(viewModel.InstrumentsInfo[0].Instrument(), Is.EqualTo(instrument));
         }
 
-//        [Test]
-//        public void WhenReceivePresenterStartDownloadingProcess()
-//        {
-//            IEventAggregator eventAggregator = new EventAggregator();
-//            ContainerBuilder.Container.RegisterInstance(eventAggregator);
-//            ContainerBuilder.Container.RegisterInstance(new Mock<IInstrumentService>().Object);
-//
-//            var holderMock = new Mock<IDownloadedInstrumentsHolder>();
-//            ContainerBuilder.Container.RegisterInstance(holderMock.Object);
-//            var viewModel = new DownloadedInstrumentsViewModel();
-//            var presenterMock = new Mock<IDounloadInstrumentPresenter>();
-//            presenterMock.Setup(x => x.SoftDownloadData());
-//
-//            eventAggregator
-//                .GetEvent<AddPresenterToListEvent>()
-//                .Publish(presenterMock.Object);
-//
-//            presenterMock.Verify(x => x.SoftDownloadData(), Times.Once);
-//            holderMock.Verify(x => x.Put(It.IsAny <Instrument>()), Times.Once);
-//        }
 
-//        [Test]
-//        public void WhenReceivePresenterDoNotStartDownloadingProcessWhenProcessIsExist()
-//        {
-//            var infoPublisher = new Mock<IInfoPublisher>();
-//            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
-//            IEventAggregator eventAggregator = new EventAggregator();
-//            ContainerBuilder.Container.RegisterInstance(eventAggregator);
-//            ContainerBuilder.Container.RegisterInstance(new Mock<IInstrumentService>().Object);
-//
-//            var viewModel = new DownloadedInstrumentsViewModel();
-//
-//            var storedPresenterMock = new Mock<IDounloadInstrumentPresenter>();
-//            storedPresenterMock.Setup(x => x.InDownloadingProgress()).Returns(true);
-//            viewModel.InstrumentsInfo.Add(storedPresenterMock.Object);
-//
-//            var presenterMock = new Mock<IDounloadInstrumentPresenter>();
-//            presenterMock.Setup(x => x.SoftDownloadData());
-//
-//            eventAggregator
-//                .GetEvent<AddPresenterToListEvent>()
-//                .Publish(presenterMock.Object);
-//            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Once);
-//            presenterMock.Verify(x => x.SoftDownloadData(), Times.Never);
-//
-//        }
+        [Test]
+        public void WhenReceivePresenterStartDownloadingProcess()
+        {
+            ContainerBuilder.Container.RegisterType<IDounloadInstrumentPresenter, DounloadInstrumentPresenter>(new InjectionConstructor(typeof(Instrument)));
+            ContainerBuilder.Container.RegisterInstance(new Mock<IDownloadedInstrumentsHolder>().Object);
+            IEventAggregator eventAggregator = new EventAggregator();
+            ContainerBuilder.Container.RegisterInstance(eventAggregator);
+            ContainerBuilder.Container.RegisterInstance(new Mock<IInstrumentService>().Object);
+
+            var holderMock = new Mock<IDownloadedInstrumentsHolder>();
+            ContainerBuilder.Container.RegisterInstance(holderMock.Object);
+            var viewModel = new DownloadedInstrumentsViewModel();
+
+            var presenterMock = new Mock<IDounloadInstrumentPresenter>();
+            presenterMock.Setup(x => x.SoftDownloadData());
+            ContainerBuilder.Container.RegisterInstance(presenterMock.Object);
+            eventAggregator
+                .GetEvent<AddInstrumentToListEvent>()
+                .Publish(new Instrument.Builder().Build());
+
+            presenterMock.Verify(x => x.SoftDownloadData(), Times.Once);
+            holderMock.Verify(x => x.Put(It.IsAny<Instrument>()), Times.Once);
+        }
+
+        [Test]
+        public void WhenReceivePresenterDoNotStartDownloadingProcessWhenProcessIsExist()
+        {
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
+            IEventAggregator eventAggregator = new EventAggregator();
+            ContainerBuilder.Container.RegisterInstance(eventAggregator);
+            ContainerBuilder.Container.RegisterInstance(new Mock<IInstrumentService>().Object);
+
+            var viewModel = new DownloadedInstrumentsViewModel();
+
+            var storedPresenterMock = new Mock<IDounloadInstrumentPresenter>();
+            storedPresenterMock.Setup(x => x.InDownloadingProgress()).Returns(true);
+            viewModel.InstrumentsInfo.Add(storedPresenterMock.Object);
+
+            var presenterMock = new Mock<IDounloadInstrumentPresenter>();
+            presenterMock.Setup(x => x.SoftDownloadData());
+
+            eventAggregator
+                .GetEvent<AddInstrumentToListEvent>()
+                .Publish(new Instrument.Builder().Build());
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Once);
+            presenterMock.Verify(x => x.SoftDownloadData(), Times.Never);
+
+        }
 
         [Test]
         public void CheckOpenDataFolderCommand()
         {
+            ContainerBuilder.Container.RegisterInstance(new Mock<IDownloadedInstrumentsHolder>().Object);
             var viewModel = new DownloadedInstrumentsViewModel();
             var presenterMock = new Mock<IDounloadInstrumentPresenter>();
+            viewModel.SelectedPresenter = presenterMock.Object;
             viewModel.OpenFolderCommand.Execute(presenterMock.Object);
             presenterMock.Verify(x => x.ShowDataInFolder(), Times.Once);
         }
 
         [Test]
-        public void CheckOpenDataFolderCommandIfNull()
-        {
-            var viewModel = new DownloadedInstrumentsViewModel();
-
-            Assert.DoesNotThrow(() =>
-            {
-                viewModel.OpenFolderCommand.Execute(null);
-            });
-        }
-
-        [Test]
         public void CheckRemoveDataCommand()
         {
+            ContainerBuilder.Container.RegisterInstance(new Mock<IDownloadedInstrumentsHolder>().Object);
             var viewModel = new DownloadedInstrumentsViewModel();
             var presenterMock = new Mock<IDounloadInstrumentPresenter>();
-
+            viewModel.SelectedPresenter = presenterMock.Object;
             viewModel.RemoveCommand.Execute(presenterMock.Object);
             presenterMock.Verify(x => x.DeleteData(), Times.Once);
-        }
-
-
-        [Test]
-        public void CheckRemoveDataCommandIfNull()
-        {
-            var viewModel = new DownloadedInstrumentsViewModel();
-
-            Assert.DoesNotThrow(() =>
-            {
-                viewModel.RemoveCommand.Execute(null);
-            });
         }
 
         [Test]
         public void CheckHardReloadCommand()
         {
+            ContainerBuilder.Container.RegisterInstance(new Mock<IDownloadedInstrumentsHolder>().Object);
             var viewModel = new DownloadedInstrumentsViewModel();
             var presenterMock = new Mock<IDounloadInstrumentPresenter>();
-            viewModel.HardReloadCommand.Execute(presenterMock.Object);
+            viewModel.SelectedPresenter = presenterMock.Object;
+            viewModel.HardReloadCommand.Execute(null);
             presenterMock.Verify(x => x.HardReloadData(), Times.Once);
-        }
-
-        [Test]
-        public void CheckHardReloadCommandIfNull()
-        {
-            var viewModel = new DownloadedInstrumentsViewModel();
-
-            Assert.DoesNotThrow(() =>
-            {
-                viewModel.HardReloadCommand.Execute(null);
-            });
         }
 
         [Test]
@@ -191,23 +153,15 @@ namespace Trade_platform.tests.StockData.ViewModels
         [Test]
         public void CheckSoftReloadCommand()
         {
+            ContainerBuilder.Container.RegisterInstance(new Mock<IDownloadedInstrumentsHolder>().Object);
             var viewModel = new DownloadedInstrumentsViewModel();
             var presenterMock = new Mock<IDounloadInstrumentPresenter>();
+            viewModel.SelectedPresenter = presenterMock.Object;
             viewModel.SoftReloadCommand.Execute(presenterMock.Object);
             presenterMock.Verify(x => x.SoftReloadData(), Times.Once);
         }
 
-        [Test]
-        public void CheckSoftReloadCommandIfNull()
-        {
-            var viewModel = new DownloadedInstrumentsViewModel();
-
-            Assert.DoesNotThrow(() =>
-            {
-                viewModel.SoftReloadCommand.Execute(null);
-            });
-        }
-
+   
         [Test]
         public void SoftReloadCommandWillNotStartWhenExistDownloadingProcess()
         {

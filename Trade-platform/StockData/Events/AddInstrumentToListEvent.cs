@@ -3,7 +3,7 @@ using TradePlatform.StockData.Models;
 
 namespace TradePlatform.StockData.Events
 {
-    public class AddPresenterToListEvent : PubSubEvent<Instrument>
+    public class AddInstrumentToListEvent : PubSubEvent<Instrument>
     {
     }
 }

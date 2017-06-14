@@ -167,7 +167,7 @@
       <DependentUpon>InfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Commons\Info\Events\PuplishInfo.cs" />
-    <Compile Include="StockData\Events\AddPresenterToListEvent.cs" />
+    <Compile Include="StockData\Events\AddInstrumentToListEvent.cs" />
     <Compile Include="StockData\Events\RemoveItemFromList.cs" />
     <Compile Include="StockData\Models\Security.cs" />
     <Compile Include="StockData\Models\Market.cs" />
