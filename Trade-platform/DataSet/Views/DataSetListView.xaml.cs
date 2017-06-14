@@ -1,8 +1,8 @@
-﻿using TradePlatform.DataSet.ViewModel;
+﻿using TradePlatform.DataSet.ViewModels;
 using Microsoft.Practices.Unity;
 using System.Windows;
 
-namespace TradePlatform.DataSet.View
+namespace TradePlatform.DataSet.Views
 {
     public partial class DataSetListView : Window
     {

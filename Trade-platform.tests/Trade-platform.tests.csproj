@@ -96,6 +96,16 @@
   <ItemGroup>
     <Compile Include="Commons\Info\ViewModels\InfoViewModelTests.cs" />
     <Compile Include="Commons\Utils\FixedSizeObservableCollectionTests.cs" />
+    <Compile Include="DataSet\DataServices\DataSetProviderTest.cs" />
+    <Compile Include="DataSet\DataServices\DataSetServiceTest.cs" />
+    <Compile Include="DataSet\DataServices\Serialization\XmlDataSetStorageTest.cs" />
+    <Compile Include="DataSet\DataServices\Serialization\XmlDataTickStorageTest.cs" />
+    <Compile Include="DataSet\Holders\DataSetHolderTest.cs" />
+    <Compile Include="DataSet\Presenters\DataSetPresenterTest.cs" />
+    <Compile Include="DataSet\ViewModels\CopyDataSetElementViewModelTest.cs" />
+    <Compile Include="DataSet\ViewModels\DataSetElementViewModelTest.cs" />
+    <Compile Include="DataSet\ViewModels\DataSetListViewModelTest.cs" />
+    <Compile Include="DataSet\ViewModels\ShowDataSetElementViewModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StockData\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoParserTest.cs" />
     <Compile Include="StockData\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoUpdaterTests.cs" />

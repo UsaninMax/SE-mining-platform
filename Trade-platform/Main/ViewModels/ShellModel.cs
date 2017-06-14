@@ -6,7 +6,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using TradePlatform.Commons.Info.Views;
 using HistoryInstrumentsView = TradePlatform.StockData.Views.HistoryInstrumentsView;
-using TradePlatform.DataSet.View;
+using TradePlatform.DataSet.Views;
 
 namespace TradePlatform.Main.ViewModels
 {

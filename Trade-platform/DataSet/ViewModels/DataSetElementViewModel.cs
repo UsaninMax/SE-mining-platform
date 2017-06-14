@@ -15,10 +15,10 @@ using TradePlatform.Commons.Info;
 using TradePlatform.DataSet.Events;
 using TradePlatform.DataSet.Holders;
 using TradePlatform.DataSet.Models;
-using TradePlatform.DataSet.View;
+using TradePlatform.DataSet.Views;
 using TradePlatform.StockData.Models;
 
-namespace TradePlatform.DataSet.ViewModel
+namespace TradePlatform.DataSet.ViewModels
 {
     public class DataSetElementViewModel : BindableBase, IDataSetElementViewModel, IClosableWindow, IDisposable
     {

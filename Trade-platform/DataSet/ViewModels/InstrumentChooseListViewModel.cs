@@ -16,7 +16,7 @@ using TradePlatform.StockData.Holders;
 using TradePlatform.StockData.Models;
 using DelegateCommand = Prism.Commands.DelegateCommand;
 
-namespace TradePlatform.DataSet.ViewModel
+namespace TradePlatform.DataSet.ViewModels
 {
     public class InstrumentChooseListViewModel : BindableBase, IInstrumentChooseListViewModel, IClosableWindow
     {

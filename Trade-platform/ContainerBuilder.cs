@@ -12,7 +12,7 @@ using TradePlatform.DataSet.DataServices.Serialization;
 using TradePlatform.DataSet.Holders;
 using TradePlatform.DataSet.Models;
 using TradePlatform.DataSet.Presenters;
-using TradePlatform.DataSet.ViewModel;
+using TradePlatform.DataSet.ViewModels;
 using TradePlatform.Main.ViewModels;
 using TradePlatform.Main.Views;
 using TradePlatform.StockData.DataServices.SecuritiesInfo;

@@ -125,27 +125,27 @@
     <Compile Include="DataSet\Presenters\DataSetPresenter.cs" />
     <Compile Include="DataSet\Presenters\IDataSetPresenter.cs" />
     <Compile Include="DataSet\Presenters\Status.cs" />
-    <Compile Include="DataSet\ViewModel\CopyDataSetElementViewModel.cs" />
-    <Compile Include="DataSet\ViewModel\DataSetElementViewModel.cs" />
-    <Compile Include="DataSet\ViewModel\DataSetListViewModel.cs" />
-    <Compile Include="DataSet\ViewModel\IDataSetElementViewModel.cs" />
-    <Compile Include="DataSet\ViewModel\IDataSetListViewModel.cs" />
-    <Compile Include="DataSet\ViewModel\IInstrumentChooseListViewModel.cs" />
-    <Compile Include="DataSet\ViewModel\InstrumentChooseListViewModel.cs" />
-    <Compile Include="DataSet\ViewModel\ShowDataSetElementViewModel.cs" />
-    <Compile Include="DataSet\View\CopyDataSetElementView.xaml.cs">
+    <Compile Include="DataSet\ViewModels\CopyDataSetElementViewModel.cs" />
+    <Compile Include="DataSet\ViewModels\DataSetElementViewModel.cs" />
+    <Compile Include="DataSet\ViewModels\DataSetListViewModel.cs" />
+    <Compile Include="DataSet\ViewModels\IDataSetElementViewModel.cs" />
+    <Compile Include="DataSet\ViewModels\IDataSetListViewModel.cs" />
+    <Compile Include="DataSet\ViewModels\IInstrumentChooseListViewModel.cs" />
+    <Compile Include="DataSet\ViewModels\InstrumentChooseListViewModel.cs" />
+    <Compile Include="DataSet\ViewModels\ShowDataSetElementViewModel.cs" />
+    <Compile Include="DataSet\Views\CopyDataSetElementView.xaml.cs">
       <DependentUpon>CopyDataSetElementView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DataSet\View\ShowDataSetElementView.xaml.cs">
+    <Compile Include="DataSet\Views\ShowDataSetElementView.xaml.cs">
       <DependentUpon>ShowDataSetElementView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DataSet\View\DataSetElementView.xaml.cs">
+    <Compile Include="DataSet\Views\DataSetElementView.xaml.cs">
       <DependentUpon>DataSetElementView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DataSet\View\DataSetListView.xaml.cs">
+    <Compile Include="DataSet\Views\DataSetListView.xaml.cs">
       <DependentUpon>DataSetListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DataSet\View\InstrumentChooseListView.xaml.cs">
+    <Compile Include="DataSet\Views\InstrumentChooseListView.xaml.cs">
       <DependentUpon>InstrumentChooseListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="StockData\Presenters\Status.cs" />
@@ -220,23 +220,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DataSet\View\CopyDataSetElementView.xaml">
+    <Page Include="DataSet\Views\CopyDataSetElementView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DataSet\View\ShowDataSetElementView.xaml">
+    <Page Include="DataSet\Views\ShowDataSetElementView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DataSet\View\DataSetElementView.xaml">
+    <Page Include="DataSet\Views\DataSetElementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DataSet\View\DataSetListView.xaml">
+    <Page Include="DataSet\Views\DataSetListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DataSet\View\InstrumentChooseListView.xaml">
+    <Page Include="DataSet\Views\InstrumentChooseListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

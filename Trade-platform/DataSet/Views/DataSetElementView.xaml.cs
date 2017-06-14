@@ -1,24 +1,20 @@
 ﻿using System;
-using TradePlatform.DataSet.ViewModel;
+using System.ComponentModel;
+using TradePlatform.DataSet.ViewModels;
 using Microsoft.Practices.Unity;
 using System.Windows;
 using TradePlatform.Commons.BaseModels;
 
-namespace TradePlatform.DataSet.View
-
+namespace TradePlatform.DataSet.Views
 {
-    public partial class InstrumentChooseListView : Window
+    public partial class DataSetElementView : Window
     {
-        public InstrumentChooseListView()
+        public DataSetElementView()
         {
             this.InitializeComponent();
-
-            var modelWiew = ContainerBuilder.Container.Resolve<IInstrumentChooseListViewModel>();
+            var modelWiew = ContainerBuilder.Container.Resolve<IDataSetElementViewModel>("DataSet");
             this.DataContext = modelWiew;
-
-
             IClosableWindow closableWindow = modelWiew as IClosableWindow;
-    
 
             if (closableWindow != null)
             {
@@ -30,5 +26,13 @@ namespace TradePlatform.DataSet.View
         {
             Close();
         }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            var disposable = this.DataContext as IDisposable;
+            disposable?.Dispose();
+            base.OnClosing(e);
+        }
     }
 }
+

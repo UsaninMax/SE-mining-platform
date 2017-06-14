@@ -7,14 +7,14 @@ using Prism.Mvvm;
 using TradePlatform.DataSet.Events;
 using TradePlatform.DataSet.Models;
 using TradePlatform.DataSet.Presenters;
-using TradePlatform.DataSet.View;
+using TradePlatform.DataSet.Views;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Prism.Commands;
 using TradePlatform.Commons.Info;
 using TradePlatform.DataSet.Holders;
 
-namespace TradePlatform.DataSet.ViewModel
+namespace TradePlatform.DataSet.ViewModels
 {
     public class DataSetListViewModel : BindableBase, IDataSetListViewModel
     {

@@ -2,7 +2,7 @@
 using TradePlatform.DataSet.Events;
 using TradePlatform.DataSet.Models;
 
-namespace TradePlatform.DataSet.ViewModel
+namespace TradePlatform.DataSet.ViewModels
 {
     public class CopyDataSetElementViewModel : DataSetElementViewModel
     {

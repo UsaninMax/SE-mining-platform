@@ -1,4 +1,4 @@
-﻿namespace TradePlatform.DataSet.ViewModel
+﻿namespace TradePlatform.DataSet.ViewModels
 {
     internal interface IDataSetListViewModel
     {
