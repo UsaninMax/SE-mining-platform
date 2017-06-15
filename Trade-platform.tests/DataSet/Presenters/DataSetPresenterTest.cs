@@ -36,6 +36,7 @@ namespace Trade_platform.tests.DataSet.Presenters
             dataSetService.Setup(x => x.BuildSet(item, It.IsAny<CancellationToken>()));
             DataSetPresenter presenter = new DataSetPresenter(item);
             presenter.PrepareData();
+            Thread.Sleep(500);
             infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Once);
             Assert.That(presenter.StatusMessage, Is.EqualTo(Status.IsReady));
         }
@@ -52,6 +53,7 @@ namespace Trade_platform.tests.DataSet.Presenters
             dataSetService.Setup(x => x.BuildSet(item, It.IsAny<CancellationToken>())).Throws<Exception>();
             DataSetPresenter presenter = new DataSetPresenter(item);
             presenter.PrepareData();
+            Thread.Sleep(500);
             infoPublisher.Verify(x => x.PublishException(It.IsAny<AggregateException>()), Times.Once);
             Assert.That(presenter.StatusMessage, Is.EqualTo(Status.FailToDownloud));
         }
