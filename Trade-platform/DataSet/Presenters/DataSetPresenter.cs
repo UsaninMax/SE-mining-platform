@@ -47,8 +47,9 @@ namespace TradePlatform.DataSet.Presenters
         public void PrepareData()
         {
 
-            if (IsPrepareActiveProgress())
+            if (IsActiveProcess())
             {
+                _infoPublisher.PublishInfo(new DownloadInfo { Message = this + "- currently in active data prepering process" });
                 return;
             }
 
@@ -87,6 +88,7 @@ namespace TradePlatform.DataSet.Presenters
                 {
                     var eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
                     eventAggregator.GetEvent<RemovePresenterFromListEvent>().Publish(this);
+                    _infoPublisher.PublishInfo(new DownloadInfo { Message = this + "- was deleted" });
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
             delete.Start();
@@ -111,7 +113,7 @@ namespace TradePlatform.DataSet.Presenters
                     }
                     else
                     {
-                        StatusMessage = Status.DataIsCorrapted;
+                        StatusMessage = Status.DataIsCorrupted;
                     }
                 }
             });
@@ -119,15 +121,10 @@ namespace TradePlatform.DataSet.Presenters
             checkTask.Start();
         }
 
-        public bool IsPrepareActiveProgress()
+        private bool IsActiveProcess()
         {
-            bool isActive = _buildDataSetTask != null
+            return _buildDataSetTask != null
                             && !_buildDataSetTask.IsCompleted;
-            if (isActive)
-            {
-                _infoPublisher.PublishInfo(new DownloadInfo { Message = this + "- currently in active data prepering process" });
-            }
-            return isActive;
         }
 
         public void ShowDataInFolder()

@@ -16,6 +16,6 @@
 
         public static string FailToCheck => "Fail to check";
 
-        public static string DataIsCorrapted => "Data is corrupted";
+        public static string DataIsCorrupted => "Data is corrupted";
     }
 }
