@@ -4,6 +4,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using TradePlatform;
 using TradePlatform.Commons.BaseModels;
 using TradePlatform.DataSet.DataServices;
@@ -50,7 +51,7 @@ namespace Trade_platform.tests.DataSet.DataServices
 
             DataSetItem item = new DataSetItem.Builder().WithSubInstruments(subInstruments).Build();
             DataTickProvider provider = new DataTickProvider();
-            IList<DataTick> ticks = provider.Get(item);
+            IList<DataTick> ticks = provider.Get(item, It.IsAny<CancellationToken>());
 
             Assert.That(ticks.Count, Is.EqualTo(0));
         }
@@ -98,7 +99,7 @@ namespace Trade_platform.tests.DataSet.DataServices
 
             DataSetItem item = new DataSetItem.Builder().WithSubInstruments(subInstruments).Build();
             DataTickProvider provider = new DataTickProvider();
-            IList<DataTick> ticks = provider.Get(item);
+            IList<DataTick> ticks = provider.Get(item, It.IsAny<CancellationToken>());
 
             Assert.That(ticks.Count, Is.EqualTo(6));
             Assert.IsTrue(ticks.SequenceEqual(expectedTicks));
@@ -144,7 +145,7 @@ namespace Trade_platform.tests.DataSet.DataServices
 
             DataSetItem item = new DataSetItem.Builder().WithSubInstruments(subInstruments).Build();
             DataTickProvider provider = new DataTickProvider();
-            IList<DataTick> ticks = provider.Get(item);
+            IList<DataTick> ticks = provider.Get(item, It.IsAny<CancellationToken>());
 
             Assert.That(ticks.Count, Is.EqualTo(3));
             Assert.IsTrue(ticks.SequenceEqual(expectedTicks));

@@ -7,6 +7,8 @@ using TradePlatform.Commons.Sistem;
 using TradePlatform.DataSet.DataServices.Serialization;
 using TradePlatform.DataSet.Holders;
 using TradePlatform.DataSet.Models;
+using System.Collections.Generic;
+using TradePlatform.Commons.BaseModels;
 
 namespace TradePlatform.DataSet.DataServices
 {
@@ -26,15 +28,17 @@ namespace TradePlatform.DataSet.DataServices
 
         public void BuildSet(DataSetItem item, CancellationToken cancellationToken)
         {
-            DeleteFolder(item);
-            CreateFolder(item);
+            var tickProvider = ContainerBuilder.Container.Resolve<IDataTickProvider>();
+            IList<DataTick> ticks = tickProvider.Get(item, cancellationToken);
 
             if (cancellationToken.IsCancellationRequested)
             {
                 return;
             }
-            var tickProvider = ContainerBuilder.Container.Resolve<IDataTickProvider>();
-            _tickStorage.Store(tickProvider.Get(item), DataSetItem.RootPath + "\\" + item.Path, item.Path);
+
+            DeleteFolder(item);
+            CreateFolder(item);
+            _tickStorage.Store(ticks, DataSetItem.RootPath + "\\" + item.Path, item.Path);
             _infoPublisher.PublishInfo(new DownloadInfo { Message = item + "- was created" });
         }
 

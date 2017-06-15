@@ -4,6 +4,7 @@ using Microsoft.Practices.Unity;
 using System.Linq;
 using TradePlatform.Commons.BaseModels;
 using TradePlatform.StockData.DataServices.Trades;
+using System.Threading;
 
 namespace TradePlatform.DataSet.DataServices
 {
@@ -16,11 +17,16 @@ namespace TradePlatform.DataSet.DataServices
             _parser = ContainerBuilder.Container.Resolve<IDataTickParser>();
         }
 
-        public IList<DataTick> Get(DataSetItem item)
+        public IList<DataTick> Get(DataSetItem item, CancellationToken cancellationToken)
         {
             List<DataTick> fullDataSet = new List<DataTick>();
             foreach (SubInstrument subInstrument in item.SubInstruments)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    return fullDataSet;
+                }
+
                 IList<DataTick> subDataSet = _parser.Parse(subInstrument)
                     .Where(m => m.Date >= subInstrument.SelectedFrom 
                     && m.Date <= subInstrument.SelectedTo)
