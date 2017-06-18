@@ -131,5 +131,29 @@ namespace Trade_platform.tests.DataSet.ViewModels
 
             Assert.IsFalse(isHit);
         }
+
+        [Test]
+        public void TestDispose()
+        {
+            var infoPublisher = new Mock<IInfoPublisher>();
+            ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
+            var dataSetHolder = new Mock<IDataSetHolder>();
+            ContainerBuilder.Container.RegisterInstance(dataSetHolder.Object);
+
+            Mock<IEventAggregator> fakeEventAggregator = new Mock<IEventAggregator>();
+            ContainerBuilder.Container.RegisterInstance(fakeEventAggregator.Object);
+
+            fakeEventAggregator.Setup(x => x.GetEvent<CreateDataSetItemEvent>()
+                .Publish(It.IsAny<DataSetItem>()));
+            fakeEventAggregator.Setup(x => x.GetEvent<AddInstrumentToDatatSetEvent>()
+                .Publish(It.IsAny<IList<Instrument>>()));
+
+            DataSetElementViewModel model = new DataSetElementViewModel();
+ 
+            model.Dispose();
+
+            fakeEventAggregator.Verify(x => x.GetEvent<AddInstrumentToDatatSetEvent>()
+                .Unsubscribe(It.IsAny<Action<IList<Instrument>>>()), Times.Once);
+        }
     }
 }
