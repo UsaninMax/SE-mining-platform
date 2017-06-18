@@ -5,19 +5,25 @@ using System.Net;
 using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Info.Exception;
 using TradePlatform.Commons.Info.ViewModels;
-using TradePlatform.Commons.Securities;
 using TradePlatform.Commons.Setting;
 using TradePlatform.Commons.Sistem;
-using TradePlatform.Commons.Trades;
+using TradePlatform.DataSet.DataServices;
+using TradePlatform.DataSet.DataServices.Serialization;
+using TradePlatform.DataSet.Holders;
+using TradePlatform.DataSet.Models;
+using TradePlatform.DataSet.Presenters;
+using TradePlatform.DataSet.ViewModels;
 using TradePlatform.Main.ViewModels;
 using TradePlatform.Main.Views;
-using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo;
-using TradePlatform.StockDataDownload.DataServices.SecuritiesInfo.Finam;
-using TradePlatform.StockDataDownload.DataServices.Serialization;
-using TradePlatform.StockDataDownload.DataServices.Trades;
-using TradePlatform.StockDataDownload.DataServices.Trades.Finam;
-using TradePlatform.StockDataDownload.Presenters;
-using TradePlatform.StockDataDownload.ViewModels;
+using TradePlatform.StockData.DataServices.SecuritiesInfo;
+using TradePlatform.StockData.DataServices.SecuritiesInfo.Finam;
+using TradePlatform.StockData.DataServices.Serialization;
+using TradePlatform.StockData.DataServices.Trades;
+using TradePlatform.StockData.DataServices.Trades.Finam;
+using TradePlatform.StockData.Holders;
+using TradePlatform.StockData.Models;
+using TradePlatform.StockData.Presenters;
+using TradePlatform.StockData.ViewModels;
 
 namespace TradePlatform
 {
@@ -35,52 +41,44 @@ namespace TradePlatform
 
         public static void Initialize()
         {
-            InitializeShell();
-        }
-
-        private static void InitializeShell()
-        {
-
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
             Container.RegisterType<ShellView>();
-
             Container.RegisterType<IEventAggregator, EventAggregator>(new ContainerControlledLifetimeManager());
-
             Container.RegisterType<ShellView>();
             Container.RegisterType<IShellModel, ShellModel>();
 
-            Container.RegisterType<IHistoryInstrumentsViewModel, HistoryInstrumentsViewModel>();
+            Container.RegisterType<IFileManager, FileManager>();
+            Container.RegisterType<IInfoViewModel, InfoViewModel>();
+            Container.RegisterInstance(new ExceptionActualizer());
+            Container.RegisterType<ISettingSerializer, XMLSettingSerializer>();
+            Container.RegisterType<IInfoPublisher, InfoPublisher>(new ContainerControlledLifetimeManager());
 
+            Container.RegisterType<IHistoryInstrumentsViewModel, HistoryInstrumentsViewModel>();
             Container.RegisterType<IDownloadedInstrumentsViewModel, DownloadedInstrumentsViewModel>();
             Container.RegisterType<IDownloadNewInstrumentViewModel, FinamDownloadNewInstrumentViewModel>();
-
             Container.RegisterType<ISecuritiesInfoUpdater, FinamSecuritiesInfoUpdater>();
             Container.RegisterType<ISecuritiesInfoDownloader, FinamSecuritiesInfoDownloader>();
             Container.RegisterType<ISecuritiesInfoParser, FinamSecuritiesInfoParser>();
-
             Container.RegisterType<SecuritiesInfoHolder>(new ContainerControlledLifetimeManager());
-
             Container.RegisterType<IInstrumentSplitter, FinamInstrumentSplitter>();
-
-
-            Container.RegisterType<IInstrumentDownloadService, FinamInstrumentDownloadService>();
-
+            Container.RegisterType<IInstrumentService, FinamInstrumentService>();
             Container.RegisterType<ITradesDownloader, FinamTradesDownloader>();
-
             Container.RegisterType<IInstrumentsStorage, XmlInstrumentStorage>();
-
             Container.RegisterType<IDounloadInstrumentPresenter, DounloadInstrumentPresenter>(new InjectionConstructor(typeof(Instrument)));
+            Container.RegisterType<IDownloadedInstrumentsHolder, DownloadedInstrumentsHolder>(new ContainerControlledLifetimeManager());
 
-            Container.RegisterType<IFileManager, FileManager>();
-
-            Container.RegisterType<IInfoViewModel, InfoViewModel>();
-
-            Container.RegisterInstance(new ExceptionActualizer());
-
-            Container.RegisterType<ISettingSerializer, XMLSettingSerializer>();
-
-            Container.RegisterType<IInfoPublisher, InfoPublisher>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<IDataSetElementViewModel, DataSetElementViewModel>("DataSet");
+            Container.RegisterType<IDataSetElementViewModel, ShowDataSetElementViewModel>("ShowDataSet");
+            Container.RegisterType<IDataSetElementViewModel, CopyDataSetElementViewModel>("CopyDataSet");
+            Container.RegisterType<IDataSetListViewModel, DataSetListViewModel>();
+            Container.RegisterType<IInstrumentChooseListViewModel, InstrumentChooseListViewModel>();
+            Container.RegisterType<IDataSetHolder, DataSetHolder>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<IDataSetPresenter, DataSetPresenter>(new InjectionConstructor(typeof(DataSetItem)));
+            Container.RegisterType<IDataSetStorage, XmlDataSetStorage>();
+            Container.RegisterType<IDataSetService, DataSetService>();
+            Container.RegisterType<IDataTickProvider, DataTickProvider>();
+            Container.RegisterType<IDataTickStorage, XmlDataTickStorage>();
+            Container.RegisterType<IDataTickParser, FinamDataTickParser>();
         }
     }
 }

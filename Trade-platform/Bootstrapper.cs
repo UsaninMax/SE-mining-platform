@@ -1,8 +1,10 @@
 ﻿using System.Windows;
 using Prism.Unity;
 using Microsoft.Practices.Unity;
-using TradePlatform.Commons.Info.Views;
 using TradePlatform.Main.Views;
+using TradePlatform.StockData.Holders;
+using System.Threading.Tasks;
+using TradePlatform.DataSet.Holders;
 
 namespace TradePlatform
 {
@@ -22,6 +24,20 @@ namespace TradePlatform
         {
             Application.Current.MainWindow = (Window)Shell;
             Application.Current.MainWindow.Show();
+            InitializeHolders();
+        }
+
+        private void InitializeHolders()
+        {
+            Task.Factory.StartNew(() => {
+                var instrumentsHolder = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsHolder>();
+                instrumentsHolder.Restore();
+            });
+
+            Task.Factory.StartNew(() => {
+                var dataSetsHolder = ContainerBuilder.Container.Resolve<IDataSetHolder>();
+                dataSetsHolder.Restore();
+            });
         }
     }
 }
