@@ -1,6 +1,6 @@
 ﻿namespace TradePlatform.DataSet.ViewModels
 {
-    internal interface IDataSetElementViewModel
+    public interface IDataSetElementViewModel
     {
     }
 }
