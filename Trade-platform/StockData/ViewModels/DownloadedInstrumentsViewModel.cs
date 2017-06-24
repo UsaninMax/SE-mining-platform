@@ -44,13 +44,9 @@ namespace TradePlatform.StockData.ViewModels
         }
 
         public ICommand OpenFolderCommand { get; private set; }
-
         public ICommand RemoveCommand { get; private set; }
-
         public ICommand SoftReloadCommand { get; private set; }
-
         public ICommand HardReloadCommand { get; private set; }
-
         public ICommand LoadedWindowCommand { get; private set; }
 
         private readonly IInfoPublisher _infoPublisher;

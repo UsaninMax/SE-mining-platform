@@ -11,8 +11,8 @@ namespace TradePlatform.Main.Views
     {
         public ShellView()
         {
-            this.InitializeComponent();
             this.DataContext = ContainerBuilder.Container.Resolve<IShellModel>();
+            this.InitializeComponent();
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)

@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trade-platform", "Trade-platform\Trade-platform.csproj", "{EE97C495-DE64-4602-8623-68B4032260C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trade-platform.tests", "Trade-platform.tests\Trade-platform.tests.csproj", "{92B6CD02-36FE-43E3-A164-90A02C4A83EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSandboxModule", "TestSandboxModule\TestSandboxModule.csproj", "{AFC606BF-53F6-487A-B240-8A1ABBEE4D6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{92B6CD02-36FE-43E3-A164-90A02C4A83EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92B6CD02-36FE-43E3-A164-90A02C4A83EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92B6CD02-36FE-43E3-A164-90A02C4A83EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFC606BF-53F6-487A-B240-8A1ABBEE4D6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFC606BF-53F6-487A-B240-8A1ABBEE4D6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFC606BF-53F6-487A-B240-8A1ABBEE4D6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFC606BF-53F6-487A-B240-8A1ABBEE4D6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
