@@ -15,6 +15,9 @@ using TradePlatform.DataSet.Presenters;
 using TradePlatform.DataSet.ViewModels;
 using TradePlatform.Main.ViewModels;
 using TradePlatform.Main.Views;
+using TradePlatform.SandboxApi;
+using TradePlatform.SandboxApi.Presenters;
+using TradePlatform.SandboxApi.Services;
 using TradePlatform.StockData.DataServices.SecuritiesInfo;
 using TradePlatform.StockData.DataServices.SecuritiesInfo.Finam;
 using TradePlatform.StockData.DataServices.Serialization;
@@ -79,6 +82,10 @@ namespace TradePlatform
             Container.RegisterType<IDataTickProvider, DataTickProvider>();
             Container.RegisterType<IDataTickStorage, XmlDataTickStorage>();
             Container.RegisterType<IDataTickParser, FinamDataTickParser>();
+
+            Container.RegisterType<ISandboxPresenter, SandboxPresenter>(new InjectionConstructor(typeof(ISandbox) , typeof(string)));
+            Container.RegisterType<IProxySandbox, ProxySandbox>(new InjectionConstructor(typeof(ISandbox)));
+            Container.RegisterType<ISandboxDllProvider, SandboxDllProvider>();
         }
     }
 }

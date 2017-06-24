@@ -106,6 +106,15 @@
     <Compile Include="DataSet\DataServices\DataSetService.cs" />
     <Compile Include="DataSet\DataServices\IDataTickProvider.cs" />
     <Compile Include="DataSet\DataServices\IDataSetService.cs" />
+    <Compile Include="SandboxApi\IBot.cs" />
+    <Compile Include="SandboxApi\IProxySandbox.cs" />
+    <Compile Include="SandboxApi\ISandbox.cs" />
+    <Compile Include="SandboxApi\Presenters\ISandboxPresenter.cs" />
+    <Compile Include="SandboxApi\Presenters\SandboxPresenter.cs" />
+    <Compile Include="SandboxApi\Presenters\Status.cs" />
+    <Compile Include="SandboxApi\ProxySandbox.cs" />
+    <Compile Include="SandboxApi\Services\ISandboxDllProvider.cs" />
+    <Compile Include="SandboxApi\Services\SandboxDllProvider.cs" />
     <Compile Include="StockData\DataServices\Trades\Finam\FinamDataTickParser.cs" />
     <Compile Include="StockData\DataServices\Trades\IDataTickParser.cs" />
     <Compile Include="DataSet\DataServices\Serialization\IDataTickStorage.cs" />

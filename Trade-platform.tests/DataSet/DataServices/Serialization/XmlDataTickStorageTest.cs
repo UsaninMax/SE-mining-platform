@@ -31,10 +31,10 @@ namespace Trade_platform.tests.DataSet.DataServices.Serialization
             serializer.Verify(x => x.Serialize(ticks, "path" + "\\" + "file" + ".xml"));
         }
 
-        [Test]
-        public void TestReStoreDataTick()
-        {
-            Assert.Ignore("Not implemented. Omitting.");
-        }
+        //[Test]
+        //public void TestReStoreDataTick()
+        //{
+        //    Assert.Ignore("Not implemented. Omitting.");
+        //}
     }
 }
