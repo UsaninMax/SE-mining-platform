@@ -106,10 +106,12 @@
     <Compile Include="DataSet\DataServices\DataSetService.cs" />
     <Compile Include="DataSet\DataServices\IDataTickProvider.cs" />
     <Compile Include="DataSet\DataServices\IDataSetService.cs" />
-    <Compile Include="SandboxApi\DataProviding\Models\Candle.cs" />
-    <Compile Include="SandboxApi\DataProviding\Models\Indicator.cs" />
-    <Compile Include="SandboxApi\DataProviding\Models\Slice.cs" />
-    <Compile Include="SandboxApi\DataProviding\Models\Tick.cs" />
+    <Compile Include="SandboxApi\DataProviding\Predicates\IndicatorPredicate.cs" />
+    <Compile Include="SandboxApi\DataProviding\Predicates\DataPredicate.cs" />
+    <Compile Include="SandboxApi\Models\Candle.cs" />
+    <Compile Include="SandboxApi\Models\Indicator.cs" />
+    <Compile Include="SandboxApi\Models\Slice.cs" />
+    <Compile Include="SandboxApi\Models\Tick.cs" />
     <Compile Include="SandboxApi\IBot.cs" />
     <Compile Include="SandboxApi\IProxySandbox.cs" />
     <Compile Include="SandboxApi\ISandbox.cs" />

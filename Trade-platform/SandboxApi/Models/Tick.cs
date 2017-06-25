@@ -1,11 +1,13 @@
-﻿namespace TradePlatform.SandboxApi.DataProviding.Models
+﻿namespace TradePlatform.SandboxApi.Models
 {
-    public class Indicator
+    public class Tick
     {
         public string Name { get; private set; }
         public double Value { get; private set; }
 
-        private Indicator() { }
+        private Tick()
+        {
+        }
 
         public class Builder
         {
@@ -24,9 +26,9 @@
                 return this;
             }
 
-            public Indicator Build()
+            public Tick Build()
             {
-                return new Indicator()
+                return new Tick()
                 {
                     Name = _name,
                     Value = _value
@@ -37,7 +39,7 @@
         public override string ToString()
         {
             return $"{nameof(Name)}: {Name}," +
-                $" {nameof(Value)}: {Value}";
+                   $" {nameof(Value)}: {Value}";
         }
     }
 }

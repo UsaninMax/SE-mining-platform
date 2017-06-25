@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TradePlatform.SandboxApi.DataProviding.Models
+namespace TradePlatform.SandboxApi.Models
 {
     public class Slice
     {
@@ -10,6 +10,7 @@ namespace TradePlatform.SandboxApi.DataProviding.Models
         public IDictionary<string, Tick> Ticks { get; private set; }
         public IDictionary<string, Candle> Candles { get; private set; }
         public IDictionary<string, Indicator> Indicators { get; private set; }
+        public bool BotUsage { get; private set; }
 
         private Slice()
         {
@@ -21,6 +22,7 @@ namespace TradePlatform.SandboxApi.DataProviding.Models
             private IDictionary<string, Tick> _ticks;
             private IDictionary<string, Candle> _candles;
             private IDictionary<string, Indicator> _indicators;
+            private bool _botUsage;
 
             public Builder WithDate(DateTime value)
             {
@@ -46,24 +48,32 @@ namespace TradePlatform.SandboxApi.DataProviding.Models
                 return this;
             }
 
+            public Builder WithBotUsage(bool value)
+            {
+                _botUsage = value;
+                return this;
+            }
+
             public Slice Build()
             {
                 return new Slice()
                 {
-                    @DateTime = _dateTime,
+                    DateTime = _dateTime,
                     Ticks = _ticks,
                     Candles = _candles,
-                    Indicators = _indicators
+                    Indicators = _indicators,
+                    BotUsage = _botUsage
                 };
             }
+        }
 
-            public override string ToString()
-            {
-                return $"{nameof(_dateTime)}: {_dateTime}," +
-                       $" {nameof(_ticks)}: {_ticks}," +
-                       $" {nameof(_candles)}: {_candles}," +
-                       $" {nameof(_indicators)}: {_indicators}";
-            }
+        public override string ToString()
+        {
+            return $"{nameof(DateTime)}: {DateTime}, " +
+                   $"{nameof(Ticks)}: {Ticks}, " +
+                   $"{nameof(Candles)}: {Candles}, " +
+                   $"{nameof(Indicators)}: {Indicators}, " +
+                   $"{nameof(BotUsage)}: {BotUsage}";
         }
     }
 }

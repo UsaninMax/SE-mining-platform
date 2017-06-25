@@ -1,4 +1,4 @@
-﻿namespace TradePlatform.SandboxApi.DataProviding.Models
+﻿namespace TradePlatform.SandboxApi.Models
 {
     public class Candle
     {
