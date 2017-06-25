@@ -14,6 +14,7 @@ using TradePlatform.DataSet.DataServices;
 using TradePlatform.DataSet.DataServices.Serialization;
 using TradePlatform.DataSet.Holders;
 using TradePlatform.DataSet.Models;
+using TradePlatform.StockData.Models;
 
 namespace Trade_platform.tests.DataSet.DataServices
 {

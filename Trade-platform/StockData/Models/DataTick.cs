@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace TradePlatform.Commons.BaseModels
+namespace TradePlatform.StockData.Models
 {
     [DataContract(Name = "DT")]
     public class DataTick

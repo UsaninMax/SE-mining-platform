@@ -5,6 +5,7 @@ using System.Linq;
 using TradePlatform.Commons.BaseModels;
 using TradePlatform.StockData.DataServices.Trades;
 using System.Threading;
+using TradePlatform.StockData.Models;
 
 namespace TradePlatform.DataSet.DataServices
 {
