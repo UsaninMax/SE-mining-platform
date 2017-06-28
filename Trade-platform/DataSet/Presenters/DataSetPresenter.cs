@@ -56,7 +56,7 @@ namespace TradePlatform.DataSet.Presenters
             StatusMessage = Status.InProgress;
             _cancellationTokenSource = new CancellationTokenSource();
             _infoPublisher.PublishInfo(new DataSetInfo { Message = _dataSet + "- start preparing data set" });
-            _buildDataSetTask = new Task(() => _dataSetService.BuildSet(_dataSet, _cancellationTokenSource.Token), _cancellationTokenSource.Token);
+            _buildDataSetTask = new Task(() => _dataSetService.Store(_dataSet, _cancellationTokenSource.Token), _cancellationTokenSource.Token);
             _buildDataSetTask.ContinueWith(t =>
             {
                 if (t.IsFaulted)
@@ -97,7 +97,7 @@ namespace TradePlatform.DataSet.Presenters
         public void CheckData()
         {
             StatusMessage = Status.Checking;
-            var checkTask = new Task<bool>(() => _dataSetService.CheckFiles(_dataSet));
+            var checkTask = new Task<bool>(() => _dataSetService.CheckIfExist(_dataSet));
             checkTask.ContinueWith(t =>
             {
                 if (t.IsFaulted)

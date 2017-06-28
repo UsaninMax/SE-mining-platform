@@ -8,11 +8,14 @@ using TradePlatform.SandboxApi.Models;
 using Microsoft.Practices.Unity;
 using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Info.Model.Message;
+using TradePlatform.DataSet.DataServices;
+using TradePlatform.StockData.Models;
 
 namespace TradePlatform.SandboxApi.DataProviding
 {
     public class SliceProvider : ISliceProvider
     {
+        private readonly IDataSetService _dataSetService;
         private readonly IPredicateChecker _predicateChecker;
         private readonly IInfoPublisher _infoPublisher;
         private Queue<Queue<Tick>> _tiks = new Queue<Queue<Tick>>();
@@ -26,6 +29,7 @@ namespace TradePlatform.SandboxApi.DataProviding
         {
             _predicateChecker = ContainerBuilder.Container.Resolve<IPredicateChecker>();
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
+            _dataSetService = ContainerBuilder.Container.Resolve<IDataSetService>();
         }
 
         public IList<Slice> Get(ICollection<IPredicate> predicates)
@@ -53,7 +57,7 @@ namespace TradePlatform.SandboxApi.DataProviding
 
         private void ConstructSeries(DataPredicate predicate)
         {
-            
+            IList<DataTick> tiks = _dataSetService.Get(predicate.ParentId);
 
         }
 

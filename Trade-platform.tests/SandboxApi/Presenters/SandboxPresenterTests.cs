@@ -50,7 +50,7 @@ namespace Trade_platform.tests.SandboxApi.Presenters
             SandboxPresenter presenter = new SandboxPresenter(new TestBox(), "test");
             presenter.Execute();
             presenter.Execute();
-            Thread.Sleep(500);
+            Thread.Sleep(700);
             proxySandbox.Verify(x => x.Before(It.IsAny<CancellationToken>()),
                 Times.Exactly(1));
             proxySandbox.Verify(x => x.Execution(It.IsAny<CancellationToken>()),

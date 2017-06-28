@@ -34,9 +34,9 @@ namespace TradePlatform.DataSet.Holders
             _dataSet.Remove(dataSet.Id);
         }
 
-        public DataSetItem GetById(string id)
+        public DataSetItem Get(string uniqueId)
         {
-            return _dataSet[id];
+            return _dataSet[uniqueId];
         }
 
         public IList<DataSetItem> GetAll()
