@@ -106,8 +106,12 @@
     <Compile Include="DataSet\DataServices\DataSetService.cs" />
     <Compile Include="DataSet\DataServices\IDataTickProvider.cs" />
     <Compile Include="DataSet\DataServices\IDataSetService.cs" />
+    <Compile Include="SandboxApi\DataProviding\Checks\IPredicateChecker.cs" />
+    <Compile Include="SandboxApi\DataProviding\ISliceProvider.cs" />
     <Compile Include="SandboxApi\DataProviding\Predicates\IndicatorPredicate.cs" />
     <Compile Include="SandboxApi\DataProviding\Predicates\DataPredicate.cs" />
+    <Compile Include="SandboxApi\DataProviding\Predicates\IPredicate.cs" />
+    <Compile Include="SandboxApi\DataProviding\SliceProvider.cs" />
     <Compile Include="SandboxApi\Models\Candle.cs" />
     <Compile Include="SandboxApi\Models\Indicator.cs" />
     <Compile Include="SandboxApi\Models\Slice.cs" />
@@ -119,6 +123,7 @@
     <Compile Include="SandboxApi\Presenters\SandboxPresenter.cs" />
     <Compile Include="SandboxApi\Presenters\Status.cs" />
     <Compile Include="SandboxApi\ProxySandbox.cs" />
+    <Compile Include="SandboxApi\Services\DllChecker.cs" />
     <Compile Include="SandboxApi\Services\ISandboxDllProvider.cs" />
     <Compile Include="SandboxApi\Services\SandboxDllProvider.cs" />
     <Compile Include="StockData\DataServices\Trades\Finam\FinamDataTickParser.cs" />

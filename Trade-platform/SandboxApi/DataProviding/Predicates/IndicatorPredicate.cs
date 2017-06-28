@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TradePlatform.SandboxApi.DataProviding.Predicates
 {
-    public class IndicatorPredicate
+    public class IndicatorPredicate : IPredicate
     {
         public string Id { get; private set; }
         public Type Indicator { get; private set; }

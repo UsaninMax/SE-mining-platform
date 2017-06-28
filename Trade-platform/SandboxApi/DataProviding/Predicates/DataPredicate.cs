@@ -2,7 +2,7 @@
 
 namespace TradePlatform.SandboxApi.DataProviding.Predicates
 {
-    public class DataPredicate
+    public class DataPredicate : IPredicate
     {
         public string Id { get; private set; }
         public string ParentId { get; private set; }
