@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using TradePlatform.Commons.BaseModels;
 using TradePlatform.StockData.Models;
 using Microsoft.Practices.Unity;
 using System.IO;

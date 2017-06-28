@@ -2,8 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
+using Prism.Events;
 using Prism.Mvvm;
 using TradePlatform.Commons.Info;
+using TradePlatform.SandboxApi.Events;
 
 namespace TradePlatform.SandboxApi.Presenters
 {
@@ -29,12 +31,14 @@ namespace TradePlatform.SandboxApi.Presenters
         private CancellationTokenSource _cancellationTokenSource;
         private readonly IInfoPublisher _infoPublisher;
         private Task _executionTask;
+        private IEventAggregator _eventAggregator;
 
         public SandboxPresenter(ISandbox sandbox, string name)
         {
             DllName = name;
             _sandbox = sandbox;
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
+            _eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
         }
 
         public void Execute()
@@ -67,6 +71,7 @@ namespace TradePlatform.SandboxApi.Presenters
                 {
                     StatusMessage = Status.IsDone;
                 }
+                _eventAggregator.GetEvent<RefreshContextMenuEvent>().Publish(this);
             }, TaskScheduler.FromCurrentSynchronizationContext());
             _executionTask.Start();
         }
@@ -89,7 +94,7 @@ namespace TradePlatform.SandboxApi.Presenters
             { 
 
              StatusMessage = Status.IsCanceled;
-
+             _eventAggregator.GetEvent<RefreshContextMenuEvent>().Publish(this);
             }, TaskScheduler.FromCurrentSynchronizationContext());
             cancelTask.Start();
         }

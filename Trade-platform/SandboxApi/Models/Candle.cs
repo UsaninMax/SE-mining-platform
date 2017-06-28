@@ -1,7 +1,10 @@
-﻿namespace TradePlatform.SandboxApi.Models
+﻿using System;
+
+namespace TradePlatform.SandboxApi.Models
 {
     public class Candle
     {
+        public DateTime Date { get; private set; }
         public string Id { get; private set; }
         public double High { get; private set; }
         public double Low { get; private set; }
@@ -13,6 +16,7 @@
 
         public class Builder
         {
+            private DateTime _date;
             private string _id;
             private double _high;
             private double _low;
@@ -20,7 +24,13 @@
             private double _close;
             private double _volume;
 
-            public Builder WithName(string value)
+            public Builder WithDate(DateTime value)
+            {
+                _date = value;
+                return this;
+            }
+
+            public Builder WithId(string value)
             {
                 _id = value;
                 return this;
@@ -61,6 +71,7 @@
             {
                 return new Candle()
                 {
+                    Date = _date,
                     Id = _id,
                     High = _high,
                     Low = _low,
@@ -74,6 +85,7 @@
         public override string ToString()
         {
             return $"{nameof(Id)}: {Id}," +
+                $" {nameof(Date)}: {Date}," +
                 $" {nameof(High)}: {High}," +
                 $" {nameof(Low)}: {Low}," +
                 $" {nameof(Open)}: {Open}," +

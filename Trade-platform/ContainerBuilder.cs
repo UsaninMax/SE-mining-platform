@@ -18,6 +18,7 @@ using TradePlatform.Main.Views;
 using TradePlatform.SandboxApi;
 using TradePlatform.SandboxApi.DataProviding;
 using TradePlatform.SandboxApi.DataProviding.Checks;
+using TradePlatform.SandboxApi.DataProviding.Transformers;
 using TradePlatform.SandboxApi.Presenters;
 using TradePlatform.SandboxApi.Services;
 using TradePlatform.StockData.DataServices.SecuritiesInfo;
@@ -91,6 +92,9 @@ namespace TradePlatform
 
             Container.RegisterType<IPredicateChecker, SlicePredicateChecker>();
             Container.RegisterType<ISliceProvider, SliceProvider>();
+            Container.RegisterType<ITransformer, DataTransformer>();
+
+            
         }
     }
 }

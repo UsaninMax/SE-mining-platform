@@ -9,7 +9,7 @@ using Microsoft.Practices.Unity;
 using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.DataSet.DataServices;
-using TradePlatform.StockData.Models;
+using TradePlatform.SandboxApi.DataProviding.Transformers;
 
 namespace TradePlatform.SandboxApi.DataProviding
 {
@@ -18,9 +18,9 @@ namespace TradePlatform.SandboxApi.DataProviding
         private readonly IDataSetService _dataSetService;
         private readonly IPredicateChecker _predicateChecker;
         private readonly IInfoPublisher _infoPublisher;
-        private Queue<Queue<Tick>> _tiks = new Queue<Queue<Tick>>();
-        private Queue<Queue<Tick>> _candles = new Queue<Queue<Tick>>();
-        private Queue<Queue<Indicator>> _indicators = new Queue<Queue<Indicator>>();
+        private ICollection<Queue<Tick>> _tiks = new List<Queue<Tick>>();
+        private ICollection<Queue<Candle>> _candles = new List<Queue<Candle>>();
+        private ICollection<Queue<Indicator>> _indicators = new List<Queue<Indicator>>();
         private readonly ICollection<DataPredicate> _dataPredicates = new List<DataPredicate>();
         private readonly ICollection<IndicatorPredicate> _indicatorPredicates = new List<IndicatorPredicate>();
         private readonly ICollection<TickPredicate> _tickPredicate = new List<TickPredicate>();
@@ -40,7 +40,6 @@ namespace TradePlatform.SandboxApi.DataProviding
 
             _infoPublisher.PublishInfo(new SandboxInfo { Message = " constract data series " });
             _dataPredicates.ForEach(ConstructSeries);
-
             _infoPublisher.PublishInfo(new SandboxInfo { Message = " constract indicator data " });
             _indicatorPredicates.ForEach(ConstructSeries);
             _infoPublisher.PublishInfo(new SandboxInfo { Message = " add tick data for support calculation " });
@@ -57,14 +56,20 @@ namespace TradePlatform.SandboxApi.DataProviding
 
         private void ConstructSeries(DataPredicate predicate)
         {
-            IList<DataTick> tiks = _dataSetService.Get(predicate.ParentId);
-
+            ITransformer dataAggregator = ContainerBuilder.Container.Resolve<ITransformer>();
+            _candles.Add(dataAggregator.Transform(_dataSetService.Get(predicate.ParentId)
+                .Where(m => predicate.From == DateTime.MinValue || m.Date >= predicate.From)
+                .Where(m => predicate.To == DateTime.MinValue || m.Date <= predicate.To)
+                .ToList(), predicate));
         }
 
         private void ConstructSeries(TickPredicate predicate)
         {
-
-
+            ITransformer dataAggregator = ContainerBuilder.Container.Resolve<ITransformer>();
+            _tiks.Add(dataAggregator.Transform(_dataSetService.Get(predicate.Id)
+                .Where(m => predicate.From == DateTime.MinValue || m.Date >= predicate.From)
+                .Where(m => predicate.To == DateTime.MinValue || m.Date <= predicate.To)
+                .ToList(), predicate));
         }
 
         private void ConstructSeries(IndicatorPredicate predicate)
@@ -90,14 +95,14 @@ namespace TradePlatform.SandboxApi.DataProviding
 
             _dataPredicates.Where(x => x.ParentId.Equals(parentId)).ForEach(x =>
             {
-                from = new DateTime(Math.Min(from.Millisecond, x.From.Millisecond));
-                to = new DateTime(Math.Max(to.Millisecond, x.To.Millisecond));
+                from = new DateTime(Math.Max(from.Ticks, x.From.Ticks));
+                to = new DateTime(Math.Min(to.Ticks, x.To.Ticks));
             });
 
             _indicatorPredicates.Where(x => x.DataPredicate.ParentId.Equals(parentId)).ForEach(x =>
             {
-                from = new DateTime(Math.Min(from.Millisecond, x.DataPredicate.From.Millisecond));
-                to = new DateTime(Math.Max(to.Millisecond, x.DataPredicate.To.Millisecond));
+                from = new DateTime(Math.Max(from.Ticks, x.DataPredicate.From.Ticks));
+                to = new DateTime(Math.Min(to.Ticks, x.DataPredicate.To.Ticks));
             });
 
             return predicate.From(from).To(to).Build();
@@ -120,14 +125,14 @@ namespace TradePlatform.SandboxApi.DataProviding
 
         private void CheckPredicateStructure()
         {
-            if (_dataPredicates.All(_predicateChecker.Check))
+            if (!_dataPredicates.All(_predicateChecker.Check))
             {
-                throw new Exception("Data predicate was not ready for use to buid data");
+                throw new Exception("Data predicate was not ready for use");
             }
 
-            if (_indicatorPredicates.All(_predicateChecker.Check))
+            if (!_indicatorPredicates.All(_predicateChecker.Check))
             {
-                throw new Exception("Indicator predicate was not ready for use to buid indicator data");
+                throw new Exception("Indicator predicate was not ready for use");
             }
         }
     }

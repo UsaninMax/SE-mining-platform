@@ -108,6 +108,8 @@
     <Compile Include="DataSet\DataServices\DataSetService.cs" />
     <Compile Include="DataSet\DataServices\IDataTickProvider.cs" />
     <Compile Include="DataSet\DataServices\IDataSetService.cs" />
+    <Compile Include="SandboxApi\DataProviding\Transformers\DataTransformer.cs" />
+    <Compile Include="SandboxApi\DataProviding\Transformers\ITransformer.cs" />
     <Compile Include="SandboxApi\DataProviding\Checks\IPredicateChecker.cs" />
     <Compile Include="SandboxApi\DataProviding\Checks\SlicePredicateChecker.cs" />
     <Compile Include="SandboxApi\DataProviding\ISliceProvider.cs" />
@@ -116,6 +118,7 @@
     <Compile Include="SandboxApi\DataProviding\Predicates\IPredicate.cs" />
     <Compile Include="SandboxApi\DataProviding\Predicates\TickPredicate.cs" />
     <Compile Include="SandboxApi\DataProviding\SliceProvider.cs" />
+    <Compile Include="SandboxApi\Events\RefreshContextMenuEvent.cs" />
     <Compile Include="SandboxApi\Models\Candle.cs" />
     <Compile Include="SandboxApi\Models\Indicator.cs" />
     <Compile Include="SandboxApi\Models\Slice.cs" />
