@@ -19,9 +19,9 @@ namespace TradePlatform.SandboxApi.Models
         public class Builder
         {
             private DateTime _dateTime;
-            private IDictionary<string, Tick> _ticks;
-            private IDictionary<string, Candle> _candles;
-            private IDictionary<string, Indicator> _indicators;
+            private IDictionary<string, Tick> _ticks = new Dictionary<string, Tick>();
+            private IDictionary<string, Candle> _candles = new Dictionary<string, Candle>();
+            private IDictionary<string, Indicator> _indicators = new Dictionary<string, Indicator>();
             private bool _botUsage;
 
             public Builder WithDate(DateTime value)
@@ -30,21 +30,21 @@ namespace TradePlatform.SandboxApi.Models
                 return this;
             }
 
-            public Builder WithTicks(ICollection<Tick> values)
+            public Builder WithTicks(Tick value)
             {
-                _ticks = values.ToDictionary(x => x.Name, y => y);
+                _ticks.Add(value.Id, value);
                 return this;
             }
 
-            public Builder WithCandles(ICollection<Candle> values)
+            public Builder WithCandles(Candle value)
             {
-                _candles = values.ToDictionary(x => x.Name, y => y);
+                _candles.Add(value.Id,value);
                 return this;
             }
 
-            public Builder WithIndicators(ICollection<Indicator> values)
+            public Builder WithIndicators(Indicator value)
             {
-                _indicators = values.ToDictionary(x => x.Name, y => y);
+                _indicators.Add(value.Id, value);
                 return this;
             }
 

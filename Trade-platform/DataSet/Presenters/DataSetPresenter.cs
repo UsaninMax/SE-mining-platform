@@ -9,7 +9,7 @@ using Prism.Events;
 using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.DataSet.DataServices;
-using RemovePresenterFromListEvent = TradePlatform.DataSet.Events.RemovePresenterFromListEvent;
+using TradePlatform.DataSet.Events;
 
 namespace TradePlatform.DataSet.Presenters
 {
@@ -49,13 +49,13 @@ namespace TradePlatform.DataSet.Presenters
 
             if (IsActiveProcess())
             {
-                _infoPublisher.PublishInfo(new DownloadInfo { Message = this + "- currently in active data prepering process" });
+                _infoPublisher.PublishInfo(new DataSetInfo { Message = this + "- currently in active data prepering process" });
                 return;
             }
 
             StatusMessage = Status.InProgress;
             _cancellationTokenSource = new CancellationTokenSource();
-            _infoPublisher.PublishInfo(new DownloadInfo { Message = _dataSet + "- start preparing data set" });
+            _infoPublisher.PublishInfo(new DataSetInfo { Message = _dataSet + "- start preparing data set" });
             _buildDataSetTask = new Task(() => _dataSetService.BuildSet(_dataSet, _cancellationTokenSource.Token), _cancellationTokenSource.Token);
             _buildDataSetTask.ContinueWith(t =>
             {
@@ -88,7 +88,7 @@ namespace TradePlatform.DataSet.Presenters
                 {
                     var eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
                     eventAggregator.GetEvent<RemovePresenterFromListEvent>().Publish(this);
-                    _infoPublisher.PublishInfo(new DownloadInfo { Message = this + "- was deleted" });
+                    _infoPublisher.PublishInfo(new DataSetInfo { Message = this + "- was deleted" });
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
             delete.Start();

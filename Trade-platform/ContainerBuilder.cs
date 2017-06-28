@@ -16,6 +16,8 @@ using TradePlatform.DataSet.ViewModels;
 using TradePlatform.Main.ViewModels;
 using TradePlatform.Main.Views;
 using TradePlatform.SandboxApi;
+using TradePlatform.SandboxApi.DataProviding;
+using TradePlatform.SandboxApi.DataProviding.Checks;
 using TradePlatform.SandboxApi.Presenters;
 using TradePlatform.SandboxApi.Services;
 using TradePlatform.StockData.DataServices.SecuritiesInfo;
@@ -86,6 +88,9 @@ namespace TradePlatform
             Container.RegisterType<ISandboxPresenter, SandboxPresenter>(new InjectionConstructor(typeof(ISandbox) , typeof(string)));
             Container.RegisterType<IProxySandbox, ProxySandbox>(new InjectionConstructor(typeof(ISandbox)));
             Container.RegisterType<ISandboxDllProvider, SandboxDllProvider>();
+
+            Container.RegisterType<IPredicateChecker, SlicePredicateChecker>();
+            Container.RegisterType<ISliceProvider, SliceProvider>();
         }
     }
 }

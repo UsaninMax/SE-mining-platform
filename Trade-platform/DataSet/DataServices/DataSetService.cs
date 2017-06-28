@@ -8,7 +8,6 @@ using TradePlatform.DataSet.DataServices.Serialization;
 using TradePlatform.DataSet.Holders;
 using TradePlatform.DataSet.Models;
 using System.Collections.Generic;
-using TradePlatform.Commons.BaseModels;
 using TradePlatform.StockData.Models;
 
 namespace TradePlatform.DataSet.DataServices
@@ -40,7 +39,7 @@ namespace TradePlatform.DataSet.DataServices
             DeleteFolder(item);
             CreateFolder(item);
             _tickStorage.Store(ticks, DataSetItem.RootPath + "\\" + item.Path, item.Path);
-            _infoPublisher.PublishInfo(new DownloadInfo { Message = item + "- was created" });
+            _infoPublisher.PublishInfo(new DataSetInfo { Message = item + "- was created" });
         }
 
         public void Delete(DataSetItem item, Task build, CancellationTokenSource cancellationTokenSource)
@@ -48,14 +47,14 @@ namespace TradePlatform.DataSet.DataServices
 
             if (build != null && !build.IsCompleted)
             {
-                _infoPublisher.PublishInfo(new DownloadInfo { Message = item + "- cancellation will wait till build data set will finished" });
+                _infoPublisher.PublishInfo(new DataSetInfo { Message = item + "- cancellation will wait till build data set will finished" });
                 cancellationTokenSource.Cancel();
                 build.Wait();
             }
             DeleteFolder(item);
             var instrumentsHolder = ContainerBuilder.Container.Resolve<IDataSetHolder>();
             instrumentsHolder.Remove(item);
-            _infoPublisher.PublishInfo(new DownloadInfo { Message = item + "- is deleted" });
+            _infoPublisher.PublishInfo(new DataSetInfo { Message = item + "- is deleted" });
         }
 
         private void DeleteFolder(DataSetItem item)

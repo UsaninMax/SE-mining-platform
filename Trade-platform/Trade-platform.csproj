@@ -102,15 +102,19 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Commons\BaseModels\IClosableWindow.cs" />
+    <Compile Include="Commons\Info\Model\Message\DataSetInfo.cs" />
+    <Compile Include="Commons\Info\Model\Message\SandboxInfo.cs" />
     <Compile Include="DataSet\DataServices\DataTickProvider.cs" />
     <Compile Include="DataSet\DataServices\DataSetService.cs" />
     <Compile Include="DataSet\DataServices\IDataTickProvider.cs" />
     <Compile Include="DataSet\DataServices\IDataSetService.cs" />
     <Compile Include="SandboxApi\DataProviding\Checks\IPredicateChecker.cs" />
+    <Compile Include="SandboxApi\DataProviding\Checks\SlicePredicateChecker.cs" />
     <Compile Include="SandboxApi\DataProviding\ISliceProvider.cs" />
     <Compile Include="SandboxApi\DataProviding\Predicates\IndicatorPredicate.cs" />
     <Compile Include="SandboxApi\DataProviding\Predicates\DataPredicate.cs" />
     <Compile Include="SandboxApi\DataProviding\Predicates\IPredicate.cs" />
+    <Compile Include="SandboxApi\DataProviding\Predicates\TickPredicate.cs" />
     <Compile Include="SandboxApi\DataProviding\SliceProvider.cs" />
     <Compile Include="SandboxApi\Models\Candle.cs" />
     <Compile Include="SandboxApi\Models\Indicator.cs" />

@@ -2,7 +2,7 @@
 {
     public class Candle
     {
-        public string Name { get; private set; }
+        public string Id { get; private set; }
         public double High { get; private set; }
         public double Low { get; private set; }
         public double Open { get; private set; }
@@ -13,7 +13,7 @@
 
         public class Builder
         {
-            private string _name;
+            private string _id;
             private double _high;
             private double _low;
             private double _open;
@@ -22,7 +22,7 @@
 
             public Builder WithName(string value)
             {
-                _name = value;
+                _id = value;
                 return this;
             }
 
@@ -61,7 +61,7 @@
             {
                 return new Candle()
                 {
-                    Name = _name,
+                    Id = _id,
                     High = _high,
                     Low = _low,
                     Open = _open,
@@ -73,7 +73,7 @@
 
         public override string ToString()
         {
-            return $"{nameof(Name)}: {Name}," +
+            return $"{nameof(Id)}: {Id}," +
                 $" {nameof(High)}: {High}," +
                 $" {nameof(Low)}: {Low}," +
                 $" {nameof(Open)}: {Open}," +

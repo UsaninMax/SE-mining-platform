@@ -37,7 +37,7 @@ namespace Trade_platform.tests.DataSet.Presenters
             DataSetPresenter presenter = new DataSetPresenter(item);
             presenter.PrepareData();
             Thread.Sleep(500);
-            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Once);
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DataSetInfo>()), Times.Once);
             Assert.That(presenter.StatusMessage, Is.EqualTo(Status.IsReady));
         }
 
@@ -80,7 +80,7 @@ namespace Trade_platform.tests.DataSet.Presenters
             .Publish(It.IsAny<DataSetPresenter>()), Times.Once);
 
 
-            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Once);
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DataSetInfo>()), Times.Once);
         }
 
         [Test]

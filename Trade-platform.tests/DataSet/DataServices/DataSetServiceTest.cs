@@ -46,7 +46,7 @@ namespace Trade_platform.tests.DataSet.DataServices
             DataSetService datasevice = new DataSetService();
             datasevice.BuildSet(item, new CancellationToken());
 
-            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Once);
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DataSetInfo>()), Times.Once);
             dataTickStorage.Verify(x => x.Store(ticks, DataSetItem.RootPath + "\\" + item.Path, item.Path), Times.Once);
             fileManager.Verify(x => x.DeleteFolder(DataSetItem.RootPath + "\\" + item.Path), Times.Once);
             fileManager.Verify(x => x.CreateFolder(DataSetItem.RootPath + "\\" + item.Path), Times.Once);
@@ -79,7 +79,7 @@ namespace Trade_platform.tests.DataSet.DataServices
             DataSetService datasevice = new DataSetService();
             datasevice.BuildSet(item, cancellationToken);
 
-            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Never);
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DataSetInfo>()), Times.Never);
             dataTickStorage.Verify(x => x.Store(ticks, DataSetItem.RootPath + "\\" + item.Path, item.Path), Times.Never);
             fileManager.Verify(x => x.DeleteFolder(DataSetItem.RootPath + "\\" + item.Path), Times.Never);
             fileManager.Verify(x => x.CreateFolder(DataSetItem.RootPath + "\\" + item.Path), Times.Never);
@@ -107,7 +107,7 @@ namespace Trade_platform.tests.DataSet.DataServices
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             datasevice.Delete(item, keepAliveTask, cancellationTokenSource);
             Assert.That(cancellationTokenSource.IsCancellationRequested, Is.True);
-            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Exactly(2));
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DataSetInfo>()), Times.Exactly(2));
             fileManager.Verify(x => x.DeleteFolder(DataSetItem.RootPath + "\\" + item.Path), Times.Once);
             instrumentsHolder.Verify(x => x.Remove(item), Times.Once);
         }
@@ -133,7 +133,7 @@ namespace Trade_platform.tests.DataSet.DataServices
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             datasevice.Delete(item, keepAliveTask, cancellationTokenSource);
             Assert.That(cancellationTokenSource.IsCancellationRequested, Is.False);
-            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Exactly(1));
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DataSetInfo>()), Times.Exactly(1));
             fileManager.Verify(x => x.DeleteFolder(DataSetItem.RootPath + "\\" + item.Path), Times.Once);
             instrumentsHolder.Verify(x => x.Remove(item), Times.Once);
         }

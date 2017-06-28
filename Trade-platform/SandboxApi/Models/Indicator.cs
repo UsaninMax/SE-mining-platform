@@ -2,19 +2,19 @@
 {
     public class Indicator
     {
-        public string Name { get; private set; }
+        public string Id { get; private set; }
         public double Value { get; private set; }
 
         private Indicator() { }
 
         public class Builder
         {
-            private string _name;
+            private string _id;
             private double _value;
 
             public Builder WithName(string value)
             {
-                _name = value;
+                _id = value;
                 return this;
             }
 
@@ -28,7 +28,7 @@
             {
                 return new Indicator()
                 {
-                    Name = _name,
+                    Id = _id,
                     Value = _value
                 };
             }
@@ -36,7 +36,7 @@
 
         public override string ToString()
         {
-            return $"{nameof(Name)}: {Name}," +
+            return $"{nameof(Id)}: {Id}," +
                 $" {nameof(Value)}: {Value}";
         }
     }

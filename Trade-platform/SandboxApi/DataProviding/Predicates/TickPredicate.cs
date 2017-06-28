@@ -2,39 +2,23 @@
 
 namespace TradePlatform.SandboxApi.DataProviding.Predicates
 {
-    public class DataPredicate : IPredicate
+    public class TickPredicate : IPredicate
     {
         public string Id { get; private set; }
-        public string ParentId { get; private set; }
-        public long AccumulationPeriod { get; private set; }
         public DateTime From { get; private set; }
         public DateTime To { get; private set; }
 
-        private DataPredicate() { }
+        private TickPredicate() { }
 
         public class Builder
         {
             private string _id;
-            private string _parentId;
-            private long _accumulationPeriod;
             private DateTime _from;
             private DateTime _to;
 
             public Builder NewId(string value)
             {
                 _id = value;
-                return this;
-            }
-
-            public Builder ParentId(string value)
-            {
-                _parentId = value;
-                return this;
-            }
-
-            public Builder AccumulationPeriod(long value)
-            {
-                _accumulationPeriod = value;
                 return this;
             }
 
@@ -50,13 +34,11 @@ namespace TradePlatform.SandboxApi.DataProviding.Predicates
                 return this;
             }
 
-            public DataPredicate Build()
+            public TickPredicate Build()
             {
-                return new DataPredicate()
+                return new TickPredicate()
                 {
                     Id = _id,
-                    ParentId = _parentId,
-                    AccumulationPeriod = _accumulationPeriod,
                     From = _from,
                     To = _to
                 };
@@ -66,8 +48,6 @@ namespace TradePlatform.SandboxApi.DataProviding.Predicates
         public override string ToString()
         {
             return $"{nameof(Id)}: {Id}, " +
-                   $"{nameof(ParentId)}: {ParentId}, " +
-                   $"{nameof(AccumulationPeriod)}: {AccumulationPeriod}, " +
                    $"{nameof(From)}: {From}, " +
                    $"{nameof(To)}: {To}";
         }
