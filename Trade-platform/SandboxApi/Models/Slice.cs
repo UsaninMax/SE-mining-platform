@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-
 namespace TradePlatform.SandboxApi.Models
 {
     public class Slice
@@ -30,27 +28,27 @@ namespace TradePlatform.SandboxApi.Models
                 return this;
             }
 
-            public Builder WithTicks(Tick value)
+            public Builder WithTick(Tick value)
             {
                 _ticks.Add(value.Id, value);
                 return this;
             }
 
-            public Builder WithCandles(Candle value)
+            public Builder WithCandle(Candle value)
             {
                 _candles.Add(value.Id,value);
                 return this;
             }
 
-            public Builder WithIndicators(Indicator value)
+            public Builder WithIndicator(Indicator value)
             {
                 _indicators.Add(value.Id, value);
                 return this;
             }
 
-            public Builder WithBotUsage(bool value)
+            public Builder WithBotUsage()
             {
-                _botUsage = value;
+                _botUsage = true;
                 return this;
             }
 

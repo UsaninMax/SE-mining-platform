@@ -49,7 +49,7 @@ namespace TradePlatform.DataSet.DataServices
         {
             if (!_dataSetHolder.CheckIfExist(id))
             {
-                throw new Exception("Data set with id = " + id + "was not exist");
+                throw new Exception("Data set with id = " + id + " was not exist");
             }
             DataSetItem item = _dataSetHolder.Get(id);
             return _tickStorage.ReStore(DataSetItem.RootPath + "\\" + item.Path + "\\" + item.Path + ".xml");

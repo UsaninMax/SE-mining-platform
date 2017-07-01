@@ -29,7 +29,6 @@ namespace TradePlatform.SandboxApi.DataProviding.Checks
                 _infoPublisher.PublishInfo(new SandboxInfo{ Message = predicate + "- Id can not be null or empty" });
                 isOk = false;
             }
-
             return isOk;
         }
 

@@ -1,20 +1,23 @@
-﻿namespace TradePlatform.SandboxApi.Models
+﻿using System;
+
+namespace TradePlatform.SandboxApi.Models
 {
-    public class Indicator
+    public class Indicator : IData
     {
-        public string Id { get; private set; }
+        private DateTime _date;
+        public string Id { get; set; }
         public double Value { get; private set; }
 
         private Indicator() { }
 
         public class Builder
         {
-            private string _id;
+            private DateTime _date;
             private double _value;
 
-            public Builder WithName(string value)
+            public Builder WithDate(DateTime value)
             {
-                _id = value;
+                _date = value;
                 return this;
             }
 
@@ -28,7 +31,7 @@
             {
                 return new Indicator()
                 {
-                    Id = _id,
+                    _date = _date,
                     Value = _value
                 };
             }
@@ -36,8 +39,15 @@
 
         public override string ToString()
         {
-            return $"{nameof(Id)}: {Id}," +
+            return
+                $" {nameof(_date)}: {_date}," +
+                $" {nameof(Id)}: {Id}," +
                 $" {nameof(Value)}: {Value}";
+        }
+
+        public DateTime Date()
+        {
+            return _date;
         }
     }
 }

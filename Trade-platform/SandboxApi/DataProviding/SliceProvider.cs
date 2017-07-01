@@ -18,9 +18,7 @@ namespace TradePlatform.SandboxApi.DataProviding
         private readonly IDataSetService _dataSetService;
         private readonly IPredicateChecker _predicateChecker;
         private readonly IInfoPublisher _infoPublisher;
-        private ICollection<Queue<Tick>> _tiks = new List<Queue<Tick>>();
-        private ICollection<Queue<Candle>> _candles = new List<Queue<Candle>>();
-        private ICollection<Queue<Indicator>> _indicators = new List<Queue<Indicator>>();
+        private IEnumerable<IData> _data = new List<IData>();
         private readonly ICollection<DataPredicate> _dataPredicates = new List<DataPredicate>();
         private readonly ICollection<IndicatorPredicate> _indicatorPredicates = new List<IndicatorPredicate>();
         private readonly ICollection<TickPredicate> _tickPredicate = new List<TickPredicate>();
@@ -44,20 +42,53 @@ namespace TradePlatform.SandboxApi.DataProviding
             _indicatorPredicates.ForEach(ConstructSeries);
             _infoPublisher.PublishInfo(new SandboxInfo { Message = " add tick data for support calculation " });
             _tickPredicate.ForEach(ConstructSeries);
-
             _infoPublisher.PublishInfo(new SandboxInfo { Message = " constract slices of data " });
             return GroupSlices();
         }
 
         private IList<Slice> GroupSlices()
         {
-            return null;
+            IList<Slice> slices = new List<Slice>();
+            List<IData> asList = _data.ToList();
+            asList.Sort((x, y) => DateTime.Compare(x.Date(), y.Date()));
+            var results = _data.GroupBy(p => p.Date(), p => p, (key, g) => new {Date = key, Data = g.ToList()});
+            results.ForEach(x =>
+            {
+                Slice.Builder builder = new Slice.Builder();
+                builder.WithDate(x.Date);
+                x.Data.ForEach(y =>
+                {
+                    var candle = y as Candle;
+                    if (candle != null)
+                    {
+                        builder.WithCandle(candle);
+                        builder.WithBotUsage();
+                    }
+
+                    var indicator = y as Indicator;
+                    if (indicator != null)
+                    {
+                        builder.WithIndicator(indicator);
+                        builder.WithBotUsage();
+                    }
+
+                    var tick = y as Tick;
+                    if (tick != null)
+                    {
+                        builder.WithTick(tick);
+                    }
+                });
+                slices.Add(builder.Build());
+            });
+
+            _data = new List<IData>();
+            return slices;
         }
 
         private void ConstructSeries(DataPredicate predicate)
         {
             ITransformer dataAggregator = ContainerBuilder.Container.Resolve<ITransformer>();
-            _candles.Add(dataAggregator.Transform(_dataSetService.Get(predicate.ParentId)
+            _data = _data.Concat(dataAggregator.Transform(_dataSetService.Get(predicate.ParentId)
                 .Where(m => predicate.From == DateTime.MinValue || m.Date >= predicate.From)
                 .Where(m => predicate.To == DateTime.MinValue || m.Date <= predicate.To)
                 .ToList(), predicate));
@@ -66,7 +97,7 @@ namespace TradePlatform.SandboxApi.DataProviding
         private void ConstructSeries(TickPredicate predicate)
         {
             ITransformer dataAggregator = ContainerBuilder.Container.Resolve<ITransformer>();
-            _tiks.Add(dataAggregator.Transform(_dataSetService.Get(predicate.Id)
+            _data = _data.Concat(dataAggregator.Transform(_dataSetService.Get(predicate.Id)
                 .Where(m => predicate.From == DateTime.MinValue || m.Date >= predicate.From)
                 .Where(m => predicate.To == DateTime.MinValue || m.Date <= predicate.To)
                 .ToList(), predicate));
@@ -74,8 +105,18 @@ namespace TradePlatform.SandboxApi.DataProviding
 
         private void ConstructSeries(IndicatorPredicate predicate)
         {
-
-
+            IIndicatorProvider provider = Activator.CreateInstance(predicate.Indicator) as IIndicatorProvider;
+            if (provider == null)
+            {
+                _infoPublisher.PublishInfo(new SandboxInfo { Message = predicate.Indicator + " cannot be instantiated " });
+                return;
+            }
+            ITransformer dataAggregator = ContainerBuilder.Container.Resolve<ITransformer>();
+            List<Candle> candles = dataAggregator.Transform(_dataSetService.Get(predicate.DataPredicate.ParentId)
+                .Where(m => predicate.DataPredicate.From == DateTime.MinValue || m.Date >= predicate.DataPredicate.From)
+                .Where(m => predicate.DataPredicate.To == DateTime.MinValue || m.Date <= predicate.DataPredicate.To)
+                .ToList(), predicate.DataPredicate).ToList();
+            _data = _data.Concat(provider.Get(candles).Select(c => { c.Id = predicate.Id; return c; }).ToList());
         }
 
         private void GatherTickPredicates()

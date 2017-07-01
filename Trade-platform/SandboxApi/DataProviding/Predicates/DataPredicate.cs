@@ -6,7 +6,7 @@ namespace TradePlatform.SandboxApi.DataProviding.Predicates
     {
         public string Id { get; private set; }
         public string ParentId { get; private set; }
-        public long AccumulationPeriod { get; private set; }
+        public TimeSpan AccumulationPeriod { get; private set; }
         public DateTime From { get; private set; }
         public DateTime To { get; private set; }
 
@@ -16,7 +16,7 @@ namespace TradePlatform.SandboxApi.DataProviding.Predicates
         {
             private string _id;
             private string _parentId;
-            private long _accumulationPeriod;
+            private TimeSpan _accumulationPeriod;
             private DateTime _from;
             private DateTime _to;
 
@@ -32,7 +32,7 @@ namespace TradePlatform.SandboxApi.DataProviding.Predicates
                 return this;
             }
 
-            public Builder AccumulationPeriod(long value)
+            public Builder AccumulationPeriod(TimeSpan value)
             {
                 _accumulationPeriod = value;
                 return this;
