@@ -43,15 +43,16 @@ namespace TradePlatform.SandboxApi.DataProviding
             _infoPublisher.PublishInfo(new SandboxInfo { Message = " add tick data for support calculation " });
             _tickPredicate.ForEach(ConstructSeries);
             _infoPublisher.PublishInfo(new SandboxInfo { Message = " constract slices of data " });
-            return GroupSlices();
+            return ConstructSlices();
         }
 
-        private IList<Slice> GroupSlices()
+        private IList<Slice> ConstructSlices()
         {
             IList<Slice> slices = new List<Slice>();
             List<IData> asList = _data.ToList();
+            _data = new List<IData>();
             asList.Sort((x, y) => DateTime.Compare(x.Date(), y.Date()));
-            var results = _data.GroupBy(p => p.Date(), p => p, (key, g) => new {Date = key, Data = g.ToList()});
+            var results = asList.GroupBy(p => p.Date(), p => p, (key, g) => new {Date = key, Data = g.ToList()});
             results.ForEach(x =>
             {
                 Slice.Builder builder = new Slice.Builder();
@@ -62,14 +63,12 @@ namespace TradePlatform.SandboxApi.DataProviding
                     if (candle != null)
                     {
                         builder.WithCandle(candle);
-                        builder.WithBotUsage();
                     }
 
                     var indicator = y as Indicator;
                     if (indicator != null)
                     {
                         builder.WithIndicator(indicator);
-                        builder.WithBotUsage();
                     }
 
                     var tick = y as Tick;
@@ -80,8 +79,6 @@ namespace TradePlatform.SandboxApi.DataProviding
                 });
                 slices.Add(builder.Build());
             });
-
-            _data = new List<IData>();
             return slices;
         }
 

@@ -8,7 +8,6 @@ namespace TradePlatform.SandboxApi.Models
         public IDictionary<string, Tick> Ticks { get; private set; }
         public IDictionary<string, Candle> Candles { get; private set; }
         public IDictionary<string, Indicator> Indicators { get; private set; }
-        public bool BotUsage { get; private set; }
 
         private Slice()
         {
@@ -20,7 +19,6 @@ namespace TradePlatform.SandboxApi.Models
             private IDictionary<string, Tick> _ticks = new Dictionary<string, Tick>();
             private IDictionary<string, Candle> _candles = new Dictionary<string, Candle>();
             private IDictionary<string, Indicator> _indicators = new Dictionary<string, Indicator>();
-            private bool _botUsage;
 
             public Builder WithDate(DateTime value)
             {
@@ -46,12 +44,6 @@ namespace TradePlatform.SandboxApi.Models
                 return this;
             }
 
-            public Builder WithBotUsage()
-            {
-                _botUsage = true;
-                return this;
-            }
-
             public Slice Build()
             {
                 return new Slice()
@@ -59,8 +51,7 @@ namespace TradePlatform.SandboxApi.Models
                     DateTime = _dateTime,
                     Ticks = _ticks,
                     Candles = _candles,
-                    Indicators = _indicators,
-                    BotUsage = _botUsage
+                    Indicators = _indicators
                 };
             }
         }
@@ -70,8 +61,7 @@ namespace TradePlatform.SandboxApi.Models
             return $"{nameof(DateTime)}: {DateTime}, " +
                    $"{nameof(Ticks)}: {Ticks}, " +
                    $"{nameof(Candles)}: {Candles}, " +
-                   $"{nameof(Indicators)}: {Indicators}, " +
-                   $"{nameof(BotUsage)}: {BotUsage}";
+                   $"{nameof(Indicators)}: {Indicators}";
         }
     }
 }
