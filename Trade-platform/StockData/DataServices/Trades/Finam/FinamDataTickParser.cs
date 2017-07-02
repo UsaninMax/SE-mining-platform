@@ -16,7 +16,7 @@ namespace TradePlatform.StockData.DataServices.Trades.Finam
             _splitter = ContainerBuilder.Container.Resolve<IInstrumentSplitter>();
         }
 
-        public IList<DataTick> Parse(Instrument instrument)
+        public IEnumerable<DataTick> Parse(Instrument instrument)
         {
 
             List<DataTick> allDataTick = new List<DataTick>();
@@ -28,7 +28,7 @@ namespace TradePlatform.StockData.DataServices.Trades.Finam
                 while ((line = file.ReadLine()) != null)
                 {
                     string[] splitedRow = line.Split(',');
-                    allDataTick.Add(new DataTick()
+                    allDataTick.Add(new DataTick
                     {
                         Date = DateTime.ParseExact(splitedRow[0] + " " + splitedRow[1], "yyyyMMdd HHmmss", CultureInfo.InvariantCulture),
                         Price = double.Parse(splitedRow[2], CultureInfo.InvariantCulture),
@@ -38,7 +38,6 @@ namespace TradePlatform.StockData.DataServices.Trades.Finam
 
                 file.Close();
             }
-            allDataTick.Sort((obj1, obj2) => obj1.Date.CompareTo(obj2.Date));
             return allDataTick;
         }
     }
