@@ -127,7 +127,7 @@ namespace TradePlatform.SandboxApi.DataProviding
                 Indicator ind = provider.Get(c);
                 ind.Id = predicate.Id;
                 return ind;
-            })).ToList();
+            }).ToList());
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
