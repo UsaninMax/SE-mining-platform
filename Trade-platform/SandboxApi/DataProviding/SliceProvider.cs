@@ -58,29 +58,13 @@ namespace TradePlatform.SandboxApi.DataProviding
             return asList.GroupBy(item => item.Date())
                 .Select(x =>
                 {
-                    Slice.Builder builder = new Slice.Builder(_tickPredicate.Count, _dataPredicates.Count, _indicatorPredicates.Count);
-                    builder.WithDate(x.Key);
-                    x.ToList().ForEach(y =>
-                    {
-                        var candle = y as Candle;
-                        if (candle != null)
-                        {
-                            builder.WithCandle(candle);
-                        }
-
-                        var indicator = y as Indicator;
-                        if (indicator != null)
-                        {
-                            builder.WithIndicator(indicator);
-                        }
-
-                        var tick = y as Tick;
-                        if (tick != null)
-                        {
-                            builder.WithTick(tick);
-                        }
-                    });
-                    return builder.Build();
+                    var values = x.ToList();
+                    return new Slice.Builder()
+                        .WithDate(x.Key)
+                        .WithCandle(values.OfType<Candle>().ToList())
+                        .WithTick(values.OfType<Tick>().ToList())
+                        .WithIndicator(values.OfType<Indicator>().ToList())
+                        .Build();
                 }).ToList();
         }
 

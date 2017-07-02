@@ -6,9 +6,9 @@ namespace TradePlatform.SandboxApi.Models
     public class Slice
     {
         public DateTime @DateTime { get; private set; }
-        public IList<Tick> Ticks { get; private set; }
-        public IList<Candle> Candles { get; private set; }
-        public IList<Indicator> Indicators { get; private set; }
+        public IEnumerable<Tick> Ticks { get; private set; }
+        public IEnumerable<Candle> Candles { get; private set; }
+        public IEnumerable<Indicator> Indicators { get; private set; }
 
         private Slice()
         {
@@ -17,17 +17,9 @@ namespace TradePlatform.SandboxApi.Models
         public class Builder
         {
             private DateTime _dateTime;
-            private IList<Tick> _ticks;
-            private IList<Candle> _candles;
-            private IList<Indicator> _indicators;
-
-            public Builder(int tickSize, int candleSize, int indicatorSize)
-            {
-                _ticks = new List<Tick>(tickSize);
-                _candles = new List<Candle>(candleSize);
-                _indicators = new List<Indicator>(indicatorSize);
-            }
-
+            private ICollection<Tick> _ticks;
+            private ICollection<Candle> _candles;
+            private ICollection<Indicator> _indicators;
 
             public Builder WithDate(DateTime value)
             {
@@ -35,27 +27,27 @@ namespace TradePlatform.SandboxApi.Models
                 return this;
             }
 
-            public Builder WithTick(Tick value)
+            public Builder WithTick(ICollection<Tick> values)
             {
-                _ticks.Add(value);
+                _ticks = values;
                 return this;
             }
 
-            public Builder WithCandle(Candle value)
+            public Builder WithCandle(ICollection<Candle> values)
             {
-                _candles.Add(value);
+                _candles = values;
                 return this;
             }
 
-            public Builder WithIndicator(Indicator value)
+            public Builder WithIndicator(ICollection<Indicator> values)
             {
-                _indicators.Add(value);
+                _indicators = values;
                 return this;
             }
 
             public Slice Build()
             {
-                return new Slice()
+                return new Slice
                 {
                     DateTime = _dateTime,
                     Ticks = _ticks,
