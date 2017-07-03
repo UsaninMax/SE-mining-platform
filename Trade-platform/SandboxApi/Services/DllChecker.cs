@@ -21,7 +21,7 @@ namespace TradePlatform.SandboxApi.Services
                     var name = AssemblyName.GetAssemblyName(file.FullName);
                     Assembly.Load(name)
                         .GetTypes()
-                        .Where(t => t != typeof(ISandbox) && typeof(ISandbox).IsAssignableFrom(t))
+                        .Where(t => t != typeof(Sandbox) && typeof(Sandbox).IsAssignableFrom(t))
                         .ToList()
                         .ForEach(x =>
                         {

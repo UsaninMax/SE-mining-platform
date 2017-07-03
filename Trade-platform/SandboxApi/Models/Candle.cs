@@ -5,7 +5,7 @@ namespace TradePlatform.SandboxApi.Models
     public class Candle : IData
     {
         private DateTime _date;
-        public string Id { get; private set; }
+        private string _id;
         public double High { get; private set; }
         public double Low { get; private set; }
         public double Open { get; private set; }
@@ -72,7 +72,7 @@ namespace TradePlatform.SandboxApi.Models
                 return new Candle()
                 {
                     _date = _date,
-                    Id = _id,
+                    _id = _id,
                     High = _high,
                     Low = _low,
                     Open = _open,
@@ -86,7 +86,7 @@ namespace TradePlatform.SandboxApi.Models
         {
             return
                 $" {nameof(_date)}: {_date}," +
-                $"{nameof(Id)}: {Id}," +
+                $"{nameof(_id)}: {_id}," +
                 $" {nameof(High)}: {High}," +
                 $" {nameof(Low)}: {Low}," +
                 $" {nameof(Open)}: {Open}," +
@@ -97,6 +97,11 @@ namespace TradePlatform.SandboxApi.Models
         public DateTime Date()
         {
             return _date;
+        }
+
+        public string Id()
+        {
+            return _id;
         }
     }
 }

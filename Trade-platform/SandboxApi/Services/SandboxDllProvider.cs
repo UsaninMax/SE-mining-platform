@@ -32,13 +32,13 @@ namespace TradePlatform.SandboxApi.Services
             {
                 Assembly.Load(AssemblyName.GetAssemblyName(file))
                     .GetTypes()
-                    .Where(t => typeof(ISandbox).IsAssignableFrom(t))
+                    .Where(t => typeof(Sandbox).IsAssignableFrom(t))
                     .ToList()
                     .ForEach(x =>
                     {
-                        ISandbox sandbox = (ISandbox)Activator.CreateInstance(x);
+                        Sandbox sandbox = (Sandbox)Activator.CreateInstance(x);
                         var sandboxPresenter = ContainerBuilder.Container.Resolve<ISandboxPresenter>(
-                            new DependencyOverride<ISandbox>(sandbox),
+                            new DependencyOverride<Sandbox>(sandbox),
                             new DependencyOverride<string>(x.Name));
                         presenters.Add(sandboxPresenter);
                     });

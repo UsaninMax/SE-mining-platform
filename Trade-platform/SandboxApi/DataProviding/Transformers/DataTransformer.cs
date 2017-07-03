@@ -10,9 +10,9 @@ namespace TradePlatform.SandboxApi.DataProviding.Transformers
 {
     public class DataTransformer : ITransformer
     {
-        public List<Candle> Transform(List<DataTick> tiks, DataPredicate predicate)
+        public List<Candle> Transform(IList<Tick> tiks, DataPredicate predicate)
         {
-            return tiks.GroupBy(item => item.Date.Ticks / predicate.AccumulationPeriod.Ticks)
+            return tiks.GroupBy(item => item.Date().Ticks / predicate.AccumulationPeriod.Ticks)
                 .Select(x =>
                 {
                     var values = x.ToList();

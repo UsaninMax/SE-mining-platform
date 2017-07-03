@@ -9,6 +9,7 @@ using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Sistem;
 using TradePlatform.Main.ViewModels;
 using TradePlatform.SandboxApi;
+using TradePlatform.SandboxApi.DataProviding.Predicates;
 using TradePlatform.SandboxApi.Presenters;
 using TradePlatform.SandboxApi.Services;
 
@@ -101,21 +102,21 @@ namespace Trade_platform.tests.Main.ViewModels
             infoPublisher.Verify(x => x.PublishException(It.IsAny<AggregateException>()), Times.Once);
         }
 
-        private class TestBox : ISandbox
+        private class TestBox : Sandbox
         {
-            public void Before(CancellationToken token)
+            public override ICollection<IPredicate> PrepareData()
             {
-               
+                throw new NotImplementedException();
             }
 
-            public void Execution(CancellationToken token)
+            public override void Execution()
             {
-       
+                throw new NotImplementedException();
             }
 
-            public void After(CancellationToken token)
+            public override void AfterExecution()
             {
-        
+                throw new NotImplementedException();
             }
         }
     }

@@ -5,7 +5,7 @@ namespace TradePlatform.SandboxApi.Models
     public class Tick : IData
     {
         private DateTime _date;
-        public string Id { get; private set; }
+        private string _id;
         public double Price { get; private set; }
         public double Volume { get; private set; }
 
@@ -49,7 +49,7 @@ namespace TradePlatform.SandboxApi.Models
                 return new Tick
                 {
                     _date = _date,
-                    Id = _id,
+                    _id = _id,
                     Price = _price,
                     Volume = _volume
                 };
@@ -59,7 +59,7 @@ namespace TradePlatform.SandboxApi.Models
         public override string ToString()
         {
             return $"{nameof(_date)}: {_date}," +
-                   $" {nameof(Id)}: {Id}," +
+                   $" {nameof(_id)}: {_id}," +
                    $" {nameof(Price)}: {Price}," +
                    $" {nameof(Volume)}: {Volume}";
         }
@@ -67,6 +67,11 @@ namespace TradePlatform.SandboxApi.Models
         public DateTime Date()
         {
             return _date;
+        }
+
+        public string Id()
+        {
+            return _id;
         }
     }
 }

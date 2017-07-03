@@ -5,10 +5,15 @@ namespace TradePlatform.SandboxApi.Models
     public class Indicator : IData
     {
         private DateTime _date;
-        public string Id { get; set; }
+        private string _id;
         public double Value { get; private set; }
 
         private Indicator() { }
+
+        public void SetId(string value)
+        {
+            _id = value;
+        }
 
         public class Builder
         {
@@ -41,13 +46,18 @@ namespace TradePlatform.SandboxApi.Models
         {
             return
                 $" {nameof(_date)}: {_date}," +
-                $" {nameof(Id)}: {Id}," +
+                $" {nameof(_id)}: {_id}," +
                 $" {nameof(Value)}: {Value}";
         }
 
         public DateTime Date()
         {
             return _date;
+        }
+
+        public string Id()
+        {
+            return _id;
         }
     }
 }

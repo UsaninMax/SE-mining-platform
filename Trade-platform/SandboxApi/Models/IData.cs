@@ -5,5 +5,6 @@ namespace TradePlatform.SandboxApi.Models
     public interface IData
     {
          DateTime Date();
+         string Id();
     }
 }

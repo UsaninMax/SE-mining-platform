@@ -86,12 +86,11 @@ namespace TradePlatform
             Container.RegisterType<IDataTickStorage, XmlDataTickStorage>();
             Container.RegisterType<IDataTickParser, FinamDataTickParser>();
 
-            Container.RegisterType<ISandboxPresenter, SandboxPresenter>(new InjectionConstructor(typeof(ISandbox) , typeof(string)));
-            Container.RegisterType<IProxySandbox, ProxySandbox>(new InjectionConstructor(typeof(ISandbox)));
+            Container.RegisterType<ISandboxPresenter, SandboxPresenter>(new InjectionConstructor(typeof(Sandbox) , typeof(string)));
             Container.RegisterType<ISandboxDllProvider, SandboxDllProvider>();
 
             Container.RegisterType<IPredicateChecker, SlicePredicateChecker>();
-            Container.RegisterType<ISliceProvider, SliceProvider>();
+            Container.RegisterType<IDataProvider, DataProvider>();
             Container.RegisterType<ITransformer, DataTransformer>();
 
             

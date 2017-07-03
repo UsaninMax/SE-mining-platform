@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Microsoft.Practices.ObjectBuilder2;
 using TradePlatform.SandboxApi.DataProviding.Checks;
 using TradePlatform.SandboxApi.DataProviding.Predicates;
@@ -13,68 +14,67 @@ using TradePlatform.SandboxApi.DataProviding.Transformers;
 
 namespace TradePlatform.SandboxApi.DataProviding
 {
-    public class SliceProvider : ISliceProvider
+    public class DataProvider : IDataProvider
     {
         private readonly IDataSetService _dataSetService;
         private readonly IPredicateChecker _predicateChecker;
         private readonly IInfoPublisher _infoPublisher;
+        private IDictionary<string, IList<Tick>> _tiks = new Dictionary<string, IList<Tick>>();
         private IEnumerable<IData> _data = new List<IData>();
         private readonly ICollection<DataPredicate> _dataPredicates = new List<DataPredicate>();
         private readonly ICollection<IndicatorPredicate> _indicatorPredicates = new List<IndicatorPredicate>();
         private readonly ICollection<TickPredicate> _tickPredicate = new List<TickPredicate>();
 
-        public SliceProvider()
+        public DataProvider()
         {
             _predicateChecker = ContainerBuilder.Container.Resolve<IPredicateChecker>();
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
             _dataSetService = ContainerBuilder.Container.Resolve<IDataSetService>();
         }
 
-        public IList<Slice> Get(ICollection<IPredicate> predicates)
+        public IList<IData> Get(ICollection<IPredicate> predicates, CancellationToken token)
         {
+            if (token.IsCancellationRequested) { return null; }
             GatherPredicates(predicates);
             CheckPredicateStructure();
             GatherTickPredicates();
-
-            _infoPublisher.PublishInfo(new SandboxInfo { Message = " constract data series " });
-            _dataPredicates.ForEach(ConstructSeries);
+            if (token.IsCancellationRequested) { return null; }
+            _infoPublisher.PublishInfo(new SandboxInfo { Message = " constract tick data  " });
+            _tickPredicate.ForEach(ConstructSeries);
+            if (token.IsCancellationRequested) { return null; }
             _infoPublisher.PublishInfo(new SandboxInfo { Message = " constract indicator data " });
             _indicatorPredicates.ForEach(ConstructSeries);
-            _infoPublisher.PublishInfo(new SandboxInfo { Message = " add tick data for support calculation " });
-            _tickPredicate.ForEach(ConstructSeries);
-            _infoPublisher.PublishInfo(new SandboxInfo { Message = " constract slices of data " });
-            return ConstructSlices();
-        }
+            if (token.IsCancellationRequested) { return null; }
+            _infoPublisher.PublishInfo(new SandboxInfo { Message = " constract data series " });
+            _dataPredicates.ForEach(ConstructSeries);
+            if (token.IsCancellationRequested) { return null; }
+            _infoPublisher.PublishInfo(new SandboxInfo { Message = " final preparation " });
 
-        private IList<Slice> ConstructSlices()
-        {
-            _infoPublisher.PublishInfo(new SandboxInfo { Message = " start build  Slices" });
-            List<IData> asList = _data.ToList();
-            _infoPublisher.PublishInfo(new SandboxInfo { Message = "list size is  " + asList.Count });
-            _data = new List<IData>();
+            _tiks.Values.ForEach(x =>
+            {
+                _data = _data.Concat(x);
+            });
+
+            _tiks = null;
             GC.Collect();
             GC.WaitForPendingFinalizers();
+            if (token.IsCancellationRequested) { return null; }
+            List<IData> asList = new List<IData>(_data);
+            _data = null;
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            if (token.IsCancellationRequested) { return null; }
             asList.Sort((x, y) => DateTime.Compare(x.Date(), y.Date()));
-            return asList.GroupBy(item => item.Date())
-                .Select(x =>
-                {
-                    var values = x.ToList();
-                    return new Slice.Builder()
-                        .WithDate(x.Key)
-                        .WithCandle(values.OfType<Candle>().ToList())
-                        .WithTick(values.OfType<Tick>().ToList())
-                        .WithIndicator(values.OfType<Indicator>().ToList())
-                        .Build();
-                }).ToList();
+            return asList;
         }
 
         private void ConstructSeries(DataPredicate predicate)
         {
             _infoPublisher.PublishInfo(new SandboxInfo { Message = " build  " + predicate });
             ITransformer dataAggregator = ContainerBuilder.Container.Resolve<ITransformer>();
-            _data = _data.Concat(dataAggregator.Transform(_dataSetService.Get(predicate.ParentId)
-                .Where(m => predicate.From == DateTime.MinValue || m.Date >= predicate.From)
-                .Where(m => predicate.To == DateTime.MinValue || m.Date <= predicate.To)
+            _data = _data.Concat(dataAggregator.Transform(_tiks[predicate.ParentId]
+                .Where(m => (predicate.From == DateTime.MinValue || m.Date() >= predicate.From) && 
+                (predicate.To == DateTime.MinValue || m.Date() <= predicate.To))
                 .ToList(), predicate));
             GC.Collect();
             GC.WaitForPendingFinalizers();
@@ -84,9 +84,9 @@ namespace TradePlatform.SandboxApi.DataProviding
         {
             _infoPublisher.PublishInfo(new SandboxInfo { Message = " build  " + predicate });
             ITransformer dataAggregator = ContainerBuilder.Container.Resolve<ITransformer>();
-            _data = _data.Concat(dataAggregator.Transform(_dataSetService.Get(predicate.Id)
-                .Where(m => predicate.From == DateTime.MinValue || m.Date >= predicate.From)
-                .Where(m => predicate.To == DateTime.MinValue || m.Date <= predicate.To)
+            _tiks.Add(predicate.Id, dataAggregator.Transform(_dataSetService.Get(predicate.Id)
+                .Where(m =>(predicate.From == DateTime.MinValue || m.Date >= predicate.From) && 
+                    (predicate.To == DateTime.MinValue || m.Date <= predicate.To))
                 .ToList(), predicate));
             GC.Collect();
             GC.WaitForPendingFinalizers();
@@ -103,13 +103,13 @@ namespace TradePlatform.SandboxApi.DataProviding
             }
             ITransformer dataAggregator = ContainerBuilder.Container.Resolve<ITransformer>();
             _infoPublisher.PublishInfo(new SandboxInfo { Message = " Build indicator  " + predicate });
-            _data = _data.Concat(dataAggregator.Transform(_dataSetService.Get(predicate.DataPredicate.ParentId)
-                .Where(m => predicate.DataPredicate.From == DateTime.MinValue || m.Date >= predicate.DataPredicate.From)
-                .Where(m => predicate.DataPredicate.To == DateTime.MinValue || m.Date <= predicate.DataPredicate.To)
+            _data = _data.Concat(dataAggregator.Transform(_tiks[predicate.DataPredicate.ParentId]
+                .Where(m => (predicate.DataPredicate.From == DateTime.MinValue || m.Date() >= predicate.DataPredicate.From) && 
+                (predicate.DataPredicate.To == DateTime.MinValue || m.Date() <= predicate.DataPredicate.To))
                 .ToList(), predicate.DataPredicate).Select(c =>
             {
                 Indicator ind = provider.Get(c);
-                ind.Id = predicate.Id;
+                ind.SetId(predicate.Id);
                 return ind;
             }).ToList());
             GC.Collect();

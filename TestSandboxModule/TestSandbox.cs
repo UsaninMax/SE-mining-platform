@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using TradePlatform.SandboxApi;
-using TradePlatform.SandboxApi.DataProviding;
+using TradePlatform.SandboxApi.Bots;
 using TradePlatform.SandboxApi.DataProviding.Predicates;
-using TradePlatform.SandboxApi.Models;
 
 namespace TestSandboxModule
 {
-    public class TestSandbox : ISandbox
+    public class TestSandbox : Sandbox
     {
-        public void Before(CancellationToken token)
+        public override ICollection<IPredicate> PrepareData()
         {
-            IList<Slice> slices = new SliceProvider().Get(new List<IPredicate>
+            return new List<IPredicate>
             {
                 new DataPredicate.Builder()
                     .ParentId("Si")
@@ -46,17 +44,44 @@ namespace TestSandboxModule
                         .To(new DateTime(2017, 1, 1))
                         .Build())
                     .Build()
-            });
+            };
         }
 
-        public void Execution(CancellationToken token)
+        public override void Execution()
         {
-            System.Diagnostics.Debug.WriteLine("Execution");
+            _bots = new List<Bot>
+            {
+                new TestBot
+                {
+                    Id = "Test_1",
+                    Predicate = new BotPredicate.Builder()
+                        .From(new DateTime(2015, 1, 1))
+                        .To(new DateTime(2015, 1, 1))
+                        .InstrumentIds(new List<string>() {"Si", "MA"})
+                        .Build()
+
+                },
+                new TestBot
+                {
+                    Id = "Test_2",
+                    Predicate = new BotPredicate.Builder()
+                        .From(new DateTime(2015, 1, 1))
+                        .To(new DateTime(2015, 1, 1))
+                        .InstrumentIds(new List<string>() {"Si", "MA"})
+                        .Build()
+
+                }
+            };
+            if(Token.IsCancellationRequested) { return; }
+            Execute();
         }
 
-        public void After(CancellationToken token)
+        public override void AfterExecution()
         {
-            System.Diagnostics.Debug.WriteLine("After");
+            foreach (var bot in _bots)
+            {
+                System.Diagnostics.Debug.WriteLine("Bot name = " + bot.Id + " - has score " + bot.Score());
+            }
         }
     }
 }

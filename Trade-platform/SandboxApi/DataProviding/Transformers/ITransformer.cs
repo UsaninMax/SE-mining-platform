@@ -7,7 +7,7 @@ namespace TradePlatform.SandboxApi.DataProviding.Transformers
 {
     public interface ITransformer
     {
-        List<Candle> Transform(List<DataTick> tiks, DataPredicate predicate);
+        List<Candle> Transform(IList<Tick> tiks, DataPredicate predicate);
         List<Tick> Transform(List<DataTick> tiks, TickPredicate predicate);
     }
 }
