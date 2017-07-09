@@ -1,9 +1,11 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;
 using TradePlatform.Commons.Info;
+using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.Sandbox.Events;
 using TradePlatform.Sandbox.Providers;
 
@@ -55,11 +57,20 @@ namespace TradePlatform.Sandbox.Presenters
                 var sandboxBuilder = ContainerBuilder.Container.Resolve<ISandboxProvider>();
                 ISandbox sandbox = sandboxBuilder.CreateInstance(_sandbox.GetType());
                 sandbox.SetToken(_cancellationTokenSource.Token);
+                _infoPublisher.PublishInfo(new SandboxInfo { Message = DllName + " build data " });
                 sandbox.BuildData();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
                 if (_cancellationTokenSource.Token.IsCancellationRequested){ return;}
+                _infoPublisher.PublishInfo(new SandboxInfo { Message = DllName + " execute bots processing " });
                 sandbox.Execution();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
                 if (_cancellationTokenSource.Token.IsCancellationRequested) { return; }
+                _infoPublisher.PublishInfo(new SandboxInfo { Message = DllName + " gather result " });
                 sandbox.AfterExecution();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             }, _cancellationTokenSource.Token);
             _executionTask.ContinueWith(t =>
             {

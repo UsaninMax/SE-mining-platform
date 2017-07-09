@@ -37,18 +37,25 @@ namespace TradePlatform.Sandbox.Bots
         {
             _data.Where(m => (_predicate.From == DateTime.MinValue || m.Date() >= _predicate.From) &&
                             (_predicate.To == DateTime.MinValue || m.Date() <= _predicate.To) &&
-                             _predicate.InstrumentIds.Contains(m.Id())).GroupBy(item => item.Date()).ForEach(x =>
-            {
+                             _predicate.InstrumentIds.Contains(m.Id()))//.GroupBy(item => item.Date())
+                             .ForEach(x =>
+                {
+                    //var values = x.ToList();
+                    //Execution(new Slice.Builder()
+                    //    .WithDate(x.Key)
+                    //    .WithCandle(values.OfType<Candle>().ToList())
+                    //    .WithTick(values.OfType<Tick>().ToList())
+                    //    .WithIndicator(values.OfType<Indicator>().ToList())
+                    //    .Build());
 
-                var values = x.ToList();
-                Execution(new Slice.Builder()
-                    .WithDate(x.Key)
-                    .WithCandle(values.OfType<Candle>().ToList())
-                    .WithTick(values.OfType<Tick>().ToList())
-                    .WithIndicator(values.OfType<Indicator>().ToList())
-                    .Build());
+                    Execution(new Slice.Builder()
+                        .WithDate(new DateTime())
+                        .WithCandle(new List<Candle>(){new Candle.Builder().Build(), new Candle.Builder().Build() })
+                        .WithTick(new List<Tick>() { new Tick.Builder().Build(), new Tick.Builder().Build() })
+                        .WithIndicator(new List<Indicator>() { new Indicator.Builder().Build(), new Indicator.Builder().Build() })
+                        .Build());
 
-            });
+                });
 
         }
 

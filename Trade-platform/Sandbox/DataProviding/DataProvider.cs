@@ -51,7 +51,7 @@ namespace TradePlatform.Sandbox.DataProviding
             _infoPublisher.PublishInfo(new SandboxInfo { Message = " constract data series " });
             _dataPredicates.ForEach(ConstructSeries);
             if (token.IsCancellationRequested) { return null; }
-            _infoPublisher.PublishInfo(new SandboxInfo { Message = " final preparation " });
+            _infoPublisher.PublishInfo(new SandboxInfo { Message = " combine all data " });
 
             _tiks.Values.ForEach(x =>
             {
@@ -68,6 +68,7 @@ namespace TradePlatform.Sandbox.DataProviding
             GC.WaitForPendingFinalizers();
             if (token.IsCancellationRequested) { return null; }
             asList.Sort((x, y) => DateTime.Compare(x.Date(), y.Date()));
+            _infoPublisher.PublishInfo(new SandboxInfo { Message = " data is ready " });
             return asList;
         }
 
