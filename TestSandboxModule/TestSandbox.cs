@@ -1,47 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
-using TradePlatform.SandboxApi;
-using TradePlatform.SandboxApi.Bots;
-using TradePlatform.SandboxApi.DataProviding.Predicates;
+using TradePlatform.Sandbox;
+using TradePlatform.Sandbox.Bots;
+using TradePlatform.Sandbox.DataProviding.Predicates;
 
 namespace TestSandboxModule
 {
-    public class TestSandbox : Sandbox
+    public class TestSandbox : SandboxApi
     {
-        public override ICollection<IPredicate> PrepareData()
+        public override ICollection<IPredicate> SetUpData()
         {
             return new List<IPredicate>
             {
                 new DataPredicate.Builder()
-                    .ParentId("Si")
-                    .NewId("Si_1")
+                    .ParentId("RTS")
+                    .NewId("RTS_1")
                     .AccumulationPeriod(new TimeSpan(0,0,1))
-                    .From(new DateTime(2015, 1, 1))
-                    .To(new DateTime(2017, 1, 1))
+                    .From(new DateTime(2016, 2, 1))
+                    .To(new DateTime(2016, 2, 5))
                     .Build(),
                 new DataPredicate.Builder()
-                    .ParentId("Si")
-                    .NewId("Si_5")
+                    .ParentId("RTS")
+                    .NewId("RTS_5")
                     .AccumulationPeriod(new TimeSpan(0,0,5))
-                    .From(new DateTime(2015, 1, 1))
-                    .To(new DateTime(2017, 1, 1))
+                    .From(new DateTime(2016, 2, 1))
+                    .To(new DateTime(2016, 2, 5))
                     .Build(),
                 new DataPredicate.Builder()
-                    .ParentId("Si")
-                    .NewId("Si_15")
+                    .ParentId("RTS")
+                    .NewId("RTS_15")
                     .AccumulationPeriod(new TimeSpan(0,15,0))
-                    .From(new DateTime(2015, 1, 1))
-                    .To(new DateTime(2017, 1, 1))
+                    .From(new DateTime(2016, 2, 1))
+                    .To(new DateTime(2016, 2, 5))
                     .Build(),
                 new IndicatorPredicate.Builder()
                     .NewId("MA")
                     .Indicator(typeof(MA))
                     .DataPredicate(new DataPredicate.Builder()
-                        .NewId("Test")
-                        .ParentId("Si")
+                        .NewId("RTS_5")
+                        .ParentId("RTS")
                         .AccumulationPeriod(new TimeSpan(0,0,5))
-                        .From(new DateTime(2015, 1, 1))
-                        .To(new DateTime(2017, 1, 1))
+                        .From(new DateTime(2016, 2, 1))
+                        .To(new DateTime(2016, 2, 5))
                         .Build())
                     .Build()
             };
@@ -49,38 +49,37 @@ namespace TestSandboxModule
 
         public override void Execution()
         {
-            _bots = new List<Bot>
+            TestBot bot_1 = new TestBot();
+            bot_1.SetUpId("Test_1");
+            bot_1.SetUpPredicate(new BotPredicate.Builder()
+                .From(new DateTime(2016, 2, 1))
+                .To(new DateTime(2016, 2, 5))
+                .InstrumentIds(new List<string>() { "RTS_5", "MA" })
+                .Build());
+
+            TestBot bot_2 = new TestBot();
+            bot_2.SetUpId("Test_2");
+            bot_2.SetUpPredicate(new BotPredicate.Builder()
+                .From(new DateTime(2016, 2, 1))
+                .To(new DateTime(2016, 2, 5))
+                .InstrumentIds(new List<string>() { "RTS_15", "MA" })
+                .Build());
+
+            if (Token.IsCancellationRequested) { return; }
+
+            SetUpBots(new List<IBot>
             {
-                new TestBot
-                {
-                    Id = "Test_1",
-                    Predicate = new BotPredicate.Builder()
-                        .From(new DateTime(2015, 1, 1))
-                        .To(new DateTime(2015, 1, 1))
-                        .InstrumentIds(new List<string>() {"Si", "MA"})
-                        .Build()
-
-                },
-                new TestBot
-                {
-                    Id = "Test_2",
-                    Predicate = new BotPredicate.Builder()
-                        .From(new DateTime(2015, 1, 1))
-                        .To(new DateTime(2015, 1, 1))
-                        .InstrumentIds(new List<string>() {"Si", "MA"})
-                        .Build()
-
-                }
-            };
-            if(Token.IsCancellationRequested) { return; }
+                bot_1,
+                bot_2
+            });
             Execute();
         }
 
         public override void AfterExecution()
         {
-            foreach (var bot in _bots)
+            foreach (var bot in Bots)
             {
-                System.Diagnostics.Debug.WriteLine("Bot name = " + bot.Id + " - has score " + bot.Score());
+                System.Diagnostics.Debug.WriteLine("Bot name = " + bot.GetId() + " - has score " + bot.Score());
             }
         }
     }

@@ -15,12 +15,12 @@ using TradePlatform.DataSet.Presenters;
 using TradePlatform.DataSet.ViewModels;
 using TradePlatform.Main.ViewModels;
 using TradePlatform.Main.Views;
-using TradePlatform.SandboxApi;
-using TradePlatform.SandboxApi.DataProviding;
-using TradePlatform.SandboxApi.DataProviding.Checks;
-using TradePlatform.SandboxApi.DataProviding.Transformers;
-using TradePlatform.SandboxApi.Presenters;
-using TradePlatform.SandboxApi.Services;
+using TradePlatform.Sandbox;
+using TradePlatform.Sandbox.DataProviding;
+using TradePlatform.Sandbox.DataProviding.Checks;
+using TradePlatform.Sandbox.DataProviding.Transformers;
+using TradePlatform.Sandbox.Presenters;
+using TradePlatform.Sandbox.Providers;
 using TradePlatform.StockData.DataServices.SecuritiesInfo;
 using TradePlatform.StockData.DataServices.SecuritiesInfo.Finam;
 using TradePlatform.StockData.DataServices.Serialization;
@@ -86,13 +86,12 @@ namespace TradePlatform
             Container.RegisterType<IDataTickStorage, XmlDataTickStorage>();
             Container.RegisterType<IDataTickParser, FinamDataTickParser>();
 
-            Container.RegisterType<ISandboxPresenter, SandboxPresenter>(new InjectionConstructor(typeof(Sandbox) , typeof(string)));
-            Container.RegisterType<ISandboxDllProvider, SandboxDllProvider>();
+            Container.RegisterType<ISandboxPresenter, SandboxPresenter>(new InjectionConstructor(typeof(ISandbox) , typeof(string)));
+            Container.RegisterType<ISandboxProvider, SandboxProvider>();
 
             Container.RegisterType<IPredicateChecker, SlicePredicateChecker>();
             Container.RegisterType<IDataProvider, DataProvider>();
             Container.RegisterType<ITransformer, DataTransformer>();
-
             
         }
     }

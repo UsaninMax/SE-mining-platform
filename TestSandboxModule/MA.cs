@@ -1,6 +1,6 @@
 ﻿using System;
-using TradePlatform.SandboxApi;
-using TradePlatform.SandboxApi.Models;
+using TradePlatform.Sandbox;
+using TradePlatform.Sandbox.Models;
 
 namespace TestSandboxModule
 {

@@ -1,13 +1,13 @@
-﻿using TradePlatform.SandboxApi.Bots;
-using TradePlatform.SandboxApi.Models;
+﻿using TradePlatform.Sandbox.Bots;
+using TradePlatform.Sandbox.Models;
 
 namespace TestSandboxModule
 {
-    public class TestBot : Bot
+    public class TestBot : BotApi
     {
         public override void Execution(Slice slice)
         {
-            System.Diagnostics.Debug.WriteLine("Bot name = " + Id + " -receive slice " + slice);
+            System.Diagnostics.Debug.WriteLine("Bot name = " + GetId() + " -receive slice " + slice);
         }
 
         public override int Score()
