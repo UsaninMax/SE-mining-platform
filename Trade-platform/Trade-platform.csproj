@@ -155,6 +155,8 @@
     <Compile Include="Sandbox\Models\Slice.cs" />
     <Compile Include="Sandbox\Models\Tick.cs" />
     <Compile Include="Sandbox\Bots\BotApi.cs" />
+    <Compile Include="Sandbox\Providers\IIndicatorBuilder.cs" />
+    <Compile Include="Sandbox\Providers\IndicatorBuilder.cs" />
     <Compile Include="Sandbox\SandboxApi.cs" />
     <Compile Include="Sandbox\Presenters\ISandboxPresenter.cs" />
     <Compile Include="Sandbox\Presenters\SandboxPresenter.cs" />

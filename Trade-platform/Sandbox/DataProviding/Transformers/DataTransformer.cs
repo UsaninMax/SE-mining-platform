@@ -11,7 +11,9 @@ namespace TradePlatform.Sandbox.DataProviding.Transformers
     {
         public List<Candle> Transform(IList<Tick> tiks, DataPredicate predicate)
         {
-            return tiks.GroupBy(item => item.Date().Ticks / predicate.AccumulationPeriod.Ticks)
+            return tiks.Where(m => (predicate.From == DateTime.MinValue || m.Date() >= predicate.From) &&
+                                   (predicate.To == DateTime.MinValue || m.Date() <= predicate.To))
+                                   .GroupBy(item => item.Date().Ticks / predicate.AccumulationPeriod.Ticks)
                 .Select(x =>
                 {
                     var values = x.ToList();
@@ -26,9 +28,11 @@ namespace TradePlatform.Sandbox.DataProviding.Transformers
                 }).ToList();
         }
 
-        public List<Tick> Transform(List<DataTick> tiks, TickPredicate predicate)
+        public List<Tick> Transform(IList<DataTick> tiks, TickPredicate predicate)
         {
-            return tiks.Select(c => new Tick.Builder()
+            return tiks.Where(m => (predicate.From == DateTime.MinValue || m.Date >= predicate.From) &&
+                                    (predicate.To == DateTime.MinValue || m.Date <= predicate.To))
+                                    .Select(c => new Tick.Builder()
             .WithDate(c.Date)
             .WithPrice(c.Price)
             .WithId(predicate.Id)

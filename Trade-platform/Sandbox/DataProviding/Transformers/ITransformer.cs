@@ -8,6 +8,6 @@ namespace TradePlatform.Sandbox.DataProviding.Transformers
     public interface ITransformer
     {
         List<Candle> Transform(IList<Tick> tiks, DataPredicate predicate);
-        List<Tick> Transform(List<DataTick> tiks, TickPredicate predicate);
+        List<Tick> Transform(IList<DataTick> tiks, TickPredicate predicate);
     }
 }

@@ -92,7 +92,7 @@ namespace TradePlatform
             Container.RegisterType<IPredicateChecker, SlicePredicateChecker>();
             Container.RegisterType<IDataProvider, DataProvider>();
             Container.RegisterType<ITransformer, DataTransformer>();
-            
+            Container.RegisterType<IIndicatorBuilder, IndicatorBuilder>();
         }
     }
 }
