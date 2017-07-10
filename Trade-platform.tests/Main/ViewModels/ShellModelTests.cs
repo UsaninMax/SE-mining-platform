@@ -4,13 +4,14 @@ using System.Threading;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
+using Prism.Events;
 using TradePlatform;
 using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Sistem;
 using TradePlatform.Main.ViewModels;
-using TradePlatform.SandboxApi;
-using TradePlatform.SandboxApi.Presenters;
-using TradePlatform.SandboxApi.Services;
+using TradePlatform.Sandbox;
+using TradePlatform.Sandbox.Presenters;
+using TradePlatform.Sandbox.Providers;
 
 namespace Trade_platform.tests.Main.ViewModels
 {
@@ -23,10 +24,11 @@ namespace Trade_platform.tests.Main.ViewModels
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
         }
 
-
         [Test]
         public void TestStartExecution()
         {
+            IEventAggregator eventAggregator = new EventAggregator();
+            ContainerBuilder.Container.RegisterInstance(eventAggregator);
             var infoPublisher = new Mock<IInfoPublisher>();
             ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
             var fileManager = new Mock<IFileManager>();
@@ -41,6 +43,8 @@ namespace Trade_platform.tests.Main.ViewModels
         [Test]
         public void TestCancelExecution()
         {
+            IEventAggregator eventAggregator = new EventAggregator();
+            ContainerBuilder.Container.RegisterInstance(eventAggregator);
             var infoPublisher = new Mock<IInfoPublisher>();
             ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
             var fileManager = new Mock<IFileManager>();
@@ -56,13 +60,17 @@ namespace Trade_platform.tests.Main.ViewModels
         [Test]
         public void TestLoadWindow()
         {
+            IEventAggregator eventAggregator = new EventAggregator();
+            ContainerBuilder.Container.RegisterInstance(eventAggregator);
             var infoPublisher = new Mock<IInfoPublisher>();
             ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
             var fileManager = new Mock<IFileManager>();
             ContainerBuilder.Container.RegisterInstance(fileManager.Object);
-            var sandboxDllProvider = new Mock<ISandboxDllProvider>();
+            var sandboxDllProvider = new Mock<ISandboxProvider>();
             ContainerBuilder.Container.RegisterInstance(sandboxDllProvider.Object);
-            ISandboxPresenter presenter = new SandboxPresenter(new TestBox(),"test");
+            var proxySandbox = new Mock<ISandbox>();
+            ContainerBuilder.Container.RegisterInstance(proxySandbox.Object);
+            ISandboxPresenter presenter = new SandboxPresenter(proxySandbox.Object, "test");
             IList<ISandboxPresenter> presenters = new List<ISandboxPresenter>
             {
                 presenter
@@ -80,13 +88,17 @@ namespace Trade_platform.tests.Main.ViewModels
         [Test]
         public void TestLoadWindowWhenError()
         {
+            IEventAggregator eventAggregator = new EventAggregator();
+            ContainerBuilder.Container.RegisterInstance(eventAggregator);
             var infoPublisher = new Mock<IInfoPublisher>();
             ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
             var fileManager = new Mock<IFileManager>();
             ContainerBuilder.Container.RegisterInstance(fileManager.Object);
-            var sandboxDllProvider = new Mock<ISandboxDllProvider>();
+            var sandboxDllProvider = new Mock<ISandboxProvider>();
             ContainerBuilder.Container.RegisterInstance(sandboxDllProvider.Object);
-            ISandboxPresenter presenter = new SandboxPresenter(new TestBox(), "test");
+            var proxySandbox = new Mock<ISandbox>();
+            ContainerBuilder.Container.RegisterInstance(proxySandbox.Object);
+            ISandboxPresenter presenter = new SandboxPresenter(proxySandbox.Object, "test");
             IList<ISandboxPresenter> presenters = new List<ISandboxPresenter>
             {
                 presenter
@@ -99,24 +111,6 @@ namespace Trade_platform.tests.Main.ViewModels
 
             Assert.That(model.SandboxPresenterInfo.Count, Is.EqualTo(0));
             infoPublisher.Verify(x => x.PublishException(It.IsAny<AggregateException>()), Times.Once);
-        }
-
-        private class TestBox : ISandbox
-        {
-            public void Before(CancellationToken token)
-            {
-               
-            }
-
-            public void Execution(CancellationToken token)
-            {
-       
-            }
-
-            public void After(CancellationToken token)
-            {
-        
-            }
         }
     }
 }

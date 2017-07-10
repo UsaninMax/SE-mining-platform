@@ -5,12 +5,14 @@ using System.Windows;
 using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using TradePlatform.Commons.Info;
 using TradePlatform.Commons.Info.Views;
 using TradePlatform.DataSet.Views;
-using TradePlatform.SandboxApi.Presenters;
-using TradePlatform.SandboxApi.Services;
+using TradePlatform.Sandbox.Events;
+using TradePlatform.Sandbox.Presenters;
+using TradePlatform.Sandbox.Providers;
 using TradePlatform.StockData.Views;
 
 namespace TradePlatform.Main.ViewModels
@@ -63,6 +65,8 @@ namespace TradePlatform.Main.ViewModels
             ShowDataSetListCommand = new DelegateCommand(ShowDataSetListPage);
             LoadedWindowCommand = new DelegateCommand(WindowLoaded);
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
+            var eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
+            eventAggregator.GetEvent<RefreshContextMenuEvent>().Subscribe(UpdateVisibilityOfContextMenu);
         }
 
         private void StartExecution()
@@ -114,7 +118,7 @@ namespace TradePlatform.Main.ViewModels
         {
             var updateListOfSandboxesTask = new Task<ObservableCollection<ISandboxPresenter>>(() =>
             {
-                var sandboxDllProvider = ContainerBuilder.Container.Resolve<ISandboxDllProvider>();
+                var sandboxDllProvider = ContainerBuilder.Container.Resolve<ISandboxProvider>();
                 return new ObservableCollection<ISandboxPresenter>(sandboxDllProvider.Get());
             });
             updateListOfSandboxesTask.ContinueWith(t =>
@@ -129,6 +133,14 @@ namespace TradePlatform.Main.ViewModels
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
             updateListOfSandboxesTask.Start();
+        }
+
+        private void UpdateVisibilityOfContextMenu(ISandboxPresenter presenter)
+        {
+            if (presenter.Equals(_selectedSandboxPresenter))
+            {
+                UpdateVisibilityOfContextMenu();
+            }
         }
 
         private void UpdateVisibilityOfContextMenu()

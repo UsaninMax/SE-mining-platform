@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Practices.Unity;
 using TradePlatform.Commons.Setting;
 using TradePlatform.Commons.Sistem;
-using TradePlatform.Commons.BaseModels;
+using TradePlatform.StockData.Models;
 
 namespace TradePlatform.DataSet.DataServices.Serialization
 {
@@ -26,7 +25,7 @@ namespace TradePlatform.DataSet.DataServices.Serialization
 
         public IList<DataTick> ReStore(string path)
         {
-            throw new NotImplementedException();
+            return _serializer.Deserialize<IList<DataTick>>(path);
         }
     }
 }

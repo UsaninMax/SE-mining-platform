@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Practices.Unity;
@@ -11,7 +10,7 @@ namespace TradePlatform.SandboxApi.Services
 {
     public class SandboxDllProvider : ISandboxDllProvider
     {
-        private string SandboxFolder => ".\\SANDBOXES";
+        private string _sandboxFolder => ".\\SANDBOXES";
         private readonly IFileManager _fileManager;
 
         public SandboxDllProvider()
@@ -21,35 +20,29 @@ namespace TradePlatform.SandboxApi.Services
 
         public IList<ISandboxPresenter> Get()
         {
-            if (!_fileManager.IsDirectoryExist(SandboxFolder))
+            if (!_fileManager.IsDirectoryExist(_sandboxFolder))
             {
-                throw new Exception("Directory " + SandboxFolder + " - is not exist.");
+                throw new Exception("Directory " + _sandboxFolder + " - is not exist.");
             }
-
-            DirectoryInfo info = new DirectoryInfo(SandboxFolder);
             IList<ISandboxPresenter> presenters = new List<ISandboxPresenter>();
+            AppDomain dom = AppDomain.CreateDomain("CheckerDomain");
+            DllChecker checker = (DllChecker)dom.CreateInstanceAndUnwrap(typeof(DllChecker).Assembly.FullName, typeof(DllChecker).FullName);
 
-            foreach (FileInfo file in info.GetFiles("*.dll"))
+            foreach (string file in checker.GetSuitable(_sandboxFolder))
             {
-                try
-                {
-                    var name = AssemblyName.GetAssemblyName(file.FullName);
-                    Assembly.Load(name)
-                        .GetTypes()
-                        .Where(t => t != typeof(ISandbox) && typeof(ISandbox).IsAssignableFrom(t))
-                        .ToList()
-                        .ForEach(x =>
-                        {
-                            ISandbox sandbox = (ISandbox)Activator.CreateInstance(x);
-                            var sandboxPresenter = ContainerBuilder.Container.Resolve<ISandboxPresenter>(
-                                new DependencyOverride<ISandbox>(sandbox),
-                                new DependencyOverride<string>(x.Name));
-                            presenters.Add(sandboxPresenter);
-                        });
-                }
-                catch (Exception ex) { }
+                Assembly.Load(AssemblyName.GetAssemblyName(file))
+                    .GetTypes()
+                    .Where(t => typeof(Sandbox).IsAssignableFrom(t))
+                    .ToList()
+                    .ForEach(x =>
+                    {
+                        Sandbox sandbox = (Sandbox)Activator.CreateInstance(x);
+                        var sandboxPresenter = ContainerBuilder.Container.Resolve<ISandboxPresenter>(
+                            new DependencyOverride<Sandbox>(sandbox),
+                            new DependencyOverride<string>(x.Name));
+                        presenters.Add(sandboxPresenter);
+                    });
             }
-
             return presenters;
         }
     }

@@ -33,11 +33,11 @@ namespace Trade_platform.tests.DataSet.Presenters
             ContainerBuilder.Container.RegisterInstance(dataSetService.Object);
             DataSetItem item = new DataSetItem.Builder().WithId("test_id").Build();
 
-            dataSetService.Setup(x => x.BuildSet(item, It.IsAny<CancellationToken>()));
+            dataSetService.Setup(x => x.Store(item, It.IsAny<CancellationToken>()));
             DataSetPresenter presenter = new DataSetPresenter(item);
             presenter.PrepareData();
             Thread.Sleep(500);
-            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Once);
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DataSetInfo>()), Times.Once);
             Assert.That(presenter.StatusMessage, Is.EqualTo(Status.IsReady));
         }
 
@@ -50,7 +50,7 @@ namespace Trade_platform.tests.DataSet.Presenters
             ContainerBuilder.Container.RegisterInstance(dataSetService.Object);
             DataSetItem item = new DataSetItem.Builder().WithId("test_id").Build();
 
-            dataSetService.Setup(x => x.BuildSet(item, It.IsAny<CancellationToken>())).Throws<Exception>();
+            dataSetService.Setup(x => x.Store(item, It.IsAny<CancellationToken>())).Throws<Exception>();
             DataSetPresenter presenter = new DataSetPresenter(item);
             presenter.PrepareData();
             Thread.Sleep(500);
@@ -80,7 +80,7 @@ namespace Trade_platform.tests.DataSet.Presenters
             .Publish(It.IsAny<DataSetPresenter>()), Times.Once);
 
 
-            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Once);
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DataSetInfo>()), Times.Once);
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace Trade_platform.tests.DataSet.Presenters
             ContainerBuilder.Container.RegisterInstance(dataSetService.Object);
             DataSetItem item = new DataSetItem.Builder().WithId("test_id").Build();
 
-            dataSetService.Setup(x => x.CheckFiles(item)).Returns(true);
+            dataSetService.Setup(x => x.CheckIfExist(item)).Returns(true);
             DataSetPresenter presenter = new DataSetPresenter(item);
             presenter.CheckData();
             Thread.Sleep(500);
@@ -129,7 +129,7 @@ namespace Trade_platform.tests.DataSet.Presenters
             ContainerBuilder.Container.RegisterInstance(dataSetService.Object);
             DataSetItem item = new DataSetItem.Builder().WithId("test_id").Build();
 
-            dataSetService.Setup(x => x.CheckFiles(item)).Returns(false);
+            dataSetService.Setup(x => x.CheckIfExist(item)).Returns(false);
             DataSetPresenter presenter = new DataSetPresenter(item);
             presenter.CheckData();
             Thread.Sleep(500);
@@ -147,7 +147,7 @@ namespace Trade_platform.tests.DataSet.Presenters
             ContainerBuilder.Container.RegisterInstance(dataSetService.Object);
             DataSetItem item = new DataSetItem.Builder().WithId("test_id").Build();
 
-            dataSetService.Setup(x => x.CheckFiles(item)).Throws<Exception>();
+            dataSetService.Setup(x => x.CheckIfExist(item)).Throws<Exception>();
             DataSetPresenter presenter = new DataSetPresenter(item);
             presenter.CheckData();
             Thread.Sleep(500);

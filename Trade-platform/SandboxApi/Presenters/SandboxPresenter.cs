@@ -2,8 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
+using Prism.Events;
 using Prism.Mvvm;
 using TradePlatform.Commons.Info;
+using TradePlatform.SandboxApi.Events;
 
 namespace TradePlatform.SandboxApi.Presenters
 {
@@ -25,16 +27,18 @@ namespace TradePlatform.SandboxApi.Presenters
             }
         }
 
-        private readonly ISandbox _sandbox;
+        private readonly Sandbox _sandbox;
         private CancellationTokenSource _cancellationTokenSource;
         private readonly IInfoPublisher _infoPublisher;
         private Task _executionTask;
+        private IEventAggregator _eventAggregator;
 
-        public SandboxPresenter(ISandbox sandbox, string name)
+        public SandboxPresenter(Sandbox sandbox, string name)
         {
             DllName = name;
             _sandbox = sandbox;
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
+            _eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
         }
 
         public void Execute()
@@ -48,13 +52,11 @@ namespace TradePlatform.SandboxApi.Presenters
             _cancellationTokenSource = new CancellationTokenSource();
             _executionTask = new Task(() =>
             {
-                IProxySandbox proxySandbox = ContainerBuilder.Container.Resolve<IProxySandbox>(
-                    new DependencyOverride<ISandbox>((ISandbox)Activator.CreateInstance(_sandbox.GetType())));
-
-                proxySandbox.Before(_cancellationTokenSource.Token);
-                proxySandbox.Execution(_cancellationTokenSource.Token);
-                proxySandbox.After(_cancellationTokenSource.Token);
-
+                Sandbox sandbox = (Sandbox) Activator.CreateInstance(_sandbox.GetType());
+                sandbox.Token = _cancellationTokenSource.Token;
+                sandbox.BuildData();
+                sandbox.Execution();
+                sandbox.AfterExecution();
             }, _cancellationTokenSource.Token);
             _executionTask.ContinueWith(t =>
             {
@@ -67,6 +69,7 @@ namespace TradePlatform.SandboxApi.Presenters
                 {
                     StatusMessage = Status.IsDone;
                 }
+                _eventAggregator.GetEvent<RefreshContextMenuEvent>().Publish(this);
             }, TaskScheduler.FromCurrentSynchronizationContext());
             _executionTask.Start();
         }
@@ -89,7 +92,7 @@ namespace TradePlatform.SandboxApi.Presenters
             { 
 
              StatusMessage = Status.IsCanceled;
-
+             _eventAggregator.GetEvent<RefreshContextMenuEvent>().Publish(this);
             }, TaskScheduler.FromCurrentSynchronizationContext());
             cancelTask.Start();
         }

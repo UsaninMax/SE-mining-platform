@@ -14,6 +14,7 @@ using TradePlatform.DataSet.DataServices;
 using TradePlatform.DataSet.DataServices.Serialization;
 using TradePlatform.DataSet.Holders;
 using TradePlatform.DataSet.Models;
+using TradePlatform.StockData.Models;
 
 namespace Trade_platform.tests.DataSet.DataServices
 {
@@ -43,9 +44,9 @@ namespace Trade_platform.tests.DataSet.DataServices
             dataTickProvider.Setup(x => x.Get(item, It.IsAny<CancellationToken>())).Returns(ticks);
 
             DataSetService datasevice = new DataSetService();
-            datasevice.BuildSet(item, new CancellationToken());
+            datasevice.Store(item, new CancellationToken());
 
-            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Once);
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DataSetInfo>()), Times.Once);
             dataTickStorage.Verify(x => x.Store(ticks, DataSetItem.RootPath + "\\" + item.Path, item.Path), Times.Once);
             fileManager.Verify(x => x.DeleteFolder(DataSetItem.RootPath + "\\" + item.Path), Times.Once);
             fileManager.Verify(x => x.CreateFolder(DataSetItem.RootPath + "\\" + item.Path), Times.Once);
@@ -76,9 +77,9 @@ namespace Trade_platform.tests.DataSet.DataServices
 
             CancellationToken cancellationToken = new CancellationToken(true);
             DataSetService datasevice = new DataSetService();
-            datasevice.BuildSet(item, cancellationToken);
+            datasevice.Store(item, cancellationToken);
 
-            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Never);
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DataSetInfo>()), Times.Never);
             dataTickStorage.Verify(x => x.Store(ticks, DataSetItem.RootPath + "\\" + item.Path, item.Path), Times.Never);
             fileManager.Verify(x => x.DeleteFolder(DataSetItem.RootPath + "\\" + item.Path), Times.Never);
             fileManager.Verify(x => x.CreateFolder(DataSetItem.RootPath + "\\" + item.Path), Times.Never);
@@ -106,7 +107,7 @@ namespace Trade_platform.tests.DataSet.DataServices
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             datasevice.Delete(item, keepAliveTask, cancellationTokenSource);
             Assert.That(cancellationTokenSource.IsCancellationRequested, Is.True);
-            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Exactly(2));
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DataSetInfo>()), Times.Exactly(2));
             fileManager.Verify(x => x.DeleteFolder(DataSetItem.RootPath + "\\" + item.Path), Times.Once);
             instrumentsHolder.Verify(x => x.Remove(item), Times.Once);
         }
@@ -132,7 +133,7 @@ namespace Trade_platform.tests.DataSet.DataServices
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             datasevice.Delete(item, keepAliveTask, cancellationTokenSource);
             Assert.That(cancellationTokenSource.IsCancellationRequested, Is.False);
-            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DownloadInfo>()), Times.Exactly(1));
+            infoPublisher.Verify(x => x.PublishInfo(It.IsAny<DataSetInfo>()), Times.Exactly(1));
             fileManager.Verify(x => x.DeleteFolder(DataSetItem.RootPath + "\\" + item.Path), Times.Once);
             instrumentsHolder.Verify(x => x.Remove(item), Times.Once);
         }
@@ -143,6 +144,8 @@ namespace Trade_platform.tests.DataSet.DataServices
         {
             var infoPublisher = new Mock<IInfoPublisher>();
             ContainerBuilder.Container.RegisterInstance(infoPublisher.Object);
+            var dataSetHolder = new Mock<IDataSetHolder>();
+            ContainerBuilder.Container.RegisterInstance(dataSetHolder.Object);
             var fileManager = new Mock<IFileManager>();
             ContainerBuilder.Container.RegisterInstance(fileManager.Object);
             var dataTickStorage = new Mock<IDataTickStorage>();
@@ -151,7 +154,7 @@ namespace Trade_platform.tests.DataSet.DataServices
             fileManager.Setup(x => x.IsDirectoryExist(DataSetItem.RootPath + "\\" + item.Path)).Returns(true);
 
             DataSetService datasevice = new DataSetService();
-            datasevice.CheckFiles(item);
+            datasevice.CheckIfExist(item);
 
             fileManager.Verify(x => x.IsDirectoryExist(DataSetItem.RootPath + "\\" + item.Path), Times.Once);
             fileManager.Verify(x => x.IsFileExist(DataSetItem.RootPath + "\\" + item.Path + "\\" + item.Path + ".xml"), Times.Once);

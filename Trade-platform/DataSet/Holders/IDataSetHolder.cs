@@ -8,7 +8,7 @@ namespace TradePlatform.DataSet.Holders
         bool CheckIfExist(String uniqueId);
         void Put(DataSetItem dataSet);
         void Remove(DataSetItem dataSet);
-        DataSetItem GetById(String id);
+        DataSetItem Get(String id);
         IList<DataSetItem> GetAll();
         void Store();
         void Restore();

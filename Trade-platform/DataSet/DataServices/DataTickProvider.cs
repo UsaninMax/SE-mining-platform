@@ -2,9 +2,10 @@
 using TradePlatform.DataSet.Models;
 using Microsoft.Practices.Unity;
 using System.Linq;
-using TradePlatform.Commons.BaseModels;
 using TradePlatform.StockData.DataServices.Trades;
 using System.Threading;
+using Microsoft.Practices.ObjectBuilder2;
+using TradePlatform.StockData.Models;
 
 namespace TradePlatform.DataSet.DataServices
 {
@@ -24,16 +25,25 @@ namespace TradePlatform.DataSet.DataServices
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
-                    return fullDataSet;
+                    return new List<DataTick>(fullDataSet);
                 }
+                IList<DataTick> subSet = new List<DataTick>();
 
-                IList<DataTick> subDataSet = _parser.Parse(subInstrument)
-                    .Where(m => m.Date >= subInstrument.SelectedFrom 
-                    && m.Date <= subInstrument.SelectedTo)
-                    .ToList();
-                fullDataSet.AddRange(subDataSet);
+                _parser.Parse(subInstrument)
+                    .Where(m => m.Date >= subInstrument.SelectedFrom && m.Date <= subInstrument.SelectedTo)
+                    .ToList().GroupBy(p => p.Date, p => p, (key, g) => new { Date = key, Data = g.ToList() })
+                    .ForEach(x =>
+                    {
+                        subSet.Add(new DataTick
+                        {
+                            Date = x.Date,
+                            Price = x.Data.Last().Price,
+                            Volume = x.Data.Sum(y => y.Volume)
+                        });
+                    });
+
+                fullDataSet = new List<DataTick>(fullDataSet.Concat(subSet));
             }
-
             fullDataSet.Sort((obj1, obj2) => obj1.Date.CompareTo(obj2.Date));
             return fullDataSet;
         }
