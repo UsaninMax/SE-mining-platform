@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
+using Castle.Core;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
@@ -28,9 +30,13 @@ namespace Trade_platform.tests.Sandbox
                     .NewId("RTS_1").Build()
             };
 
-            IList<IData> result = new List<IData>
+            IList<Pair<DateTime, IEnumerable<IData>>> result = new List<Pair<DateTime, IEnumerable<IData>>>
             {
-                new Candle.Builder().WithId("111").Build()
+                new Pair<DateTime, IEnumerable<IData>>(DateTime.Now, new List<IData>
+                {
+                    new Candle.Builder().WithId("111").Build()
+                })
+
             };
 
             dataProviderMock.Setup(x => x.Get(predicates, token)).Returns(result);
@@ -56,9 +62,13 @@ namespace Trade_platform.tests.Sandbox
                     .NewId("RTS_1").Build()
             };
 
-            IList<IData> result = new List<IData>
+            IList<Pair<DateTime, IEnumerable<IData>>> result = new List<Pair<DateTime, IEnumerable<IData>>>
             {
-                new Candle.Builder().WithId("111").Build()
+                new Pair<DateTime, IEnumerable<IData>>(DateTime.Now, new List<IData>
+                {
+                    new Candle.Builder().WithId("111").Build()
+                })
+
             };
 
             dataProviderMock.Setup(x => x.Get(predicates, token)).Returns(result);
@@ -93,9 +103,13 @@ namespace Trade_platform.tests.Sandbox
                 botMock_2.Object
             };
 
-            IList<IData> data = new List<IData>
+            IList<Pair<DateTime, IEnumerable<IData>>> data = new List<Pair<DateTime, IEnumerable<IData>>>
             {
-                new Candle.Builder().WithId("111").Build()
+                new Pair<DateTime, IEnumerable<IData>>(DateTime.Now, new List<IData>
+                {
+                    new Candle.Builder().WithId("111").Build()
+                })
+                
             };
 
             dataProviderMock.Setup(x => x.Get(predicates, token)).Returns(data);

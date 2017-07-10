@@ -13,5 +13,6 @@ namespace TradePlatform.Sandbox
         void BuildData();
         void Execution();
         void AfterExecution();
+        void CleanMemory();
     }
 }

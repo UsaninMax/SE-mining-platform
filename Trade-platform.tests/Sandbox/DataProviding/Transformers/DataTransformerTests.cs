@@ -31,6 +31,20 @@ namespace Trade_platform.tests.Sandbox.DataProviding.Transformers
         }
 
         [Test]
+        public void TestTransformTiksWithInterval()
+        {
+            TickPredicate predicate = new TickPredicate.Builder()
+                .NewId("Test_id")
+                .From(new DateTime(2016, 9, 18, 1, 1, 1))
+                .To(new DateTime(2016, 9, 20, 1, 1, 1))
+                .Build();
+            DataTransformer transformer = new DataTransformer();
+            List<DataTick> dataTicks = GetDataTicks();
+            List<Tick> tiks = transformer.Transform(dataTicks, predicate);
+            Assert.That(tiks.Count, Is.EqualTo(3));
+        }
+
+        [Test]
         public void TestTransformToCandles()
         {
             DataPredicate predicate = new DataPredicate
@@ -56,6 +70,22 @@ namespace Trade_platform.tests.Sandbox.DataProviding.Transformers
             Assert.That(candles[1].Close, Is.EqualTo(16));
             Assert.That(candles[1].Volume, Is.EqualTo(24));
             Assert.That(candles[1].Id(), Is.EqualTo(predicate.Id));
+        }
+
+        [Test]
+        public void TestTransformToCandlesWithInterval()
+        {
+            DataPredicate predicate = new DataPredicate
+                    .Builder()
+                .NewId("test_2")
+                .AccumulationPeriod(new TimeSpan(0, 3, 0))
+                .From(new DateTime(2017, 7, 17, 13, 45, 32))
+                .To(new DateTime(2017, 7, 17, 13, 49, 13))
+                .Build();
+            DataTransformer transformer = new DataTransformer();
+            IList<Tick> tiks = GetTicks();
+            List<Candle> candles = transformer.Transform(tiks, predicate);
+            Assert.That(candles.Count, Is.EqualTo(2));
         }
 
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Castle.Core;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using TradePlatform.Commons.Info;
@@ -35,7 +36,7 @@ namespace TradePlatform.Sandbox.DataProviding
             _indicatorBuilder = ContainerBuilder.Container.Resolve<IIndicatorBuilder>();
         }
 
-        public IList<IData> Get(ICollection<IPredicate> predicates, CancellationToken token)
+        public IList<Pair<DateTime, IEnumerable<IData>>> Get(ICollection<IPredicate> predicates, CancellationToken token)
         {
             if (token.IsCancellationRequested) { return null; }
             GatherPredicates(predicates);
@@ -51,7 +52,7 @@ namespace TradePlatform.Sandbox.DataProviding
             _infoPublisher.PublishInfo(new SandboxInfo { Message = " constract data series " });
             _dataPredicates.ForEach(ConstructSeries);
             if (token.IsCancellationRequested) { return null; }
-            _infoPublisher.PublishInfo(new SandboxInfo { Message = " combine all data " });
+            _infoPublisher.PublishInfo(new SandboxInfo { Message = " combine all data together " });
 
             _tiks.Values.ForEach(x =>
             {
@@ -59,17 +60,17 @@ namespace TradePlatform.Sandbox.DataProviding
             });
 
             _tiks = null;
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
             if (token.IsCancellationRequested) { return null; }
-            List<IData> asList = new List<IData>(_data);
+            List<IData> asList = _data.ToList();
             _data = null;
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
             if (token.IsCancellationRequested) { return null; }
             asList.Sort((x, y) => DateTime.Compare(x.Date(), y.Date()));
-            _infoPublisher.PublishInfo(new SandboxInfo { Message = " data is ready " });
-            return asList;
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            return asList
+                .GroupBy(item => item.Date())
+                .Select(x => new Pair<DateTime, IEnumerable<IData>>(x.Key, x.ToList()))
+                .ToList();
         }
 
         private void ConstructSeries(DataPredicate predicate)

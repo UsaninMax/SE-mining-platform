@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Castle.Core;
 using Microsoft.Practices.ObjectBuilder2;
 using TradePlatform.Sandbox.Models;
 
@@ -9,7 +10,7 @@ namespace TradePlatform.Sandbox.Bots
     public abstract class BotApi : IBot
     {
         private string _id;
-        private IList<IData> _data;
+        private IList<Pair<DateTime, IEnumerable<IData>>> _data;
         private BotPredicate _predicate;
 
 
@@ -23,7 +24,7 @@ namespace TradePlatform.Sandbox.Bots
             _id = id;
         }
 
-        public void SetUpData(IList<IData> data)
+        public void SetUpData(IList<Pair<DateTime, IEnumerable<IData>>> data)
         {
             _data = data;
         }
@@ -35,31 +36,17 @@ namespace TradePlatform.Sandbox.Bots
 
         public void Execute()
         {
-            _data.Where(m => (_predicate.From == DateTime.MinValue || m.Date() >= _predicate.From) &&
-                            (_predicate.To == DateTime.MinValue || m.Date() <= _predicate.To) &&
-                             _predicate.InstrumentIds.Contains(m.Id()))//.GroupBy(item => item.Date())
-                             .ForEach(x =>
+            _data.Where(m => (_predicate.From == DateTime.MinValue || m.First >= _predicate.From) &&
+                             (_predicate.To == DateTime.MinValue || m.First <= _predicate.To))
+                .ForEach(x =>
                 {
-                    //var values = x.ToList();
-                    //Execution(new Slice.Builder()
-                    //    .WithDate(x.Key)
-                    //    .WithCandle(values.OfType<Candle>().ToList())
-                    //    .WithTick(values.OfType<Tick>().ToList())
-                    //    .WithIndicator(values.OfType<Indicator>().ToList())
-                    //    .Build());
 
-                    Execution(new Slice.Builder()
-                        .WithDate(new DateTime())
-                        .WithCandle(new List<Candle>(){new Candle.Builder().Build(), new Candle.Builder().Build() })
-                        .WithTick(new List<Tick>() { new Tick.Builder().Build(), new Tick.Builder().Build() })
-                        .WithIndicator(new List<Indicator>() { new Indicator.Builder().Build(), new Indicator.Builder().Build() })
-                        .Build());
+                    Execution(x.Second);
 
                 });
-
         }
 
-        public abstract void Execution(Slice slice);
+        public abstract void Execution(IEnumerable<IData> slice);
         public abstract int Score();
     }
 }

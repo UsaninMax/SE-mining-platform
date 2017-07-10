@@ -54,7 +54,6 @@ namespace TestSandboxModule
             bot_1.SetUpPredicate(new BotPredicate.Builder()
                 .From(new DateTime(2014, 1, 1))
                 .To(new DateTime(2017, 1, 1))
-                .InstrumentIds(new List<string>() { "Si_1","Si_5", "MA" })
                 .Build());
 
             TestBot bot_2 = new TestBot();
@@ -62,21 +61,18 @@ namespace TestSandboxModule
             bot_2.SetUpPredicate(new BotPredicate.Builder()
                 .From(new DateTime(2014, 1, 1))
                 .To(new DateTime(2017, 1, 1))
-                .InstrumentIds(new List<string>() { "Si_1", "Si_5", "MA" })
                 .Build());
             TestBot bot_3 = new TestBot();
             bot_3.SetUpId("Test_1");
             bot_3.SetUpPredicate(new BotPredicate.Builder()
                 .From(new DateTime(2014, 1, 1))
                 .To(new DateTime(2017, 1, 1))
-                .InstrumentIds(new List<string>() { "Si_1", "Si_5", "MA" })
                 .Build());
             TestBot bot_4 = new TestBot();
             bot_4.SetUpId("Test_1");
             bot_4.SetUpPredicate(new BotPredicate.Builder()
                 .From(new DateTime(2014, 1, 1))
                 .To(new DateTime(2017, 1, 1))
-                .InstrumentIds(new List<string>() { "Si_1", "Si_5", "MA" })
                 .Build());
 
             TestBot bot_5 = new TestBot();
@@ -84,7 +80,6 @@ namespace TestSandboxModule
             bot_5.SetUpPredicate(new BotPredicate.Builder()
                 .From(new DateTime(2014, 1, 1))
                 .To(new DateTime(2017, 1, 1))
-                .InstrumentIds(new List<string>() { "Si_1", "Si_5", "MA" })
                 .Build());
 
             TestBot bot_6 = new TestBot();
@@ -92,7 +87,6 @@ namespace TestSandboxModule
             bot_6.SetUpPredicate(new BotPredicate.Builder()
                 .From(new DateTime(2014, 1, 1))
                 .To(new DateTime(2017, 1, 1))
-                .InstrumentIds(new List<string>() { "Si_1", "Si_5", "MA" })
                 .Build());
 
             TestBot bot_7 = new TestBot();
@@ -100,7 +94,6 @@ namespace TestSandboxModule
             bot_7.SetUpPredicate(new BotPredicate.Builder()
                 .From(new DateTime(2014, 1, 1))
                 .To(new DateTime(2017, 1, 1))
-                .InstrumentIds(new List<string>() { "Si_1", "Si_5", "MA" })
                 .Build());
 
             TestBot bot_8 = new TestBot();
@@ -108,7 +101,6 @@ namespace TestSandboxModule
             bot_8.SetUpPredicate(new BotPredicate.Builder()
                 .From(new DateTime(2014, 1, 1))
                 .To(new DateTime(2017, 1, 1))
-                .InstrumentIds(new List<string>() { "Si_1", "Si_5", "MA" })
                 .Build());
 
             TestBot bot_9 = new TestBot();
@@ -116,14 +108,12 @@ namespace TestSandboxModule
             bot_9.SetUpPredicate(new BotPredicate.Builder()
                 .From(new DateTime(2014, 1, 1))
                 .To(new DateTime(2017, 1, 1))
-                .InstrumentIds(new List<string>() { "Si_1", "Si_5", "MA" })
                 .Build());
             TestBot bot_10 = new TestBot();
             bot_10.SetUpId("Test_1");
             bot_10.SetUpPredicate(new BotPredicate.Builder()
                 .From(new DateTime(2014, 1, 1))
                 .To(new DateTime(2017, 1, 1))
-                .InstrumentIds(new List<string>() { "Si_1", "Si_5", "MA" })
                 .Build());
 
             if (Token.IsCancellationRequested) { return; }

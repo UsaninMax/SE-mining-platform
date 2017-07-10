@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TradePlatform.Sandbox.Bots
 {
     public class BotPredicate
     {
-        public ICollection<string> InstrumentIds { get; private set; }
         public DateTime From { get; private set; }
         public DateTime To { get; private set; }
 
@@ -13,15 +11,8 @@ namespace TradePlatform.Sandbox.Bots
 
         public class Builder
         {
-            private ICollection<string> _instrumentIds;
             private DateTime _from;
             private DateTime _to;
-
-            public Builder InstrumentIds(ICollection<string> values)
-            {
-                _instrumentIds = values;
-                return this;
-            }
 
             public Builder From(DateTime value)
             {
@@ -39,7 +30,6 @@ namespace TradePlatform.Sandbox.Bots
             {
                 return new BotPredicate()
                 {
-                    InstrumentIds = _instrumentIds,
                     From = _from,
                     To = _to
                 };
@@ -48,7 +38,7 @@ namespace TradePlatform.Sandbox.Bots
 
         public override string ToString()
         {
-            return $"{nameof(InstrumentIds)}: {InstrumentIds}," +
+            return 
                    $" {nameof(From)}: {From}, " +
                    $"{nameof(To)}: {To}";
         }

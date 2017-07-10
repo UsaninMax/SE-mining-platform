@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
 using Prism.Events;
@@ -59,18 +58,13 @@ namespace TradePlatform.Sandbox.Presenters
                 sandbox.SetToken(_cancellationTokenSource.Token);
                 _infoPublisher.PublishInfo(new SandboxInfo { Message = DllName + " build data " });
                 sandbox.BuildData();
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
                 if (_cancellationTokenSource.Token.IsCancellationRequested){ return;}
                 _infoPublisher.PublishInfo(new SandboxInfo { Message = DllName + " execute bots processing " });
                 sandbox.Execution();
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
                 if (_cancellationTokenSource.Token.IsCancellationRequested) { return; }
                 _infoPublisher.PublishInfo(new SandboxInfo { Message = DllName + " gather result " });
                 sandbox.AfterExecution();
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
+                sandbox.CleanMemory();
             }, _cancellationTokenSource.Token);
             _executionTask.ContinueWith(t =>
             {

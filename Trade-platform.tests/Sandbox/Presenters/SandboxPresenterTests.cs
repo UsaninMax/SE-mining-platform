@@ -49,7 +49,8 @@ namespace Trade_platform.tests.Sandbox.Presenters
                 Times.Exactly(1));
             proxySandbox.Verify(x => x.AfterExecution(),
                 Times.Exactly(1));
-
+            proxySandbox.Verify(x => x.CleanMemory(),
+                Times.Exactly(1));
             Assert.That(presenter.StatusMessage, Is.EqualTo(Status.IsDone));
         }
 
@@ -78,7 +79,8 @@ namespace Trade_platform.tests.Sandbox.Presenters
                 Times.Exactly(1));
             proxySandbox.Verify(x => x.AfterExecution(),
                 Times.Exactly(1));
-
+            proxySandbox.Verify(x => x.CleanMemory(),
+                Times.Exactly(1));
             Assert.That(presenter.StatusMessage, Is.EqualTo(Status.IsDone));
         }
 
@@ -105,6 +107,8 @@ namespace Trade_platform.tests.Sandbox.Presenters
             proxySandbox.Verify(x => x.Execution(),
                 Times.Exactly(0));
             proxySandbox.Verify(x => x.AfterExecution(),
+                Times.Exactly(0));
+            proxySandbox.Verify(x => x.CleanMemory(),
                 Times.Exactly(0));
             infoPublisher.Verify(x => x.PublishException(It.IsAny<AggregateException>()), Times.Once);
             Assert.That(presenter.StatusMessage, Is.EqualTo(Status.FailToExecute));

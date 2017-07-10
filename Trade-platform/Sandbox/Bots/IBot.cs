@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Castle.Core;
 using TradePlatform.Sandbox.Models;
 
 namespace TradePlatform.Sandbox.Bots
@@ -7,10 +9,10 @@ namespace TradePlatform.Sandbox.Bots
     {
         string GetId();
         void SetUpId(string id);
-        void SetUpData(IList<IData> data);
+        void SetUpData(IList<Pair<DateTime, IEnumerable<IData>>> data);
         void SetUpPredicate(BotPredicate predicate);
         void Execute();
-        void Execution(Slice slice);
+        void Execution(IEnumerable<IData> slice);
         int Score();
     }
 }

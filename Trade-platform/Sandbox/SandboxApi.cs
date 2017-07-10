@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Castle.Core;
 using Microsoft.Practices.Unity;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding;
@@ -13,10 +14,10 @@ namespace TradePlatform.Sandbox
 {
     public abstract class SandboxApi : ISandbox
     {
-        public IList<IData> Data => _data;
+        public IList<Pair<DateTime, IEnumerable<IData>>> Data => _data;
         public CancellationToken Token => _token;
         public ICollection<IBot> Bots => _bots;
-        private IList<IData> _data;
+        private IList<Pair<DateTime, IEnumerable<IData>>> _data;
         private CancellationToken _token;
         private ICollection<IBot> _bots;
 
@@ -54,6 +55,14 @@ namespace TradePlatform.Sandbox
             {
                 throw new Exception("Bot during execution time throw exception");
             }
+        }
+
+        public void CleanMemory()
+        {
+            _data = null;
+            _bots = null;
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         public abstract ICollection<IPredicate> SetUpData();
