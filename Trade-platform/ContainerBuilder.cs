@@ -21,6 +21,7 @@ using TradePlatform.Sandbox.DataProviding.Checks;
 using TradePlatform.Sandbox.DataProviding.Transformers;
 using TradePlatform.Sandbox.Presenters;
 using TradePlatform.Sandbox.Providers;
+using TradePlatform.Sandbox.Transactios;
 using TradePlatform.StockData.DataServices.SecuritiesInfo;
 using TradePlatform.StockData.DataServices.SecuritiesInfo.Finam;
 using TradePlatform.StockData.DataServices.Serialization;
@@ -93,6 +94,8 @@ namespace TradePlatform
             Container.RegisterType<IDataProvider, DataProvider>();
             Container.RegisterType<ITransformer, DataTransformer>();
             Container.RegisterType<IIndicatorBuilder, IndicatorBuilder>();
+
+            Container.RegisterType<ITransactionsContext, TransactionsContext>();
         }
     }
 }

@@ -51,7 +51,7 @@ namespace Trade_platform.tests.Sandbox.DataProviding
 
             DataProvider provider = new DataProvider();
 
-            IList<Pair<DateTime, IEnumerable<IData>>> result =  provider.Get(GetPredicate(), new CancellationToken());
+            IList<Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>> result =  provider.Get(GetPredicate(), new CancellationToken());
 
             dataAggregatorMock.Verify(x=> x.Transform(It.IsAny<List<DataTick>>(), It.Is<TickPredicate>(
                 f => f.Id.Equals("RTS") &&
@@ -60,8 +60,8 @@ namespace Trade_platform.tests.Sandbox.DataProviding
             dataAggregatorMock.Verify(x => x.Transform(It.IsAny<List<Tick>>(), It.IsAny<DataPredicate>()), Times.Exactly(3));
             Assert.That(result.Count, Is.EqualTo(2));
 
-            Assert.That(result.Where(x=> x.First.Equals(new DateTime(2016, 2, 5))).SelectMany(x => x.Second).ToList().OfType<Tick>().Count(), Is.EqualTo(2));
-            Assert.That(result.Where(x => x.First.Equals(new DateTime(2016, 2, 7))).SelectMany(x => x.Second).ToList().OfType<Candle>().Count(), Is.EqualTo(3));
+            Assert.That(result.Where(x=> x.Item1.Equals(new DateTime(2016, 2, 5))).SelectMany(x => x.Item3).ToList().Count, Is.EqualTo(2));
+            Assert.That(result.Where(x => x.Item1.Equals(new DateTime(2016, 2, 7))).SelectMany(x => x.Item2).ToList().Count, Is.EqualTo(3));
         }
 
 

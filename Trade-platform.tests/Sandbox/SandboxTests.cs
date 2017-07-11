@@ -30,14 +30,7 @@ namespace Trade_platform.tests.Sandbox
                     .NewId("RTS_1").Build()
             };
 
-            IList<Pair<DateTime, IEnumerable<IData>>> result = new List<Pair<DateTime, IEnumerable<IData>>>
-            {
-                new Pair<DateTime, IEnumerable<IData>>(DateTime.Now, new List<IData>
-                {
-                    new Candle.Builder().WithId("111").Build()
-                })
-
-            };
+            var result = GetData();
 
             dataProviderMock.Setup(x => x.Get(predicates, token)).Returns(result);
             TestSandBox testSandBox = new TestSandBox
@@ -62,14 +55,7 @@ namespace Trade_platform.tests.Sandbox
                     .NewId("RTS_1").Build()
             };
 
-            IList<Pair<DateTime, IEnumerable<IData>>> result = new List<Pair<DateTime, IEnumerable<IData>>>
-            {
-                new Pair<DateTime, IEnumerable<IData>>(DateTime.Now, new List<IData>
-                {
-                    new Candle.Builder().WithId("111").Build()
-                })
-
-            };
+            var result = GetData();
 
             dataProviderMock.Setup(x => x.Get(predicates, token)).Returns(result);
             TestSandBox testSandBox = new TestSandBox
@@ -103,16 +89,9 @@ namespace Trade_platform.tests.Sandbox
                 botMock_2.Object
             };
 
-            IList<Pair<DateTime, IEnumerable<IData>>> data = new List<Pair<DateTime, IEnumerable<IData>>>
-            {
-                new Pair<DateTime, IEnumerable<IData>>(DateTime.Now, new List<IData>
-                {
-                    new Candle.Builder().WithId("111").Build()
-                })
-                
-            };
+            var result = GetData();
 
-            dataProviderMock.Setup(x => x.Get(predicates, token)).Returns(data);
+            dataProviderMock.Setup(x => x.Get(predicates, token)).Returns(result);
             TestSandBox testSandBox = new TestSandBox
             {
                 Predicates = predicates,
@@ -123,11 +102,27 @@ namespace Trade_platform.tests.Sandbox
             testSandBox.BuildData();
             testSandBox.Execution();
 
-            botMock_1.Verify(x=> x.SetUpData(data), Times.Once);
+            botMock_1.Verify(x => x.SetUpData(result), Times.Once);
             botMock_1.Verify(x => x.Execute(), Times.Once);
 
-            botMock_2.Verify(x => x.SetUpData(data), Times.Once);
+            botMock_2.Verify(x => x.SetUpData(result), Times.Once);
             botMock_2.Verify(x => x.Execute(), Times.Once);
+        }
+
+        private IList<Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>> GetData()
+        {
+            return new List<Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>>
+            {
+                new Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>(
+                    DateTime.Now,
+
+                    new List<IData>
+                    {
+                        new Candle.Builder().WithId("111").Build()
+                    },
+
+                    new List<Tick>())
+            };
         }
 
     }

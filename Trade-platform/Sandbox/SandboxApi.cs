@@ -14,10 +14,10 @@ namespace TradePlatform.Sandbox
 {
     public abstract class SandboxApi : ISandbox
     {
-        public IList<Pair<DateTime, IEnumerable<IData>>> Data => _data;
+        public IList<Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>> Data => _data;
         public CancellationToken Token => _token;
         public ICollection<IBot> Bots => _bots;
-        private IList<Pair<DateTime, IEnumerable<IData>>> _data;
+        private IList<Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>> _data;
         private CancellationToken _token;
         private ICollection<IBot> _bots;
 

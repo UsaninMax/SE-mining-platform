@@ -9,6 +9,6 @@ namespace TradePlatform.Sandbox.DataProviding
 {
     public interface IDataProvider
     {
-        IList<Pair<DateTime, IEnumerable<IData>>> Get(ICollection<IPredicate> predicates, CancellationToken token);
+        IList<Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>> Get(ICollection<IPredicate> predicates, CancellationToken token);
     }
 }

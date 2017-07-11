@@ -3,20 +3,18 @@ using System.Collections.Generic;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios.Models;
 
-namespace TradePlatform.Sandbox.Bots
+namespace TradePlatform.Sandbox.Transactios
 {
-    public interface IBot
+    public interface ITransactionsContext
     {
-        string GetId();
-        void SetUpId(string id);
-        void SetUpData(IList<Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>> data);
-        void SetUpPredicate(BotPredicate predicate);
-        void Execute();
-        void Execution(IEnumerable<IData> slice);
-        int Score();
         void SetUpCosts(IEnumerable<BrokerCost> value);
         void SetUpBalance(double value);
+        double GetBalance();
+        int AvailableNumber(string instrumentId);
+        IList<Transaction> GetTransactionHistory();
+        IList<BalanceRow> GetBalanceHistory();
         void OpenPosition(ImmediatePositionRequest request);
         Guid OpenPosition(PostponedPositionRequest request);
+        void ProcessTick(IEnumerable<Tick> ticks);
     }
 }

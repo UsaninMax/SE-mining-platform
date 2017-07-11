@@ -36,7 +36,7 @@ namespace TradePlatform.Sandbox.DataProviding
             _indicatorBuilder = ContainerBuilder.Container.Resolve<IIndicatorBuilder>();
         }
 
-        public IList<Pair<DateTime, IEnumerable<IData>>> Get(ICollection<IPredicate> predicates, CancellationToken token)
+        public IList<Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>> Get(ICollection<IPredicate> predicates, CancellationToken token)
         {
             if (token.IsCancellationRequested) { return null; }
             GatherPredicates(predicates);
@@ -69,7 +69,7 @@ namespace TradePlatform.Sandbox.DataProviding
             GC.WaitForPendingFinalizers();
             return asList
                 .GroupBy(item => item.Date())
-                .Select(x => new Pair<DateTime, IEnumerable<IData>>(x.Key, x.ToList()))
+                .Select(x => new Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>(x.Key, x.Where(y => !(y is Tick)), x.OfType<Tick>()))
                 .ToList();
         }
 
