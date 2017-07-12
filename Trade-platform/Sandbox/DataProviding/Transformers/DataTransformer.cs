@@ -18,7 +18,7 @@ namespace TradePlatform.Sandbox.DataProviding.Transformers
                 {
                     var values = x.ToList();
                     return new Candle.Builder()
-                    .WithDate(new DateTime(x.Key * predicate.AccumulationPeriod.Ticks))
+                    .WithDate(new DateTime(x.Key * predicate.AccumulationPeriod.Ticks + predicate.AccumulationPeriod.Ticks))
                     .WithId(predicate.Id)
                     .WithOpen(values.First().Price)
                     .WithClose(values.Last().Price)

@@ -1,5 +1,4 @@
 ﻿using System;
-using TradePlatform.Sandbox.Transactios.Enums;
 
 namespace TradePlatform.Sandbox.Transactios.Models
 {
@@ -17,9 +16,9 @@ namespace TradePlatform.Sandbox.Transactios.Models
                 {
                     Date = DateTime.Now,
                     InstrumentId = _instrumentId,
+                    Id = Guid.NewGuid(),
                     Direction = _direction,
-                    Number = _number,
-                    RequestStatus = RequestStatus.Open
+                    Number = _number
                 };
             }
         }

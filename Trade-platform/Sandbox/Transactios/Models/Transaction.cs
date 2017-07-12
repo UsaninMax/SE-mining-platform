@@ -8,7 +8,7 @@ namespace TradePlatform.Sandbox.Transactios.Models
         public DateTime Date { get; private set; }
         public string InstrumentId { get; private set; }
         public double ExecutedPrice { get; private set; }
-        public int Number { get; private set; }
+        public int Number { get; set; }
         public Direction Direction { get; private set; }
 
         protected Transaction() { }

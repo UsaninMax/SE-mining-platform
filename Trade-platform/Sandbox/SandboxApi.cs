@@ -14,10 +14,10 @@ namespace TradePlatform.Sandbox
 {
     public abstract class SandboxApi : ISandbox
     {
-        public IList<Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>> Data => _data;
+        public IList<Slice> Data => _data;
         public CancellationToken Token => _token;
         public ICollection<IBot> Bots => _bots;
-        private IList<Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>> _data;
+        private IList<Slice> _data;
         private CancellationToken _token;
         private ICollection<IBot> _bots;
 
@@ -43,18 +43,20 @@ namespace TradePlatform.Sandbox
             if (_token.IsCancellationRequested) { return; }
             var continuation = Task.WhenAll(_bots?.Select(x =>
             {
+                if (!x.IsPrepared())
+                {
+                    throw new Exception(x.GetId() + " - bot is not correctly set up");
+                }
+
                 return Task.Run(() =>
                 {
                     x.SetUpData(Data);
+                    x.ResetTransactionContext();
                     x.Execute();
                 }, _token);
 
             }).ToList());
             continuation.Wait();
-            if (continuation.Status != TaskStatus.RanToCompletion)
-            {
-                throw new Exception("Bot during execution time throw exception");
-            }
         }
 
         public void CleanMemory()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
@@ -15,7 +16,7 @@ namespace Trade_platform.tests.Sandbox.Bots
     public class BotTests
     {
         [Test]
-        public void TestExecuteDataIsEmpty()
+        public void TestExecuteDataWithoutInterval()
         {
             var transactionContextMock = new Mock<ITransactionsContext>();
             ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
@@ -24,12 +25,12 @@ namespace Trade_platform.tests.Sandbox.Bots
             bot.SetUpPredicate(new BotPredicate.Builder()
                 .Build());
             bot.Execute();
-            IList<List<IData>> slices = bot.GetSlices();
-            Assert.That(slices.Count, Is.EqualTo(5));
+            IList<IData> slices = bot.GetSlices();
+            Assert.That(slices.Count, Is.EqualTo(10));
         }
 
         [Test]
-        public void TestExecuteDataHasIds_m_id_1_with_interval()
+        public void TestExecuteDataHasIdsWithInterval()
         {
             var transactionContextMock = new Mock<ITransactionsContext>();
             ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
@@ -41,8 +42,8 @@ namespace Trade_platform.tests.Sandbox.Bots
                 .To(new DateTime(2016, 9, 16, 23, 28, 0))
                 .Build());
             bot.Execute();
-            IList<List<IData>> slices = bot.GetSlices();
-            Assert.That(slices.Count, Is.EqualTo(2));
+            IList<IData> slices = bot.GetSlices();
+            Assert.That(slices.Count, Is.EqualTo(6));
         }
 
         [Test]
@@ -58,18 +59,18 @@ namespace Trade_platform.tests.Sandbox.Bots
                 .To(new DateTime(2016, 9, 16, 23, 28, 0))
                 .Build());
             bot.Execute();
-            IList<List<IData>> slices = bot.GetSlices();
-            Assert.That(slices.Count, Is.EqualTo(2));
-            Assert.That(slices[1].OfType<Candle>().Count(), Is.EqualTo(2));
-            Assert.That(slices[1].OfType<Indicator>().Count(), Is.EqualTo(3));
+            IList<IData> slices = bot.GetSlices();
+            Assert.That(slices.Count, Is.EqualTo(6));
+            Assert.That(slices.OfType<Candle>().Count(), Is.EqualTo(3));
+            Assert.That(slices.OfType<Indicator>().Count(), Is.EqualTo(3));
         }
 
         private class TestBot : BotApi
         {
-            private IList<List<IData>> _slices = new List<List<IData>>();
-            public override void Execution(IEnumerable<IData> slice)
+            private IList<IData> _slices = new List<IData>();
+            public override void Execution(IDictionary<string, IData> data)
             {
-                _slices.Add(new List<IData>(slice));
+                data.Values.ForEach(x => _slices.Add(x));
             }
 
             public override int Score()
@@ -77,81 +78,84 @@ namespace Trade_platform.tests.Sandbox.Bots
                 throw new System.NotImplementedException();
             }
 
-            public IList<List<IData>> GetSlices()
+            public IList<IData> GetSlices()
             {
                 return _slices;
             }
         }
 
-        private IList<Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>> GetData()
+        private List<Slice> GetData()
         {
-            return new List<Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>>
+            return new List<Slice>
             {
-                new Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>(
-                    new DateTime(2016,9, 13, 1, 28, 0),
-                    new List<IData>
-                {
-                    new Candle.Builder().WithDate(new DateTime(2016,9, 13, 1, 28, 0)).WithId("m_id_1").Build(),
-                    new Indicator.Builder().WithDate(new DateTime(2016,9, 13, 1, 28, 0)).WithId("id_1").Build()
-                },
-                    new List<Tick>
+                new Slice.Builder()
+                    .WithDate(new DateTime(2016,9, 13, 1, 28, 0))
+                    .WithData(new Dictionary<string, IData>
                     {
-                        new Tick.Builder().WithDate(new DateTime(2016,9, 13, 1, 28, 0)).WithId("m_id_1").Build()
-                    }),
-                new Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>(
-                    new DateTime(2016,9, 14, 1, 28, 0),
-                    new List<IData>
-                    {
-                        new Candle.Builder().WithDate(new DateTime(2016,9, 14, 1, 28, 0)).WithId("m_id_1").Build()
-                    },
-                    new List<Tick>()
-
-
-                    ),
-                new Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>(
-                    new DateTime(2016,9, 15),
-                    new List<IData>
-                    {
-                        new Indicator.Builder().WithDate(new DateTime(2016,9, 15)).WithId("m_id_1").Build(),
-                        new Indicator.Builder().WithDate(new DateTime(2016,9, 15)).WithId("m_id_1").Build(),
-                        new Candle.Builder().WithDate(new DateTime(2016,9, 15)).WithId("m_id_1").Build(),
-                        new Candle.Builder().WithDate(new DateTime(2016,9, 15)).WithId("m_id_1").Build(),
-                        new Indicator.Builder().WithDate(new DateTime(2016,9, 15)).WithId("m_id_1").Build()
-                    },
-                    new List<Tick>
-                    {
-                        new Tick.Builder().WithDate(new DateTime(2016,9, 15)).WithId("m_id_1").Build(),
-                        new Tick.Builder().WithDate(new DateTime(2016,9, 15)).WithId("m_id_1").Build()
-                    }),
-
-                new Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>(
-                    new DateTime(2016,9, 16, 23, 28, 0),
-                    new List<IData>(),
-                    new List<Tick>
-                    {
-                        new Tick.Builder().WithDate(new DateTime(2016,9, 16, 23, 28, 0)).WithId("m_id_1").Build()
-                    }),
-                new Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>(
-                    new DateTime(2016,9, 17),
-                    new List<IData>
-                    {
-                        new Candle.Builder().WithDate(new DateTime(2016,9, 17)).WithId("m_id_1").Build()
-                    },
-                    new List<Tick>()),
-                new Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>(
-                    new DateTime(2016,9, 18),
-                    new List<IData>
-                    {
-                        new Indicator.Builder().WithDate(new DateTime(2016,9, 18)).WithId("id_1").Build()
-                    },
-                    new List<Tick>()),
-                new Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>(
-                    new DateTime(2016,9, 19),
-                    new List<IData>(),
-                    new List<Tick>
-                    {
-                        new Tick.Builder().WithDate(new DateTime(2016,9, 19)).WithId("id_1").Build()
+                        { "m_id_1", new Candle.Builder().WithDate(new DateTime(2016,9, 13, 1, 28, 0)).WithId("m_id_1").Build()} ,
+                        { "id_1", new Indicator.Builder().WithDate(new DateTime(2016,9, 13, 1, 28, 0)).WithId("id_1").Build()}
                     })
+                    .WithTick(new Dictionary<string, Tick>
+                    {
+                        { "m_id_1", new Tick.Builder().WithDate(new DateTime(2016,9, 13, 1, 28, 0)).WithId("m_id_1").Build()}
+                    })
+                    .Build(),
+                new Slice.Builder()
+                    .WithDate(new DateTime(2016,9, 14, 1, 28, 0))
+                    .WithData(new Dictionary<string, IData>
+                    {
+                        { "m_id_1", new Candle.Builder().WithDate(new DateTime(2016,9, 14, 1, 28, 0)).WithId("m_id_1").Build()}
+                    })
+                    .WithTick(new Dictionary<string, Tick>())
+                    .Build(),
+                new Slice.Builder()
+                    .WithDate(new DateTime(2016,9, 15))
+                    .WithData(new Dictionary<string, IData>
+                    {
+                        {"m_id_1", new Indicator.Builder().WithDate(new DateTime(2016,9, 15)).WithId("m_id_1").Build()},
+                        {"m_id_2",new Indicator.Builder().WithDate(new DateTime(2016,9, 15)).WithId("m_id_2").Build()},
+                        {"m_id_3",new Candle.Builder().WithDate(new DateTime(2016,9, 15)).WithId("m_id_3").Build()},
+                        {"m_id_4",new Candle.Builder().WithDate(new DateTime(2016,9, 15)).WithId("m_id_4").Build()},
+                        {"m_id_5",new Indicator.Builder().WithDate(new DateTime(2016,9, 15)).WithId("m_id_5").Build()}
+                    })
+                    .WithTick(new Dictionary<string, Tick>
+                    {
+                        {"m_id_1", new Tick.Builder().WithDate(new DateTime(2016,9, 15)).WithId("m_id_1").Build()},
+                        {"m_id_2",new Tick.Builder().WithDate(new DateTime(2016,9, 15)).WithId("m_id_2").Build()}
+                    })
+                    .Build(),
+                new Slice.Builder()
+                    .WithDate( new DateTime(2016,9, 16, 23, 28, 0))
+                    .WithData(new Dictionary<string, IData>())
+                    .WithTick(new Dictionary<string, Tick>
+                    {
+                        {"m_id_1", new Tick.Builder().WithDate(new DateTime(2016,9, 16, 23, 28, 0)).WithId("m_id_1").Build()}
+                    })
+                    .Build(),
+                new Slice.Builder()
+                    .WithDate(new DateTime(2016,9, 17))
+                    .WithData(new Dictionary<string, IData>
+                    {
+                        { "m_id_1", new Candle.Builder().WithDate(new DateTime(2016,9, 17)).WithId("m_id_1").Build()}
+                    })
+                    .WithTick(new Dictionary<string, Tick>())
+                    .Build(),
+                new Slice.Builder()
+                    .WithDate(new DateTime(2016,9, 18))
+                    .WithData(new Dictionary<string, IData>
+                    {
+                        { "id_1", new Indicator.Builder().WithDate(new DateTime(2016,9, 18)).WithId("id_1").Build()}
+                    })
+                    .WithTick(new Dictionary<string, Tick>())
+                    .Build(),
+                new Slice.Builder()
+                    .WithDate(new DateTime(2016,9, 19))
+                    .WithData(new Dictionary<string, IData>())
+                    .WithTick(new Dictionary<string, Tick>
+                    {
+                        { "id_1", new Tick.Builder().WithDate(new DateTime(2016,9, 19)).WithId("id_1").Build()}
+                    })
+                    .Build()
             };
         }
     }

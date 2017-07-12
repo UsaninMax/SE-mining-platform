@@ -6,9 +6,9 @@ namespace TestSandboxModule
 {
     public class TestBot : BotApi
     {
-        public override void Execution(IEnumerable<IData> slice)
+        public override void Execution(IDictionary<string, IData> value)
         {
-            System.Diagnostics.Debug.WriteLine("Bot name = " + GetId() + " -receive slice " + slice);
+            System.Diagnostics.Debug.WriteLine("Bot name = " + GetId() + " -receive slice " + value);
         }
 
         public override int Score()

@@ -151,6 +151,7 @@
     <Compile Include="Sandbox\Models\Candle.cs" />
     <Compile Include="Sandbox\Models\IData.cs" />
     <Compile Include="Sandbox\Models\Indicator.cs" />
+    <Compile Include="Sandbox\Models\Slice.cs" />
     <Compile Include="Sandbox\Models\Tick.cs" />
     <Compile Include="Sandbox\Bots\BotApi.cs" />
     <Compile Include="Sandbox\Providers\IIndicatorBuilder.cs" />
@@ -163,7 +164,6 @@
     <Compile Include="Sandbox\Providers\ISandboxProvider.cs" />
     <Compile Include="Sandbox\Providers\SandboxProvider.cs" />
     <Compile Include="Sandbox\Transactios\Enums\Direction.cs" />
-    <Compile Include="Sandbox\Transactios\Enums\RequestStatus.cs" />
     <Compile Include="Sandbox\Transactios\ITransactionsContext.cs" />
     <Compile Include="Sandbox\Transactios\Models\BalanceRow.cs" />
     <Compile Include="Sandbox\Transactios\Models\BrokerCost.cs" />
@@ -171,6 +171,7 @@
     <Compile Include="Sandbox\Transactios\Models\OpenPositionRequest.cs" />
     <Compile Include="Sandbox\Transactios\Models\PostponedPositionRequest.cs" />
     <Compile Include="Sandbox\Transactios\Models\Transaction.cs" />
+    <Compile Include="Sandbox\Transactios\Models\WorkingPeriod.cs" />
     <Compile Include="Sandbox\Transactios\TransactionsContext.cs" />
     <Compile Include="StockData\DataServices\Trades\Finam\FinamDataTickParser.cs" />
     <Compile Include="StockData\DataServices\Trades\IDataTickParser.cs" />

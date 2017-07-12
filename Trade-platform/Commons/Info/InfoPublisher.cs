@@ -19,7 +19,7 @@ namespace TradePlatform.Commons.Info
 
         public void PublishException(AggregateException exceptions)
         {
-            foreach (var ex in exceptions.InnerExceptions)
+            foreach (var ex in exceptions.Flatten().InnerExceptions)
             {
                 _eventAggregator.GetEvent<PuplishExceptionInfo<ExceptionInfo>>()
                     .Publish(new ExceptionInfo { Message = ex.GetType().Name + ", - " + ex.Message });

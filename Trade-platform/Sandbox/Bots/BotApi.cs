@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Castle.Core;
 using Castle.Core.Internal;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
@@ -14,7 +13,7 @@ namespace TradePlatform.Sandbox.Bots
     public abstract class BotApi : IBot
     {
         private string _id;
-        private IList<Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>> _data;
+        private IList<Slice> _data;
         private BotPredicate _predicate;
         private ITransactionsContext _context;
 
@@ -33,7 +32,7 @@ namespace TradePlatform.Sandbox.Bots
             _id = id;
         }
 
-        public void SetUpData(IList<Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>> data)
+        public void SetUpData(IList<Slice> data)
         {
             _data = data;
         }
@@ -43,9 +42,14 @@ namespace TradePlatform.Sandbox.Bots
             _predicate = predicate;
         }
 
-        public void SetUpCosts(IEnumerable<BrokerCost> value)
+        public void SetUpCosts(IDictionary<string, BrokerCost> value)
         {
             _context.SetUpCosts(value);
+        }
+
+        public void SetUpWorkingPeriod(IDictionary<string, WorkingPeriod> value)
+        {
+            _context.SetUpWorkingPeriod(value);
         }
 
         public void SetUpBalance(double value)
@@ -58,26 +62,36 @@ namespace TradePlatform.Sandbox.Bots
             _context.OpenPosition(request);
         }
 
-        public Guid OpenPosition(PostponedPositionRequest request)
+        public void OpenPosition(PostponedPositionRequest request)
         {
-            return _context.OpenPosition(request);
+            _context.OpenPosition(request);
+        }
+
+        public bool IsPrepared()
+        {
+            return _context.IsPrepared();
+        }
+
+        public void ResetTransactionContext()
+        {
+            _context.Reset();
         }
 
         public void Execute()
         {
-            _data.Where(m => (_predicate.From == DateTime.MinValue || m.Item1 >= _predicate.From) &&
-                             (_predicate.To == DateTime.MinValue || m.Item1 <= _predicate.To))
+            _data.Where(m => (_predicate.From == DateTime.MinValue || m.DateTime >= _predicate.From) &&
+                             (_predicate.To == DateTime.MinValue || m.DateTime <= _predicate.To))
                 .ForEach(x =>
                 {
-                    _context.ProcessTick(x.Item3);
-                    if (!x.Item2.IsNullOrEmpty())
+                    _context.ProcessTick(x.Ticks);
+                    if (!x.Datas.IsNullOrEmpty())
                     {
-                        Execution(x.Item2);
+                        Execution(x.Datas);
                     }
                 });
         }
 
-        public abstract void Execution(IEnumerable<IData> slice);
+        public abstract void Execution(IDictionary<string, IData> data);
         public abstract int Score();
     }
 }

@@ -7,7 +7,7 @@ namespace TradePlatform.Sandbox.Models
         private DateTime _date;
         private string _id;
         public double Price { get; private set; }
-        public double Volume { get; private set; }
+        public int Volume { get; set; }
 
         private Tick()
         {
@@ -18,7 +18,7 @@ namespace TradePlatform.Sandbox.Models
             private DateTime _date;
             private string _id;
             private double _price;
-            private double _volume;
+            private int _volume;
 
             public Builder WithDate(DateTime value)
             {
@@ -38,7 +38,7 @@ namespace TradePlatform.Sandbox.Models
                 return this;
             }
 
-            public Builder WithVolume(double value)
+            public Builder WithVolume(int value)
             {
                 _volume = value;
                 return this;

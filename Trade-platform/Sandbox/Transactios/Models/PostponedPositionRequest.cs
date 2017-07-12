@@ -1,12 +1,10 @@
 ﻿using System;
-using TradePlatform.Sandbox.Transactios.Enums;
 
 namespace TradePlatform.Sandbox.Transactios.Models
 {
     public class PostponedPositionRequest : OpenPositionRequest
     {
         public double ExpectedPrice { get; private set; }
-        public Guid Id { get; private set; }
 
         private PostponedPositionRequest()
         {
@@ -31,8 +29,7 @@ namespace TradePlatform.Sandbox.Transactios.Models
                     Id = Guid.NewGuid(),
                     InstrumentId = _instrumentId,
                     Direction = _direction,
-                    Number = _number,
-                    RequestStatus = RequestStatus.Open
+                    Number = _number
                 };
             }
         }

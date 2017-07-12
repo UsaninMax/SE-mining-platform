@@ -1,16 +1,19 @@
 ﻿using System;
+using TradePlatform.Sandbox.DataProviding.Predicates;
 
 namespace TradePlatform.Sandbox.Providers
 {
     public class IndicatorBuilder : IIndicatorBuilder
     {
-        public IIndicatorProvider Build(Type type)
+        public IIndicatorProvider Build(IndicatorPredicate predicate)
         {
-            IIndicatorProvider provider = Activator.CreateInstance(type) as IIndicatorProvider;
+            IIndicatorProvider provider = Activator.CreateInstance(predicate.GetType()) as IIndicatorProvider;
             if (provider == null)
             {
-                throw new Exception(type + "Indicator cannot be instantiated");
+                throw new Exception(predicate.GetType() + "Indicator cannot be instantiated");
             }
+            provider.SetUpParameters(predicate.Parameters);
+            provider.Initialize();
             return provider;
         }
     }

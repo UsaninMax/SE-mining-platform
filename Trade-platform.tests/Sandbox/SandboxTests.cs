@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Castle.Core;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
@@ -83,6 +83,8 @@ namespace Trade_platform.tests.Sandbox
             var botMock_1 = new Mock<IBot>();
             var botMock_2 = new Mock<IBot>();
 
+            botMock_1.Setup(x => x.IsPrepared()).Returns(true);
+            botMock_2.Setup(x => x.IsPrepared()).Returns(true);
             ICollection<IBot> bots = new List<IBot>
             {
                 botMock_1.Object,
@@ -109,22 +111,20 @@ namespace Trade_platform.tests.Sandbox
             botMock_2.Verify(x => x.Execute(), Times.Once);
         }
 
-        private IList<Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>> GetData()
+        private IList<Slice> GetData()
         {
-            return new List<Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>>
+            IDictionary<string, IData> datas = new Dictionary<string, IData>();
+            datas.Add("111", new Candle.Builder().WithId("111").Build());
+
+            return new List<Slice>
             {
-                new Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>(
-                    DateTime.Now,
-
-                    new List<IData>
-                    {
-                        new Candle.Builder().WithId("111").Build()
-                    },
-
-                    new List<Tick>())
+                new Slice.Builder()
+                .WithDate(DateTime.Now)
+                .WithData(datas)
+                .WithTick(new Dictionary<string, Tick>())
+                .Build()
             };
         }
-
     }
 
     class TestSandBox : SandboxApi

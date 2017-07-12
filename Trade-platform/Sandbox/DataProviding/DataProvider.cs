@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Castle.Core;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using TradePlatform.Commons.Info;
@@ -36,7 +35,7 @@ namespace TradePlatform.Sandbox.DataProviding
             _indicatorBuilder = ContainerBuilder.Container.Resolve<IIndicatorBuilder>();
         }
 
-        public IList<Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>> Get(ICollection<IPredicate> predicates, CancellationToken token)
+        public IList<Slice> Get(ICollection<IPredicate> predicates, CancellationToken token)
         {
             if (token.IsCancellationRequested) { return null; }
             GatherPredicates(predicates);
@@ -67,9 +66,16 @@ namespace TradePlatform.Sandbox.DataProviding
             asList.Sort((x, y) => DateTime.Compare(x.Date(), y.Date()));
             GC.Collect();
             GC.WaitForPendingFinalizers();
+
             return asList
                 .GroupBy(item => item.Date())
-                .Select(x => new Tuple<DateTime, IEnumerable<IData>, IEnumerable<Tick>>(x.Key, x.Where(y => !(y is Tick)), x.OfType<Tick>()))
+                .Select(x => new Slice.Builder()
+                .WithDate(x.Key)
+                .WithData(x.Where(y => !(y is Tick))
+                .ToDictionary(y => y.Id(), y => y))
+                .WithTick(x.OfType<Tick>()
+                .ToDictionary(y => y.Id(), y => y))
+                .Build())
                 .ToList();
         }
 
@@ -94,7 +100,7 @@ namespace TradePlatform.Sandbox.DataProviding
         private void ConstructSeries(IndicatorPredicate predicate)
         {
             _infoPublisher.PublishInfo(new SandboxInfo { Message = " build  " + predicate });
-            IIndicatorProvider provider = _indicatorBuilder.Build(predicate.Indicator); 
+            IIndicatorProvider provider = _indicatorBuilder.Build(predicate);
             ITransformer dataAggregator = ContainerBuilder.Container.Resolve<ITransformer>();
             _infoPublisher.PublishInfo(new SandboxInfo { Message = " Build indicator  " + predicate });
             _data = _data.Concat(dataAggregator.Transform(_tiks[predicate.DataPredicate.ParentId], predicate.DataPredicate)

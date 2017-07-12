@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TradePlatform.Sandbox.Transactios.Enums;
 
 namespace TradePlatform.Sandbox.Transactios.Models
@@ -11,7 +12,7 @@ namespace TradePlatform.Sandbox.Transactios.Models
         public Direction Direction { get; protected set; }
         public int Number { get; protected set; }
         public int RemainingNumber { get; set; }
-        public RequestStatus RequestStatus { get; set; }
+        public Guid Id { get; protected set; }
         private IList<Transaction> _transactions = new List<Transaction>();
 
         protected OpenPositionRequest(){}
@@ -41,14 +42,24 @@ namespace TradePlatform.Sandbox.Transactios.Models
             }
         }
 
+        public IList<Transaction> GetTransactions()
+        {
+            return _transactions.ToList();
+        }
+
+        public void AddTransaction(Transaction transaction)
+        {
+           _transactions.Add(transaction);
+        }
+
         public override string ToString()
         {
             return $"{nameof(Date)}: {Date}," +
+                   $" {nameof(Id)}: {Id}," +
                    $" {nameof(InstrumentId)}: {InstrumentId}," +
                    $" {nameof(Direction)}: {Direction}," +
                    $" {nameof(Number)}: {Number}," +
-                   $" {nameof(RemainingNumber)}: {RemainingNumber}," +
-                   $" {nameof(RequestStatus)}: {RequestStatus}";
+                   $" {nameof(RemainingNumber)}: {RemainingNumber}";
         }
     }
 }
