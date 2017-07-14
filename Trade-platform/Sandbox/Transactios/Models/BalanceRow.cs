@@ -6,8 +6,6 @@ namespace TradePlatform.Sandbox.Transactios.Models
     {
         public DateTime Date => _date;
         private DateTime _date;
-        public double Coverage => _coverage;
-        private double _coverage;
         public double TransactionCost => _transactionCost;
         private double _transactionCost;
         public double TransactionMargin => _transactionMargin;
@@ -25,12 +23,6 @@ namespace TradePlatform.Sandbox.Transactios.Models
             private double _transactionCost;
             private double _transactionMargin;
             private double _total;
-
-            public Builder Coverage(double value)
-            {
-                _coverage = value;
-                return this;
-            }
 
             public Builder TransactionCost(double value)
             {
@@ -55,7 +47,6 @@ namespace TradePlatform.Sandbox.Transactios.Models
                 return new BalanceRow()
                 {
                     _date = DateTime.Now,
-                    _coverage = _coverage,
                     _transactionCost = _transactionCost,
                     _transactionMargin = _transactionMargin,
                     _total = _total
@@ -66,7 +57,6 @@ namespace TradePlatform.Sandbox.Transactios.Models
         public override string ToString()
         {
             return $"{nameof(Date)}: {Date}," +
-                   $" {nameof(Coverage)}: {Coverage}," +
                    $" {nameof(TransactionCost)}: {TransactionCost}," +
                    $" {nameof(TransactionMargin)}: {TransactionMargin}, " +
                    $"{nameof(Total)}: {Total}";

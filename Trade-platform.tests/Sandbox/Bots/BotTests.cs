@@ -9,6 +9,7 @@ using TradePlatform;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios;
+using TradePlatform.Sandbox.Transactios.Models;
 
 namespace Trade_platform.tests.Sandbox.Bots
 {
@@ -20,7 +21,7 @@ namespace Trade_platform.tests.Sandbox.Bots
         {
             var transactionContextMock = new Mock<ITransactionsContext>();
             ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
-            TestBot bot = new TestBot();
+            TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
             bot.SetUpData(GetData());
             bot.SetUpPredicate(new BotPredicate.Builder()
                 .Build());
@@ -34,7 +35,7 @@ namespace Trade_platform.tests.Sandbox.Bots
         {
             var transactionContextMock = new Mock<ITransactionsContext>();
             ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
-            TestBot bot = new TestBot();
+            TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
             bot.SetUpData(GetData());
             bot.SetUpPredicate(new BotPredicate
                 .Builder()
@@ -51,7 +52,7 @@ namespace Trade_platform.tests.Sandbox.Bots
         {
             var transactionContextMock = new Mock<ITransactionsContext>();
             ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
-            TestBot bot = new TestBot();
+            TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
             bot.SetUpData(GetData());
             bot.SetUpPredicate(new BotPredicate
                     .Builder()
@@ -81,6 +82,10 @@ namespace Trade_platform.tests.Sandbox.Bots
             public IList<IData> GetSlices()
             {
                 return _slices;
+            }
+
+            public TestBot(IDictionary<string, BrokerCost> brokerCosts) : base(brokerCosts)
+            {
             }
         }
 

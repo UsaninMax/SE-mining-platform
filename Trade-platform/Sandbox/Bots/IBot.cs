@@ -13,11 +13,9 @@ namespace TradePlatform.Sandbox.Bots
         void Execute();
         void Execution(IDictionary<string, IData> data);
         int Score();
-        void SetUpCosts(IDictionary<string, BrokerCost> value);
         void SetUpWorkingPeriod(IDictionary<string, WorkingPeriod> value);
         void SetUpBalance(double value);
-        void OpenPosition(ImmediatePositionRequest request);
-        void OpenPosition(PostponedPositionRequest request);
+        void OpenPosition(OpenPositionRequest request);
         bool IsPrepared();
         void ResetTransactionContext();
 

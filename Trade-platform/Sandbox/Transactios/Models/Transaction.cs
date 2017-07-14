@@ -9,6 +9,7 @@ namespace TradePlatform.Sandbox.Transactios.Models
         public string InstrumentId { get; private set; }
         public double ExecutedPrice { get; private set; }
         public int Number { get; set; }
+        public int RemainingNumber { get; set; }
         public Direction Direction { get; private set; }
 
         protected Transaction() { }
@@ -20,13 +21,11 @@ namespace TradePlatform.Sandbox.Transactios.Models
             private int _number;
             private Direction _direction;
 
-
             public Builder InstrumentId(string value)
             {
                 _instrumentId = value;
                 return this;
             }
-
 
             public Builder ExecutedPrice(double value)
             {
@@ -52,11 +51,22 @@ namespace TradePlatform.Sandbox.Transactios.Models
                 {
                     Date = DateTime.Now,
                     InstrumentId = _instrumentId,
+                    RemainingNumber = _number,
                     ExecutedPrice = _executedPrice,
                     Number = _number,
                     Direction = _direction
                 };
             }
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(Date)}: {Date}, " +
+                   $"{nameof(InstrumentId)}: {InstrumentId}, " +
+                   $"{nameof(RemainingNumber)}: {RemainingNumber}, " +
+                   $"{nameof(ExecutedPrice)}: {ExecutedPrice}," +
+                   $" {nameof(Number)}: {Number}, " +
+                   $"{nameof(Direction)}: {Direction}";
         }
     }
 }

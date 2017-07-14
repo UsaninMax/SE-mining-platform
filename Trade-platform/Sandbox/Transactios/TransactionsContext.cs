@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Castle.Core.Internal;
+using Microsoft.Practices.Unity;
 using MoreLinq;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios.Enums;
@@ -11,15 +12,25 @@ namespace TradePlatform.Sandbox.Transactios
 {
     public class TransactionsContext : ITransactionsContext
     {
-        private List<OpenPositionRequest> _requests = new List<OpenPositionRequest>();
+        private List<OpenPositionRequest> _activeRequests = new List<OpenPositionRequest>();
         private List<OpenPositionRequest> _requestsHistory = new List<OpenPositionRequest>();
+
         private IDictionary<string, BrokerCost> _brokerCosts;
-        private IDictionary<string, WorkingPeriod> _workingPeriods;
-        private IList<BalanceRow> _balanceHistory = new List<BalanceRow>();
-        private BalanceRow _currentBalance;
-        private List<Transaction> _openPositions = new List<Transaction>();
-        private List<string> _openPositionsIds = new List<string>();
-        private IDictionary<string, Tick> _lastTick = new Dictionary<string, Tick>();
+        private IDictionary<string, Tick> _lastTicks = new Dictionary<string, Tick>();
+        private DateTime _lastDate;
+        private ITransactionHolder _transactionHolder;
+        private IBalance _balance;
+        private IWorkingPeriodHolder _workingPeriodHolder;
+        private ITransactionBuilder _transactionBuilder;
+
+        public TransactionsContext(IDictionary<string, BrokerCost> brokerCosts)
+        {
+            _brokerCosts = brokerCosts;
+            _transactionHolder = ContainerBuilder.Container.Resolve<ITransactionHolder>(new DependencyOverride<IDictionary<string, BrokerCost>>(brokerCosts));
+            _balance = ContainerBuilder.Container.Resolve<IBalance>();
+            _transactionBuilder = ContainerBuilder.Container.Resolve<ITransactionBuilder>();
+            _workingPeriodHolder = ContainerBuilder.Container.Resolve<IWorkingPeriodHolder>();
+        }
 
         public bool IsPrepared()
         {
@@ -28,12 +39,7 @@ namespace TradePlatform.Sandbox.Transactios
                 return false;
             }
 
-            if (_currentBalance == null)
-            {
-                return false;
-            }
-
-            if (_workingPeriods.IsNullOrEmpty())
+            if (_balance.GetHistory().IsNullOrEmpty())
             {
                 return false;
             }
@@ -41,42 +47,43 @@ namespace TradePlatform.Sandbox.Transactios
             return true;
         }
 
-        public void SetUpCosts(IDictionary<string, BrokerCost> value)
-        {
-            _brokerCosts = value;
-        }
-
         public void SetUpBalance(double value)
         {
-            _currentBalance = new BalanceRow.Builder().Total(value).Build();
-            _balanceHistory.Add(_currentBalance);
+            _balance.AddMoney(value);
         }
 
         public void SetUpWorkingPeriod(IDictionary<string, WorkingPeriod> value)
         {
-            _workingPeriods = value;
+            _workingPeriodHolder.SetUp(value);
         }
 
         public double GetBalance()
         {
-            return _currentBalance.Total;
+            return _balance.GetTotal();
         }
 
         public void Reset()
         {
-            _requests = new List<OpenPositionRequest>();
+            _activeRequests = new List<OpenPositionRequest>();
             _requestsHistory = new List<OpenPositionRequest>();
-            _currentBalance = _balanceHistory.First();
-            _balanceHistory = new List<BalanceRow>();
-            _openPositions = new List<Transaction>();
-            _lastTick = new Dictionary<string, Tick>();
-
+            _balance.Reset();
+            _transactionHolder.Reset();
+            _lastTicks = new Dictionary<string, Tick>();
         }
 
         public int AvailableNumber(string instrumentId)
         {
+            if (_lastTicks.IsNullOrEmpty())
+            {
+                return 0;
+            }
+            if (!_lastTicks.ContainsKey(instrumentId))
+            {
+                throw new Exception("Context incorrectly installed");
+            }
+
             var costs = _brokerCosts[instrumentId];
-            return (int)Math.Floor(_currentBalance.Total / (_lastTick[instrumentId].Price * costs.Coverage));
+            return (int)Math.Floor((_balance.GetTotal() - GetCoverage()) / (_lastTicks[instrumentId].Price * costs.Coverage));
         }
 
         public IList<Transaction> GetTransactionHistory()
@@ -86,86 +93,140 @@ namespace TradePlatform.Sandbox.Transactios
 
         public IList<BalanceRow> GetBalanceHistory()
         {
-            return _balanceHistory;
+            return _balance.GetHistory();
         }
 
-        private void UpdateBalance(OpenPositionRequest request)
+        public bool OpenPosition(OpenPositionRequest request)
         {
-            var costs = _brokerCosts[request.InstrumentId];
-            var coverage = _lastTick[request.InstrumentId].Price * costs.Coverage * request.Number;
-            var transactionCost = costs.TransactionCost;
+            if (_lastTicks.IsNullOrEmpty())
+            {
+                return false;
+            }
 
-            _currentBalance = new BalanceRow.Builder()
-                .Coverage(coverage)
-                .TransactionCost(transactionCost)
-                .Total(_currentBalance.Total - (coverage + transactionCost))
-                .Build();
-            _balanceHistory.Add(_currentBalance);
+            if (!CoverageIsOk(request))
+            {
+                return false;
+            }
+
+            if (!IsWorkingTime(request.InstrumentId))
+            {
+                return false;
+            }
+
+            _activeRequests.Add(request);
+            _requestsHistory.Add(request);
+            _balance.AddTransactionCost(_brokerCosts[request.InstrumentId].TransactionCost);
+            return true;
         }
 
-        private Direction Invert(Direction direction)
+        private bool CoverageIsOk(OpenPositionRequest request)
         {
-            return direction == Direction.Buy ? Direction.Sell : Direction.Buy;
+            return _balance.GetTotal()
+                - GetCoverage()
+                - request.RemainingNumber
+                * _lastTicks[request.InstrumentId].Price
+                * _brokerCosts[request.InstrumentId].Coverage > 0;
         }
 
-        private void UpdateBalance(Transaction transaction)
+        public void CancelPosition(Guid guid)
         {
-            var openPosition = _openPositions.First(x => x.InstrumentId.Equals(transaction.InstrumentId) &&
-                                       x.Direction == Invert(transaction.Direction));
+            _activeRequests.RemoveAll(x => x.Id.Equals(guid));
+        }
 
-            if (openPosition == null)
+        private void ProcessTransaction(Transaction transaction)
+        {
+            _balance.AddTransactionMargin(transaction,
+                _transactionHolder.GetOpenTransactions(transaction.InstrumentId, transaction.Direction));
+            _transactionHolder.UpdateOpenTransactions(transaction);
+        }
+
+        private void ForceToClosePositions(string instrumentId)
+        {
+            _activeRequests.RemoveAll(x => x.InstrumentId.Equals(instrumentId));
+            _transactionHolder.GetOpenTransactions(instrumentId).GroupBy(y => y.Direction).ForEach(y =>
+             {
+                 OpenPositionRequest openPosition = new OpenPositionRequest.Builder()
+                     .InstrumentId(instrumentId)
+                     .Direction(y.Key == Direction.Buy ? Direction.Sell : Direction.Buy)
+                     .Number(y.Sum(z => z.RemainingNumber))
+                     .Build();
+                 _activeRequests.Add(openPosition);
+                 _requestsHistory.Add(openPosition);
+                 _balance.AddTransactionCost(_brokerCosts[openPosition.InstrumentId].TransactionCost);
+             });
+        }
+
+        private bool ForceClosePositionChecker(string instrumentId)
+        {
+            if (_workingPeriodHolder.IsStoredPoint(instrumentId, _lastDate.Date))
+            {
+                return false;
+            }
+            _workingPeriodHolder.StorePoint(instrumentId, _lastDate.Date);
+            return !IsWorkingTime(instrumentId);
+        }
+
+        public void ProcessTick(IDictionary<string, Tick> ticks, DateTime dateTime)
+        {
+            _lastTicks = ticks;
+            _lastDate = dateTime;
+            if (_activeRequests.IsNullOrEmpty()
+                && _transactionHolder.GetSize() == 0)
             {
                 return;
             }
+            ticks.Keys.Where(ForceClosePositionChecker).ForEach(ForceToClosePositions);
+            _activeRequests
+                .ForEach(x =>
+                {
+                    Transaction transaction = _transactionBuilder.Build(x, _lastTicks[x.InstrumentId]);
+                    if (transaction == null)
+                    {
+                        return;
+                    }
+                    x.AddTransaction(transaction);
+                    x.RemainingNumber -= transaction.Number;
+                    ProcessTransaction(transaction);
+                });
 
-            var forCalculation = Math.Min(openPosition.Number, transaction.Number);
-            var openSum = openPosition.ExecutedPrice * forCalculation;
-            var closeSum = transaction.ExecutedPrice * forCalculation;
-            var profit = openPosition.Direction == Direction.Buy ? closeSum - openSum : openSum - closeSum;
-            var coverage = openPosition.ExecutedPrice * forCalculation * _brokerCosts[transaction.InstrumentId].Coverage;
-            _currentBalance = new BalanceRow.Builder()
-                .Coverage(-coverage)
-                .TransactionMargin(profit)
-                .Total(_currentBalance.Total + profit + coverage)
-                .Build();
-
-            _balanceHistory.Add(_currentBalance);
-
+            _activeRequests.RemoveAll(x => x.RemainingNumber == 0);
         }
 
-        public bool OpenPosition(ImmediatePositionRequest request)
+        public IList<OpenPositionRequest> GetActiveRequests()
         {
-            if (!IsWorkingTime(request))
-            {
-                return false;
-            }
-
-            UpdateBalance(request);
-            _requests.Add(request);
-            _requestsHistory.Add(request);
-            return true;
+            return _activeRequests;
         }
 
-        private bool IsWorkingTime(OpenPositionRequest request)
+        public IList<OpenPositionRequest> GetHistoryRequests()
         {
-            WorkingPeriod working = _workingPeriods[request.InstrumentId];
-            DateTime open = request.Date.Add(working.Open);
-            DateTime close = request.Date.Add(working.Close);
+            return _requestsHistory;
+        }
 
-            if (request.Date <= open || request.Date >= close)
-            {
-                return false;
-            }
+        public IList<Transaction> GetActiveTransactions()
+        {
+            return _transactionHolder.GetOpenTransactions();
+        }
 
-            return true;
+        public double GetCoverage()
+        {
+            double fromOpenRequests = _activeRequests.GroupBy(x => x.InstrumentId)
+                .Select(x => _lastTicks[x.Key].Price * x.Sum(y => y.RemainingNumber) * _brokerCosts[x.Key].Coverage).Sum();
+
+            return _transactionHolder.GetCoverage(_lastTicks) + fromOpenRequests;
         }
 
         private bool IsWorkingTime(string instrumentId)
         {
-            Tick tick = _lastTick[instrumentId];
-            WorkingPeriod working = _workingPeriods[instrumentId];
-            DateTime open = tick.Date().Add(working.Open);
-            DateTime close = tick.Date().Add(working.Close);
+            WorkingPeriod working = _workingPeriodHolder.Get(instrumentId);
+
+            if (working == null)
+            {
+                return true;
+            }
+
+            Tick tick = _lastTicks[instrumentId];
+            DateTime open = tick.Date().Date.Add(working.Open);
+            DateTime close = tick.Date().Date.Add(working.Close);
 
             if (tick.Date() <= open || tick.Date() >= close)
             {
@@ -173,135 +234,6 @@ namespace TradePlatform.Sandbox.Transactios
             }
 
             return true;
-        }
-
-        public bool OpenPosition(PostponedPositionRequest request)
-        {
-            if (!IsWorkingTime(request))
-            {
-                return false;
-            }
-
-            UpdateBalance(request);
-            _requests.Add(request);
-            _requestsHistory.Add(request);
-            return true;
-        }
-
-        public bool ClosePosition(Guid guid)
-        {
-            var forRemove = _requests
-                .OfType<PostponedPositionRequest>()
-                .FirstOrDefault(x => x.Id.Equals(guid));
-
-            return _requests.Remove(forRemove);
-        }
-
-        private void UpdateOpenPositions(Transaction transaction)
-        {
-            Transaction openPosition = _openPositions.First(x => x.InstrumentId.Equals(transaction.InstrumentId) &&
-                                                         x.Direction == Invert(transaction.Direction));
-
-            if (openPosition == null)
-            {
-                _openPositions.Add(transaction);
-                return;
-            }
-
-            if (openPosition.Number > transaction.Number)
-            {
-                openPosition.Number = openPosition.Number - transaction.Number;
-                return;
-            }
-
-            if (openPosition.Number < transaction.Number)
-            {
-                transaction.Number = transaction.Number - openPosition.Number;
-                _openPositions.Add(transaction);
-            }
-            openPosition.Number = 0;
-            _openPositions.RemoveAll(x => x.Number == 0);
-            _openPositionsIds = _openPositions.Select(x => x.InstrumentId).Distinct().ToList();
-        }
-
-        private void UpdateLastTicks(IDictionary<string, Tick> ticks)
-        {
-            _lastTick = ticks.Values.ToDictionary(x => x.Id(),
-                x => new Tick.Builder()
-                .WithDate(x.Date())
-                .WithId(x.Id())
-                .WithPrice(x.Price)
-                .WithVolume(x.Volume / 2)
-                .Build());
-        }
-
-
-        private void ForceToClosePositions(IEnumerable<string> ids)
-        {
-            _requests.RemoveAll(x => ids.Contains(x.InstrumentId));
-            _openPositions.Where(x => ids.Contains(x.InstrumentId)).ForEach(x =>
-            {
-                Tick tick = _lastTick[x.InstrumentId];
-                if (tick.Volume == 0)
-                {
-                    return;
-                }
-
-                int willExecute = Math.Min(tick.Volume, x.Number);
-                tick.Volume = tick.Volume - willExecute;
-                Transaction transaction = new Transaction.Builder()
-                    .InstrumentId(x.InstrumentId)
-                    .Direction(Invert(x.Direction))
-                    .ExecutedPrice(tick.Price)
-                    .Number(willExecute)
-                    .Build();
-                UpdateBalance(transaction);
-                UpdateOpenPositions(transaction);
-            });
-        }
-
-        public void ProcessTick(IDictionary<string, Tick> ticks)
-        {
-            UpdateLastTicks(ticks);
-
-            if (_requests.IsNullOrEmpty()
-                && _openPositions.IsNullOrEmpty())
-            {
-                return;
-            }
-
-            ForceToClosePositions(_openPositionsIds.Where(x => !IsWorkingTime(x)));
-
-            if (_requests.IsNullOrEmpty())
-            {
-                return;
-            }
-
-            _requests.ForEach(request =>
-            {
-                Tick tick = _lastTick[request.InstrumentId];
-
-                if (tick.Volume == 0)
-                {
-                    return;
-                }
-
-                int willExecute = Math.Min(tick.Volume , request.RemainingNumber);
-                tick.Volume = tick.Volume - willExecute;
-                request.RemainingNumber = request.RemainingNumber - willExecute;
-
-                Transaction transaction = new Transaction.Builder()
-                .InstrumentId(request.InstrumentId)
-                .Direction(request.Direction)
-                .ExecutedPrice(tick.Price)
-                .Number(willExecute)
-                .Build();
-                request.AddTransaction(transaction);
-                UpdateBalance(transaction);
-                UpdateOpenPositions(transaction);
-            });
-
-            _requests.RemoveAll(x => x.RemainingNumber == 0);
         }
     }
 }

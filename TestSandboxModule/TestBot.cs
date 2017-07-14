@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.Models;
+using TradePlatform.Sandbox.Transactios.Models;
 
 namespace TestSandboxModule
 {
@@ -14,6 +15,10 @@ namespace TestSandboxModule
         public override int Score()
         {
             return 100;
+        }
+
+        public TestBot(IDictionary<string, BrokerCost> brokerCosts) : base(brokerCosts)
+        {
         }
     }
 }

@@ -17,9 +17,9 @@ namespace TradePlatform.Sandbox.Bots
         private BotPredicate _predicate;
         private ITransactionsContext _context;
 
-        protected BotApi()
+        protected BotApi(IDictionary<string, BrokerCost> brokerCosts)
         {
-            _context = ContainerBuilder.Container.Resolve<ITransactionsContext>();
+            _context = ContainerBuilder.Container.Resolve<ITransactionsContext>(new DependencyOverride<IDictionary<string, BrokerCost>>(brokerCosts));
         }
 
         public string GetId()
@@ -42,11 +42,6 @@ namespace TradePlatform.Sandbox.Bots
             _predicate = predicate;
         }
 
-        public void SetUpCosts(IDictionary<string, BrokerCost> value)
-        {
-            _context.SetUpCosts(value);
-        }
-
         public void SetUpWorkingPeriod(IDictionary<string, WorkingPeriod> value)
         {
             _context.SetUpWorkingPeriod(value);
@@ -57,12 +52,7 @@ namespace TradePlatform.Sandbox.Bots
             _context.SetUpBalance(value);
         }
 
-        public void OpenPosition(ImmediatePositionRequest request)
-        {
-            _context.OpenPosition(request);
-        }
-
-        public void OpenPosition(PostponedPositionRequest request)
+        public void OpenPosition(OpenPositionRequest request)
         {
             _context.OpenPosition(request);
         }
@@ -83,7 +73,7 @@ namespace TradePlatform.Sandbox.Bots
                              (_predicate.To == DateTime.MinValue || m.DateTime <= _predicate.To))
                 .ForEach(x =>
                 {
-                    _context.ProcessTick(x.Ticks);
+                    _context.ProcessTick(x.Ticks, x.DateTime);
                     if (!x.Datas.IsNullOrEmpty())
                     {
                         Execution(x.Datas);

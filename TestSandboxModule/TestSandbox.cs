@@ -53,15 +53,14 @@ namespace TestSandboxModule
             var costs = new Dictionary<string, BrokerCost>();
             costs.Add("RTS", new BrokerCost());
 
-            TestBot bot_1 = new TestBot();
+            TestBot bot_1 = new TestBot(costs);
             bot_1.SetUpId("Test_1");
-            bot_1.SetUpCosts(costs);
             bot_1.SetUpPredicate(new BotPredicate.Builder()
                 .From(new DateTime(2014, 1, 1))
                 .To(new DateTime(2017, 1, 1))
                 .Build());
 
-            TestBot bot_2 = new TestBot();
+            TestBot bot_2 = new TestBot(costs);
             bot_2.SetUpId("Test_1");
             bot_2.SetUpPredicate(new BotPredicate.Builder()
                 .From(new DateTime(2014, 1, 1))

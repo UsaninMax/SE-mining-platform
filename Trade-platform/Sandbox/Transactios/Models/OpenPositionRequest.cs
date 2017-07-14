@@ -5,40 +5,53 @@ using TradePlatform.Sandbox.Transactios.Enums;
 
 namespace TradePlatform.Sandbox.Transactios.Models
 {
-    public abstract class OpenPositionRequest
+    public class OpenPositionRequest
     {
-        public DateTime Date { get; protected set; }
-        public string InstrumentId { get; protected set; }
-        public Direction Direction { get; protected set; }
-        public int Number { get; protected set; }
+        public DateTime Date { get; private set; }
+        public string InstrumentId { get; private set; }
+        public Direction Direction { get; private set; }
+        public int Number { get; private set; }
         public int RemainingNumber { get; set; }
-        public Guid Id { get; protected set; }
+        public Guid Id { get; private set; }
         private IList<Transaction> _transactions = new List<Transaction>();
 
-        protected OpenPositionRequest(){}
+        private OpenPositionRequest(){}
 
-        public abstract class AbstractBuilder
+        public class Builder
         {
-            protected string _instrumentId;
-            protected Direction _direction;
-            protected int _number;
+            private string _instrumentId;
+            private Direction _direction;
+            private int _number;
 
-            public AbstractBuilder InstrumentId(string value)
+            public Builder InstrumentId(string value)
             {
                 _instrumentId = value;
                 return this;
             }
 
-            public AbstractBuilder Direction(Direction value)
+            public Builder Direction(Direction value)
             {
                 _direction = value;
                 return this;
             }
 
-            public AbstractBuilder Number(int value)
+            public Builder Number(int value)
             {
                 _number = value;
                 return this;
+            }
+
+            public OpenPositionRequest Build()
+            {
+                return new OpenPositionRequest()
+                {
+                    Date = DateTime.Now,
+                    InstrumentId = _instrumentId,
+                    Id = Guid.NewGuid(),
+                    Direction = _direction,
+                    RemainingNumber = _number,
+                    Number = _number
+                };
             }
         }
 
