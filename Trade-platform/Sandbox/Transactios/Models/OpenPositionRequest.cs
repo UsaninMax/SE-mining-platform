@@ -7,7 +7,7 @@ namespace TradePlatform.Sandbox.Transactios.Models
 {
     public class OpenPositionRequest
     {
-        public DateTime Date { get; private set; }
+        public DateTime Date { get; set; }
         public string InstrumentId { get; private set; }
         public Direction Direction { get; private set; }
         public int Number { get; private set; }
@@ -43,9 +43,8 @@ namespace TradePlatform.Sandbox.Transactios.Models
 
             public OpenPositionRequest Build()
             {
-                return new OpenPositionRequest()
+                return new OpenPositionRequest
                 {
-                    Date = DateTime.Now,
                     InstrumentId = _instrumentId,
                     Id = Guid.NewGuid(),
                     Direction = _direction,

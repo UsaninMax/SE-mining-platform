@@ -10,5 +10,6 @@ namespace TradePlatform.Sandbox.Transactios
         void SetUp(IDictionary<string, WorkingPeriod> periods);
         void StorePoint(string instrumentId, DateTime date);
         bool IsStoredPoint(string instrumentId, DateTime date);
+        void Reset();
     }
 }

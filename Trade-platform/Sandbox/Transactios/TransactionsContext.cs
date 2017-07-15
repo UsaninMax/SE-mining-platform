@@ -12,16 +12,16 @@ namespace TradePlatform.Sandbox.Transactios
 {
     public class TransactionsContext : ITransactionsContext
     {
-        private List<OpenPositionRequest> _activeRequests = new List<OpenPositionRequest>();
-        private List<OpenPositionRequest> _requestsHistory = new List<OpenPositionRequest>();
+        private readonly List<OpenPositionRequest> _activeRequests = new List<OpenPositionRequest>();
+        private readonly List<OpenPositionRequest> _requestsHistory = new List<OpenPositionRequest>();
 
-        private IDictionary<string, BrokerCost> _brokerCosts;
+        private readonly IDictionary<string, BrokerCost> _brokerCosts;
         private IDictionary<string, Tick> _lastTicks = new Dictionary<string, Tick>();
         private DateTime _lastDate;
-        private ITransactionHolder _transactionHolder;
-        private IBalance _balance;
-        private IWorkingPeriodHolder _workingPeriodHolder;
-        private ITransactionBuilder _transactionBuilder;
+        private readonly ITransactionHolder _transactionHolder;
+        private readonly IBalance _balance;
+        private readonly IWorkingPeriodHolder _workingPeriodHolder;
+        private readonly ITransactionBuilder _transactionBuilder;
 
         public TransactionsContext(IDictionary<string, BrokerCost> brokerCosts)
         {
@@ -64,11 +64,14 @@ namespace TradePlatform.Sandbox.Transactios
 
         public void Reset()
         {
-            _activeRequests = new List<OpenPositionRequest>();
-            _requestsHistory = new List<OpenPositionRequest>();
+            _transactionBuilder.Reset();
+            _activeRequests.Clear();
+            _requestsHistory.Clear();
             _balance.Reset();
             _transactionHolder.Reset();
-            _lastTicks = new Dictionary<string, Tick>();
+            _workingPeriodHolder.Reset();
+            _lastTicks.Clear();
+            _lastDate = DateTime.MinValue;
         }
 
         public int AvailableNumber(string instrumentId)
@@ -112,7 +115,7 @@ namespace TradePlatform.Sandbox.Transactios
             {
                 return false;
             }
-
+            request.Date = _lastDate;
             _activeRequests.Add(request);
             _requestsHistory.Add(request);
             _balance.AddTransactionCost(_brokerCosts[request.InstrumentId].TransactionCost);
@@ -121,11 +124,7 @@ namespace TradePlatform.Sandbox.Transactios
 
         private bool CoverageIsOk(OpenPositionRequest request)
         {
-            return _balance.GetTotal()
-                - GetCoverage()
-                - request.RemainingNumber
-                * _lastTicks[request.InstrumentId].Price
-                * _brokerCosts[request.InstrumentId].Coverage > 0;
+            return _balance.GetTotal() - GetCoverage(request) > 0;
         }
 
         public void CancelPosition(Guid guid)
@@ -143,17 +142,21 @@ namespace TradePlatform.Sandbox.Transactios
         private void ForceToClosePositions(string instrumentId)
         {
             _activeRequests.RemoveAll(x => x.InstrumentId.Equals(instrumentId));
-            _transactionHolder.GetOpenTransactions(instrumentId).GroupBy(y => y.Direction).ForEach(y =>
-             {
-                 OpenPositionRequest openPosition = new OpenPositionRequest.Builder()
-                     .InstrumentId(instrumentId)
-                     .Direction(y.Key == Direction.Buy ? Direction.Sell : Direction.Buy)
-                     .Number(y.Sum(z => z.RemainingNumber))
-                     .Build();
-                 _activeRequests.Add(openPosition);
-                 _requestsHistory.Add(openPosition);
-                 _balance.AddTransactionCost(_brokerCosts[openPosition.InstrumentId].TransactionCost);
-             });
+            _transactionHolder
+                .GetOpenTransactions(instrumentId)
+                .GroupBy(y => y.Direction)
+                .ForEach(y =>
+                    {
+                        OpenPositionRequest openPosition = new OpenPositionRequest.Builder()
+                            .InstrumentId(instrumentId)
+                            .Direction(y.Key == Direction.Buy ? Direction.Sell : Direction.Buy)
+                            .Number(y.Sum(z => z.RemainingNumber))
+                            .Build();
+                        openPosition.Date = _lastDate;
+                        _activeRequests.Add(openPosition);
+                        _requestsHistory.Add(openPosition);
+                        _balance.AddTransactionCost(_brokerCosts[openPosition.InstrumentId].TransactionCost);
+                    });
         }
 
         private bool ForceClosePositionChecker(string instrumentId)
@@ -179,7 +182,7 @@ namespace TradePlatform.Sandbox.Transactios
             _activeRequests
                 .ForEach(x =>
                 {
-                    Transaction transaction = _transactionBuilder.Build(x, _lastTicks[x.InstrumentId]);
+                    Transaction transaction = _transactionBuilder.Build(x, _lastTicks[x.InstrumentId], _lastDate);
                     if (transaction == null)
                     {
                         return;
@@ -209,10 +212,12 @@ namespace TradePlatform.Sandbox.Transactios
 
         public double GetCoverage()
         {
-            double fromOpenRequests = _activeRequests.GroupBy(x => x.InstrumentId)
-                .Select(x => _lastTicks[x.Key].Price * x.Sum(y => y.RemainingNumber) * _brokerCosts[x.Key].Coverage).Sum();
+            return _transactionHolder.GetCoverage(_lastTicks, _activeRequests);
+        }
 
-            return _transactionHolder.GetCoverage(_lastTicks) + fromOpenRequests;
+        public double GetCoverage(OpenPositionRequest request)
+        {
+            return _transactionHolder.GetCoverage(_lastTicks, _activeRequests, request);
         }
 
         private bool IsWorkingTime(string instrumentId)

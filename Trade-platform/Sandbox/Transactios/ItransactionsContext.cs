@@ -22,5 +22,6 @@ namespace TradePlatform.Sandbox.Transactios
         IList<OpenPositionRequest> GetHistoryRequests();
         IList<Transaction> GetActiveTransactions();
         double GetCoverage();
+        double GetCoverage(OpenPositionRequest request);
     }
 }

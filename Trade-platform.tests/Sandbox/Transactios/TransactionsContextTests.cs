@@ -96,7 +96,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             Assert.That(context.AvailableNumber("test_id"), Is.EqualTo(83));
 
-            transactionHolderMock.Setup(x => x.GetCoverage(ticks)).Returns(103);
+            transactionHolderMock.Setup(x => x.GetCoverage(ticks, It.IsAny<IEnumerable<OpenPositionRequest>>())).Returns(103);
             Assert.That(context.AvailableNumber("test_id"), Is.EqualTo(74));
 
             context.OpenPosition(new OpenPositionRequest.Builder().InstrumentId("test_id").Direction(Direction.Buy).Number(22).Build());
@@ -321,7 +321,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
             Transaction transaction = new Transaction.Builder().InstrumentId("test_id").Direction(Direction.Buy)
                 .Number(10).Build();
 
-            transactionBuilderMock.Setup(x => x.Build(request, tick["test_id"])).Returns(transaction);
+            transactionBuilderMock.Setup(x => x.Build(request, tick["test_id"], It.IsAny<DateTime>())).Returns(transaction);
             context.ProcessTick(tick, new DateTime(2016, 9, 12, 11, 46, 0));
 
             balanceMock.Verify(x => x.AddTransactionMargin(transaction, transactions), Times.Once);

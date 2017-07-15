@@ -16,6 +16,7 @@ namespace TradePlatform.Sandbox.Transactios.Models
 
         public class Builder
         {
+            private DateTime _date;
             private string _instrumentId;
             private double _executedPrice;
             private int _number;
@@ -45,11 +46,17 @@ namespace TradePlatform.Sandbox.Transactios.Models
                 return this;
             }
 
+            public Builder WithDate(DateTime value)
+            {
+                _date = value;
+                return this;
+            }
+
             public Transaction Build()
             {
-                return new Transaction()
+                return new Transaction
                 {
-                    Date = DateTime.Now,
+                    Date = _date,
                     InstrumentId = _instrumentId,
                     RemainingNumber = _number,
                     ExecutedPrice = _executedPrice,

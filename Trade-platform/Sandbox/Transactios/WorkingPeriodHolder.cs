@@ -32,5 +32,10 @@ namespace TradePlatform.Sandbox.Transactios
         {
             return _stored[instrumentId] == date;
         }
+
+        public void Reset()
+        {
+            _stored.Clear();
+        }
     }
 }
