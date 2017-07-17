@@ -7,7 +7,6 @@ using System.Windows;
 using TradePlatform.Commons.Info.Views;
 using System;
 using TradePlatform.Commons.Info.Events;
-using TradePlatform.Commons.Info.MessageEvents;
 
 namespace TradePlatform.Commons.Info.Exception
 {
@@ -20,7 +19,7 @@ namespace TradePlatform.Commons.Info.Exception
         {
             _dispatcher = Dispatcher.CurrentDispatcher;
             _eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
-            _eventAggregator.GetEvent<PuplishExceptionInfo<ExceptionInfo>>().Subscribe(PublishException, false);
+            _eventAggregator.GetEvent<PuplishExceptionInfo>().Subscribe(PublishException, false);
         }
 
         private void PublishException(object param)
@@ -38,7 +37,7 @@ namespace TradePlatform.Commons.Info.Exception
                 {
                     ContainerBuilder.Container.Resolve<InfoView>().Show();
                 }
-                _eventAggregator.GetEvent<PuplishInfo<InfoItem>>().Publish(item);
+                _eventAggregator.GetEvent<PuplishInfo>().Publish(item);
             })); 
         }
     }

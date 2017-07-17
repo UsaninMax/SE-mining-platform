@@ -15,7 +15,7 @@ namespace TradePlatform.Sandbox.Bots
         private string _id;
         private IList<Slice> _data;
         private BotPredicate _predicate;
-        private ITransactionsContext _context;
+        private readonly ITransactionsContext _context;
 
         protected BotApi(IDictionary<string, BrokerCost> brokerCosts)
         {

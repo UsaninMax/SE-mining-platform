@@ -6,7 +6,6 @@ using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;
 using TradePlatform.Commons.Info.Events;
-using TradePlatform.Commons.Info.MessageEvents;
 using TradePlatform.Commons.Info.Model;
 using TradePlatform.Commons.Info.Model.Message;
 
@@ -31,8 +30,8 @@ namespace TradePlatform.Commons.Info.ViewModels
         {
             _dispatcher = Dispatcher.CurrentDispatcher;
             IEventAggregator eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
-            eventAggregator.GetEvent<PuplishInfo<InfoItem>>().Subscribe(PublishInfo, false);
-            eventAggregator.GetEvent<CloseTabEvent<InfoTab>>().Subscribe(DeleteInfoTab, false);
+            eventAggregator.GetEvent<PuplishInfo>().Subscribe(PublishInfo, false);
+            eventAggregator.GetEvent<CloseTabEvent>().Subscribe(DeleteInfoTab, false);
         }
 
         private void DeleteInfoTab(IInfoTab infoTab)

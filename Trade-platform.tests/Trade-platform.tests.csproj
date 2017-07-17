@@ -115,7 +115,11 @@
     <Compile Include="Sandbox\DataProviding\Transformers\DataTransformerTests.cs" />
     <Compile Include="Sandbox\Presenters\SandboxPresenterTests.cs" />
     <Compile Include="Sandbox\SandboxTests.cs" />
+    <Compile Include="Sandbox\Transactios\BalanceTests.cs" />
+    <Compile Include="Sandbox\Transactios\TransactionBuilderTests.cs" />
+    <Compile Include="Sandbox\Transactios\TransactionHolderTests.cs" />
     <Compile Include="Sandbox\Transactios\TransactionsContextTests.cs" />
+    <Compile Include="Sandbox\Transactios\WorkingPeriodHolder.Tests.cs" />
     <Compile Include="StockData\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoParserTest.cs" />
     <Compile Include="StockData\DataServices\SecuritiesInfo\Finam\FinamSecuritiesInfoUpdaterTests.cs" />
     <Compile Include="StockData\DataServices\Serialization\XmlInstrumentStorageTests.cs" />

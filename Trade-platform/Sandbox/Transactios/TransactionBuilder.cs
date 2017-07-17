@@ -7,8 +7,8 @@ namespace TradePlatform.Sandbox.Transactios
 {
     public class TransactionBuilder : ITransactionBuilder
     {
-        private IDictionary<string, Tick> _ticks = new Dictionary<string, Tick>();
-        public Transaction Build(OpenPositionRequest request, Tick input, DateTime date)
+        private readonly IDictionary<string, Tick> _ticks = new Dictionary<string, Tick>();
+        public Transaction Build(OpenPositionRequest request, Tick input)
         {
             Tick tick = UpdateTick(input);
 
@@ -20,7 +20,7 @@ namespace TradePlatform.Sandbox.Transactios
             int willExecute = Math.Min(tick.Volume / 2, request.RemainingNumber);
             tick.Volume = tick.Volume - willExecute;
             Transaction transaction = new Transaction.Builder()
-                .WithDate(date)
+                .WithDate(tick.Date())
                 .InstrumentId(request.InstrumentId)
                 .Direction(request.Direction)
                 .ExecutedPrice(tick.Price)
@@ -45,7 +45,7 @@ namespace TradePlatform.Sandbox.Transactios
             Tick current = _ticks[tick.Id()];
             if (DateTime.Compare(current.Date(), tick.Date()) < 0)
             {
-                _ticks.Add(tick.Id(), tick);
+                _ticks[tick.Id()] = tick;
                 return tick;
             }
 

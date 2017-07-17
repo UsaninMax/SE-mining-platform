@@ -56,15 +56,13 @@ namespace Trade_platform.tests.Sandbox.DataProviding
 
             dataAggregatorMock.Verify(x=> x.Transform(It.IsAny<List<DataTick>>(), It.Is<TickPredicate>(
                 f => f.Id.Equals("RTS") &&
-            f.From.Equals(new DateTime(2016, 1, 29)) &&
-            f.To.Equals(new DateTime(2016, 2, 5)))), Times.Exactly(1));
-            dataAggregatorMock.Verify(x => x.Transform(It.IsAny<List<Tick>>(), It.IsAny<DataPredicate>()), Times.Exactly(3));
+            f.From.Equals(new DateTime(2016, 2, 1)) &&
+            f.To.Equals(new DateTime(2016, 2, 2)))), Times.Exactly(1));
+            dataAggregatorMock.Verify(x => x.Transform(It.IsAny<List<Tick>>(), It.IsAny<DataPredicate>()), Times.Exactly(1));
             Assert.That(result.Count, Is.EqualTo(2));
-
-            Assert.That(result.Where(x=> x.DateTime.Equals(new DateTime(2016, 2, 5))).SelectMany(x => x.Datas).ToList().Count, Is.EqualTo(2));
-            Assert.That(result.Where(x => x.DateTime.Equals(new DateTime(2016, 2, 7))).SelectMany(x => x.Datas).ToList().Count, Is.EqualTo(3));
+            Assert.That(result.Where(x=> x.DateTime.Equals(new DateTime(2016, 2, 5))).SelectMany(x => x.Datas).ToList().Count, Is.EqualTo(0));
+            Assert.That(result.Where(x => x.DateTime.Equals(new DateTime(2016, 2, 7))).SelectMany(x => x.Datas).ToList().Count, Is.EqualTo(1));
         }
-
 
         private ICollection<IPredicate> GetPredicate()
         {
@@ -76,20 +74,6 @@ namespace Trade_platform.tests.Sandbox.DataProviding
                     .AccumulationPeriod(new TimeSpan(0,1,0))
                     .From(new DateTime(2016, 2, 1))
                     .To(new DateTime(2016, 2, 2))
-                    .Build(),
-                new DataPredicate.Builder()
-                    .ParentId("RTS")
-                    .NewId("RTS_5")
-                    .AccumulationPeriod(new TimeSpan(0,5,0))
-                    .From(new DateTime(2016, 2, 3))
-                    .To(new DateTime(2016, 2, 5))
-                    .Build(),
-                new DataPredicate.Builder()
-                    .ParentId("RTS")
-                    .NewId("RTS_6")
-                    .AccumulationPeriod(new TimeSpan(0,6,0))
-                    .From(new DateTime(2016, 1, 29))
-                    .To(new DateTime(2016, 2, 1))
                     .Build()
             };
         }

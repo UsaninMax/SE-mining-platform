@@ -7,7 +7,7 @@ namespace TradePlatform.Sandbox.Transactios
     public class WorkingPeriodHolder : IWorkingPeriodHolder
     {
         private IDictionary<string, WorkingPeriod> _periods = new Dictionary<string, WorkingPeriod>();
-        private IDictionary<string, DateTime> _stored = new Dictionary<string, DateTime>();
+        private readonly IDictionary<string, DateTime> _stored = new Dictionary<string, DateTime>();
 
         public WorkingPeriod Get(string instrumentId)
         {
@@ -30,6 +30,11 @@ namespace TradePlatform.Sandbox.Transactios
 
         public bool IsStoredPoint(string instrumentId, DateTime date)
         {
+            if (!_stored.ContainsKey(instrumentId))
+            {
+                return false;
+            }
+
             return _stored[instrumentId] == date;
         }
 

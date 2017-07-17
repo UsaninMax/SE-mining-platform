@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using TradePlatform;
-using TradePlatform.Commons.BaseModels;
 using TradePlatform.DataSet.DataServices;
 using TradePlatform.DataSet.Models;
 using TradePlatform.StockData.DataServices.Trades;

@@ -6,17 +6,17 @@ using System.Windows;
 
 namespace TradePlatform.DataSet.Views
 {
-    public partial class ShowDataSetElementView : Window
+    public partial class ShowDataSetElementView
     {
         public ShowDataSetElementView()
         {
-            this.InitializeComponent();
-            this.DataContext = ContainerBuilder.Container.Resolve<IDataSetElementViewModel>("ShowDataSet");
+            InitializeComponent();
+            DataContext = ContainerBuilder.Container.Resolve<IDataSetElementViewModel>("ShowDataSet");
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            var disposable = this.DataContext as IDisposable;
+            var disposable = DataContext as IDisposable;
             disposable?.Dispose();
             base.OnClosing(e);
         }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Microsoft.Practices.Unity;
@@ -106,9 +105,10 @@ namespace Trade_platform.tests.Sandbox
 
             botMock_1.Verify(x => x.SetUpData(result), Times.Once);
             botMock_1.Verify(x => x.Execute(), Times.Once);
-
+            botMock_1.Verify(x => x.ResetTransactionContext(), Times.Once);
             botMock_2.Verify(x => x.SetUpData(result), Times.Once);
             botMock_2.Verify(x => x.Execute(), Times.Once);
+            botMock_2.Verify(x => x.ResetTransactionContext(), Times.Once);
         }
 
         private IList<Slice> GetData()

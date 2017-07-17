@@ -59,7 +59,7 @@ namespace TradePlatform
             Container.RegisterType<IFileManager, FileManager>();
             Container.RegisterType<IInfoViewModel, InfoViewModel>();
             Container.RegisterInstance(new ExceptionActualizer());
-            Container.RegisterType<ISettingSerializer, XMLSettingSerializer>();
+            Container.RegisterType<ISettingSerializer, XmlSettingSerializer>();
             Container.RegisterType<IInfoPublisher, InfoPublisher>(new ContainerControlledLifetimeManager());
 
             Container.RegisterType<IHistoryInstrumentsViewModel, HistoryInstrumentsViewModel>();

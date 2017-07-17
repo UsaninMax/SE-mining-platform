@@ -182,7 +182,7 @@ namespace TradePlatform.Sandbox.Transactios
             _activeRequests
                 .ForEach(x =>
                 {
-                    Transaction transaction = _transactionBuilder.Build(x, _lastTicks[x.InstrumentId], _lastDate);
+                    Transaction transaction = _transactionBuilder.Build(x, _lastTicks[x.InstrumentId]);
                     if (transaction == null)
                     {
                         return;
@@ -240,5 +240,6 @@ namespace TradePlatform.Sandbox.Transactios
 
             return true;
         }
+
     }
 }

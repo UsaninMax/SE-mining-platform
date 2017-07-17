@@ -16,6 +16,26 @@ namespace Trade_platform.tests.Sandbox.Transactios
     {
 
         [Test]
+        public void Check_reset()
+        {
+            var workingPeriodHolderMock = new Mock<IWorkingPeriodHolder>();
+            ContainerBuilder.Container.RegisterInstance(workingPeriodHolderMock.Object);
+            var transactionBuilderMock = new Mock<ITransactionBuilder>();
+            ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
+            var transactionHolderMock = new Mock<ITransactionHolder>();
+            ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
+            var balanceMock = new Mock<IBalance>();
+            ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
+
+            ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>());
+            context.Reset();
+            transactionBuilderMock.Verify(x=> x.Reset(), Times.Once);
+            transactionHolderMock.Verify(x => x.Reset(), Times.Once);
+            workingPeriodHolderMock.Verify(x => x.Reset(), Times.Once);
+            balanceMock.Verify(x => x.Reset(), Times.Once);
+        }
+
+        [Test]
         public void Check_if_context_is_prepared()
         {
             var workingPeriodHolderMock = new Mock<IWorkingPeriodHolder>();
@@ -98,16 +118,10 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             transactionHolderMock.Setup(x => x.GetCoverage(ticks, It.IsAny<IEnumerable<OpenPositionRequest>>())).Returns(103);
             Assert.That(context.AvailableNumber("test_id"), Is.EqualTo(74));
-
-            context.OpenPosition(new OpenPositionRequest.Builder().InstrumentId("test_id").Direction(Direction.Buy).Number(22).Build());
-            context.OpenPosition(new OpenPositionRequest.Builder().InstrumentId("test_id").Direction(Direction.Sell).Number(17).Build());
-            context.OpenPosition(new OpenPositionRequest.Builder().InstrumentId("test_id_2").Direction(Direction.Sell).Number(17).Build());
-
-            Assert.That(context.AvailableNumber("test_id"), Is.EqualTo(3));
         }
 
         [Test]
-        public void Open_position_when_not_tick_was()
+        public void Open_position_when_not_tick_processed()
         {
             var workingPeriodHolderMock = new Mock<IWorkingPeriodHolder>();
             ContainerBuilder.Container.RegisterInstance(workingPeriodHolderMock.Object);
@@ -268,7 +282,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
         }
 
         [Test]
-        public void Open_position_check_execution()
+        public void Open_position_check()
         {
             var workingPeriodHolderMock = new Mock<IWorkingPeriodHolder>();
             ContainerBuilder.Container.RegisterInstance(workingPeriodHolderMock.Object);
@@ -317,11 +331,14 @@ namespace Trade_platform.tests.Sandbox.Transactios
             }, new DateTime(2016, 9, 12, 11, 45, 0));
 
             Assert.That(context.OpenPosition(request), Is.True);
+            Assert.That(context.GetActiveRequests().Count, Is.EqualTo(1));
+            Assert.That(context.GetHistoryRequests().Count, Is.EqualTo(1));
+            Assert.That(context.GetActiveRequests()[0].Date, Is.EqualTo(new DateTime(2016, 9, 12, 11, 45, 0)));
 
             Transaction transaction = new Transaction.Builder().InstrumentId("test_id").Direction(Direction.Buy)
                 .Number(10).Build();
 
-            transactionBuilderMock.Setup(x => x.Build(request, tick["test_id"], It.IsAny<DateTime>())).Returns(transaction);
+            transactionBuilderMock.Setup(x => x.Build(request, tick["test_id"])).Returns(transaction);
             context.ProcessTick(tick, new DateTime(2016, 9, 12, 11, 46, 0));
 
             balanceMock.Verify(x => x.AddTransactionMargin(transaction, transactions), Times.Once);
@@ -344,6 +361,11 @@ namespace Trade_platform.tests.Sandbox.Transactios
             var balanceMock = new Mock<IBalance>();
             ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
             balanceMock.Setup(x => x.GetTotal()).Returns(1000);
+
+
+            workingPeriodHolderMock.Setup(x => x.Get("test_id"))
+                .Returns(new WorkingPeriod {Open = new TimeSpan(0, 10, 30, 0), Close = new TimeSpan(0, 20, 0, 0)});
+
 
             IDictionary<string, Tick> tick = new Dictionary<string, Tick>
             {
@@ -376,11 +398,6 @@ namespace Trade_platform.tests.Sandbox.Transactios
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
                 { "test_id", new BrokerCost{InstrumentId ="test_id", Coverage = 0.10, TransactionCost = 2}}
-            });
-
-            context.SetUpWorkingPeriod(new Dictionary<string, WorkingPeriod>
-            {
-                {"test_id", new WorkingPeriod{Open = new TimeSpan(0, 10, 30, 0), Close = new TimeSpan(0, 20, 0, 0)}}
             });
 
             context.ProcessTick(new Dictionary<string, Tick>

@@ -2,23 +2,22 @@
 using System.ComponentModel;
 using TradePlatform.DataSet.ViewModels;
 using Microsoft.Practices.Unity;
-using System.Windows;
 using TradePlatform.Commons.BaseModels;
 
 namespace TradePlatform.DataSet.Views
 {
-    public partial class DataSetElementView : Window
+    public partial class DataSetElementView
     {
         public DataSetElementView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             var modelWiew = ContainerBuilder.Container.Resolve<IDataSetElementViewModel>("DataSet");
-            this.DataContext = modelWiew;
+            DataContext = modelWiew;
             IClosableWindow closableWindow = modelWiew as IClosableWindow;
 
             if (closableWindow != null)
             {
-                closableWindow.CloseWindowNotification += new EventHandler(CloseWindowNotificationHandler);
+                closableWindow.CloseWindowNotification += CloseWindowNotificationHandler;
             }
         }
 
@@ -29,7 +28,7 @@ namespace TradePlatform.DataSet.Views
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            var disposable = this.DataContext as IDisposable;
+            var disposable = DataContext as IDisposable;
             disposable?.Dispose();
             base.OnClosing(e);
         }

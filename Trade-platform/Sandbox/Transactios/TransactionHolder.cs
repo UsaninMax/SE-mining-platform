@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.ObjectBuilder2;
@@ -11,8 +10,8 @@ namespace TradePlatform.Sandbox.Transactios
 {
     public class TransactionHolder : ITransactionHolder
     {
-        private List<Transaction> _openTransactions = new List<Transaction>();
-        private IDictionary<string, BrokerCost> _brokerCosts;
+        private readonly List<Transaction> _openTransactions = new List<Transaction>();
+        private readonly IDictionary<string, BrokerCost> _brokerCosts;
 
         public TransactionHolder(IDictionary<string, BrokerCost> brokerCosts)
         {

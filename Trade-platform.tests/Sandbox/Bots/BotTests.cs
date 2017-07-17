@@ -66,6 +66,74 @@ namespace Trade_platform.tests.Sandbox.Bots
             Assert.That(slices.OfType<Indicator>().Count(), Is.EqualTo(3));
         }
 
+        [Test]
+        public void Test_execute_tick_data()
+        {
+            var transactionContextMock = new Mock<ITransactionsContext>();
+            ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
+            TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
+            bot.SetUpData(GetData());
+            bot.SetUpPredicate(new BotPredicate
+                    .Builder()
+                .From(new DateTime(2016, 9, 14, 1, 28, 0))
+                .To(new DateTime(2016, 9, 16, 23, 28, 0))
+                .Build());
+            bot.Execute();
+            transactionContextMock.Verify(x=>x.ProcessTick(It.IsAny<IDictionary<string, Tick>>(), It.IsAny<DateTime>()), Times.Exactly(3));
+        }
+
+        [Test]
+        public void Check_set_up_working_period()
+        {
+            var transactionContextMock = new Mock<ITransactionsContext>();
+            ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
+            TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
+            IDictionary<string, WorkingPeriod> value = new Dictionary<string, WorkingPeriod>();
+            bot.SetUpWorkingPeriod(value);
+            transactionContextMock.Verify(x=>x.SetUpWorkingPeriod(value), Times.Once);
+        }
+
+        [Test]
+        public void Check_set_up_balance()
+        {
+            var transactionContextMock = new Mock<ITransactionsContext>();
+            ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
+            TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
+            bot.SetUpBalance(1000);
+            transactionContextMock.Verify(x => x.SetUpBalance(1000), Times.Once);
+        }
+
+        [Test]
+        public void Check_set_up_open_position()
+        {
+            var transactionContextMock = new Mock<ITransactionsContext>();
+            ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
+            TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
+            OpenPositionRequest request = new OpenPositionRequest.Builder().Build();
+            bot.OpenPosition(request);
+            transactionContextMock.Verify(x => x.OpenPosition(request), Times.Once);
+        }
+
+        [Test]
+        public void Check_is_prepared()
+        {
+            var transactionContextMock = new Mock<ITransactionsContext>();
+            ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
+            TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
+            bot.IsPrepared();
+            transactionContextMock.Verify(x => x.IsPrepared(), Times.Once);
+        }
+
+        [Test]
+        public void Check_reset()
+        {
+            var transactionContextMock = new Mock<ITransactionsContext>();
+            ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
+            TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
+            bot.ResetTransactionContext();
+            transactionContextMock.Verify(x => x.Reset(), Times.Once);
+        }
+
         private class TestBot : BotApi
         {
             private IList<IData> _slices = new List<IData>();

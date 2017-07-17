@@ -14,7 +14,7 @@ namespace TradePlatform.Commons.Utils
         {
             if (Count > _maxSize)
             {
-                base.RemoveAt(0);
+                RemoveAt(0);
                 base.InsertItem(_maxSize, item);
             }
             else

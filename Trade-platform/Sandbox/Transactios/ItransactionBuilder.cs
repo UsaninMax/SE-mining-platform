@@ -1,12 +1,11 @@
-﻿using System;
-using TradePlatform.Sandbox.Models;
+﻿using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios.Models;
 
 namespace TradePlatform.Sandbox.Transactios
 {
     public interface ITransactionBuilder
     {
-        Transaction Build(OpenPositionRequest request, Tick tick, DateTime date);
+        Transaction Build(OpenPositionRequest request, Tick tick);
         void Reset();
     }
 }
