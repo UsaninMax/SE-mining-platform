@@ -132,7 +132,7 @@ namespace Trade_platform.tests.Sandbox.Presenters
             proxySandbox.Setup(x => x.BuildData()).Callback(() => Thread.Sleep(500));
             presenter.Execute();
             presenter.StopExecution();
-            Thread.Sleep(1500);
+            Thread.Sleep(2000);
             Assert.That(presenter.StatusMessage, Is.EqualTo(Status.IsCanceled));
         }
     }

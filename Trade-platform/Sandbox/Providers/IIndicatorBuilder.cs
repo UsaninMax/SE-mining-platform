@@ -1,9 +1,9 @@
-﻿using System;
+﻿using TradePlatform.Sandbox.DataProviding.Predicates;
 
 namespace TradePlatform.Sandbox.Providers
 {
     public interface IIndicatorBuilder
     {
-        IIndicatorProvider Build(Type type);
+        IIndicatorProvider Build(IndicatorPredicate predicate);
     }
 }

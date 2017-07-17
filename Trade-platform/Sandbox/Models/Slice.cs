@@ -6,9 +6,8 @@ namespace TradePlatform.Sandbox.Models
     public class Slice
     {
         public DateTime @DateTime { get; private set; }
-        public IEnumerable<Tick> Ticks { get; private set; }
-        public IEnumerable<Candle> Candles { get; private set; }
-        public IEnumerable<Indicator> Indicators { get; private set; }
+        public IDictionary<string, Tick> Ticks { get; private set; }
+        public IDictionary<string, IData> Datas { get; private set; }
 
         private Slice()
         {
@@ -17,9 +16,8 @@ namespace TradePlatform.Sandbox.Models
         public class Builder
         {
             private DateTime _dateTime;
-            private ICollection<Tick> _ticks;
-            private ICollection<Candle> _candles;
-            private ICollection<Indicator> _indicators;
+            private IDictionary<string, Tick> _ticks;
+            private IDictionary<string, IData> _datas;
 
             public Builder WithDate(DateTime value)
             {
@@ -27,21 +25,15 @@ namespace TradePlatform.Sandbox.Models
                 return this;
             }
 
-            public Builder WithTick(ICollection<Tick> values)
+            public Builder WithTick(IDictionary<string, Tick> values)
             {
                 _ticks = values;
                 return this;
             }
 
-            public Builder WithCandle(ICollection<Candle> values)
+            public Builder WithData(IDictionary<string, IData> values)
             {
-                _candles = values;
-                return this;
-            }
-
-            public Builder WithIndicator(ICollection<Indicator> values)
-            {
-                _indicators = values;
+                _datas = values;
                 return this;
             }
 
@@ -51,8 +43,7 @@ namespace TradePlatform.Sandbox.Models
                 {
                     DateTime = _dateTime,
                     Ticks = _ticks,
-                    Candles = _candles,
-                    Indicators = _indicators
+                    Datas = _datas
                 };
             }
         }
@@ -61,8 +52,7 @@ namespace TradePlatform.Sandbox.Models
         {
             return $"{nameof(DateTime)}: {DateTime}, " +
                    $"{nameof(Ticks)}: {Ticks}, " +
-                   $"{nameof(Candles)}: {Candles}, " +
-                   $"{nameof(Indicators)}: {Indicators}";
+                   $"{nameof(Datas)}: {Datas} ";
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using System.Net;
@@ -21,6 +22,8 @@ using TradePlatform.Sandbox.DataProviding.Checks;
 using TradePlatform.Sandbox.DataProviding.Transformers;
 using TradePlatform.Sandbox.Presenters;
 using TradePlatform.Sandbox.Providers;
+using TradePlatform.Sandbox.Transactios;
+using TradePlatform.Sandbox.Transactios.Models;
 using TradePlatform.StockData.DataServices.SecuritiesInfo;
 using TradePlatform.StockData.DataServices.SecuritiesInfo.Finam;
 using TradePlatform.StockData.DataServices.Serialization;
@@ -56,7 +59,7 @@ namespace TradePlatform
             Container.RegisterType<IFileManager, FileManager>();
             Container.RegisterType<IInfoViewModel, InfoViewModel>();
             Container.RegisterInstance(new ExceptionActualizer());
-            Container.RegisterType<ISettingSerializer, XMLSettingSerializer>();
+            Container.RegisterType<ISettingSerializer, XmlSettingSerializer>();
             Container.RegisterType<IInfoPublisher, InfoPublisher>(new ContainerControlledLifetimeManager());
 
             Container.RegisterType<IHistoryInstrumentsViewModel, HistoryInstrumentsViewModel>();
@@ -93,6 +96,12 @@ namespace TradePlatform
             Container.RegisterType<IDataProvider, DataProvider>();
             Container.RegisterType<ITransformer, DataTransformer>();
             Container.RegisterType<IIndicatorBuilder, IndicatorBuilder>();
+
+            Container.RegisterType<ITransactionsContext, TransactionsContext>(new InjectionConstructor(typeof(IDictionary<string, BrokerCost>)));
+            Container.RegisterType<ITransactionHolder, TransactionHolder>(new InjectionConstructor(typeof(IDictionary<string, BrokerCost>)));
+            Container.RegisterType<IBalance, Balance>();
+            Container.RegisterType<ITransactionBuilder, TransactionBuilder>();
+            Container.RegisterType<IWorkingPeriodHolder, WorkingPeriodHolder>();
         }
     }
 }

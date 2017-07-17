@@ -8,7 +8,7 @@ namespace TradePlatform.Sandbox.DataProviding.Predicates
         public string Id { get; private set; }
         public Type Indicator { get; private set; }
         public DataPredicate DataPredicate { get; private set; }
-        public Dictionary<string, object> Parameters { get; private set; }
+        public IDictionary<string, object> Parameters { get; private set; }
 
         private IndicatorPredicate()
         {
@@ -19,7 +19,7 @@ namespace TradePlatform.Sandbox.DataProviding.Predicates
             private string _id;
             private Type _indicator;
             private DataPredicate _dataPredicate;
-            private Dictionary<string, object> _parameters = new Dictionary<string, object>();
+            private IDictionary<string, object> _parameters = new Dictionary<string, object>();
 
             public Builder NewId(string value)
             {

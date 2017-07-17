@@ -37,7 +37,8 @@ namespace TradePlatform.DataSet.ViewModels
                 RaisePropertyChanged();
             }
         }
-        public string _uniqueId;
+
+        private string _uniqueId;
 
         public double WarrantyCoverage
         {
@@ -51,7 +52,8 @@ namespace TradePlatform.DataSet.ViewModels
                 RaisePropertyChanged();
             }
         }
-        public double _warrantyCoverage;
+
+        private double _warrantyCoverage;
 
         public double StepSize
         {
@@ -65,7 +67,8 @@ namespace TradePlatform.DataSet.ViewModels
                 RaisePropertyChanged();
             }
         }
-        public double _stepSize;
+
+        private double _stepSize;
 
         private readonly IDataSetHolder _holder;
         private readonly IInfoPublisher _infoPublisher;

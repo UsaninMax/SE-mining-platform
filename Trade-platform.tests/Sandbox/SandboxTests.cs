@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using Castle.Core;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
@@ -30,14 +29,7 @@ namespace Trade_platform.tests.Sandbox
                     .NewId("RTS_1").Build()
             };
 
-            IList<Pair<DateTime, IEnumerable<IData>>> result = new List<Pair<DateTime, IEnumerable<IData>>>
-            {
-                new Pair<DateTime, IEnumerable<IData>>(DateTime.Now, new List<IData>
-                {
-                    new Candle.Builder().WithId("111").Build()
-                })
-
-            };
+            var result = GetData();
 
             dataProviderMock.Setup(x => x.Get(predicates, token)).Returns(result);
             TestSandBox testSandBox = new TestSandBox
@@ -62,14 +54,7 @@ namespace Trade_platform.tests.Sandbox
                     .NewId("RTS_1").Build()
             };
 
-            IList<Pair<DateTime, IEnumerable<IData>>> result = new List<Pair<DateTime, IEnumerable<IData>>>
-            {
-                new Pair<DateTime, IEnumerable<IData>>(DateTime.Now, new List<IData>
-                {
-                    new Candle.Builder().WithId("111").Build()
-                })
-
-            };
+            var result = GetData();
 
             dataProviderMock.Setup(x => x.Get(predicates, token)).Returns(result);
             TestSandBox testSandBox = new TestSandBox
@@ -97,22 +82,17 @@ namespace Trade_platform.tests.Sandbox
             var botMock_1 = new Mock<IBot>();
             var botMock_2 = new Mock<IBot>();
 
+            botMock_1.Setup(x => x.IsPrepared()).Returns(true);
+            botMock_2.Setup(x => x.IsPrepared()).Returns(true);
             ICollection<IBot> bots = new List<IBot>
             {
                 botMock_1.Object,
                 botMock_2.Object
             };
 
-            IList<Pair<DateTime, IEnumerable<IData>>> data = new List<Pair<DateTime, IEnumerable<IData>>>
-            {
-                new Pair<DateTime, IEnumerable<IData>>(DateTime.Now, new List<IData>
-                {
-                    new Candle.Builder().WithId("111").Build()
-                })
-                
-            };
+            var result = GetData();
 
-            dataProviderMock.Setup(x => x.Get(predicates, token)).Returns(data);
+            dataProviderMock.Setup(x => x.Get(predicates, token)).Returns(result);
             TestSandBox testSandBox = new TestSandBox
             {
                 Predicates = predicates,
@@ -123,13 +103,28 @@ namespace Trade_platform.tests.Sandbox
             testSandBox.BuildData();
             testSandBox.Execution();
 
-            botMock_1.Verify(x=> x.SetUpData(data), Times.Once);
+            botMock_1.Verify(x => x.SetUpData(result), Times.Once);
             botMock_1.Verify(x => x.Execute(), Times.Once);
-
-            botMock_2.Verify(x => x.SetUpData(data), Times.Once);
+            botMock_1.Verify(x => x.ResetTransactionContext(), Times.Once);
+            botMock_2.Verify(x => x.SetUpData(result), Times.Once);
             botMock_2.Verify(x => x.Execute(), Times.Once);
+            botMock_2.Verify(x => x.ResetTransactionContext(), Times.Once);
         }
 
+        private IList<Slice> GetData()
+        {
+            IDictionary<string, IData> datas = new Dictionary<string, IData>();
+            datas.Add("111", new Candle.Builder().WithId("111").Build());
+
+            return new List<Slice>
+            {
+                new Slice.Builder()
+                .WithDate(DateTime.Now)
+                .WithData(datas)
+                .WithTick(new Dictionary<string, Tick>())
+                .Build()
+            };
+        }
     }
 
     class TestSandBox : SandboxApi

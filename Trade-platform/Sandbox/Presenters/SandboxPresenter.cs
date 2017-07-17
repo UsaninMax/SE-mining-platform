@@ -94,6 +94,7 @@ namespace TradePlatform.Sandbox.Presenters
             {
                 _cancellationTokenSource.Cancel();
                 _executionTask.Wait();
+                Thread.Sleep(500);
 
             });
             cancelTask.ContinueWith(t =>

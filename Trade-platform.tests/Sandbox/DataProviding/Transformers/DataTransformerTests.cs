@@ -57,6 +57,7 @@ namespace Trade_platform.tests.Sandbox.DataProviding.Transformers
             List<Candle> candles = transformer.Transform(tiks, predicate);
 
             Assert.That(candles.Count, Is.EqualTo(4));
+            Assert.That(candles[0].Date(), Is.EqualTo(new DateTime(2017, 7, 17, 13, 45, 00)));
             Assert.That(candles[0].Open, Is.EqualTo(8));
             Assert.That(candles[0].Low, Is.EqualTo(8));
             Assert.That(candles[0].High, Is.EqualTo(9));
@@ -64,6 +65,7 @@ namespace Trade_platform.tests.Sandbox.DataProviding.Transformers
             Assert.That(candles[0].Volume, Is.EqualTo(15));
             Assert.That(candles[0].Id(), Is.EqualTo(predicate.Id));
 
+            Assert.That(candles[1].Date(), Is.EqualTo(new DateTime(2017, 7, 17, 13, 48, 00)));
             Assert.That(candles[1].Open, Is.EqualTo(11));
             Assert.That(candles[1].Low, Is.EqualTo(5));
             Assert.That(candles[1].High, Is.EqualTo(18));

@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace TradePlatform.Commons.Setting
 {
-    public class XMLSettingSerializer : ISettingSerializer
+    public class XmlSettingSerializer : ISettingSerializer
     {
         public T Deserialize<T>(string path)
         {

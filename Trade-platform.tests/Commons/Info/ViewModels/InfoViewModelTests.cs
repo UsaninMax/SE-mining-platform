@@ -4,7 +4,7 @@ using Microsoft.Practices.Unity;
 using NUnit.Framework;
 using Prism.Events;
 using TradePlatform;
-using TradePlatform.Commons.Info.MessageEvents;
+using TradePlatform.Commons.Info.Events;
 using TradePlatform.Commons.Info.Model;
 using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.Commons.Info.ViewModels;
@@ -28,8 +28,8 @@ namespace Trade_platform.tests.Commons.Info.ViewModels
         {
 
             InfoViewModel model = new InfoViewModel();
-            _eventAggregator.GetEvent<PuplishInfo<InfoItem>>().Publish(new DownloadInfo { Message = "first" });
-            _eventAggregator.GetEvent<PuplishInfo<InfoItem>>().Publish(new DownloadInfo { Message = "second" });
+            _eventAggregator.GetEvent<PuplishInfo>().Publish(new DownloadInfo { Message = "first" });
+            _eventAggregator.GetEvent<PuplishInfo>().Publish(new DownloadInfo { Message = "second" });
             DoEvents();
             Thread.Sleep(500);
             Assert.That(model.Tabs.Count, Is.EqualTo(1));
@@ -41,8 +41,8 @@ namespace Trade_platform.tests.Commons.Info.ViewModels
         {
 
             InfoViewModel model = new InfoViewModel();
-            _eventAggregator.GetEvent<PuplishInfo<InfoItem>>().Publish(new DownloadInfo { Message = "first" });
-            _eventAggregator.GetEvent<PuplishInfo<InfoItem>>().Publish(new DownloadInfo { Message = "second" });
+            _eventAggregator.GetEvent<PuplishInfo>().Publish(new DownloadInfo { Message = "first" });
+            _eventAggregator.GetEvent<PuplishInfo>().Publish(new DownloadInfo { Message = "second" });
             DoEvents();
             Thread.Sleep(500);
             Assert.That(model.Tabs.Count, Is.EqualTo(1));
