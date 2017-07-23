@@ -3,12 +3,14 @@ using TradePlatform.Vizualization.ViewModels;
 
 namespace TradePlatform.Vizualization.Views
 {
-    public partial class OhclChartView : UserControl
+    public partial class ChartView : UserControl
     {
-        public OhclChartView(IOhclChartViewModel model)
+
+        public ChartView(IChartViewModel model)
         {
             InitializeComponent();
             DataContext = model;
         }
+        
     }
 }

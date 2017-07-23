@@ -139,6 +139,7 @@
     <Compile Include="DataSet\DataServices\DataSetService.cs" />
     <Compile Include="DataSet\DataServices\IDataTickProvider.cs" />
     <Compile Include="DataSet\DataServices\IDataSetService.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Sandbox\Bots\BotPredicate.cs" />
     <Compile Include="Sandbox\Bots\IBot.cs" />
     <Compile Include="Sandbox\DataProviding\Transformers\DataTransformer.cs" />
@@ -291,13 +292,17 @@
     <Compile Include="StockData\Views\HistoryInstrumentsView.xaml.cs">
       <DependentUpon>HistoryInstrumentsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Vizualization\ViewModels\IOhclChartViewModel.cs" />
-    <Compile Include="Vizualization\ViewModels\OhclChartViewModel.cs" />
-    <Compile Include="Vizualization\Views\ChartsView.xaml.cs">
-      <DependentUpon>ChartsView.xaml</DependentUpon>
+    <Compile Include="Vizualization\Builders\ChartsBuilder.cs" />
+    <Compile Include="Vizualization\Builders\IChartsBuilder.cs" />
+    <Compile Include="Vizualization\Builders\Predicates\Chart.cs" />
+    <Compile Include="Vizualization\Builders\Predicates\Panel.cs" />
+    <Compile Include="Vizualization\ViewModels\IChartViewModel.cs" />
+    <Compile Include="Vizualization\ViewModels\LiveChartViewModel.cs" />
+    <Compile Include="Vizualization\Views\ChartPanelView.xaml.cs">
+      <DependentUpon>ChartPanelView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Vizualization\Views\OhclChartView.xaml.cs">
-      <DependentUpon>OhclChartView.xaml</DependentUpon>
+    <Compile Include="Vizualization\Views\ChartView.xaml.cs">
+      <DependentUpon>ChartView.xaml</DependentUpon>
     </Compile>
     <Page Include="Commons\Info\Views\InfoView.xaml">
       <SubType>Designer</SubType>
@@ -358,11 +363,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Vizualization\Views\ChartsView.xaml">
+    <Page Include="Vizualization\Views\ChartPanelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Vizualization\Views\OhclChartView.xaml">
+    <Page Include="Vizualization\Views\ChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

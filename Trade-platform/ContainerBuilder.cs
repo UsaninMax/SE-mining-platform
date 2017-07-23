@@ -104,7 +104,7 @@ namespace TradePlatform
             Container.RegisterType<ITransactionBuilder, TransactionBuilder>();
             Container.RegisterType<IWorkingPeriodHolder, WorkingPeriodHolder>();
 
-            Container.RegisterType<IOhclChartViewModel, OhclChartViewModel>();
+            Container.RegisterType<IChartViewModel, LiveChartViewModel>();
         }
     }
 }
