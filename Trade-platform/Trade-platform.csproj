@@ -69,6 +69,12 @@
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Expression.Interaction.3.0.40218.0\lib\net45\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
@@ -285,6 +291,14 @@
     <Compile Include="StockData\Views\HistoryInstrumentsView.xaml.cs">
       <DependentUpon>HistoryInstrumentsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Vizualization\ViewModels\IOhclChartViewModel.cs" />
+    <Compile Include="Vizualization\ViewModels\OhclChartViewModel.cs" />
+    <Compile Include="Vizualization\Views\ChartsView.xaml.cs">
+      <DependentUpon>ChartsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vizualization\Views\OhclChartView.xaml.cs">
+      <DependentUpon>OhclChartView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Commons\Info\Views\InfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -341,6 +355,14 @@
       <DependentUpon>DownloadNewInstrumentView.xaml</DependentUpon>
     </Compile>
     <Page Include="StockData\Views\HistoryInstrumentsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vizualization\Views\ChartsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vizualization\Views\OhclChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

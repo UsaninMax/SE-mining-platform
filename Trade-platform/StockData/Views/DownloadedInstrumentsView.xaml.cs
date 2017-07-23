@@ -10,11 +10,11 @@ namespace TradePlatform.StockData.Views
 
         public DownloadedInstrumentsView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                this.DataContext = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsViewModel>();
+                DataContext = ContainerBuilder.Container.Resolve<IDownloadedInstrumentsViewModel>();
             }
         }
     }

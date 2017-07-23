@@ -33,6 +33,7 @@ using TradePlatform.StockData.Holders;
 using TradePlatform.StockData.Models;
 using TradePlatform.StockData.Presenters;
 using TradePlatform.StockData.ViewModels;
+using TradePlatform.Vizualization.ViewModels;
 
 namespace TradePlatform
 {
@@ -102,6 +103,8 @@ namespace TradePlatform
             Container.RegisterType<IBalance, Balance>();
             Container.RegisterType<ITransactionBuilder, TransactionBuilder>();
             Container.RegisterType<IWorkingPeriodHolder, WorkingPeriodHolder>();
+
+            Container.RegisterType<IOhclChartViewModel, OhclChartViewModel>();
         }
     }
 }

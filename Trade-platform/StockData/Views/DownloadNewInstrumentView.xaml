@@ -3,7 +3,7 @@
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-         xmlns:System="clr-namespace:System;assembly=mscorlib" 
+         xmlns:system="clr-namespace:System;assembly=mscorlib" 
          xmlns:views="clr-namespace:TradePlatform.Commons.Views"
          mc:Ignorable="d">
 
@@ -48,8 +48,8 @@
                   ItemsSource="{Binding Path=Securities}"
                   DisplayMemberPath="Name"
                   SelectedValue="{Binding Path=SelectedSecurity}"/>
-        <DatePicker Grid.Column="0"  Grid.Row="2" Margin="5" SelectedDate="{Binding Path=DateFrom, Mode=TwoWay, StringFormat=d, TargetNullValue={x:Static System:DateTime.Now}}"/>
-        <DatePicker Grid.Column="1"  Grid.Row="2" Margin="5" SelectedDate="{Binding Path=DateTo, Mode=TwoWay, StringFormat=d, TargetNullValue={x:Static System:DateTime.Now}}"/>
+        <DatePicker Grid.Column="0"  Grid.Row="2" Margin="5" SelectedDate="{Binding Path=DateFrom, Mode=TwoWay, StringFormat=d, TargetNullValue={x:Static system:DateTime.Now}}"/>
+        <DatePicker Grid.Column="1"  Grid.Row="2" Margin="5" SelectedDate="{Binding Path=DateTo, Mode=TwoWay, StringFormat=d, TargetNullValue={x:Static system:DateTime.Now}}"/>
         <Button Grid.Column="2" Grid.Row="2" Margin="5" Content="Add" Command="{Binding AddNewCommand}"/>
     </Grid>
 </UserControl>
