@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using TradePlatform.Vizualization.ViewModels;
 
 namespace TradePlatform.Vizualization.Views
@@ -11,6 +12,16 @@ namespace TradePlatform.Vizualization.Views
             InitializeComponent();
             DataContext = model;
         }
-        
+
+        private void ResetZoomOnClick(object sender, RoutedEventArgs e)
+        {
+            //Use the axis MinValue/MaxValue properties to specify the values to display.
+            //use double.Nan to clear it.
+
+            X.MinValue = double.NaN;
+            X.MaxValue = double.NaN;
+            Y.MinValue = double.NaN;
+            Y.MaxValue = double.NaN;
+        }
     }
 }
