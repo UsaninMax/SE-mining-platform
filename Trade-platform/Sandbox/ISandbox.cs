@@ -2,6 +2,8 @@
 using System.Threading;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding.Predicates;
+using TradePlatform.Vizualization.Builders.Predicates;
+using TradePlatform.Vizualization.Populating.Predicates;
 
 namespace TradePlatform.Sandbox
 {
@@ -14,5 +16,8 @@ namespace TradePlatform.Sandbox
         void Execution();
         void AfterExecution();
         void CleanMemory();
+
+        IEnumerable<Panel> SetUpCharts();
+        void PopulateCharts(IEnumerable<ChartPredicate> predicates);
     }
 }

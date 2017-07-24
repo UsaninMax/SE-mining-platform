@@ -34,6 +34,9 @@ using TradePlatform.StockData.Models;
 using TradePlatform.StockData.Presenters;
 using TradePlatform.StockData.ViewModels;
 using TradePlatform.Vizualization.ViewModels;
+using TradePlatform.Vizualization.Holders;
+using TradePlatform.Vizualization.Builders;
+using TradePlatform.Vizualization.Populating;
 
 namespace TradePlatform
 {
@@ -105,6 +108,9 @@ namespace TradePlatform
             Container.RegisterType<IWorkingPeriodHolder, WorkingPeriodHolder>();
 
             Container.RegisterType<IChartViewModel, LiveChartViewModel>();
+            Container.RegisterType<IChartsBuilder, ChartsBuilder>();
+            Container.RegisterType<IChartsHolder, ChartsHolder>();
+            Container.RegisterType<IChartsPopulator, ChartsPopulator>();
         }
     }
 }

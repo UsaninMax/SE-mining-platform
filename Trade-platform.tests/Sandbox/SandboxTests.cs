@@ -10,6 +10,7 @@ using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding;
 using TradePlatform.Sandbox.DataProviding.Predicates;
 using TradePlatform.Sandbox.Models;
+using TradePlatform.Vizualization.Builders.Predicates;
 
 namespace Trade_platform.tests.Sandbox
 {
@@ -145,7 +146,12 @@ namespace Trade_platform.tests.Sandbox
 
         public override void AfterExecution()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<Panel> SetUpCharts()
+        {
+            throw new NotImplementedException();
         }
     }
 }

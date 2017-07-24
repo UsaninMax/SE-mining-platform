@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Castle.Core;
 using Microsoft.Practices.Unity;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding;
 using TradePlatform.Sandbox.DataProviding.Predicates;
 using TradePlatform.Sandbox.Models;
+using TradePlatform.Vizualization.Populating.Predicates;
+using TradePlatform.Vizualization.Builders.Predicates;
+using TradePlatform.Vizualization.Populating;
 
 namespace TradePlatform.Sandbox
 {
@@ -20,6 +22,13 @@ namespace TradePlatform.Sandbox
         private IList<Slice> _data;
         private CancellationToken _token;
         private ICollection<IBot> _bots;
+        private IChartsPopulator _chartsPopulator;
+
+
+        protected SandboxApi()
+        {
+            _chartsPopulator = ContainerBuilder.Container.Resolve<IChartsPopulator>();
+        }
 
         public void SetToken(CancellationToken token)
         {
@@ -59,6 +68,12 @@ namespace TradePlatform.Sandbox
             continuation.Wait();
         }
 
+        
+        public void PopulateCharts(IEnumerable<ChartPredicate> predicates)
+        {
+            _chartsPopulator.Populate(predicates);
+        }
+
         public void CleanMemory()
         {
             _data = null;
@@ -70,5 +85,7 @@ namespace TradePlatform.Sandbox
         public abstract ICollection<IPredicate> SetUpData();
         public abstract void Execution();
         public abstract void AfterExecution();
+
+        public abstract IEnumerable<Panel> SetUpCharts();
     }
 }

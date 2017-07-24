@@ -4,6 +4,7 @@ using TradePlatform.Sandbox;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding.Predicates;
 using TradePlatform.Sandbox.Transactios.Models;
+using TradePlatform.Vizualization.Builders.Predicates;
 
 namespace TestSandboxModule
 {
@@ -83,6 +84,11 @@ namespace TestSandboxModule
             {
                 System.Diagnostics.Debug.WriteLine("Bot name = " + bot.GetId() + " - has score " + bot.Score());
             }
+        }
+
+        public override IEnumerable<Panel> SetUpCharts()
+        {
+            throw new NotImplementedException();
         }
     }
 }
