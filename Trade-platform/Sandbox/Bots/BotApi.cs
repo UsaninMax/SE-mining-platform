@@ -7,13 +7,14 @@ using Microsoft.Practices.Unity;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios;
 using TradePlatform.Sandbox.Transactios.Models;
+using TradePlatform.Sandbox.Holders;
 
 namespace TradePlatform.Sandbox.Bots
 {
     public abstract class BotApi : IBot
     {
         private string _id;
-        private IList<Slice> _data;
+        private string _sandboxId;
         private BotPredicate _predicate;
         private readonly ITransactionsContext _context;
 
@@ -30,11 +31,6 @@ namespace TradePlatform.Sandbox.Bots
         public void SetUpId(string id)
         {
             _id = id;
-        }
-
-        public void SetUpData(IList<Slice> data)
-        {
-            _data = data;
         }
 
         public void SetUpPredicate(BotPredicate predicate)
@@ -69,7 +65,8 @@ namespace TradePlatform.Sandbox.Bots
 
         public void Execute()
         {
-            _data.Where(m => (_predicate.From == DateTime.MinValue || m.DateTime >= _predicate.From) &&
+            ISandboxDataHolder dataHolder = ContainerBuilder.Container.Resolve<ISandboxDataHolder>();
+            dataHolder.Get().Where(m => (_predicate.From == DateTime.MinValue || m.DateTime >= _predicate.From) &&
                              (_predicate.To == DateTime.MinValue || m.DateTime <= _predicate.To))
                 .ForEach(x =>
                 {
@@ -83,5 +80,10 @@ namespace TradePlatform.Sandbox.Bots
 
         public abstract void Execution(IDictionary<string, IData> data);
         public abstract int Score();
+
+        public void SetUpSandboxId(string id)
+        {
+            _sandboxId = id;
+        }
     }
 }

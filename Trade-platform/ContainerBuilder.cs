@@ -37,6 +37,9 @@ using TradePlatform.Vizualization.ViewModels;
 using TradePlatform.Vizualization.Holders;
 using TradePlatform.Vizualization.Builders;
 using TradePlatform.Vizualization.Populating;
+using TradePlatform.Sandbox.Holders;
+using TradePlatform.Vizualization.Populating.Adaptors;
+using TradePlatform.Vizualization.Populating.Providers;
 
 namespace TradePlatform
 {
@@ -95,9 +98,11 @@ namespace TradePlatform
 
             Container.RegisterType<ISandboxPresenter, SandboxPresenter>(new InjectionConstructor(typeof(ISandbox) , typeof(string)));
             Container.RegisterType<ISandboxProvider, SandboxProvider>();
+            Container.RegisterType<ISandboxDataHolder, SandboxDataHolder>(new ContainerControlledLifetimeManager());
+
 
             Container.RegisterType<IPredicateChecker, SlicePredicateChecker>();
-            Container.RegisterType<IDataProvider, DataProvider>();
+            Container.RegisterType<ISandboxDataProvider, SandboxDataProvider>();
             Container.RegisterType<ITransformer, DataTransformer>();
             Container.RegisterType<IIndicatorBuilder, IndicatorBuilder>();
 
@@ -111,6 +116,9 @@ namespace TradePlatform
             Container.RegisterType<IChartsBuilder, ChartsBuilder>();
             Container.RegisterType<IChartsHolder, ChartsHolder>();
             Container.RegisterType<IChartsPopulator, ChartsPopulator>();
+            Container.RegisterType<IChartDataProvider, ChartDataProvider>();
+            Container.RegisterType<IDataChartAdaptor, LiveChartAdaptor>();
+
         }
     }
 }

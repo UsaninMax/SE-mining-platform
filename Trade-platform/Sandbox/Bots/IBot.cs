@@ -8,7 +8,7 @@ namespace TradePlatform.Sandbox.Bots
     {
         string GetId();
         void SetUpId(string id);
-        void SetUpData(IList<Slice> data);
+        void SetUpSandboxId(string id);
         void SetUpPredicate(BotPredicate predicate);
         void Execute();
         void Execution(IDictionary<string, IData> data);

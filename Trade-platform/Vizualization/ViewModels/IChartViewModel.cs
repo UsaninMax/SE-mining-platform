@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
-using LiveCharts;
-using LiveCharts.Defaults;
+using LiveCharts.Wpf;
 
 namespace TradePlatform.Vizualization.ViewModels
 {
     public interface IChartViewModel
     {
-        void Add(ChartValues<double> values);
-        void Add(ChartValues<OhlcPoint> values);
-        void Add(ChartValues<DateTimePoint> values);
+        void Push(LineSeries series);
+        void Push(OhlcSeries series);
         void AddLabels(IEnumerable<string> labels);
         void ClearAll();
     }

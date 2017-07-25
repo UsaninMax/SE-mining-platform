@@ -7,19 +7,17 @@ using Microsoft.Practices.Unity;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding;
 using TradePlatform.Sandbox.DataProviding.Predicates;
-using TradePlatform.Sandbox.Models;
 using TradePlatform.Vizualization.Populating.Predicates;
 using TradePlatform.Vizualization.Builders.Predicates;
 using TradePlatform.Vizualization.Populating;
+using TradePlatform.Sandbox.Holders;
 
 namespace TradePlatform.Sandbox
 {
     public abstract class SandboxApi : ISandbox
     {
-        public IList<Slice> Data => _data;
         public CancellationToken Token => _token;
         public ICollection<IBot> Bots => _bots;
-        private IList<Slice> _data;
         private CancellationToken _token;
         private ICollection<IBot> _bots;
         private IChartsPopulator _chartsPopulator;
@@ -43,8 +41,11 @@ namespace TradePlatform.Sandbox
         public void BuildData()
         {
             if (_token.IsCancellationRequested) { return; }
-            IDataProvider dataProvider = ContainerBuilder.Container.Resolve<IDataProvider>();
-            _data = dataProvider.Get(SetUpData(), _token);
+            ISandboxDataProvider dataProvider = ContainerBuilder.Container.Resolve<ISandboxDataProvider>();
+            ISandboxDataHolder dataHolder = ContainerBuilder.Container.Resolve<ISandboxDataHolder>();
+            var data = dataProvider.Get(SetUpData(), _token);
+            if (_token.IsCancellationRequested) { return; }
+            dataHolder.Add(data);
         }
 
         protected void Execute()
@@ -59,7 +60,6 @@ namespace TradePlatform.Sandbox
 
                 return Task.Run(() =>
                 {
-                    x.SetUpData(Data);
                     x.ResetTransactionContext();
                     x.Execute();
                 }, _token);
@@ -68,15 +68,12 @@ namespace TradePlatform.Sandbox
             continuation.Wait();
         }
 
-        
-        public void PopulateCharts(IEnumerable<ChartPredicate> predicates)
-        {
-            _chartsPopulator.Populate(predicates);
-        }
+       
 
         public void CleanMemory()
         {
-            _data = null;
+            ISandboxDataHolder dataHolder = ContainerBuilder.Container.Resolve<ISandboxDataHolder>();
+            dataHolder.Clean();
             _bots = null;
             GC.Collect();
             GC.WaitForPendingFinalizers();
@@ -85,7 +82,21 @@ namespace TradePlatform.Sandbox
         public abstract ICollection<IPredicate> SetUpData();
         public abstract void Execution();
         public abstract void AfterExecution();
-
         public abstract IEnumerable<Panel> SetUpCharts();
+
+        public void PopulateCharts(IndicatorDataPredicate predicate)
+        {
+            _chartsPopulator.Populate(predicate);
+        }
+
+        public void PopulateCharts(CandlesDataPredicate predicate)
+        {
+            _chartsPopulator.Populate(predicate);
+        }
+
+        public void CreateCharts()
+        {
+            _chartsPopulator.SetUpCharts(SetUpCharts());
+        }
     }
 }

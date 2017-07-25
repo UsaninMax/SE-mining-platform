@@ -152,7 +152,7 @@ namespace TradePlatform.Main.ViewModels
         private bool CanDoStartAction()
         {
             return _selectedSandboxPresenter != null &&
-                !_selectedSandboxPresenter.IsActive();
+                _sandboxPresenterInfo.All(x => !x.IsActive());
         }
 
         private bool CanDoCancelAction()

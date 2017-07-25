@@ -5,6 +5,7 @@ using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding.Predicates;
 using TradePlatform.Sandbox.Transactios.Models;
 using TradePlatform.Vizualization.Builders.Predicates;
+using TradePlatform.Vizualization.Populating.Predicates;
 
 namespace TestSandboxModule
 {
@@ -38,6 +39,7 @@ namespace TestSandboxModule
                 new IndicatorPredicate.Builder()
                     .NewId("MA")
                     .Indicator(typeof(MA))
+                    .Parameter("length", 12)
                     .DataPredicate(new DataPredicate.Builder()
                         .NewId("RTS_5")
                         .ParentId("RTS")
@@ -56,6 +58,7 @@ namespace TestSandboxModule
 
             TestBot bot_1 = new TestBot(costs);
             bot_1.SetUpId("Test_1");
+            bot_1.SetUpBalance(10000);
             bot_1.SetUpPredicate(new BotPredicate.Builder()
                 .From(new DateTime(2014, 1, 1))
                 .To(new DateTime(2017, 1, 1))
@@ -76,6 +79,21 @@ namespace TestSandboxModule
                 //bot_2
             });
             Execute();
+            PopulateCharts(new CandlesDataPredicate
+            {
+                ChartId = "RTS_1",
+                InstrumentId = "RTS_1",
+                From = new DateTime(2016, 2, 1),
+                To = new DateTime(2016, 2, 5)
+            });
+
+            PopulateCharts(new CandlesDataPredicate
+            {
+                ChartId = "RTS_15",
+                InstrumentId = "RTS_15",
+                From = new DateTime(2016, 2, 1),
+                To = new DateTime(2016, 2, 5)
+            });
         }
 
         public override void AfterExecution()
@@ -88,7 +106,19 @@ namespace TestSandboxModule
 
         public override IEnumerable<Panel> SetUpCharts()
         {
-            throw new NotImplementedException();
+            return new List<Panel> {
+                new Panel
+                {
+                    Charts = new List<Chart>
+                    {
+                        new Chart
+                        {
+                           Ids = new List<string> { "RTS_1", "RTS_15" }
+                        }
+                    }
+                }
+
+            };
         }
     }
 }

@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using LiveCharts;
-using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using Prism.Mvvm;
 using System.Windows.Input;
 using Prism.Commands;
 using System;
-using System.Windows.Media;
 
 namespace TradePlatform.Vizualization.ViewModels
 {
@@ -94,35 +92,7 @@ namespace TradePlatform.Vizualization.ViewModels
 
         private string _toogleZoomingModeText;
 
-        public void Add(ChartValues<double> values)
-        {
-            Series.Add(new LineSeries
-            {
-                Values = values,
-                Foreground = new SolidColorBrush(Color.FromRgb(250, 250, 250)),
-                LineSmoothness = 1,
-                StrokeThickness = 1.5
-            });
-        }
 
-        public void Add(ChartValues<OhlcPoint> values)
-        {
-            Series.Add(new OhlcSeries {
-                Values = values,
-                Foreground = new SolidColorBrush(Color.FromRgb(250, 250, 250)),
-                StrokeThickness = 1.5
-            });
-        }
-
-        public void Add(ChartValues<DateTimePoint> values)
-        {
-            Series.Add(new LineSeries {
-                Values = values,
-                Foreground = new SolidColorBrush(Color.FromRgb(250, 250, 250)),
-                LineSmoothness = 1,
-                StrokeThickness = 1.5
-            });
-        }
 
         public void AddLabels(IEnumerable<string> labels)
         {
@@ -133,6 +103,16 @@ namespace TradePlatform.Vizualization.ViewModels
         {
             Series.Clear();
             Labels.Clear();
+        }
+
+        public void Push(LineSeries series)
+        {
+            Series.Add(series);
+        }
+
+        public void Push(OhlcSeries series)
+        {
+            Series.Add(series);
         }
     }
 }

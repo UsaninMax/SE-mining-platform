@@ -7,6 +7,7 @@ namespace TradePlatform.Vizualization.Populating
     public interface IChartsPopulator
     {
         void SetUpCharts(IEnumerable<Panel> configuration);
-        void Populate(IEnumerable<ChartPredicate> predicates);
+        void Populate(CandlesDataPredicate predicate);
+        void Populate(IndicatorDataPredicate predicate);
     }
 }

@@ -60,6 +60,7 @@ namespace TradePlatform.Sandbox.Presenters
                 sandbox.BuildData();
                 if (_cancellationTokenSource.Token.IsCancellationRequested){ return;}
                 _infoPublisher.PublishInfo(new SandboxInfo { Message = DllName + " execute bots processing " });
+                sandbox.CreateCharts();
                 sandbox.Execution();
                 if (_cancellationTokenSource.Token.IsCancellationRequested) { return; }
                 _infoPublisher.PublishInfo(new SandboxInfo { Message = DllName + " gather result " });

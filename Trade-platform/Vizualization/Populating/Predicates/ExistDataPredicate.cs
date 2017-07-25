@@ -2,10 +2,10 @@
 
 namespace TradePlatform.Vizualization.Populating.Predicates
 {
-    public class ExistDataPredicate : ChartPredicate
+    public abstract class ExistDataPredicate : ChartPredicate
     {
-        DateTime From { get; set; }
-        DateTime To { get; set; }
-        string InstrumentId { get; set; }
+        public DateTime From { get; set; }
+        public DateTime To { get; set; }
+        public string InstrumentId { get; set; }
     }
 }
