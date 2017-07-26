@@ -22,6 +22,7 @@
             <TextBlock Text="{Binding Path=ToogleZoomingModeText}"/>
         </Button>
         <lvc:CartesianChart DisableAnimations="True" 
+                            Name="CartesianChart_1"
                             Hoverable="False" 
                             Grid.Row="1" 
                             Grid.ColumnSpan="2" 

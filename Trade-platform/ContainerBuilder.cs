@@ -114,10 +114,11 @@ namespace TradePlatform
 
             Container.RegisterType<IChartViewModel, LiveChartViewModel>();
             Container.RegisterType<IChartsBuilder, ChartsBuilder>();
-            Container.RegisterType<IChartsHolder, ChartsHolder>();
+            Container.RegisterType<IChartsHolder, ChartsHolder>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IChartsPopulator, ChartsPopulator>();
             Container.RegisterType<IChartDataProvider, ChartDataProvider>();
             Container.RegisterType<IDataChartAdaptor, LiveChartAdaptor>();
+            Container.RegisterInstance(new ChartProxy());
 
         }
     }

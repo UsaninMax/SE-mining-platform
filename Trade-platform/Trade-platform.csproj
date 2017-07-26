@@ -300,6 +300,7 @@
     <Compile Include="Vizualization\Builders\Predicates\Panel.cs" />
     <Compile Include="Vizualization\Holders\ChartsHolder.cs" />
     <Compile Include="Vizualization\Holders\IChartsHolder.cs" />
+    <Compile Include="Vizualization\Populating\ChartProxy.cs" />
     <Compile Include="Vizualization\Populating\Adaptors\LiveChartAdaptor.cs" />
     <Compile Include="Vizualization\Populating\Adaptors\IDataChartAdaptor.cs" />
     <Compile Include="Vizualization\Populating\ChartsPopulator.cs" />

@@ -70,7 +70,7 @@ namespace TestSandboxModule
                 .From(new DateTime(2014, 1, 1))
                 .To(new DateTime(2017, 1, 1))
                 .Build());
-            
+
             if (Token.IsCancellationRequested) { return; }
 
             SetUpBots(new List<IBot>
@@ -84,16 +84,17 @@ namespace TestSandboxModule
                 ChartId = "RTS_1",
                 InstrumentId = "RTS_1",
                 From = new DateTime(2016, 2, 1),
-                To = new DateTime(2016, 2, 5)
+                To = new DateTime(2016, 2, 2),
+                UseForAxisX = true
             });
 
-            PopulateCharts(new CandlesDataPredicate
-            {
-                ChartId = "RTS_15",
-                InstrumentId = "RTS_15",
-                From = new DateTime(2016, 2, 1),
-                To = new DateTime(2016, 2, 5)
-            });
+            //PopulateCharts(new CandlesDataPredicate
+            //{
+            //    ChartId = "RTS_15",
+            //    InstrumentId = "RTS_15",
+            //    From = new DateTime(2016, 2, 1),
+            //    To = new DateTime(2016, 2, 5)
+            //});
         }
 
         public override void AfterExecution()
@@ -113,7 +114,11 @@ namespace TestSandboxModule
                     {
                         new Chart
                         {
-                           Ids = new List<string> { "RTS_1", "RTS_15" }
+                           Ids = new List<string> { "RTS_15" }
+                        },
+                        new Chart
+                        {
+                           Ids = new List<string> { "RTS_1"}
                         }
                     }
                 }
