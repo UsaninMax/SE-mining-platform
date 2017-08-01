@@ -36,10 +36,10 @@ using TradePlatform.StockData.ViewModels;
 using TradePlatform.Vizualization.ViewModels;
 using TradePlatform.Vizualization.Holders;
 using TradePlatform.Vizualization.Builders;
-using TradePlatform.Vizualization.Populating;
 using TradePlatform.Sandbox.Holders;
 using TradePlatform.Vizualization.Populating.Adaptors;
 using TradePlatform.Vizualization.Populating.Providers;
+using TradePlatform.Vizualization.Charts;
 
 namespace TradePlatform
 {

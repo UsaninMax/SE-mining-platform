@@ -5,10 +5,9 @@ using TradePlatform.Vizualization.Populating.Predicates;
 using Microsoft.Practices.Unity;
 using TradePlatform.Vizualization.Builders.Predicates;
 using TradePlatform.Vizualization.Populating.Adaptors;
-using LiveCharts.Wpf;
 using TradePlatform.Vizualization.Populating.Providers;
 
-namespace TradePlatform.Vizualization.Populating
+namespace TradePlatform.Vizualization.Charts
 {
     public class ChartsPopulator : IChartsPopulator
     {
@@ -29,19 +28,11 @@ namespace TradePlatform.Vizualization.Populating
 
         public void Populate(CandlesDataPredicate predicate)
         {
-            if (predicate.UseForAxisX)
-            {
-                _chartProxy.Push(predicate.ChartId, _chartAdaptor.GetLabels(_cahrtDataProvider.Get(predicate)));
-            }
             _chartProxy.Push(predicate.ChartId, _chartAdaptor.AdaptData(_cahrtDataProvider.Get(predicate)));
         }
 
         public void Populate(IndicatorDataPredicate predicate)
         {
-            if (predicate.UseForAxisX)
-            {
-                _chartProxy.Push(predicate.ChartId, _chartAdaptor.GetLabels(_cahrtDataProvider.Get(predicate)));
-            }
             _chartProxy.Push(predicate.ChartId, _chartAdaptor.AdaptData(_cahrtDataProvider.Get(predicate)));
         }
 

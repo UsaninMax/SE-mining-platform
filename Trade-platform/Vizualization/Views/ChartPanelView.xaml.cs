@@ -12,7 +12,7 @@ namespace TradePlatform.Vizualization.Views
 
             chart.ForEach(x =>
             {
-                ChartStack.Children.Add(new ChartView(x));
+                ChartStack.Children.Add(new DateTimeChartView(x));
             });
         }
     }

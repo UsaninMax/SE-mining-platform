@@ -9,10 +9,10 @@ using TradePlatform.Vizualization.ViewModels;
 using System.Linq;
 using System;
 using LiveCharts.Wpf;
-using LiveCharts.Defaults;
 using LiveCharts;
+using TradePlatform.Sandbox.Models;
 
-namespace TradePlatform.Vizualization.Populating
+namespace TradePlatform.Vizualization.Charts
 {
     public class ChartProxy
     {
@@ -53,15 +53,7 @@ namespace TradePlatform.Vizualization.Populating
             }));
         }
 
-        public void Push(string chartId, IList<string> values)
-        {
-            _dispatcher.BeginInvoke((Action)(() =>
-            {
-                _chartHolder.Get(chartId).AddLabels(values);
-            }));
-        }
-
-        public void Push(string chartId, ChartValues<OhlcPoint> values)
+        public void Push(string chartId, ChartValues<Candle> values)
         {
             _dispatcher.BeginInvoke((Action)(() =>
             {

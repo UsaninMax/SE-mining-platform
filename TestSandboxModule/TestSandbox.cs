@@ -114,10 +114,6 @@ namespace TestSandboxModule
                     {
                         new Chart
                         {
-                           Ids = new List<string> { "RTS_15" }
-                        },
-                        new Chart
-                        {
                            Ids = new List<string> { "RTS_1"}
                         }
                     }

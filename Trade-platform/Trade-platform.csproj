@@ -70,10 +70,12 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
-      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Live-Charts-master\Core\bin\Debug\LiveCharts.dll</HintPath>
     </Reference>
     <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
-      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Live-Charts-master\WpfView\bin\Debug\LiveCharts.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Expression.Interaction.3.0.40218.0\lib\net45\Microsoft.Expression.Interactions.dll</HintPath>
@@ -300,11 +302,11 @@
     <Compile Include="Vizualization\Builders\Predicates\Panel.cs" />
     <Compile Include="Vizualization\Holders\ChartsHolder.cs" />
     <Compile Include="Vizualization\Holders\IChartsHolder.cs" />
-    <Compile Include="Vizualization\Populating\ChartProxy.cs" />
+    <Compile Include="Vizualization\Charts\ChartProxy.cs" />
     <Compile Include="Vizualization\Populating\Adaptors\LiveChartAdaptor.cs" />
     <Compile Include="Vizualization\Populating\Adaptors\IDataChartAdaptor.cs" />
-    <Compile Include="Vizualization\Populating\ChartsPopulator.cs" />
-    <Compile Include="Vizualization\Populating\IChartsPopulator.cs" />
+    <Compile Include="Vizualization\Charts\ChartsPopulator.cs" />
+    <Compile Include="Vizualization\Charts\IChartsPopulator.cs" />
     <Compile Include="Vizualization\Populating\Predicates\CandlesDataPredicate.cs" />
     <Compile Include="Vizualization\Populating\Predicates\ChartPredicate.cs" />
     <Compile Include="Vizualization\Populating\Predicates\ExistDataPredicate.cs" />
@@ -317,8 +319,8 @@
     <Compile Include="Vizualization\Views\ChartPanelView.xaml.cs">
       <DependentUpon>ChartPanelView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Vizualization\Views\ChartView.xaml.cs">
-      <DependentUpon>ChartView.xaml</DependentUpon>
+    <Compile Include="Vizualization\Views\DateTimeChartView.xaml.cs">
+      <DependentUpon>DateTimeChartView.xaml</DependentUpon>
     </Compile>
     <Page Include="Commons\Info\Views\InfoView.xaml">
       <SubType>Designer</SubType>
@@ -383,7 +385,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Vizualization\Views\ChartView.xaml">
+    <Page Include="Vizualization\Views\DateTimeChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

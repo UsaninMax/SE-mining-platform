@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using LiveCharts;
+﻿using LiveCharts;
 using LiveCharts.Wpf;
 using Prism.Mvvm;
 using System.Windows.Input;
@@ -11,6 +9,12 @@ namespace TradePlatform.Vizualization.ViewModels
 {
     public class LiveChartViewModel : BindableBase, IChartViewModel
     {
+        public Func<double, string> XFormatter
+        {
+            get;
+            set;
+        }
+
         public SeriesCollection Series
         {
             get { return _series; }
@@ -20,20 +24,7 @@ namespace TradePlatform.Vizualization.ViewModels
                 RaisePropertyChanged();
             }
         }
-
         private SeriesCollection _series = new SeriesCollection();
-
-        public ObservableCollection<string> Labels
-        {
-            get { return _labels; }
-            set
-            {
-                _labels = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private ObservableCollection<string> _labels = new ObservableCollection<string>();
 
         public ZoomingOptions ZoomingMode
         {
@@ -44,12 +35,17 @@ namespace TradePlatform.Vizualization.ViewModels
                 RaisePropertyChanged();
             }
         }
+
         private ZoomingOptions _zoomingMode = ZoomingOptions.None;
         public ICommand ChangeToogleZoomingModeCommand { get; private set; }
         public LiveChartViewModel()
         {
             ChangeToogleZoomingModeCommand = new DelegateCommand(ChangeToogleZoomingMode);
             ToogleZoomingModeText = "Zooming mode " + ZoomingMode.ToString();
+            XFormatter = (val =>
+            {
+                return new DateTime((long)val * TimeSpan.FromSeconds(1).Ticks).ToString("dd/MM/yy HH:mm:ss");
+            });
         }
 
         private void ChangeToogleZoomingMode()
@@ -92,17 +88,9 @@ namespace TradePlatform.Vizualization.ViewModels
 
         private string _toogleZoomingModeText;
 
-
-
-        public void AddLabels(IEnumerable<string> labels)
-        {
-            Labels = new ObservableCollection<string>(labels);
-        }
-
         public void ClearAll()
         {
             Series.Clear();
-            Labels.Clear();
         }
 
         public void Push(LineSeries series)

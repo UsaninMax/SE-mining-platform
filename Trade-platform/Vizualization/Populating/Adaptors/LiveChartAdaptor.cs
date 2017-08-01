@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using LiveCharts;
 using TradePlatform.Sandbox.Models;
 using System.Linq;
-using LiveCharts.Defaults;
 
 namespace TradePlatform.Vizualization.Populating.Adaptors
 {
     public class LiveChartAdaptor : IDataChartAdaptor
     {
-        public ChartValues<OhlcPoint> AdaptData(IList<Candle> values)
+        public ChartValues<Candle> AdaptData(IList<Candle> values)
         {
-           return new ChartValues<OhlcPoint>(values.Select(x => new OhlcPoint(x.Open, x.High, x.Low, x.Close)));
+           return new ChartValues<Candle>(values.Take(100));
         }
 
         public ChartValues<double> AdaptData(IList<Indicator> values)

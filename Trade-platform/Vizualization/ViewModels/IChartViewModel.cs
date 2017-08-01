@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿
 using LiveCharts.Wpf;
 
 namespace TradePlatform.Vizualization.ViewModels
@@ -7,7 +7,6 @@ namespace TradePlatform.Vizualization.ViewModels
     {
         void Push(LineSeries series);
         void Push(OhlcSeries series);
-        void AddLabels(IEnumerable<string> labels);
         void ClearAll();
     }
 }

@@ -9,8 +9,8 @@ using TradePlatform.Sandbox.DataProviding;
 using TradePlatform.Sandbox.DataProviding.Predicates;
 using TradePlatform.Vizualization.Populating.Predicates;
 using TradePlatform.Vizualization.Builders.Predicates;
-using TradePlatform.Vizualization.Populating;
 using TradePlatform.Sandbox.Holders;
+using TradePlatform.Vizualization.Charts;
 
 namespace TradePlatform.Sandbox
 {

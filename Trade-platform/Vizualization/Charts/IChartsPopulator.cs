@@ -2,7 +2,7 @@
 using TradePlatform.Vizualization.Builders.Predicates;
 using TradePlatform.Vizualization.Populating.Predicates;
 
-namespace TradePlatform.Vizualization.Populating
+namespace TradePlatform.Vizualization.Charts
 {
     public interface IChartsPopulator
     {
