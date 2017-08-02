@@ -15,7 +15,7 @@ namespace TradePlatform.Vizualization.Views
             chart.ForEach(x =>
             {
                 DateTimeChartView view = new DateTimeChartView(x.Item1);
-                view.Height = x.Item2.ySize;
+                view.Height = x.Item2.YSize;
                 ChartStack.Children.Add(view);
             });
         }

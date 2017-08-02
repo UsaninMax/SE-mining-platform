@@ -122,14 +122,14 @@ namespace TestSandboxModule
                         new ChartViewPredicate
                         {
                            Ids = new List<string> { "RTS_5"},
-                           xAxis = TimeSpan.FromSeconds(5).Ticks,
-                           ySize = 400
+                           XAxis = TimeSpan.FromSeconds(5).Ticks,
+                           YSize = 400
                         },
                         new ChartViewPredicate
                         {
                            Ids = new List<string> { "RTS_3"},
-                           xAxis = TimeSpan.FromSeconds(5).Ticks,
-                           ySize = 100
+                           XAxis = TimeSpan.FromSeconds(5).Ticks,
+                           YSize = 100
                         }
                     }
                 }
