@@ -81,11 +81,13 @@ namespace TestSandboxModule
             Execute();
             PopulateCharts(new CandlesDataPredicate
             {
+                FromIndex = 1000,
                 ChartId = "RTS_5",
                 InstrumentId = "RTS_5"
             });
             PopulateCharts(new IndicatorDataPredicate
             {
+                FromIndex = 1000,
                 ChartId = "RTS_5",
                 InstrumentId = "MA"
             });

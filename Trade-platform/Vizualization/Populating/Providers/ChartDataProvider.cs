@@ -23,11 +23,10 @@ namespace TradePlatform.Vizualization.Populating.Providers
         private IList<IData> GetData(ExistDataPredicate predicate)
         {
             ISandboxDataHolder dataHolder = ContainerBuilder.Container.Resolve<ISandboxDataHolder>();
-            return dataHolder
-                .Get()
-                .Where(y => (predicate.From == DateTime.MinValue || y.DateTime >= predicate.From) &&
-                            (predicate.To == DateTime.MinValue || y.DateTime <= predicate.To))
-                .Take(1000)
+            var skip = Math.Max(predicate.FromIndex != 0 ? predicate.FromIndex : dataHolder.Get().Count - predicate.GetCount, predicate.GetCount);
+            return dataHolder.Get()
+                .Skip(skip)
+                .Take(predicate.GetCount)
                 .SelectMany(x => x.Datas)
                 .Where(x => x.Key.Equals(predicate.InstrumentId))
                 .Select(x => x.Value)
