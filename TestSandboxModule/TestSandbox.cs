@@ -79,22 +79,29 @@ namespace TestSandboxModule
                 //bot_2
             });
             Execute();
-            PopulateCharts(new CandlesDataPredicate
-            {
-                ChartId = "RTS_1",
-                InstrumentId = "RTS_1",
-                From = new DateTime(2016, 2, 1),
-                To = new DateTime(2016, 2, 2),
-                UseForAxisX = true
-            });
-
             //PopulateCharts(new CandlesDataPredicate
             //{
-            //    ChartId = "RTS_15",
-            //    InstrumentId = "RTS_15",
+            //    ChartId = "RTS_1",
+            //    InstrumentId = "RTS_1",
             //    From = new DateTime(2016, 2, 1),
-            //    To = new DateTime(2016, 2, 5)
+            //    To = new DateTime(2016, 2, 2),
+            //    UseForAxisX = true
             //});
+
+            PopulateCharts(new CandlesDataPredicate
+            {
+                ChartId = "RTS_5",
+                InstrumentId = "RTS_5",
+                From = new DateTime(2016, 2, 1),
+                To = new DateTime(2016, 2, 5)
+            });
+            PopulateCharts(new IndicatorDataPredicate
+            {
+                ChartId = "RTS_5",
+                InstrumentId = "MA",
+                From = new DateTime(2016, 2, 1),
+                To = new DateTime(2016, 2, 5)
+            });
         }
 
         public override void AfterExecution()
@@ -114,7 +121,8 @@ namespace TestSandboxModule
                     {
                         new Chart
                         {
-                           Ids = new List<string> { "RTS_1"}
+                           Ids = new List<string> { "RTS_5"},
+                           xAxis = TimeSpan.FromSeconds(5).Ticks
                         }
                     }
                 }

@@ -4,6 +4,9 @@ using Prism.Mvvm;
 using System.Windows.Input;
 using Prism.Commands;
 using System;
+using TradePlatform.Sandbox.Models;
+using LiveCharts.Configurations;
+using System.Collections.Generic;
 
 namespace TradePlatform.Vizualization.ViewModels
 {
@@ -38,14 +41,23 @@ namespace TradePlatform.Vizualization.ViewModels
 
         private ZoomingOptions _zoomingMode = ZoomingOptions.None;
         public ICommand ChangeToogleZoomingModeCommand { get; private set; }
-        public LiveChartViewModel()
+
+        public LiveChartViewModel(long xAxisInterval)
         {
             ChangeToogleZoomingModeCommand = new DelegateCommand(ChangeToogleZoomingMode);
             ToogleZoomingModeText = "Zooming mode " + ZoomingMode.ToString();
-            XFormatter = (val =>
-            {
-                return new DateTime((long)val * TimeSpan.FromSeconds(1).Ticks).ToString("dd/MM/yy HH:mm:ss");
-            });
+            XFormatter = val => new DateTime((long)val * xAxisInterval).ToString("dd/MM/yy HH:mm:ss");
+
+            Charting.For<Candle>(Mappers.Financial<Candle>()
+                .X(x => x.Date().Ticks / xAxisInterval)
+                .Open(x => x.Open)
+                .Close(x => x.Close)
+                .High(x => x.High)
+                .Low(x => x.Low), SeriesOrientation.Horizontal);
+
+            Charting.For<Indicator>(Mappers.Xy<Indicator>()
+                .X(x => x.Date().Ticks / xAxisInterval)
+                .Y(x => x.Value), SeriesOrientation.Horizontal);
         }
 
         private void ChangeToogleZoomingMode()
@@ -93,14 +105,20 @@ namespace TradePlatform.Vizualization.ViewModels
             Series.Clear();
         }
 
-        public void Push(LineSeries series)
+        public void Push(IList<Indicator> values)
         {
-            Series.Add(series);
+            Series.Add(new LineSeries()
+            {
+                Values = new ChartValues<Indicator>(values)
+            });
         }
 
-        public void Push(OhlcSeries series)
+        public void Push(IList<Candle> values)
         {
-            Series.Add(series);
+            Series.Add(new OhlcSeries()
+            {
+                Values = new ChartValues<Candle>(values)
+            });
         }
     }
 }

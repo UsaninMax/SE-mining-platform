@@ -1,45 +1,43 @@
 ﻿using System.Collections.Generic;
-using TradePlatform.Vizualization.Builders;
 using TradePlatform.Vizualization.Holders;
 using TradePlatform.Vizualization.Populating.Predicates;
 using Microsoft.Practices.Unity;
 using TradePlatform.Vizualization.Builders.Predicates;
-using TradePlatform.Vizualization.Populating.Adaptors;
 using TradePlatform.Vizualization.Populating.Providers;
+using TradePlatform.Vizualization.Charts;
+using TradePlatform.Vizualization.Builders;
 
-namespace TradePlatform.Vizualization.Charts
+namespace TradePlatform.Vizualization.Populating
 {
     public class ChartsPopulator : IChartsPopulator
     {
         private readonly IChartsHolder _chartHolder;
-        private readonly IChartsBuilder _chartBuilder;
-        private readonly IDataChartAdaptor _chartAdaptor;
+        private readonly IChartsConfigurationDispatcher _configurationDispatcher;
         private readonly IChartDataProvider _cahrtDataProvider;
         private readonly ChartProxy _chartProxy;
 
         public ChartsPopulator()
         {
             _chartHolder = ContainerBuilder.Container.Resolve<IChartsHolder>();
-            _chartBuilder = ContainerBuilder.Container.Resolve<IChartsBuilder>();
-            _chartAdaptor = ContainerBuilder.Container.Resolve<IDataChartAdaptor>();
+            _configurationDispatcher = ContainerBuilder.Container.Resolve<IChartsConfigurationDispatcher>();
             _cahrtDataProvider = ContainerBuilder.Container.Resolve<IChartDataProvider>();
             _chartProxy = ContainerBuilder.Container.Resolve<ChartProxy>();
         }
 
         public void Populate(CandlesDataPredicate predicate)
         {
-            _chartProxy.Push(predicate.ChartId, _chartAdaptor.AdaptData(_cahrtDataProvider.Get(predicate)));
+            _chartProxy.Push(_chartHolder.Get(predicate.ChartId), _cahrtDataProvider.Get(predicate));
         }
 
         public void Populate(IndicatorDataPredicate predicate)
         {
-            _chartProxy.Push(predicate.ChartId, _chartAdaptor.AdaptData(_cahrtDataProvider.Get(predicate)));
+            _chartProxy.Push(_chartHolder.Get(predicate.ChartId), _cahrtDataProvider.Get(predicate));
         }
 
         public void SetUpCharts(IEnumerable<Panel> configuration)
         {
-            _chartHolder.Set(_chartBuilder.Build(configuration));
-            _chartProxy.ShowCharts(configuration);
+            _chartHolder.Set(_configurationDispatcher.Dispatch(configuration));
+            _chartProxy.ShowCharts(configuration, ContainerBuilder.Container.Resolve<IChartsBuilder>());
         }
     }
 }

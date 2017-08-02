@@ -35,11 +35,11 @@ using TradePlatform.StockData.Presenters;
 using TradePlatform.StockData.ViewModels;
 using TradePlatform.Vizualization.ViewModels;
 using TradePlatform.Vizualization.Holders;
-using TradePlatform.Vizualization.Builders;
 using TradePlatform.Sandbox.Holders;
-using TradePlatform.Vizualization.Populating.Adaptors;
 using TradePlatform.Vizualization.Populating.Providers;
 using TradePlatform.Vizualization.Charts;
+using TradePlatform.Vizualization.Populating;
+using TradePlatform.Vizualization.Builders;
 
 namespace TradePlatform
 {
@@ -112,12 +112,12 @@ namespace TradePlatform
             Container.RegisterType<ITransactionBuilder, TransactionBuilder>();
             Container.RegisterType<IWorkingPeriodHolder, WorkingPeriodHolder>();
 
-            Container.RegisterType<IChartViewModel, LiveChartViewModel>();
-            Container.RegisterType<IChartsBuilder, ChartsBuilder>();
+            Container.RegisterType<IChartViewModel, LiveChartViewModel>(new InjectionConstructor(typeof(long)));
+            Container.RegisterType<IChartsConfigurationDispatcher, ChartsConfigurationDispatcher>();
             Container.RegisterType<IChartsHolder, ChartsHolder>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IChartsPopulator, ChartsPopulator>();
             Container.RegisterType<IChartDataProvider, ChartDataProvider>();
-            Container.RegisterType<IDataChartAdaptor, LiveChartAdaptor>();
+            Container.RegisterType<IChartsBuilder, ChartsBuilder>();
             Container.RegisterInstance(new ChartProxy());
 
         }

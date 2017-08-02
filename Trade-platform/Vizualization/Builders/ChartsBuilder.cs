@@ -1,19 +1,35 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
+using System.Collections.Generic;
+using System.Linq;
 using TradePlatform.Vizualization.Builders.Predicates;
+using TradePlatform.Vizualization.Holders;
 using TradePlatform.Vizualization.ViewModels;
+using TradePlatform.Vizualization.Views;
 
 namespace TradePlatform.Vizualization.Builders
 {
     public class ChartsBuilder : IChartsBuilder
     {
-        public IDictionary<string, IChartViewModel> Build(IEnumerable<Panel> configuration)
+        private IChartsHolder _chartHolder;
+
+        public ChartsBuilder ()
         {
-            return configuration
-                .SelectMany(x => x.Charts)
-                .SelectMany(x => x.Ids)
-                .ToDictionary(x => x, x => ContainerBuilder.Container.Resolve<IChartViewModel>());
+            _chartHolder = ContainerBuilder.Container.Resolve<IChartsHolder>();
+        }
+
+        public void Build(IEnumerable<Panel> configuration)
+        {
+            configuration.ForEach(x =>
+            {
+                ContainerBuilder.Container.Resolve<ChartPanelView>(
+                    new DependencyOverride<IEnumerable<IChartViewModel>>(
+                        x.Charts.Where(s => s.Ids.Count() != 0)
+                        .Select(y =>
+                        {
+                            return _chartHolder.Get(y.Ids.First());
+                        }).ToList())).Show();
+            });
         }
     }
 }

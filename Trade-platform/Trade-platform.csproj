@@ -298,15 +298,15 @@
     </Compile>
     <Compile Include="Vizualization\Builders\ChartsBuilder.cs" />
     <Compile Include="Vizualization\Builders\IChartsBuilder.cs" />
+    <Compile Include="Vizualization\Charts\ChartsConfigurationDispatcher.cs" />
+    <Compile Include="Vizualization\Charts\IChartsConfigurationDispatcher.cs" />
     <Compile Include="Vizualization\Builders\Predicates\Chart.cs" />
     <Compile Include="Vizualization\Builders\Predicates\Panel.cs" />
     <Compile Include="Vizualization\Holders\ChartsHolder.cs" />
     <Compile Include="Vizualization\Holders\IChartsHolder.cs" />
     <Compile Include="Vizualization\Charts\ChartProxy.cs" />
-    <Compile Include="Vizualization\Populating\Adaptors\LiveChartAdaptor.cs" />
-    <Compile Include="Vizualization\Populating\Adaptors\IDataChartAdaptor.cs" />
-    <Compile Include="Vizualization\Charts\ChartsPopulator.cs" />
-    <Compile Include="Vizualization\Charts\IChartsPopulator.cs" />
+    <Compile Include="Vizualization\Populating\ChartsPopulator.cs" />
+    <Compile Include="Vizualization\Populating\IChartsPopulator.cs" />
     <Compile Include="Vizualization\Populating\Predicates\CandlesDataPredicate.cs" />
     <Compile Include="Vizualization\Populating\Predicates\ChartPredicate.cs" />
     <Compile Include="Vizualization\Populating\Predicates\ExistDataPredicate.cs" />

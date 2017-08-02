@@ -1,12 +1,13 @@
 ﻿
-using LiveCharts.Wpf;
+using System.Collections.Generic;
+using TradePlatform.Sandbox.Models;
 
 namespace TradePlatform.Vizualization.ViewModels
 {
     public interface IChartViewModel
     {
-        void Push(LineSeries series);
-        void Push(OhlcSeries series);
+        void Push(IList<Indicator> values);
+        void Push(IList<Candle> values);
         void ClearAll();
     }
 }

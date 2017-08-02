@@ -1,9 +1,5 @@
-﻿using LiveCharts;
-using LiveCharts.Configurations;
-using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using TradePlatform.Sandbox.Models;
 using TradePlatform.Vizualization.ViewModels;
 
 namespace TradePlatform.Vizualization.Views
@@ -13,17 +9,6 @@ namespace TradePlatform.Vizualization.Views
         public DateTimeChartView(IChartViewModel model)
         {
             InitializeComponent();
-
-
-            Charting.For<Candle>(Mappers.Financial<Candle>()
-                .X(x => x.Date().Ticks / TimeSpan.FromSeconds(1).Ticks)
-                .Open(x => x.Open)
-                .Close(x => x.Close)
-                .High(x => x.High)
-                .Low(x => x.Low), SeriesOrientation.Horizontal);
-
-
-
             DataContext = model;
         }
 

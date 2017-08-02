@@ -27,6 +27,7 @@ namespace TradePlatform.Vizualization.Populating.Providers
                 .Get()
                 .Where(y => (predicate.From == DateTime.MinValue || y.DateTime >= predicate.From) &&
                             (predicate.To == DateTime.MinValue || y.DateTime <= predicate.To))
+                .Take(1000)
                 .SelectMany(x => x.Datas)
                 .Where(x => x.Key.Equals(predicate.InstrumentId))
                 .Select(x => x.Value)
