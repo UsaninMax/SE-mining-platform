@@ -41,6 +41,7 @@ using TradePlatform.Vizualization.Charts;
 using TradePlatform.Vizualization.Populating;
 using TradePlatform.Vizualization.Builders;
 using TradePlatform.Vizualization.Builders.Predicates;
+using TradePlatform.Vizualization.Populating.Holders;
 
 namespace TradePlatform
 {
@@ -116,11 +117,11 @@ namespace TradePlatform
             Container.RegisterType<IChartViewModel, LiveChartViewModel>(new InjectionConstructor(typeof(long)));
             Container.RegisterType<IChartsConfigurationDispatcher, ChartsConfigurationDispatcher>();
             Container.RegisterType<IChartsHolder, ChartsHolder>(new ContainerControlledLifetimeManager());
-            Container.RegisterType<IChartsPopulator, ChartsPopulator>(new InjectionConstructor(typeof(IEnumerable<PanelViewPredicate>)));
+            Container.RegisterType<IChartsPopulator, ChartsPopulator>(new ContainerControlledLifetimeManager(),new InjectionConstructor(typeof(IEnumerable<PanelViewPredicate>)));
             Container.RegisterType<IChartDataProvider, ChartDataProvider>();
             Container.RegisterType<IChartsBuilder, ChartsBuilder>();
             Container.RegisterInstance(new ChartProxy());
-
+            Container.RegisterType<IChartPredicatesHolder, ChartPredicatesHolder>(new ContainerControlledLifetimeManager());
         }
     }
 }

@@ -20,13 +20,16 @@ namespace TradePlatform.Vizualization.Populating.Providers
             return GetData(predicate).OfType<Candle>().ToList();
         }
 
-        private IList<IData> GetData(ExistDataPredicate predicate)
+        private IList<IData> GetData(ChartPredicate predicate)
         {
             ISandboxDataHolder dataHolder = ContainerBuilder.Container.Resolve<ISandboxDataHolder>();
-            var skip = Math.Max(predicate.FromIndex != 0 ? predicate.FromIndex : dataHolder.Get().Count - predicate.GetCount, predicate.GetCount);
+            var index = dataHolder.Get()
+                .Where(x => predicate.DateTo == DateTime.MinValue || x.DateTime <= predicate.DateTo)
+                .Select((value, i) => i).LastOrDefault();
+
             return dataHolder.Get()
-                .Skip(skip)
-                .Take(predicate.GetCount)
+                .Skip(index - predicate.GetCount < 0 ? 0 : index)
+                .Take(index)
                 .SelectMany(x => x.Datas)
                 .Where(x => x.Key.Equals(predicate.InstrumentId))
                 .Select(x => x.Value)

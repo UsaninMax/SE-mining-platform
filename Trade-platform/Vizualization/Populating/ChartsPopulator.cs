@@ -1,11 +1,12 @@
 ﻿using TradePlatform.Vizualization.Holders;
-using TradePlatform.Vizualization.Populating.Predicates;
 using Microsoft.Practices.Unity;
 using TradePlatform.Vizualization.Populating.Providers;
 using TradePlatform.Vizualization.Charts;
-using TradePlatform.Vizualization.Builders;
 using System.Collections.Generic;
 using TradePlatform.Vizualization.Builders.Predicates;
+using TradePlatform.Vizualization.Populating.Holders;
+using Microsoft.Practices.ObjectBuilder2;
+using TradePlatform.Vizualization.Populating.Predicates;
 
 namespace TradePlatform.Vizualization.Populating
 {
@@ -13,26 +14,36 @@ namespace TradePlatform.Vizualization.Populating
     {
         private readonly IChartsHolder _chartHolder;
         private readonly IChartsConfigurationDispatcher _configurationDispatcher;
-        private readonly IChartDataProvider _cahrtDataProvider;
+        private readonly IChartDataProvider _chartDataProvider;
         private readonly ChartProxy _chartProxy;
+        private readonly IChartPredicatesHolder _chartPredicatesHolder;
 
         public ChartsPopulator(IEnumerable<PanelViewPredicate> configuration)
         {
             _chartHolder = ContainerBuilder.Container.Resolve<IChartsHolder>();
             _configurationDispatcher = ContainerBuilder.Container.Resolve<IChartsConfigurationDispatcher>();
-            _cahrtDataProvider = ContainerBuilder.Container.Resolve<IChartDataProvider>();
+            _chartDataProvider = ContainerBuilder.Container.Resolve<IChartDataProvider>();
             _chartProxy = ContainerBuilder.Container.Resolve<ChartProxy>();
+            _chartPredicatesHolder = ContainerBuilder.Container.Resolve<IChartPredicatesHolder>();
             _chartHolder.Set(_configurationDispatcher.Dispatch(configuration));
         }
 
-        public void Populate(CandlesDataPredicate predicate)
+        public void Populate()
         {
-            _chartProxy.Push(_chartHolder.Get(predicate.ChartId), _cahrtDataProvider.Get(predicate));
-        }
+            _chartPredicatesHolder.GetAll().ForEach(predicate => _chartProxy.Clear(_chartHolder.Get(predicate.ChartId)));
+            _chartPredicatesHolder.GetAll().ForEach(predicate =>
+            {
 
-        public void Populate(IndicatorDataPredicate predicate)
-        {
-            _chartProxy.Push(_chartHolder.Get(predicate.ChartId), _cahrtDataProvider.Get(predicate));
+                if (predicate is CandlesDataPredicate)
+                {
+                    _chartProxy.Push(_chartHolder.Get(predicate.ChartId), _chartDataProvider.Get(predicate as CandlesDataPredicate));
+                }
+
+                if (predicate is IndicatorDataPredicate)
+                {
+                    _chartProxy.Push(_chartHolder.Get(predicate.ChartId), _chartDataProvider.Get(predicate as IndicatorDataPredicate));
+                }
+            });
         }
     }
 }

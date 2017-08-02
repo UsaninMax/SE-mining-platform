@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios.Models;
+using TradePlatform.Vizualization.Populating.Predicates;
 
 namespace TradePlatform.Sandbox.Bots
 {
@@ -18,6 +19,7 @@ namespace TradePlatform.Sandbox.Bots
         void OpenPosition(OpenPositionRequest request);
         bool IsPrepared();
         void ResetTransactionContext();
+        void PopulateCharts(ICollection<ChartPredicate> predicates);
 
     }
 }

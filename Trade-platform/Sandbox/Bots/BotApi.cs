@@ -8,6 +8,9 @@ using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios;
 using TradePlatform.Sandbox.Transactios.Models;
 using TradePlatform.Sandbox.Holders;
+using TradePlatform.Vizualization.Populating.Holders;
+using TradePlatform.Vizualization.Populating;
+using TradePlatform.Vizualization.Populating.Predicates;
 
 namespace TradePlatform.Sandbox.Bots
 {
@@ -17,10 +20,14 @@ namespace TradePlatform.Sandbox.Bots
         private string _sandboxId;
         private BotPredicate _predicate;
         private readonly ITransactionsContext _context;
+        private readonly IChartPredicatesHolder _chartPredicatesHolder;
+        private readonly IChartsPopulator _chartsPopulator;
 
         protected BotApi(IDictionary<string, BrokerCost> brokerCosts)
         {
             _context = ContainerBuilder.Container.Resolve<ITransactionsContext>(new DependencyOverride<IDictionary<string, BrokerCost>>(brokerCosts));
+            _chartPredicatesHolder = ContainerBuilder.Container.Resolve<IChartPredicatesHolder>();
+            _chartsPopulator = ContainerBuilder.Container.Resolve<IChartsPopulator>();
         }
 
         public string GetId()
@@ -84,6 +91,12 @@ namespace TradePlatform.Sandbox.Bots
         public void SetUpSandboxId(string id)
         {
             _sandboxId = id;
+        }
+
+        public void PopulateCharts(ICollection<ChartPredicate> predicates)
+        {
+            _chartPredicatesHolder.Set(predicates);
+            _chartsPopulator.Populate();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace TradePlatform.Vizualization.Charts
             _dispatcher = Dispatcher.CurrentDispatcher;
         }
 
-        public void ShowCharts(IEnumerable<PanelViewPredicate> configuration, IChartsBuilder builder)
+        internal void ShowCharts(IEnumerable<PanelViewPredicate> configuration, IChartsBuilder builder)
         {
             _dispatcher.BeginInvoke((Action)(() =>
             {
@@ -38,6 +38,14 @@ namespace TradePlatform.Vizualization.Charts
             _dispatcher.BeginInvoke((Action)(() =>
             {
                 chartViewModel.Push(list);
+            }));
+        }
+
+        internal void Clear(IChartViewModel chartViewModel)
+        {
+            _dispatcher.BeginInvoke((Action)(() =>
+            {
+                chartViewModel.ClearAll();
             }));
         }
     }

@@ -7,12 +7,12 @@ using Microsoft.Practices.Unity;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding;
 using TradePlatform.Sandbox.DataProviding.Predicates;
-using TradePlatform.Vizualization.Populating.Predicates;
 using TradePlatform.Vizualization.Builders.Predicates;
 using TradePlatform.Sandbox.Holders;
 using TradePlatform.Vizualization.Populating;
 using TradePlatform.Vizualization.Builders;
 using TradePlatform.Vizualization.Charts;
+using TradePlatform.Vizualization.Populating.Holders;
 
 namespace TradePlatform.Sandbox
 {
@@ -22,12 +22,9 @@ namespace TradePlatform.Sandbox
         public ICollection<IBot> Bots => _bots;
         private CancellationToken _token;
         private ICollection<IBot> _bots;
-        private IChartsPopulator _chartsPopulator;
-
-
         protected SandboxApi()
         {
-            _chartsPopulator = ContainerBuilder.Container.Resolve<IChartsPopulator>(new DependencyOverride<IEnumerable<PanelViewPredicate>>(SetUpCharts()));
+            ContainerBuilder.Container.Resolve<IChartsPopulator>(new DependencyOverride<IEnumerable<PanelViewPredicate>>(SetUpCharts()));
         }
 
         public void SetToken(CancellationToken token)
@@ -70,8 +67,6 @@ namespace TradePlatform.Sandbox
             continuation.Wait();
         }
 
-       
-
         public void CleanMemory()
         {
             ISandboxDataHolder dataHolder = ContainerBuilder.Container.Resolve<ISandboxDataHolder>();
@@ -86,18 +81,9 @@ namespace TradePlatform.Sandbox
         public abstract void AfterExecution();
         public abstract IEnumerable<PanelViewPredicate> SetUpCharts();
 
-        public void PopulateCharts(IndicatorDataPredicate predicate)
-        {
-            _chartsPopulator.Populate(predicate);
-        }
-
-        public void PopulateCharts(CandlesDataPredicate predicate)
-        {
-            _chartsPopulator.Populate(predicate);
-        }
-
         public void CreateCharts()
         {
+            ContainerBuilder.Container.Resolve<IChartPredicatesHolder>().Reset();
             var chartProxy = ContainerBuilder.Container.Resolve<ChartProxy>();
             chartProxy.ShowCharts(SetUpCharts(), ContainerBuilder.Container.Resolve<IChartsBuilder>());
         }

@@ -306,12 +306,12 @@
     <Compile Include="Vizualization\Holders\IChartsHolder.cs" />
     <Compile Include="Vizualization\Charts\ChartProxy.cs" />
     <Compile Include="Vizualization\Populating\ChartsPopulator.cs" />
+    <Compile Include="Vizualization\Populating\Holders\ChartPredicatesHolder.cs" />
+    <Compile Include="Vizualization\Populating\Holders\IChartPredicatesHolder.cs" />
     <Compile Include="Vizualization\Populating\IChartsPopulator.cs" />
     <Compile Include="Vizualization\Populating\Predicates\CandlesDataPredicate.cs" />
     <Compile Include="Vizualization\Populating\Predicates\ChartPredicate.cs" />
-    <Compile Include="Vizualization\Populating\Predicates\ExistDataPredicate.cs" />
     <Compile Include="Vizualization\Populating\Predicates\IndicatorDataPredicate.cs" />
-    <Compile Include="Vizualization\Populating\Predicates\PreparedDataPredicate.cs" />
     <Compile Include="Vizualization\Populating\Providers\ChartDataProvider.cs" />
     <Compile Include="Vizualization\Populating\Providers\IChartDataProvider.cs" />
     <Compile Include="Vizualization\ViewModels\IChartViewModel.cs" />
