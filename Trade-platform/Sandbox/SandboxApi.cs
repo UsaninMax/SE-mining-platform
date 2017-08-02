@@ -11,6 +11,8 @@ using TradePlatform.Vizualization.Populating.Predicates;
 using TradePlatform.Vizualization.Builders.Predicates;
 using TradePlatform.Sandbox.Holders;
 using TradePlatform.Vizualization.Populating;
+using TradePlatform.Vizualization.Builders;
+using TradePlatform.Vizualization.Charts;
 
 namespace TradePlatform.Sandbox
 {
@@ -25,7 +27,7 @@ namespace TradePlatform.Sandbox
 
         protected SandboxApi()
         {
-            _chartsPopulator = ContainerBuilder.Container.Resolve<IChartsPopulator>();
+            _chartsPopulator = ContainerBuilder.Container.Resolve<IChartsPopulator>(new DependencyOverride<IEnumerable<PanelViewPredicate>>(SetUpCharts()));
         }
 
         public void SetToken(CancellationToken token)
@@ -82,7 +84,7 @@ namespace TradePlatform.Sandbox
         public abstract ICollection<IPredicate> SetUpData();
         public abstract void Execution();
         public abstract void AfterExecution();
-        public abstract IEnumerable<Panel> SetUpCharts();
+        public abstract IEnumerable<PanelViewPredicate> SetUpCharts();
 
         public void PopulateCharts(IndicatorDataPredicate predicate)
         {
@@ -96,7 +98,8 @@ namespace TradePlatform.Sandbox
 
         public void CreateCharts()
         {
-            _chartsPopulator.SetUpCharts(SetUpCharts());
+            var chartProxy = ContainerBuilder.Container.Resolve<ChartProxy>();
+            chartProxy.ShowCharts(SetUpCharts(), ContainerBuilder.Container.Resolve<IChartsBuilder>());
         }
     }
 }

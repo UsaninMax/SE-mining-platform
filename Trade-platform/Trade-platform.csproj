@@ -300,8 +300,8 @@
     <Compile Include="Vizualization\Builders\IChartsBuilder.cs" />
     <Compile Include="Vizualization\Charts\ChartsConfigurationDispatcher.cs" />
     <Compile Include="Vizualization\Charts\IChartsConfigurationDispatcher.cs" />
-    <Compile Include="Vizualization\Builders\Predicates\Chart.cs" />
-    <Compile Include="Vizualization\Builders\Predicates\Panel.cs" />
+    <Compile Include="Vizualization\Builders\Predicates\ChartViewPredicate.cs" />
+    <Compile Include="Vizualization\Builders\Predicates\PanelViewPredicate.cs" />
     <Compile Include="Vizualization\Holders\ChartsHolder.cs" />
     <Compile Include="Vizualization\Holders\IChartsHolder.cs" />
     <Compile Include="Vizualization\Charts\ChartProxy.cs" />

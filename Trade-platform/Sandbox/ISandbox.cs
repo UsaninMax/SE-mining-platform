@@ -17,7 +17,7 @@ namespace TradePlatform.Sandbox
         void AfterExecution();
         void CleanMemory();
 
-        IEnumerable<Panel> SetUpCharts();
+        IEnumerable<PanelViewPredicate> SetUpCharts();
         void CreateCharts();
         void PopulateCharts(IndicatorDataPredicate predicate);
         void PopulateCharts(CandlesDataPredicate predicate);

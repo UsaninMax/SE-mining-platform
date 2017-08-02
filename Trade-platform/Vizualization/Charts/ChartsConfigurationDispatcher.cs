@@ -9,11 +9,11 @@ namespace TradePlatform.Vizualization.Charts
 {
     public class ChartsConfigurationDispatcher : IChartsConfigurationDispatcher
     {
-        public IDictionary<string, IChartViewModel> Dispatch(IEnumerable<Panel> configuration)
+        public IDictionary<string, IChartViewModel> Dispatch(IEnumerable<PanelViewPredicate> configuration)
         {
             return configuration
                 .SelectMany(x => x.Charts)
-                .SelectMany(charty => charty.Ids.Select(id => new Tuple<string, Chart>(id, charty)))
+                .SelectMany(charty => charty.Ids.Select(id => new Tuple<string, ChartViewPredicate>(id, charty)))
                 .ToDictionary(t => t.Item1, t => ContainerBuilder.Container.Resolve<IChartViewModel>(new DependencyOverride<long>(t.Item2.xAxis)));
         }
     }

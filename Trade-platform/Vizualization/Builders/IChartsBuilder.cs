@@ -5,6 +5,6 @@ namespace TradePlatform.Vizualization.Builders
 {
     public interface IChartsBuilder
     {
-        void Build(IEnumerable<Panel> configuration);
+        void Build(IEnumerable<PanelViewPredicate> configuration);
     }
 }

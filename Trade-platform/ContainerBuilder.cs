@@ -40,6 +40,7 @@ using TradePlatform.Vizualization.Populating.Providers;
 using TradePlatform.Vizualization.Charts;
 using TradePlatform.Vizualization.Populating;
 using TradePlatform.Vizualization.Builders;
+using TradePlatform.Vizualization.Builders.Predicates;
 
 namespace TradePlatform
 {
@@ -115,7 +116,7 @@ namespace TradePlatform
             Container.RegisterType<IChartViewModel, LiveChartViewModel>(new InjectionConstructor(typeof(long)));
             Container.RegisterType<IChartsConfigurationDispatcher, ChartsConfigurationDispatcher>();
             Container.RegisterType<IChartsHolder, ChartsHolder>(new ContainerControlledLifetimeManager());
-            Container.RegisterType<IChartsPopulator, ChartsPopulator>();
+            Container.RegisterType<IChartsPopulator, ChartsPopulator>(new InjectionConstructor(typeof(IEnumerable<PanelViewPredicate>)));
             Container.RegisterType<IChartDataProvider, ChartDataProvider>();
             Container.RegisterType<IChartsBuilder, ChartsBuilder>();
             Container.RegisterInstance(new ChartProxy());

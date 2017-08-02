@@ -152,7 +152,7 @@ namespace Trade_platform.tests.Sandbox
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<Panel> SetUpCharts()
+        public override IEnumerable<PanelViewPredicate> SetUpCharts()
         {
             throw new NotImplementedException();
         }

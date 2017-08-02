@@ -112,17 +112,24 @@ namespace TestSandboxModule
             }
         }
 
-        public override IEnumerable<Panel> SetUpCharts()
+        public override IEnumerable<PanelViewPredicate> SetUpCharts()
         {
-            return new List<Panel> {
-                new Panel
+            return new List<PanelViewPredicate> {
+                new PanelViewPredicate
                 {
-                    Charts = new List<Chart>
+                    Charts = new List<ChartViewPredicate>
                     {
-                        new Chart
+                        new ChartViewPredicate
                         {
                            Ids = new List<string> { "RTS_5"},
-                           xAxis = TimeSpan.FromSeconds(5).Ticks
+                           xAxis = TimeSpan.FromSeconds(5).Ticks,
+                           ySize = 400
+                        },
+                        new ChartViewPredicate
+                        {
+                           Ids = new List<string> { "RTS_3"},
+                           xAxis = TimeSpan.FromSeconds(5).Ticks,
+                           ySize = 100
                         }
                     }
                 }

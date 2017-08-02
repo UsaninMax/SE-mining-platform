@@ -1,5 +1,6 @@
 ﻿using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TradePlatform.Vizualization.Builders.Predicates;
@@ -18,16 +19,16 @@ namespace TradePlatform.Vizualization.Builders
             _chartHolder = ContainerBuilder.Container.Resolve<IChartsHolder>();
         }
 
-        public void Build(IEnumerable<Panel> configuration)
+        public void Build(IEnumerable<PanelViewPredicate> configuration)
         {
             configuration.ForEach(x =>
             {
-                ContainerBuilder.Container.Resolve<ChartPanelView>(
-                    new DependencyOverride<IEnumerable<IChartViewModel>>(
+                ContainerBuilder.Container.Resolve<ChartPanelView>( 
+                    new DependencyOverride<IEnumerable<Tuple<IChartViewModel, ChartViewPredicate>>>(
                         x.Charts.Where(s => s.Ids.Count() != 0)
                         .Select(y =>
                         {
-                            return _chartHolder.Get(y.Ids.First());
+                            return new Tuple<IChartViewModel, ChartViewPredicate>(_chartHolder.Get(y.Ids.First()), y);
                         }).ToList())).Show();
             });
         }

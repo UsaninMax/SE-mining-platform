@@ -7,6 +7,7 @@ using System;
 using TradePlatform.Sandbox.Models;
 using LiveCharts.Configurations;
 using System.Collections.Generic;
+using System.Windows.Media;
 
 namespace TradePlatform.Vizualization.ViewModels
 {
@@ -109,6 +110,11 @@ namespace TradePlatform.Vizualization.ViewModels
         {
             Series.Add(new LineSeries()
             {
+                StrokeThickness = 1,
+                Fill = Brushes.Transparent,
+                LineSmoothness = 1,
+                PointGeometrySize = 2,
+                PointForeground = Brushes.Red,
                 Values = new ChartValues<Indicator>(values)
             });
         }
@@ -117,6 +123,7 @@ namespace TradePlatform.Vizualization.ViewModels
         {
             Series.Add(new OhlcSeries()
             {
+                StrokeThickness = 1.3,
                 Values = new ChartValues<Candle>(values)
             });
         }

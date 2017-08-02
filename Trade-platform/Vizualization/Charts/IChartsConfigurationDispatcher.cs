@@ -6,6 +6,6 @@ namespace TradePlatform.Vizualization.Charts
 {
     public interface IChartsConfigurationDispatcher
     {
-        IDictionary<string, IChartViewModel> Dispatch(IEnumerable<Panel> configuration);
+        IDictionary<string, IChartViewModel> Dispatch(IEnumerable<PanelViewPredicate> configuration);
     }
 }

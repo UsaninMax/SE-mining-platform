@@ -17,7 +17,7 @@ namespace TradePlatform.Vizualization.Charts
             _dispatcher = Dispatcher.CurrentDispatcher;
         }
 
-        public void ShowCharts(IEnumerable<Panel> configuration, IChartsBuilder builder)
+        public void ShowCharts(IEnumerable<PanelViewPredicate> configuration, IChartsBuilder builder)
         {
             _dispatcher.BeginInvoke((Action)(() =>
             {

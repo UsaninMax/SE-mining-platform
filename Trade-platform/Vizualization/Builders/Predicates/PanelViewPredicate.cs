@@ -2,8 +2,8 @@
 
 namespace TradePlatform.Vizualization.Builders.Predicates
 {
-    public class Panel
+    public class PanelViewPredicate
     {
-        public IEnumerable<Chart> Charts { get; set; }
+        public IEnumerable<ChartViewPredicate> Charts { get; set; }
     }
 }
