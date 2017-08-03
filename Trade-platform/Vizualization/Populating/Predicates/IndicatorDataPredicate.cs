@@ -2,5 +2,12 @@
 {
     public class IndicatorDataPredicate : ChartPredicate
     {
+        public IndicatorDataPredicate(ChartPredicate predicate) : base(predicate)
+        {
+        }
+
+        public IndicatorDataPredicate()
+        {
+        }
     }
 }

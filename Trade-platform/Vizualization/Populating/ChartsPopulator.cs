@@ -7,6 +7,7 @@ using TradePlatform.Vizualization.Builders.Predicates;
 using TradePlatform.Vizualization.Populating.Holders;
 using Microsoft.Practices.ObjectBuilder2;
 using TradePlatform.Vizualization.Populating.Predicates;
+using TradePlatform.Vizualization.ViewModels;
 
 namespace TradePlatform.Vizualization.Populating
 {
@@ -43,6 +44,26 @@ namespace TradePlatform.Vizualization.Populating
                 {
                     _chartProxy.Push(_chartHolder.Get(predicate.ChartId), _chartDataProvider.Get(predicate as IndicatorDataPredicate));
                 }
+            });
+        }
+
+        public void Populate(IChartViewModel model, int index)
+        {
+            _chartProxy.Clear(model);
+            _chartHolder.Get(model).ForEach(chartId =>
+            {
+                _chartPredicatesHolder.Get(chartId).ForEach(predicate =>
+               {
+                   if (predicate is CandlesDataPredicate)
+                   {
+                       _chartProxy.Push(model, _chartDataProvider.Get(new CandlesDataPredicate(predicate) { Index = index }));
+                   }
+
+                   if (predicate is IndicatorDataPredicate)
+                   {
+                       _chartProxy.Push(model, _chartDataProvider.Get(new IndicatorDataPredicate(predicate) { Index = index }));
+                   }
+               });      
             });
         }
     }

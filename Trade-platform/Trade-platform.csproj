@@ -317,8 +317,8 @@
     <Compile Include="Vizualization\Views\ChartPanelView.xaml.cs">
       <DependentUpon>ChartPanelView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Vizualization\Views\DateTimeChartView.xaml.cs">
-      <DependentUpon>DateTimeChartView.xaml</DependentUpon>
+    <Compile Include="Vizualization\Views\ChartView.xaml.cs">
+      <DependentUpon>ChartView.xaml</DependentUpon>
     </Compile>
     <Page Include="Commons\Info\Views\InfoView.xaml">
       <SubType>Designer</SubType>
@@ -383,7 +383,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Vizualization\Views\DateTimeChartView.xaml">
+    <Page Include="Vizualization\Views\ChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

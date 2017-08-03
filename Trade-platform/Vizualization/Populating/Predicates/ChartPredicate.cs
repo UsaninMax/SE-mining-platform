@@ -1,13 +1,24 @@
-﻿using System;
-
-namespace TradePlatform.Vizualization.Populating.Predicates
+﻿namespace TradePlatform.Vizualization.Populating.Predicates
 {
     public abstract class ChartPredicate
     {
         public string ChartId { get; set; }
         public string InstrumentId { get; set; }
         public int GetCount { get; set; } = 500;
-        public DateTime DateTo { get; set; } = DateTime.MinValue;
+        public int Index { get; set; } = int.MaxValue;
+
+        public ChartPredicate()
+        {
+        }
+
+        public ChartPredicate(ChartPredicate predicate )
+        {
+            ChartId = predicate.ChartId;
+            InstrumentId = predicate.InstrumentId;
+            GetCount = predicate.GetCount;
+            Index = predicate.Index;
+        }
+
 
         public override bool Equals(object obj)
         {
@@ -26,7 +37,5 @@ namespace TradePlatform.Vizualization.Populating.Predicates
         {
             return ChartId.GetHashCode() ^ InstrumentId.GetHashCode();
         }
-
-
     }
 }

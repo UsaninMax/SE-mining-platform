@@ -8,6 +8,9 @@ using TradePlatform.Sandbox.Models;
 using LiveCharts.Configurations;
 using System.Collections.Generic;
 using System.Windows.Media;
+using System.Threading.Tasks;
+using TradePlatform.Vizualization.Populating;
+using Microsoft.Practices.Unity;
 
 namespace TradePlatform.Vizualization.ViewModels
 {
@@ -40,6 +43,17 @@ namespace TradePlatform.Vizualization.ViewModels
             }
         }
 
+        public int Index
+        {
+            get { return _index; }
+            set
+            {
+                _index = value;
+                UpdateCharts();
+            }
+        }
+        private int _index;
+
         private ZoomingOptions _zoomingMode = ZoomingOptions.None;
         public ICommand ChangeToogleZoomingModeCommand { get; private set; }
 
@@ -59,6 +73,11 @@ namespace TradePlatform.Vizualization.ViewModels
             Charting.For<Indicator>(Mappers.Xy<Indicator>()
                 .X(x => x.Date().Ticks / xAxisInterval)
                 .Y(x => x.Value), SeriesOrientation.Horizontal);
+        }
+
+        private void UpdateCharts ()
+        {
+            Task.Factory.StartNew(() => ContainerBuilder.Container.Resolve<IChartsPopulator>().Populate(this, _index));
         }
 
         private void ChangeToogleZoomingMode()

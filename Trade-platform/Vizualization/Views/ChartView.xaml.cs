@@ -4,9 +4,9 @@ using TradePlatform.Vizualization.ViewModels;
 
 namespace TradePlatform.Vizualization.Views
 {
-    public partial class DateTimeChartView : UserControl
+    public partial class ChartView : UserControl
     {
-        public DateTimeChartView(IChartViewModel model)
+        public ChartView(IChartViewModel model)
         {
             InitializeComponent();
             DataContext = model;

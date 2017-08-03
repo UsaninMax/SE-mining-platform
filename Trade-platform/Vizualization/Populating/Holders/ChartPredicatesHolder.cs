@@ -1,6 +1,7 @@
 ﻿using Microsoft.Practices.ObjectBuilder2;
 using System.Collections.Generic;
 using TradePlatform.Vizualization.Populating.Predicates;
+using System.Linq;
 
 namespace TradePlatform.Vizualization.Populating.Holders
 {
@@ -16,7 +17,7 @@ namespace TradePlatform.Vizualization.Populating.Holders
             _storage.Add(predicate);
         }
 
-        public ICollection<ChartPredicate> GetAll()
+        public IEnumerable<ChartPredicate> GetAll()
         {
             return _storage;
         }
@@ -34,6 +35,11 @@ namespace TradePlatform.Vizualization.Populating.Holders
         public void Set(ICollection<ChartPredicate> predicates)
         {
             predicates.ForEach(predicate => Update(predicate));
+        }
+
+        public IEnumerable<ChartPredicate> Get(string chartId)
+        {
+            return _storage.Where(x => x.ChartId.Equals(chartId));
         }
     }
 }

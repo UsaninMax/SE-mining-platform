@@ -5,6 +5,7 @@ using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding.Predicates;
 using TradePlatform.Sandbox.Transactios.Models;
 using TradePlatform.Vizualization.Builders.Predicates;
+using TradePlatform.Vizualization.Populating.Predicates;
 
 namespace TestSandboxModule
 {
@@ -77,6 +78,22 @@ namespace TestSandboxModule
                 bot_1
             });
             Execute();
+
+            PopulateCharts(new List<ChartPredicate>
+            {
+                new CandlesDataPredicate
+            {
+
+                ChartId = "RTS_5",
+                InstrumentId = "RTS_5"
+            },
+                new IndicatorDataPredicate
+            {
+                ChartId = "RTS_5",
+                InstrumentId = "MA"
+            }
+            });
+
         }
 
         public override void AfterExecution()

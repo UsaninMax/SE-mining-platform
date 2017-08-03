@@ -4,7 +4,6 @@ using TradePlatform.Sandbox.Models;
 using TradePlatform.Vizualization.Populating.Predicates;
 using Microsoft.Practices.Unity;
 using System.Linq;
-using System;
 
 namespace TradePlatform.Vizualization.Populating.Providers
 {
@@ -22,14 +21,11 @@ namespace TradePlatform.Vizualization.Populating.Providers
 
         private IList<IData> GetData(ChartPredicate predicate)
         {
-            ISandboxDataHolder dataHolder = ContainerBuilder.Container.Resolve<ISandboxDataHolder>();
-            var index = dataHolder.Get()
-                .Where(x => predicate.DateTo == DateTime.MinValue || x.DateTime <= predicate.DateTo)
-                .Select((value, i) => i).LastOrDefault();
-
-            return dataHolder.Get()
-                .Skip(index - predicate.GetCount < 0 ? 0 : index)
-                .Take(index)
+            IList<Slice> slices = ContainerBuilder.Container.Resolve<ISandboxDataHolder>().Get();
+            int index = predicate.Index == int.MaxValue ? slices.Count : predicate.Index;
+            return slices
+                .Skip(index - predicate.GetCount < 0 ? 0 : index - predicate.GetCount)
+                .Take(index - predicate.GetCount < 0 ? index : predicate.GetCount)
                 .SelectMany(x => x.Datas)
                 .Where(x => x.Key.Equals(predicate.InstrumentId))
                 .Select(x => x.Value)
