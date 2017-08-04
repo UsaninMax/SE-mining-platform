@@ -11,6 +11,11 @@ using System.Windows.Media;
 using System.Threading.Tasks;
 using TradePlatform.Vizualization.Populating;
 using Microsoft.Practices.Unity;
+using TradePlatform.Sandbox.Transactios.Models;
+using System.Reflection;
+using System.Linq;
+using TradePlatform.Sandbox.Transactios.Enums;
+using Castle.Core.Internal;
 
 namespace TradePlatform.Vizualization.ViewModels
 {
@@ -76,10 +81,14 @@ namespace TradePlatform.Vizualization.ViewModels
                 Charting.For<Indicator>(Mappers.Xy<Indicator>()
                     .X(x => x.Date().Ticks / xAxis.Ticks)
                     .Y(x => x.Value), SeriesOrientation.Horizontal);
+
+                Charting.For<Transaction>(Mappers.Xy<Transaction>()
+                    .X(x => x.Date.Ticks / xAxis.Ticks)
+                    .Y(x => x.ExecutedPrice), SeriesOrientation.Horizontal);
             }
         }
 
-        private void UpdateCharts ()
+        private void UpdateCharts()
         {
             Task.Factory.StartNew(() => ContainerBuilder.Container.Resolve<IChartsPopulator>().Populate(this, _index));
         }
@@ -131,20 +140,21 @@ namespace TradePlatform.Vizualization.ViewModels
 
         public void Push(IList<Indicator> values)
         {
-            Series.Add(new LineSeries()
+            Series.Add(new LineSeries
             {
                 StrokeThickness = 1,
                 Fill = Brushes.Transparent,
                 LineSmoothness = 1,
                 PointGeometrySize = 2,
-                PointForeground = Brushes.Red,
+                PointForeground = Brushes.Black,
+                Foreground = Brushes.Black,
                 Values = new ChartValues<Indicator>(values)
             });
         }
 
         public void Push(IList<Candle> values)
         {
-            Series.Add(new OhlcSeries()
+            Series.Add(new OhlcSeries
             {
                 StrokeThickness = 1.3,
                 Values = new ChartValues<Candle>(values)
@@ -153,15 +163,47 @@ namespace TradePlatform.Vizualization.ViewModels
 
         public void Push(IList<double> values)
         {
-            Series.Add(new LineSeries()
+            Series.Add(new LineSeries
             {
-                StrokeThickness = 1,
+                StrokeThickness = 0,
                 Fill = Brushes.Transparent,
-                LineSmoothness = 1,
-                PointGeometrySize = 2,
-                PointForeground = Brushes.Red,
+                LineSmoothness = 0,
+                PointGeometrySize = 5,
+                PointForeground = Brushes.Black,
                 Values = new ChartValues<double>(values)
             });
+        }
+
+        public void Push(IList<Transaction> values)
+        {
+            IList<Transaction> buyTransactions = values.Where(x => x.Direction.Equals(Direction.Buy)).ToList();
+            IList<Transaction> sellTransactions = values.Where(x => x.Direction.Equals(Direction.Sell)).ToList();
+
+            if (!buyTransactions.IsNullOrEmpty())
+            {
+                Series.Add(new LineSeries
+                {
+                    StrokeThickness = 0,
+                    Fill = Brushes.Transparent,
+                    LineSmoothness = 0,
+                    PointGeometrySize = 10,
+                    PointForeground = Brushes.Green,
+                    Values = new ChartValues<Transaction>(values.Where(x => x.Direction.Equals(Direction.Buy)).ToList())
+                });
+            }
+
+            if (!sellTransactions.IsNullOrEmpty())
+            {
+                Series.Add(new LineSeries
+                {
+                    StrokeThickness = 0,
+                    Fill = Brushes.Transparent,
+                    LineSmoothness = 0,
+                    PointGeometrySize = 10,
+                    PointForeground = Brushes.Red,
+                    Values = new ChartValues<Transaction>(values.Where(x => x.Direction.Equals(Direction.Sell)).ToList())
+                });
+            }
         }
     }
 }

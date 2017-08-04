@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TradePlatform.Sandbox;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding.Predicates;
+using TradePlatform.Sandbox.Transactios.Enums;
 using TradePlatform.Sandbox.Transactios.Models;
 using TradePlatform.Vizualization.Builders.Predicates;
 using TradePlatform.Vizualization.Populating.Predicates;
@@ -80,8 +81,13 @@ namespace TestSandboxModule
             Execute();
 
 
-            StoreCustomData("Custom_1", new List<object> { 22d, 33d, 44d, 55d, 66d});
+            StoreCustomData("Custom_1", new List<object> { 22d, 33d, 44d, 55d, 66d });
+            StoreCustomData("Custom_2", new List<object> {
 
+            new Transaction.Builder().Direction(Direction.Buy).ExecutedPrice(72860).WithDate(new DateTime(2016, 2, 4, 23, 49, 30)).Build(),
+            new Transaction.Builder().Direction(Direction.Sell).ExecutedPrice(72880).WithDate(new DateTime(2016, 2, 4, 23, 49, 40)).Build()
+
+            });
 
             PopulateCharts(new List<ChartPredicate>
             {
@@ -95,18 +101,19 @@ namespace TestSandboxModule
             {
                 ChartId = "RTS_5",
                 InstrumentId = "MA"
-            }
-                ,
+            },
                 new CustomDoublePredicate
                 {
-                    ChartId = "Custom_1",
+                ChartId = "Custom_1",
                 InstrumentId = "Custom_1"
                 }
+                ,
+                new CustomTransactionPredicate
+                {
+                ChartId = "RTS_5",
+                InstrumentId = "Custom_2"
+                }
             });
-
-
-
-
         }
 
         public override void AfterExecution()
@@ -133,6 +140,11 @@ namespace TestSandboxModule
                         new ChartViewPredicate
                         {
                            Ids = new List<string> { "Custom_1"},
+                           YSize = 300
+                        },
+                        new ChartViewPredicate
+                        {
+                           Ids = new List<string> { "Custom_2"},
                            YSize = 300
                         }
                     }

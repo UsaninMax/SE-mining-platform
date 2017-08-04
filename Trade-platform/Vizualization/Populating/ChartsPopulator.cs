@@ -9,6 +9,7 @@ using Microsoft.Practices.ObjectBuilder2;
 using TradePlatform.Vizualization.Populating.Predicates;
 using TradePlatform.Vizualization.ViewModels;
 using TradePlatform.Sandbox.Models;
+using TradePlatform.Sandbox.Transactios.Models;
 
 namespace TradePlatform.Vizualization.Populating
 {
@@ -77,6 +78,11 @@ namespace TradePlatform.Vizualization.Populating
             if (predicate is ExistIndicatorPredicate)
             {
                 _chartProxy.Push(model, _chartDataProvider.GetExistStorageData<Indicator>(predicate));
+            }
+
+            if (predicate is CustomTransactionPredicate)
+            {
+                _chartProxy.Push(model, _chartDataProvider.GetCustomStorageData<Transaction>(predicate));
             }
         }
     }
