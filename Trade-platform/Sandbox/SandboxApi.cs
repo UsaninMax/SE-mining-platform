@@ -25,12 +25,14 @@ namespace TradePlatform.Sandbox
         private ICollection<IBot> _bots;
         private readonly IChartPredicatesHolder _chartPredicatesHolder;
         private readonly IChartsPopulator _chartsPopulator;
+        private readonly ICustomDataHolder _customDataHolder;
 
         protected SandboxApi()
         {
             ContainerBuilder.Container.Resolve<IChartsPopulator>(new DependencyOverride<IEnumerable<PanelViewPredicate>>(SetUpCharts()));
             _chartPredicatesHolder = ContainerBuilder.Container.Resolve<IChartPredicatesHolder>();
             _chartsPopulator = ContainerBuilder.Container.Resolve<IChartsPopulator>();
+            _customDataHolder = ContainerBuilder.Container.Resolve<ICustomDataHolder>();
         }
 
         public void SetToken(CancellationToken token)
@@ -98,6 +100,16 @@ namespace TradePlatform.Sandbox
         {
             _chartPredicatesHolder.Set(predicates);
             _chartsPopulator.Populate();
+        }
+
+        public void StoreCustomData(string key, IList<object> data)
+        {
+            _customDataHolder.Add(key, data);
+        }
+
+        public void CleanCustomeStorage()
+        {
+            _customDataHolder.CleanAll();
         }
     }
 }

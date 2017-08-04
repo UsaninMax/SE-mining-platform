@@ -20,6 +20,7 @@ namespace TradePlatform.Sandbox.Bots
         bool IsPrepared();
         void ResetTransactionContext();
         void PopulateCharts(ICollection<ChartPredicate> predicates);
-
+        void StoreCustomData(string key, IList<object> data);
+        void CleanCustomeStorage();
     }
 }

@@ -42,6 +42,7 @@ using TradePlatform.Vizualization.Populating;
 using TradePlatform.Vizualization.Builders;
 using TradePlatform.Vizualization.Builders.Predicates;
 using TradePlatform.Vizualization.Populating.Holders;
+using System;
 
 namespace TradePlatform
 {
@@ -114,7 +115,7 @@ namespace TradePlatform
             Container.RegisterType<ITransactionBuilder, TransactionBuilder>();
             Container.RegisterType<IWorkingPeriodHolder, WorkingPeriodHolder>();
 
-            Container.RegisterType<IChartViewModel, LiveChartViewModel>(new InjectionConstructor(typeof(long)));
+            Container.RegisterType<IChartViewModel, LiveChartViewModel>(new InjectionConstructor(typeof(TimeSpan)));
             Container.RegisterType<IChartsConfigurationDispatcher, ChartsConfigurationDispatcher>();
             Container.RegisterType<IChartsHolder, ChartsHolder>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IChartsPopulator, ChartsPopulator>(new ContainerControlledLifetimeManager(),new InjectionConstructor(typeof(IEnumerable<PanelViewPredicate>)));
@@ -122,6 +123,7 @@ namespace TradePlatform
             Container.RegisterType<IChartsBuilder, ChartsBuilder>();
             Container.RegisterInstance(new ChartProxy());
             Container.RegisterType<IChartPredicatesHolder, ChartPredicatesHolder>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<ICustomDataHolder, CustomDataHolder>(new ContainerControlledLifetimeManager());
         }
     }
 }

@@ -22,12 +22,14 @@ namespace TradePlatform.Sandbox.Bots
         private readonly ITransactionsContext _context;
         private readonly IChartPredicatesHolder _chartPredicatesHolder;
         private readonly IChartsPopulator _chartsPopulator;
+        private readonly ICustomDataHolder _customDataHolder;
 
         protected BotApi(IDictionary<string, BrokerCost> brokerCosts)
         {
             _context = ContainerBuilder.Container.Resolve<ITransactionsContext>(new DependencyOverride<IDictionary<string, BrokerCost>>(brokerCosts));
             _chartPredicatesHolder = ContainerBuilder.Container.Resolve<IChartPredicatesHolder>();
             _chartsPopulator = ContainerBuilder.Container.Resolve<IChartsPopulator>();
+            _customDataHolder = ContainerBuilder.Container.Resolve<ICustomDataHolder>();
         }
 
         public string GetId()
@@ -97,6 +99,16 @@ namespace TradePlatform.Sandbox.Bots
         {
             _chartPredicatesHolder.Set(predicates);
             _chartsPopulator.Populate();
+        }
+
+        public void StoreCustomData(string key, IList<object> data)
+        {
+            _customDataHolder.Add(key, data);
+        }
+
+        public void CleanCustomeStorage()
+        {
+            _customDataHolder.CleanAll();
         }
     }
 }

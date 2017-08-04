@@ -33,6 +33,14 @@ namespace TradePlatform.Vizualization.Charts
             }));
         }
 
+        internal void Push(IChartViewModel chartViewModel, IList<double> list)
+        {
+            _dispatcher.BeginInvoke((Action)(() =>
+            {
+                chartViewModel.Push(list);
+            }));
+        }
+
         internal void Push(IChartViewModel chartViewModel, IList<Indicator> list)
         {
             _dispatcher.BeginInvoke((Action)(() =>

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios.Models;
-using TradePlatform.Vizualization.Populating.Predicates;
 
 namespace TestSandboxModule
 {

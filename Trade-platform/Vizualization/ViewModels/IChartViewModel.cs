@@ -8,6 +8,7 @@ namespace TradePlatform.Vizualization.ViewModels
     {
         void Push(IList<Indicator> values);
         void Push(IList<Candle> values);
+        void Push(IList<double> values);
         void ClearAll();
     }
 }

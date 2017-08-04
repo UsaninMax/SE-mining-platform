@@ -57,22 +57,26 @@ namespace TradePlatform.Vizualization.ViewModels
         private ZoomingOptions _zoomingMode = ZoomingOptions.None;
         public ICommand ChangeToogleZoomingModeCommand { get; private set; }
 
-        public LiveChartViewModel(long xAxisInterval)
+        public LiveChartViewModel(TimeSpan xAxis)
         {
             ChangeToogleZoomingModeCommand = new DelegateCommand(ChangeToogleZoomingMode);
             ToogleZoomingModeText = "Zooming mode " + ZoomingMode.ToString();
-            XFormatter = val => new DateTime((long)val * xAxisInterval).ToString("dd/MM/yy HH:mm:ss");
 
-            Charting.For<Candle>(Mappers.Financial<Candle>()
-                .X(x => x.Date().Ticks / xAxisInterval)
-                .Open(x => x.Open)
-                .Close(x => x.Close)
-                .High(x => x.High)
-                .Low(x => x.Low), SeriesOrientation.Horizontal);
+            if (xAxis != TimeSpan.Zero)
+            {
+                XFormatter = val => new DateTime((long)val * xAxis.Ticks).ToString("dd/MM/yy HH:mm:ss");
 
-            Charting.For<Indicator>(Mappers.Xy<Indicator>()
-                .X(x => x.Date().Ticks / xAxisInterval)
-                .Y(x => x.Value), SeriesOrientation.Horizontal);
+                Charting.For<Candle>(Mappers.Financial<Candle>()
+                    .X(x => x.Date().Ticks / xAxis.Ticks)
+                    .Open(x => x.Open)
+                    .Close(x => x.Close)
+                    .High(x => x.High)
+                    .Low(x => x.Low), SeriesOrientation.Horizontal);
+
+                Charting.For<Indicator>(Mappers.Xy<Indicator>()
+                    .X(x => x.Date().Ticks / xAxis.Ticks)
+                    .Y(x => x.Value), SeriesOrientation.Horizontal);
+            }
         }
 
         private void UpdateCharts ()
@@ -144,6 +148,19 @@ namespace TradePlatform.Vizualization.ViewModels
             {
                 StrokeThickness = 1.3,
                 Values = new ChartValues<Candle>(values)
+            });
+        }
+
+        public void Push(IList<double> values)
+        {
+            Series.Add(new LineSeries()
+            {
+                StrokeThickness = 1,
+                Fill = Brushes.Transparent,
+                LineSmoothness = 1,
+                PointGeometrySize = 2,
+                PointForeground = Brushes.Red,
+                Values = new ChartValues<double>(values)
             });
         }
     }

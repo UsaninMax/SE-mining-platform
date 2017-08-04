@@ -2,23 +2,9 @@
 {
     public abstract class ChartPredicate
     {
-        public string ChartId { get; set; }
-        public string InstrumentId { get; set; }
-        public int GetCount { get; set; } = 500;
+        public string ChartId { get;  set; }
+        public string InstrumentId { get;  set; }
         public int Index { get; set; } = int.MaxValue;
-
-        public ChartPredicate()
-        {
-        }
-
-        public ChartPredicate(ChartPredicate predicate )
-        {
-            ChartId = predicate.ChartId;
-            InstrumentId = predicate.InstrumentId;
-            GetCount = predicate.GetCount;
-            Index = predicate.Index;
-        }
-
 
         public override bool Equals(object obj)
         {

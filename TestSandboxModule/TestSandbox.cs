@@ -79,20 +79,33 @@ namespace TestSandboxModule
             });
             Execute();
 
+
+            StoreCustomData("Custom_1", new List<object> { 22d, 33d, 44d, 55d, 66d});
+
+
             PopulateCharts(new List<ChartPredicate>
             {
-                new CandlesDataPredicate
+                new ExistCandlePredicate
             {
 
                 ChartId = "RTS_5",
                 InstrumentId = "RTS_5"
             },
-                new IndicatorDataPredicate
+                new ExistIndicatorPredicate
             {
                 ChartId = "RTS_5",
                 InstrumentId = "MA"
             }
+                ,
+                new CustomDoublePredicate
+                {
+                    ChartId = "Custom_1",
+                InstrumentId = "Custom_1"
+                }
             });
+
+
+
 
         }
 
@@ -114,18 +127,16 @@ namespace TestSandboxModule
                         new ChartViewPredicate
                         {
                            Ids = new List<string> { "RTS_5"},
-                           XAxis = TimeSpan.FromSeconds(5).Ticks,
+                           XAxis = TimeSpan.FromSeconds(5),
                            YSize = 400
                         },
                         new ChartViewPredicate
                         {
-                           Ids = new List<string> { "RTS_3"},
-                           XAxis = TimeSpan.FromSeconds(5).Ticks,
-                           YSize = 100
+                           Ids = new List<string> { "Custom_1"},
+                           YSize = 300
                         }
                     }
                 }
-
             };
         }
     }

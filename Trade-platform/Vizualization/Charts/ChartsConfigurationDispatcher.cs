@@ -14,7 +14,7 @@ namespace TradePlatform.Vizualization.Charts
             return configuration
                 .SelectMany(x => x.Charts)
                 .SelectMany(charty => charty.Ids.Select(id => new Tuple<string, ChartViewPredicate>(id, charty)))
-                .ToDictionary(t => t.Item1, t => ContainerBuilder.Container.Resolve<IChartViewModel>(new DependencyOverride<long>(t.Item2.XAxis)));
+                .ToDictionary(t => t.Item1, t => ContainerBuilder.Container.Resolve<IChartViewModel>(new DependencyOverride<TimeSpan>(t.Item2.XAxis)));
         }
     }
 }
