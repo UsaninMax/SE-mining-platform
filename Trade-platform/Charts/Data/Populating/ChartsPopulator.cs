@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using TradePlatform.Charts.Data.Holders;
-using TradePlatform.Charts.Data.Predicates;
+using TradePlatform.Charts.Data.Predicates.Basis;
 using TradePlatform.Charts.Data.Providers;
 using TradePlatform.Charts.Vizualization.Configurations;
 using TradePlatform.Charts.Vizualization.Dispatching;
@@ -16,7 +18,6 @@ namespace TradePlatform.Charts.Data.Populating
     public class ChartsPopulator : IChartsPopulator
     {
         private readonly IChartsHolder _chartHolder;
-        private readonly IChartsConfigurationDispatcher _configurationDispatcher;
         private readonly IChartDataProvider _chartDataProvider;
         private readonly ChartProxy _chartProxy;
         private readonly IChartPredicatesHolder _chartPredicatesHolder;
@@ -24,11 +25,10 @@ namespace TradePlatform.Charts.Data.Populating
         public ChartsPopulator(IEnumerable<PanelViewPredicate> configuration)
         {
             _chartHolder = ContainerBuilder.Container.Resolve<IChartsHolder>();
-            _configurationDispatcher = ContainerBuilder.Container.Resolve<IChartsConfigurationDispatcher>();
             _chartDataProvider = ContainerBuilder.Container.Resolve<IChartDataProvider>();
             _chartProxy = ContainerBuilder.Container.Resolve<ChartProxy>();
             _chartPredicatesHolder = ContainerBuilder.Container.Resolve<IChartPredicatesHolder>();
-            _chartHolder.Set(_configurationDispatcher.Dispatch(configuration));
+            _chartHolder.Set(ContainerBuilder.Container.Resolve<IChartsConfigurationDispatcher>().Dispatch(configuration));
         }
 
         public void Populate()
@@ -36,53 +36,84 @@ namespace TradePlatform.Charts.Data.Populating
             _chartPredicatesHolder.GetAll().ForEach(predicate => _chartProxy.Clear(_chartHolder.Get(predicate.ChartId)));
             _chartPredicatesHolder.GetAll().ForEach(predicate =>
             {
-                Populate(_chartHolder.Get(predicate.ChartId), predicate);
+                if (predicate is IndexChartPredicate)
+                {
+                    Populate(_chartHolder.Get(predicate.ChartId),
+                        predicate,
+                        ((IndexChartPredicate)predicate).From,
+                        ((IndexChartPredicate)predicate).To);
+
+                }
+                else if (predicate is DateChartPredicate)
+                {
+                    Populate(_chartHolder.Get(predicate.ChartId),
+                        predicate,
+                        ((DateChartPredicate)predicate).From,
+                        ((DateChartPredicate)predicate).To);
+                }
             });
         }
 
-        public void Populate(IChartViewModel model, int index)
+        public void Populate(IChartViewModel model, DateTime from, DateTime to)
         {
             _chartProxy.Clear(model);
             _chartHolder.Get(model).ForEach(chartId =>
             {
                 _chartPredicatesHolder.Get(chartId).ForEach(predicate =>
-               {
-                   predicate.Index = index;
-                   Populate(_chartHolder.Get(predicate.ChartId), predicate);
-               });
+                {
+                    Populate(_chartHolder.Get(predicate.ChartId), predicate, from, to);
+                });
             });
         }
 
-        private void Populate(IChartViewModel model, ChartPredicate predicate)
+        public void Populate(IChartViewModel model, int from, int to)
         {
-            if (predicate is ExistCandlePredicate)
+            _chartProxy.Clear(model);
+            _chartHolder.Get(model).ForEach(chartId =>
             {
-                _chartProxy.Push(model, _chartDataProvider.GetExistStorageData<Candle>(predicate), predicate);
-            }
+                _chartPredicatesHolder.Get(chartId).ForEach(predicate =>
+                {
+                    Populate(_chartHolder.Get(predicate.ChartId), predicate, from, to);
+                });
+            });
+        }
 
-            if (predicate is CustomCandlePredicate)
+        private void Populate(IChartViewModel model, ChartPredicate predicate, DateTime from, DateTime to)
+        {
+            if (predicate.CasType == typeof(Indicator) && predicate is IExistDataStorage)
             {
-                _chartProxy.Push(model, _chartDataProvider.GetCustomStorageData<Candle>(predicate), predicate);
-            }
 
-            if (predicate is CustomIndicatorPredicate)
-            {
-                _chartProxy.Push(model, _chartDataProvider.GetCustomStorageData<Indicator>(predicate), predicate);
-            }
+                _chartProxy.Push(model, _chartDataProvider.GetExistStorageData<Indicator>(predicate.InstrumentId)
+                    .Where(m => (from == DateTime.MinValue || m.Date() >= from) && (to == DateTime.MinValue || m.Date() <= to)).ToList(), predicate);
 
-            if (predicate is CustomDoublePredicate)
-            {
-                _chartProxy.Push(model, _chartDataProvider.GetCustomStorageData<double>(predicate), predicate);
             }
-
-            if (predicate is ExistIndicatorPredicate)
+            else if (predicate.CasType == typeof(Indicator) && predicate is ICustomStorage)
             {
-                _chartProxy.Push(model, _chartDataProvider.GetExistStorageData<Indicator>(predicate), predicate);
+                _chartProxy.Push(model, _chartDataProvider.GetCustomStorageData<Indicator>(predicate.InstrumentId)
+                    .Where(m => (from == DateTime.MinValue || m.Date() >= from) && (to == DateTime.MinValue || m.Date() <= to)).ToList(), predicate);
             }
-
-            if (predicate is CustomTransactionPredicate)
+            else if (predicate.CasType == typeof(Candle) && predicate is IExistDataStorage)
             {
-                _chartProxy.Push(model, _chartDataProvider.GetCustomStorageData<Transaction>(predicate));
+                _chartProxy.Push(model, _chartDataProvider.GetExistStorageData<Candle>(predicate.InstrumentId)
+                    .Where(m => (from == DateTime.MinValue || m.Date() >= from) && (to == DateTime.MinValue || m.Date() <= to)).ToList(), predicate);
+            }
+            else if (predicate.CasType == typeof(Candle) && predicate is ICustomStorage)
+            {
+                _chartProxy.Push(model, _chartDataProvider.GetCustomStorageData<Candle>(predicate.InstrumentId)
+                        .Where(m => (from == DateTime.MinValue || m.Date() >= from) && (to == DateTime.MinValue || m.Date() <= to)).ToList(), predicate);
+            }
+            else if (predicate.CasType == typeof(Transaction) && predicate is ICustomStorage)
+            {
+                _chartProxy.Push(model, _chartDataProvider.GetCustomStorageData<Transaction>(predicate.InstrumentId)
+                    .Where(m => (from == DateTime.MinValue || m.Date >= from) && (to == DateTime.MinValue || m.Date <= to)).ToList());
+            }
+        }
+
+        private void Populate(IChartViewModel model, ChartPredicate predicate, int from, int to)
+        {
+            if (predicate.CasType == typeof(double) && predicate is ICustomStorage)
+            {
+                _chartProxy.Push(model, _chartDataProvider.GetCustomStorageData<double>(predicate.InstrumentId).Skip(from).Take(to - from).ToList(), predicate);
             }
         }
     }

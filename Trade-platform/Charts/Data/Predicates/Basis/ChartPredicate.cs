@@ -1,13 +1,14 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Windows.Media;
 
-namespace TradePlatform.Charts.Data.Predicates
+namespace TradePlatform.Charts.Data.Predicates.Basis
 {
     public abstract class ChartPredicate
     {
         public string ChartId { get;  set; }
         public string InstrumentId { get;  set; }
         public Brush Color { get; set; }
-        public int Index { get; set; } = int.MaxValue;
+        public Type CasType { get; set; }
 
         public override bool Equals(object obj)
         {

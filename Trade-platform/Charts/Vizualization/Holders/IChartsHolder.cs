@@ -8,6 +8,5 @@ namespace TradePlatform.Charts.Vizualization.Holders
         void Set(IDictionary<string, IChartViewModel> map);
         IChartViewModel Get(string key);
         IEnumerable<string> Get(IChartViewModel model);
-        bool Exist(string key);
     }
 }

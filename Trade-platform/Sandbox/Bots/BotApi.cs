@@ -7,6 +7,7 @@ using Microsoft.Practices.Unity;
 using TradePlatform.Charts.Data.Holders;
 using TradePlatform.Charts.Data.Populating;
 using TradePlatform.Charts.Data.Predicates;
+using TradePlatform.Charts.Data.Predicates.Basis;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios;
 using TradePlatform.Sandbox.Transactios.Models;

@@ -12,7 +12,7 @@ namespace TradePlatform.Charts.Vizualization.Dispatching
 {
     public class ChartsBuilder : IChartsBuilder
     {
-        private IChartsHolder _chartHolder;
+        private readonly IChartsHolder _chartHolder;
 
         public ChartsBuilder ()
         {
@@ -26,10 +26,8 @@ namespace TradePlatform.Charts.Vizualization.Dispatching
                 ContainerBuilder.Container.Resolve<ChartPanelView>( 
                     new DependencyOverride<IEnumerable<Tuple<IChartViewModel, ChartViewPredicate>>>(
                         x.Charts.Where(s => s.Ids.Count() != 0)
-                        .Select(y =>
-                        {
-                            return new Tuple<IChartViewModel, ChartViewPredicate>(_chartHolder.Get(y.Ids.First()), y);
-                        }).ToList())).Show();
+                        .Select(predicate => new Tuple<IChartViewModel, ChartViewPredicate>(_chartHolder.Get(predicate.Ids.First()), predicate))
+                        .ToList())).Show();
             });
         }
     }

@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Practices.ObjectBuilder2;
 using TradePlatform.Charts.Data.Predicates;
+using TradePlatform.Charts.Data.Predicates.Basis;
 
 namespace TradePlatform.Charts.Data.Holders
 {

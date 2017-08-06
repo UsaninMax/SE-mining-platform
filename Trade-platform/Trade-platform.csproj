@@ -132,6 +132,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Charts\Data\Predicates\Basis\CustomStorage.cs" />
+    <Compile Include="Charts\Data\Predicates\Basis\DateChartPredicate.cs" />
+    <Compile Include="Charts\Data\Predicates\Basis\IExistDataStorage.cs" />
+    <Compile Include="Charts\Data\Predicates\Basis\IndexChartPredicate.cs" />
+    <Compile Include="Charts\Vizualization\Configurations\IndexChartViewPredicate.cs" />
+    <Compile Include="Charts\Vizualization\Configurations\DateChartViewPredicate.cs" />
+    <Compile Include="Charts\Vizualization\ViewModels\IndexChartViewModel.cs" />
+    <Compile Include="Charts\Vizualization\Views\IndexChartView.xaml.cs">
+      <DependentUpon>IndexChartView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Commons\BaseModels\IClosableWindow.cs" />
     <Compile Include="Commons\Info\Model\Message\DataSetInfo.cs" />
     <Compile Include="Commons\Info\Model\Message\SandboxInfo.cs" />
@@ -309,23 +319,25 @@
     <Compile Include="Charts\Data\Holders\ChartPredicatesHolder.cs" />
     <Compile Include="Charts\Data\Holders\IChartPredicatesHolder.cs" />
     <Compile Include="Charts\Data\Populating\IChartsPopulator.cs" />
-    <Compile Include="Charts\Data\Predicates\ChartPredicate.cs" />
-    <Compile Include="Charts\Data\Predicates\CustomTransactionPredicate.cs" />
-    <Compile Include="Charts\Data\Predicates\ExistCandlePredicate.cs" />
-    <Compile Include="Charts\Data\Predicates\CustomCandlePredicate.cs" />
-    <Compile Include="Charts\Data\Predicates\CustomDoublePredicate.cs" />
-    <Compile Include="Charts\Data\Predicates\CustomIndicatorPredicate.cs" />
-    <Compile Include="Charts\Data\Predicates\ExistIndicatorPredicate.cs" />
+    <Compile Include="Charts\Data\Predicates\Basis\ChartPredicate.cs" />
+    <Compile Include="Charts\Data\Predicates\EDPredicate.cs" />
+    <Compile Include="Charts\Data\Predicates\CDPredicate.cs" />
+    <Compile Include="Charts\Data\Predicates\CIPredicate.cs" />
+    <Compile Include="Charts\Data\Predicates\EIPredicate.cs" />
     <Compile Include="Charts\Data\Providers\ChartDataProvider.cs" />
     <Compile Include="Charts\Data\Providers\IChartDataProvider.cs" />
     <Compile Include="Charts\Vizualization\ViewModels\IChartViewModel.cs" />
-    <Compile Include="Charts\Vizualization\ViewModels\LiveChartViewModel.cs" />
+    <Compile Include="Charts\Vizualization\ViewModels\DateChartViewModel.cs" />
     <Compile Include="Charts\Vizualization\Views\ChartPanelView.xaml.cs">
       <DependentUpon>ChartPanelView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Charts\Vizualization\Views\ChartView.xaml.cs">
-      <DependentUpon>ChartView.xaml</DependentUpon>
+    <Compile Include="Charts\Vizualization\Views\DateChartView.xaml.cs">
+      <DependentUpon>DateChartView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Charts\Vizualization\Views\IndexChartView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Commons\Info\Views\InfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -389,7 +401,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Charts\Vizualization\Views\ChartView.xaml">
+    <Page Include="Charts\Vizualization\Views\DateChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

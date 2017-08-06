@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using TradePlatform.DataSet.ViewModels;
 using Microsoft.Practices.Unity;
-using System.Windows;
 
 namespace TradePlatform.DataSet.Views
 {

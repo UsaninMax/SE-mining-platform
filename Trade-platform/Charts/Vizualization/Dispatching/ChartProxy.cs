@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Threading;
 using TradePlatform.Charts.Data.Predicates;
+using TradePlatform.Charts.Data.Predicates.Basis;
 using TradePlatform.Charts.Vizualization.Configurations;
 using TradePlatform.Charts.Vizualization.ViewModels;
 using TradePlatform.Sandbox.Models;

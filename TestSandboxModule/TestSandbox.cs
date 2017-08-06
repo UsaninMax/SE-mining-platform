@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Windows.Media;
 using TradePlatform.Charts.Data.Predicates;
+using TradePlatform.Charts.Data.Predicates.Basis;
 using TradePlatform.Charts.Vizualization.Configurations;
 using TradePlatform.Sandbox;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding.Predicates;
+using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios.Enums;
 using TradePlatform.Sandbox.Transactios.Models;
 
@@ -94,29 +96,40 @@ namespace TestSandboxModule
 
             PopulateCharts(new List<ChartPredicate>
             {
-                new ExistCandlePredicate
+                new EDPredicate
             {
-
+                CasType = typeof(Candle),
                 ChartId = "RTS_5",
-                InstrumentId = "RTS_5"
+                InstrumentId = "RTS_5",
+                From = new DateTime(2016, 2, 1, 13, 55, 00),
+                To = new DateTime(2016, 2, 1, 13, 56, 00)
             },
-                new ExistIndicatorPredicate
+                new EDPredicate
             {
+                CasType = typeof(Indicator),
                 ChartId = "RTS_5",
                 InstrumentId = "MA",
-                Color = Brushes.DarkBlue
+                Color = Brushes.DarkBlue,
+                From = new DateTime(2016, 2, 1, 13, 55, 00),
+                To = new DateTime(2016, 2, 1, 13, 56, 00)
             },
-                new CustomDoublePredicate
+                new CIPredicate
                 {
+                CasType = typeof(double),
                 ChartId = "Custom_1",
                 InstrumentId = "Custom_1",
-                Color = Brushes.DarkBlue
+                Color = Brushes.DarkBlue,
+                From = 0,
+                To = 999
                 }
                 ,
-                new CustomTransactionPredicate
+                new CDPredicate
                 {
+                CasType = typeof(Transaction),
                 ChartId = "RTS_5",
-                InstrumentId = "Custom_2"
+                InstrumentId = "Custom_2",
+                From = new DateTime(2016, 2, 1, 13, 55, 00),
+                To = new DateTime(2016, 2, 1, 13, 56, 00)
                 }
             });
         }
@@ -136,18 +149,18 @@ namespace TestSandboxModule
                 {
                     Charts = new List<ChartViewPredicate>
                     {
-                        new ChartViewPredicate
+                        new DateChartViewPredicate
                         {
                            Ids = new List<string> { "RTS_5"},
                            XAxis = TimeSpan.FromSeconds(5),
                            YSize = 400
                         },
-                        new ChartViewPredicate
+                        new IndexChartViewPredicate
                         {
                            Ids = new List<string> { "Custom_1"},
                            YSize = 300
                         },
-                        new ChartViewPredicate
+                        new IndexChartViewPredicate
                         {
                            Ids = new List<string> { "Custom_2"},
                            YSize = 300

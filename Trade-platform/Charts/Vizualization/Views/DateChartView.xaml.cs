@@ -1,12 +1,11 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using TradePlatform.Charts.Vizualization.ViewModels;
 
 namespace TradePlatform.Charts.Vizualization.Views
 {
-    public partial class ChartView : UserControl
+    public partial class DateChartView
     {
-        public ChartView(IChartViewModel model)
+        public DateChartView(IChartViewModel model)
         {
             InitializeComponent();
             DataContext = model;

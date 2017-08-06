@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.Unity;
-using TradePlatform.Charts.Data.Predicates;
 using TradePlatform.Sandbox.Holders;
 using TradePlatform.Sandbox.Models;
 
@@ -9,29 +8,21 @@ namespace TradePlatform.Charts.Data.Providers
 {
     public class ChartDataProvider : IChartDataProvider
     {
-        private const int COUNT = 100;
-
-        public IList<T> GetExistStorageData<T>(ChartPredicate predicate)
+        public IList<T> GetExistStorageData<T>(string instrumentId)
         {
             IList<Slice> slices = ContainerBuilder.Container.Resolve<ISandboxDataHolder>().Get();
-            int index = predicate.Index == int.MaxValue ? slices.Count : predicate.Index;
             return slices
-                .Skip(index - COUNT < 0 ? 0 : index - COUNT)
-                .Take(index - COUNT < 0 ? index : COUNT)
                 .SelectMany(x => x.Datas)
-                .Where(x => x.Key.Equals(predicate.InstrumentId))
+                .Where(x => x.Key.Equals(instrumentId))
                 .Select(x => x.Value)
                 .OfType<T>()
                 .ToList();
         }
 
-        public IList<T> GetCustomStorageData<T>(ChartPredicate predicate)
+        public IList<T> GetCustomStorageData<T>(string instrumentId)
         {
-            IList<object> data = ContainerBuilder.Container.Resolve<ICustomDataHolder>().Get(predicate.InstrumentId);
-            int index = predicate.Index == int.MaxValue ? data.Count : predicate.Index;
+            IList<object> data = ContainerBuilder.Container.Resolve<ICustomDataHolder>().Get(instrumentId);
             return data
-                .Skip(index - COUNT < 0 ? 0 : index - COUNT)
-                .Take(index - COUNT < 0 ? index : COUNT)
                 .Cast<T>()
                 .ToList();
         }

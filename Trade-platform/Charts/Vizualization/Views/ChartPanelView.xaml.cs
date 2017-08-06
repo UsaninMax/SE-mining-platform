@@ -8,15 +8,19 @@ namespace TradePlatform.Charts.Vizualization.Views
 {
     public partial class ChartPanelView
     {
-        public ChartPanelView(IEnumerable<Tuple<IChartViewModel, ChartViewPredicate>> chart )
+        public ChartPanelView(IEnumerable<Tuple<IChartViewModel, ChartViewPredicate>> settings )
         {
             InitializeComponent();
-
-            chart.ForEach(x =>
+            settings.ForEach(setting =>
             {
-                ChartView view = new ChartView(x.Item1);
-                view.Height = x.Item2.YSize;
-                ChartStack.Children.Add(view);
+                if (setting.Item2 is DateChartViewPredicate)
+                {
+                    ChartStack.Children.Add(new DateChartView(setting.Item1) { Height = setting.Item2.YSize });
+                }
+                else if (setting.Item2 is IndexChartViewPredicate)
+                {
+                    ChartStack.Children.Add(new IndexChartView(setting.Item1) { Height = setting.Item2.YSize });
+                }
             });
         }
     }

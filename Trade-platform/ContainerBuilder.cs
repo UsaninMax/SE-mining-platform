@@ -114,7 +114,8 @@ namespace TradePlatform
             Container.RegisterType<ITransactionBuilder, TransactionBuilder>();
             Container.RegisterType<IWorkingPeriodHolder, WorkingPeriodHolder>();
 
-            Container.RegisterType<IChartViewModel, LiveChartViewModel>(new InjectionConstructor(typeof(TimeSpan)));
+            Container.RegisterType<IChartViewModel, DateChartViewModel>("DateChartViewModel", new InjectionConstructor(typeof(TimeSpan)));
+            Container.RegisterType<IChartViewModel, IndexChartViewModel>("IndexChartViewModel");
             Container.RegisterType<IChartsConfigurationDispatcher, ChartsConfigurationDispatcher>();
             Container.RegisterType<IChartsHolder, ChartsHolder>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IChartsPopulator, ChartsPopulator>(new ContainerControlledLifetimeManager(),new InjectionConstructor(typeof(IEnumerable<PanelViewPredicate>)));

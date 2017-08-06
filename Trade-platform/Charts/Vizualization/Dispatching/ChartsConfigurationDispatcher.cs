@@ -14,7 +14,16 @@ namespace TradePlatform.Charts.Vizualization.Dispatching
             return configuration
                 .SelectMany(x => x.Charts)
                 .SelectMany(chart => chart.Ids.Select(id => new Tuple<string, ChartViewPredicate>(id, chart)))
-                .ToDictionary(t => t.Item1, t => ContainerBuilder.Container.Resolve<IChartViewModel>(new DependencyOverride<TimeSpan>(t.Item2.XAxis)));
+                .ToDictionary(t => t.Item1, t =>
+                {
+                    if (t.Item2 is DateChartViewPredicate)
+                    {
+                        var predicate = t.Item2 as DateChartViewPredicate;
+                        return ContainerBuilder.Container.Resolve<IChartViewModel>("DateChartViewModel",
+                            new DependencyOverride<TimeSpan>(predicate.XAxis));
+                    }
+                    return ContainerBuilder.Container.Resolve<IChartViewModel>("IndexChartViewModel");
+                });
         }
     }
 }

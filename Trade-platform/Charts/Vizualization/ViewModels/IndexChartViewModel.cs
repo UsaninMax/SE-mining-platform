@@ -6,27 +6,20 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Castle.Core.Internal;
 using LiveCharts;
-using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
 using TradePlatform.Charts.Data.Populating;
-using TradePlatform.Charts.Data.Predicates;
+using TradePlatform.Charts.Data.Predicates.Basis;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios.Enums;
 using TradePlatform.Sandbox.Transactios.Models;
 
 namespace TradePlatform.Charts.Vizualization.ViewModels
 {
-    public class LiveChartViewModel : BindableBase, IChartViewModel
+    public class IndexChartViewModel : BindableBase, IChartViewModel
     {
-        public Func<double, string> XFormatter
-        {
-            get;
-            set;
-        }
-
         public SeriesCollection Series
         {
             get { return _series; }
@@ -48,49 +41,44 @@ namespace TradePlatform.Charts.Vizualization.ViewModels
             }
         }
 
-        public int Index
+        public int From
         {
-            get { return _index; }
+            get { return _from; }
             set
             {
-                _index = value;
-                UpdateCharts();
+                _from = value;
+                RaisePropertyChanged();
             }
         }
-        private int _index;
+
+        private int _from;
+
+        public int To
+        {
+            get { return _to; }
+            set
+            {
+                _to = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private int _to;
 
         private ZoomingOptions _zoomingMode = ZoomingOptions.None;
         public ICommand ChangeToogleZoomingModeCommand { get; private set; }
+        public ICommand ShowDataCommand { get; private set; }
 
-        public LiveChartViewModel(TimeSpan xAxis)
+        public IndexChartViewModel()
         {
             ChangeToogleZoomingModeCommand = new DelegateCommand(ChangeToogleZoomingMode);
-            ToogleZoomingModeText = "Zooming mode " + ZoomingMode.ToString();
-
-            if (xAxis != TimeSpan.Zero)
-            {
-                XFormatter = val => new DateTime((long)val * xAxis.Ticks).ToString("dd/MM/yy HH:mm:ss");
-
-                Charting.For<Candle>(Mappers.Financial<Candle>()
-                    .X(x => x.Date().Ticks / xAxis.Ticks)
-                    .Open(x => x.Open)
-                    .Close(x => x.Close)
-                    .High(x => x.High)
-                    .Low(x => x.Low), SeriesOrientation.Horizontal);
-
-                Charting.For<Indicator>(Mappers.Xy<Indicator>()
-                    .X(x => x.Date().Ticks / xAxis.Ticks)
-                    .Y(x => x.Value), SeriesOrientation.Horizontal);
-
-                Charting.For<Transaction>(Mappers.Xy<Transaction>()
-                    .X(x => x.Date.Ticks / xAxis.Ticks)
-                    .Y(x => x.ExecutedPrice), SeriesOrientation.Horizontal);
-            }
+            ToogleZoomingModeText = "Zooming mode " + ZoomingMode;
+            ShowDataCommand = new DelegateCommand(UpdateCharts);
         }
 
         private void UpdateCharts()
         {
-            Task.Factory.StartNew(() => ContainerBuilder.Container.Resolve<IChartsPopulator>().Populate(this, _index));
+            Task.Factory.StartNew(() => ContainerBuilder.Container.Resolve<IChartsPopulator>().Populate(this, From, To));
         }
 
         private void ChangeToogleZoomingMode()
@@ -99,19 +87,19 @@ namespace TradePlatform.Charts.Vizualization.ViewModels
             {
                 case ZoomingOptions.None:
                     ZoomingMode = ZoomingOptions.X;
-                    ToogleZoomingModeText = "Zooming mode " + ZoomingMode.ToString();
+                    ToogleZoomingModeText = "Zooming mode " + ZoomingMode;
                     break;
                 case ZoomingOptions.X:
                     ZoomingMode = ZoomingOptions.Y;
-                    ToogleZoomingModeText = "Zooming mode " + ZoomingMode.ToString();
+                    ToogleZoomingModeText = "Zooming mode " + ZoomingMode;
                     break;
                 case ZoomingOptions.Y:
                     ZoomingMode = ZoomingOptions.Xy;
-                    ToogleZoomingModeText = "Zooming mode " + ZoomingMode.ToString();
+                    ToogleZoomingModeText = "Zooming mode " + ZoomingMode;
                     break;
                 case ZoomingOptions.Xy:
                     ZoomingMode = ZoomingOptions.None;
-                    ToogleZoomingModeText = "Zooming mode " + ZoomingMode.ToString();
+                    ToogleZoomingModeText = "Zooming mode " + ZoomingMode;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -140,6 +128,7 @@ namespace TradePlatform.Charts.Vizualization.ViewModels
 
         public void Push(IList<Indicator> values, ChartPredicate predicate)
         {
+            UpdateRange(predicate);
             Series.Add(new LineSeries
             {
                 Title = predicate.InstrumentId,
@@ -156,6 +145,7 @@ namespace TradePlatform.Charts.Vizualization.ViewModels
 
         public void Push(IList<Candle> values, ChartPredicate predicate)
         {
+            UpdateRange(predicate);
             Series.Add(new OhlcSeries
             {
                 Title = predicate.InstrumentId,
@@ -166,6 +156,7 @@ namespace TradePlatform.Charts.Vizualization.ViewModels
 
         public void Push(IList<double> values, ChartPredicate predicate)
         {
+            UpdateRange(predicate);
             Series.Add(new LineSeries
             {
                 Title = predicate.InstrumentId,
@@ -209,6 +200,15 @@ namespace TradePlatform.Charts.Vizualization.ViewModels
                     PointForeground = Brushes.Red,
                     Values = new ChartValues<Transaction>(values.Where(x => x.Direction.Equals(Direction.Sell)).ToList())
                 });
+            }
+        }
+
+        private void UpdateRange(ChartPredicate predicate)
+        {
+            if (predicate is IndexChartPredicate)
+            {
+                From = (predicate as IndexChartPredicate).From;
+                To = (predicate as IndexChartPredicate).To;
             }
         }
     }
