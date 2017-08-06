@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using TradePlatform.Charts.Data.Predicates;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios.Models;
-using TradePlatform.Vizualization.Populating.Predicates;
 
 namespace TradePlatform.Sandbox.Bots
 {

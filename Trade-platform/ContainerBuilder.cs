@@ -33,16 +33,15 @@ using TradePlatform.StockData.Holders;
 using TradePlatform.StockData.Models;
 using TradePlatform.StockData.Presenters;
 using TradePlatform.StockData.ViewModels;
-using TradePlatform.Vizualization.ViewModels;
-using TradePlatform.Vizualization.Holders;
 using TradePlatform.Sandbox.Holders;
-using TradePlatform.Vizualization.Populating.Providers;
-using TradePlatform.Vizualization.Charts;
-using TradePlatform.Vizualization.Populating;
-using TradePlatform.Vizualization.Builders;
-using TradePlatform.Vizualization.Builders.Predicates;
-using TradePlatform.Vizualization.Populating.Holders;
 using System;
+using TradePlatform.Charts.Data.Holders;
+using TradePlatform.Charts.Data.Populating;
+using TradePlatform.Charts.Data.Providers;
+using TradePlatform.Charts.Vizualization.Configurations;
+using TradePlatform.Charts.Vizualization.Dispatching;
+using TradePlatform.Charts.Vizualization.Holders;
+using TradePlatform.Charts.Vizualization.ViewModels;
 
 namespace TradePlatform
 {

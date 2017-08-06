@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
+using TradePlatform.Charts.Data.Predicates;
+using TradePlatform.Charts.Vizualization.Configurations;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding.Predicates;
-using TradePlatform.Vizualization.Builders.Predicates;
-using TradePlatform.Vizualization.Populating.Predicates;
 
 namespace TradePlatform.Sandbox
 {

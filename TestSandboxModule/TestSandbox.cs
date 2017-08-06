@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Media;
+using TradePlatform.Charts.Data.Predicates;
+using TradePlatform.Charts.Vizualization.Configurations;
 using TradePlatform.Sandbox;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding.Predicates;
 using TradePlatform.Sandbox.Transactios.Enums;
 using TradePlatform.Sandbox.Transactios.Models;
-using TradePlatform.Vizualization.Builders.Predicates;
-using TradePlatform.Vizualization.Populating.Predicates;
 
 namespace TestSandboxModule
 {
@@ -84,8 +85,10 @@ namespace TestSandboxModule
             StoreCustomData("Custom_1", new List<object> { 22d, 33d, 44d, 55d, 66d });
             StoreCustomData("Custom_2", new List<object> {
 
-            new Transaction.Builder().Direction(Direction.Buy).ExecutedPrice(72860).WithDate(new DateTime(2016, 2, 4, 23, 49, 30)).Build(),
-            new Transaction.Builder().Direction(Direction.Sell).ExecutedPrice(72880).WithDate(new DateTime(2016, 2, 4, 23, 49, 40)).Build()
+            new Transaction.Builder().Direction(Direction.Buy).ExecutedPrice(72860).WithDate(new DateTime(2016, 2, 4, 23, 49, 33)).Build(),
+             new Transaction.Builder().Direction(Direction.Buy).ExecutedPrice(72860).WithDate(new DateTime(2016, 2, 4, 23, 49, 33)).Build(),
+              new Transaction.Builder().Direction(Direction.Buy).ExecutedPrice(72860).WithDate(new DateTime(2016, 2, 4, 23, 49, 33)).Build(),
+            new Transaction.Builder().Direction(Direction.Sell).ExecutedPrice(72880).WithDate(new DateTime(2016, 2, 4, 23, 49, 41)).Build()
 
             });
 
@@ -100,12 +103,14 @@ namespace TestSandboxModule
                 new ExistIndicatorPredicate
             {
                 ChartId = "RTS_5",
-                InstrumentId = "MA"
+                InstrumentId = "MA",
+                Color = Brushes.DarkBlue
             },
                 new CustomDoublePredicate
                 {
                 ChartId = "Custom_1",
-                InstrumentId = "Custom_1"
+                InstrumentId = "Custom_1",
+                Color = Brushes.DarkBlue
                 }
                 ,
                 new CustomTransactionPredicate

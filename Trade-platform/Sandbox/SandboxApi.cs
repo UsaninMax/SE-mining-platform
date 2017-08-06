@@ -4,16 +4,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
+using TradePlatform.Charts.Data.Holders;
+using TradePlatform.Charts.Data.Populating;
+using TradePlatform.Charts.Data.Predicates;
+using TradePlatform.Charts.Vizualization.Configurations;
+using TradePlatform.Charts.Vizualization.Dispatching;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding;
 using TradePlatform.Sandbox.DataProviding.Predicates;
-using TradePlatform.Vizualization.Builders.Predicates;
 using TradePlatform.Sandbox.Holders;
-using TradePlatform.Vizualization.Populating;
-using TradePlatform.Vizualization.Builders;
-using TradePlatform.Vizualization.Charts;
-using TradePlatform.Vizualization.Populating.Holders;
-using TradePlatform.Vizualization.Populating.Predicates;
 
 namespace TradePlatform.Sandbox
 {

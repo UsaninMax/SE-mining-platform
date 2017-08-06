@@ -296,34 +296,34 @@
     <Compile Include="StockData\Views\HistoryInstrumentsView.xaml.cs">
       <DependentUpon>HistoryInstrumentsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Vizualization\Builders\ChartsBuilder.cs" />
-    <Compile Include="Vizualization\Builders\IChartsBuilder.cs" />
-    <Compile Include="Vizualization\Charts\ChartsConfigurationDispatcher.cs" />
-    <Compile Include="Vizualization\Charts\IChartsConfigurationDispatcher.cs" />
-    <Compile Include="Vizualization\Builders\Predicates\ChartViewPredicate.cs" />
-    <Compile Include="Vizualization\Builders\Predicates\PanelViewPredicate.cs" />
-    <Compile Include="Vizualization\Holders\ChartsHolder.cs" />
-    <Compile Include="Vizualization\Holders\IChartsHolder.cs" />
-    <Compile Include="Vizualization\Charts\ChartProxy.cs" />
-    <Compile Include="Vizualization\Populating\ChartsPopulator.cs" />
-    <Compile Include="Vizualization\Populating\Holders\ChartPredicatesHolder.cs" />
-    <Compile Include="Vizualization\Populating\Holders\IChartPredicatesHolder.cs" />
-    <Compile Include="Vizualization\Populating\IChartsPopulator.cs" />
-    <Compile Include="Vizualization\Populating\Predicates\ChartPredicate.cs" />
-    <Compile Include="Vizualization\Populating\Predicates\CustomTransactionPredicate.cs" />
-    <Compile Include="Vizualization\Populating\Predicates\ExistCandlePredicate.cs" />
-    <Compile Include="Vizualization\Populating\Predicates\CustomCandlePredicate.cs" />
-    <Compile Include="Vizualization\Populating\Predicates\CustomDoublePredicate.cs" />
-    <Compile Include="Vizualization\Populating\Predicates\CustomIndicatorPredicate.cs" />
-    <Compile Include="Vizualization\Populating\Predicates\ExistIndicatorPredicate.cs" />
-    <Compile Include="Vizualization\Populating\Providers\ChartDataProvider.cs" />
-    <Compile Include="Vizualization\Populating\Providers\IChartDataProvider.cs" />
-    <Compile Include="Vizualization\ViewModels\IChartViewModel.cs" />
-    <Compile Include="Vizualization\ViewModels\LiveChartViewModel.cs" />
-    <Compile Include="Vizualization\Views\ChartPanelView.xaml.cs">
+    <Compile Include="Charts\Vizualization\Dispatching\ChartsBuilder.cs" />
+    <Compile Include="Charts\Vizualization\Dispatching\IChartsBuilder.cs" />
+    <Compile Include="Charts\Vizualization\Dispatching\ChartsConfigurationDispatcher.cs" />
+    <Compile Include="Charts\Vizualization\Dispatching\IChartsConfigurationDispatcher.cs" />
+    <Compile Include="Charts\Vizualization\Configurations\ChartViewPredicate.cs" />
+    <Compile Include="Charts\Vizualization\Configurations\PanelViewPredicate.cs" />
+    <Compile Include="Charts\Vizualization\Holders\ChartsHolder.cs" />
+    <Compile Include="Charts\Vizualization\Holders\IChartsHolder.cs" />
+    <Compile Include="Charts\Vizualization\Dispatching\ChartProxy.cs" />
+    <Compile Include="Charts\Data\Populating\ChartsPopulator.cs" />
+    <Compile Include="Charts\Data\Holders\ChartPredicatesHolder.cs" />
+    <Compile Include="Charts\Data\Holders\IChartPredicatesHolder.cs" />
+    <Compile Include="Charts\Data\Populating\IChartsPopulator.cs" />
+    <Compile Include="Charts\Data\Predicates\ChartPredicate.cs" />
+    <Compile Include="Charts\Data\Predicates\CustomTransactionPredicate.cs" />
+    <Compile Include="Charts\Data\Predicates\ExistCandlePredicate.cs" />
+    <Compile Include="Charts\Data\Predicates\CustomCandlePredicate.cs" />
+    <Compile Include="Charts\Data\Predicates\CustomDoublePredicate.cs" />
+    <Compile Include="Charts\Data\Predicates\CustomIndicatorPredicate.cs" />
+    <Compile Include="Charts\Data\Predicates\ExistIndicatorPredicate.cs" />
+    <Compile Include="Charts\Data\Providers\ChartDataProvider.cs" />
+    <Compile Include="Charts\Data\Providers\IChartDataProvider.cs" />
+    <Compile Include="Charts\Vizualization\ViewModels\IChartViewModel.cs" />
+    <Compile Include="Charts\Vizualization\ViewModels\LiveChartViewModel.cs" />
+    <Compile Include="Charts\Vizualization\Views\ChartPanelView.xaml.cs">
       <DependentUpon>ChartPanelView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Vizualization\Views\ChartView.xaml.cs">
+    <Compile Include="Charts\Vizualization\Views\ChartView.xaml.cs">
       <DependentUpon>ChartView.xaml</DependentUpon>
     </Compile>
     <Page Include="Commons\Info\Views\InfoView.xaml">
@@ -385,11 +385,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Vizualization\Views\ChartPanelView.xaml">
+    <Page Include="Charts\Vizualization\Views\ChartPanelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Vizualization\Views\ChartView.xaml">
+    <Page Include="Charts\Vizualization\Views\ChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

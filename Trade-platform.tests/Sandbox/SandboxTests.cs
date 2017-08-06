@@ -5,12 +5,12 @@ using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
 using TradePlatform;
+using TradePlatform.Charts.Vizualization.Configurations;
 using TradePlatform.Sandbox;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding;
 using TradePlatform.Sandbox.DataProviding.Predicates;
 using TradePlatform.Sandbox.Models;
-using TradePlatform.Vizualization.Builders.Predicates;
 
 namespace Trade_platform.tests.Sandbox
 {

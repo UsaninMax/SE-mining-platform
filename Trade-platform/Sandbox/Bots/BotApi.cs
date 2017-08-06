@@ -4,13 +4,13 @@ using System.Linq;
 using Castle.Core.Internal;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
+using TradePlatform.Charts.Data.Holders;
+using TradePlatform.Charts.Data.Populating;
+using TradePlatform.Charts.Data.Predicates;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios;
 using TradePlatform.Sandbox.Transactios.Models;
 using TradePlatform.Sandbox.Holders;
-using TradePlatform.Vizualization.Populating.Holders;
-using TradePlatform.Vizualization.Populating;
-using TradePlatform.Vizualization.Populating.Predicates;
 
 namespace TradePlatform.Sandbox.Bots
 {
