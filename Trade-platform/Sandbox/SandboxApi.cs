@@ -23,16 +23,10 @@ namespace TradePlatform.Sandbox
         public ICollection<IBot> Bots => _bots;
         private CancellationToken _token;
         private ICollection<IBot> _bots;
-        private readonly IChartPredicatesHolder _chartPredicatesHolder;
-        private readonly IChartsPopulator _chartsPopulator;
-        private readonly ICustomDataHolder _customDataHolder;
 
         protected SandboxApi()
         {
             ContainerBuilder.Container.Resolve<IChartsPopulator>(new DependencyOverride<IEnumerable<PanelViewPredicate>>(SetUpCharts()));
-            _chartPredicatesHolder = ContainerBuilder.Container.Resolve<IChartPredicatesHolder>();
-            _chartsPopulator = ContainerBuilder.Container.Resolve<IChartsPopulator>();
-            _customDataHolder = ContainerBuilder.Container.Resolve<ICustomDataHolder>();
         }
 
         public void SetToken(CancellationToken token)
@@ -50,9 +44,7 @@ namespace TradePlatform.Sandbox
             if (_token.IsCancellationRequested) { return; }
             ISandboxDataProvider dataProvider = ContainerBuilder.Container.Resolve<ISandboxDataProvider>();
             ISandboxDataHolder dataHolder = ContainerBuilder.Container.Resolve<ISandboxDataHolder>();
-            var data = dataProvider.Get(SetUpData(), _token);
-            if (_token.IsCancellationRequested) { return; }
-            dataHolder.Add(data);
+            dataHolder.Add(dataProvider.Get(SetUpData(), _token));
         }
 
         protected void Execute()
@@ -98,18 +90,18 @@ namespace TradePlatform.Sandbox
 
         public void PopulateCharts(ICollection<ChartPredicate> predicates)
         {
-            _chartPredicatesHolder.Set(predicates);
-            _chartsPopulator.Populate();
+            ContainerBuilder.Container.Resolve<IChartPredicatesHolder>().Set(predicates);
+            ContainerBuilder.Container.Resolve<IChartsPopulator>().Populate();
         }
 
         public void StoreCustomData(string key, IList<object> data)
         {
-            _customDataHolder.Add(key, data);
+            ContainerBuilder.Container.Resolve<ICustomDataHolder>().Add(key, data);
         }
 
         public void CleanCustomeStorage()
         {
-            _customDataHolder.CleanAll();
+            ContainerBuilder.Container.Resolve<ICustomDataHolder>().CleanAll();
         }
     }
 }

@@ -24,8 +24,10 @@ namespace Trade_platform.tests.Sandbox.Bots
         {
             var transactionContextMock = new Mock<ITransactionsContext>();
             ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
+            var sandboxDataHolder = new Mock<ISandboxDataHolder>();
+            ContainerBuilder.Container.RegisterInstance(sandboxDataHolder.Object);
+            sandboxDataHolder.Setup(x => x.Get()).Returns(GetData());
             TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
-            //bot.SetUpData(GetData());
             bot.SetUpPredicate(new BotPredicate.Builder()
                 .Build());
             bot.Execute();
@@ -39,7 +41,9 @@ namespace Trade_platform.tests.Sandbox.Bots
             var transactionContextMock = new Mock<ITransactionsContext>();
             ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
             TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
-           // bot.SetUpData(GetData());
+            var sandboxDataHolder = new Mock<ISandboxDataHolder>();
+            ContainerBuilder.Container.RegisterInstance(sandboxDataHolder.Object);
+            sandboxDataHolder.Setup(x => x.Get()).Returns(GetData());
             bot.SetUpPredicate(new BotPredicate
                 .Builder()
                 .From(new DateTime(2016, 9, 14, 1, 28, 0))
@@ -62,7 +66,9 @@ namespace Trade_platform.tests.Sandbox.Bots
             var transactionContextMock = new Mock<ITransactionsContext>();
             ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
             TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
-           // bot.SetUpData(GetData());
+            var sandboxDataHolder = new Mock<ISandboxDataHolder>();
+            ContainerBuilder.Container.RegisterInstance(sandboxDataHolder.Object);
+            sandboxDataHolder.Setup(x => x.Get()).Returns(GetData());
             bot.SetUpPredicate(new BotPredicate
                     .Builder()
                 .From(new DateTime(2016, 9, 14, 1, 28, 0))
@@ -81,7 +87,9 @@ namespace Trade_platform.tests.Sandbox.Bots
             var transactionContextMock = new Mock<ITransactionsContext>();
             ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
             TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
-            //bot.SetUpData(GetData());
+            var sandboxDataHolder = new Mock<ISandboxDataHolder>();
+            ContainerBuilder.Container.RegisterInstance(sandboxDataHolder.Object);
+            sandboxDataHolder.Setup(x => x.Get()).Returns(GetData());
             bot.SetUpPredicate(new BotPredicate
                     .Builder()
                 .From(new DateTime(2016, 9, 14, 1, 28, 0))

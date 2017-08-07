@@ -24,14 +24,12 @@ namespace Trade_platform.tests.Sandbox
         [Test]
         public void Test_for_Build_Data()
         {
-            var customDataHolder = new Mock<ICustomDataHolder>();
-            ContainerBuilder.Container.RegisterInstance(customDataHolder.Object);
-            var chartPredicatesHolder = new Mock<IChartPredicatesHolder>();
-            ContainerBuilder.Container.RegisterInstance(chartPredicatesHolder.Object);
             var chartsPopulator = new Mock<IChartsPopulator>();
             ContainerBuilder.Container.RegisterInstance(chartsPopulator.Object);
             var dataProviderMock = new Mock<ISandboxDataProvider>();
             ContainerBuilder.Container.RegisterInstance(dataProviderMock.Object);
+            var sandboxDataHolder = new Mock<ISandboxDataHolder>();
+            ContainerBuilder.Container.RegisterInstance(sandboxDataHolder.Object);
             CancellationToken token = new CancellationToken();
             ICollection<IPredicate> predicates = new List<IPredicate>
             {
@@ -49,45 +47,42 @@ namespace Trade_platform.tests.Sandbox
 
             testSandBox.SetToken(token);
             testSandBox.BuildData();
-            //Assert.That(testSandBox.Data, Is.EqualTo(result));
+            sandboxDataHolder.Verify(x => x.Add(result), Times.Once);
         }
 
         [Test]
         public void Test_for_Build_Data_if_cancelation_requested()
         {
+            var chartsPopulator = new Mock<IChartsPopulator>();
+            ContainerBuilder.Container.RegisterInstance(chartsPopulator.Object);
             var dataProviderMock = new Mock<ISandboxDataProvider>();
             ContainerBuilder.Container.RegisterInstance(dataProviderMock.Object);
-            CancellationToken token = new CancellationToken(true);
+            var sandboxDataHolder = new Mock<ISandboxDataHolder>();
+            ContainerBuilder.Container.RegisterInstance(sandboxDataHolder.Object);
             ICollection<IPredicate> predicates = new List<IPredicate>
             {
                 new DataPredicate.Builder()
                     .NewId("RTS_1").Build()
             };
 
-            var result = GetData();
-
-            dataProviderMock.Setup(x => x.Get(predicates, token)).Returns(result);
             TestSandBox testSandBox = new TestSandBox
             {
                 Predicates = predicates
             };
 
-            testSandBox.SetToken(token);
+            testSandBox.SetToken(new CancellationToken(true));
             testSandBox.BuildData();
-          //  Assert.That(testSandBox.Data, Is.Null);
+
+            dataProviderMock.Verify(x => x.Get(It.IsAny<ICollection<IPredicate>>(), It.IsAny<CancellationToken>()), Times.Never);
+            sandboxDataHolder.Verify(x => x.Add(It.IsAny<IList<Slice>>()), Times.Never);
+
         }
 
         [Test]
         public void Test_Execute()
         {
-            var customDataHolder = new Mock<ICustomDataHolder>();
-            ContainerBuilder.Container.RegisterInstance(customDataHolder.Object);
-            var chartPredicatesHolder = new Mock<IChartPredicatesHolder>();
-            ContainerBuilder.Container.RegisterInstance(chartPredicatesHolder.Object);
             var chartsPopulator = new Mock<IChartsPopulator>();
             ContainerBuilder.Container.RegisterInstance(chartsPopulator.Object);
-            var dataProviderMock = new Mock<ISandboxDataProvider>();
-            ContainerBuilder.Container.RegisterInstance(dataProviderMock.Object);
             CancellationToken token = new CancellationToken();
             ICollection<IPredicate> predicates = new List<IPredicate>
             {
@@ -106,9 +101,7 @@ namespace Trade_platform.tests.Sandbox
                 botMock_2.Object
             };
 
-            var result = GetData();
-
-            dataProviderMock.Setup(x => x.Get(predicates, token)).Returns(result);
+          
             TestSandBox testSandBox = new TestSandBox
             {
                 Predicates = predicates,
@@ -116,15 +109,89 @@ namespace Trade_platform.tests.Sandbox
             };
 
             testSandBox.SetToken(token);
-            testSandBox.BuildData();
             testSandBox.Execution();
 
-           // botMock_1.Verify(x => x.SetUpData(result), Times.Once);
             botMock_1.Verify(x => x.Execute(), Times.Once);
             botMock_1.Verify(x => x.ResetTransactionContext(), Times.Once);
-            //botMock_2.Verify(x => x.SetUpData(result), Times.Once);
             botMock_2.Verify(x => x.Execute(), Times.Once);
             botMock_2.Verify(x => x.ResetTransactionContext(), Times.Once);
+        }
+
+        [Test]
+        public void Test_Execute_when_cancelation_is_active()
+        {
+            var chartsPopulator = new Mock<IChartsPopulator>();
+            ContainerBuilder.Container.RegisterInstance(chartsPopulator.Object);
+            CancellationToken token = new CancellationToken(true);
+            ICollection<IPredicate> predicates = new List<IPredicate>
+            {
+                new DataPredicate.Builder()
+                    .NewId("RTS_1").Build()
+            };
+
+            var botMock_1 = new Mock<IBot>();
+            var botMock_2 = new Mock<IBot>();
+
+            botMock_1.Setup(x => x.IsPrepared()).Returns(true);
+            botMock_2.Setup(x => x.IsPrepared()).Returns(true);
+            ICollection<IBot> bots = new List<IBot>
+            {
+                botMock_1.Object,
+                botMock_2.Object
+            };
+
+
+            TestSandBox testSandBox = new TestSandBox
+            {
+                Predicates = predicates,
+                Bots = bots
+            };
+
+            testSandBox.SetToken(token);
+            testSandBox.Execution();
+
+            botMock_1.Verify(x => x.Execute(), Times.Never);
+            botMock_1.Verify(x => x.ResetTransactionContext(), Times.Never);
+            botMock_2.Verify(x => x.Execute(), Times.Never);
+            botMock_2.Verify(x => x.ResetTransactionContext(), Times.Never);
+        }
+
+        [Test]
+        public void Test_Execute_when_bots_are_not_prepared()
+        {
+            var chartsPopulator = new Mock<IChartsPopulator>();
+            ContainerBuilder.Container.RegisterInstance(chartsPopulator.Object);
+            CancellationToken token = new CancellationToken();
+            ICollection<IPredicate> predicates = new List<IPredicate>
+            {
+                new DataPredicate.Builder()
+                    .NewId("RTS_1").Build()
+            };
+
+            var botMock_1 = new Mock<IBot>();
+            var botMock_2 = new Mock<IBot>();
+
+            botMock_1.Setup(x => x.IsPrepared()).Returns(false);
+            botMock_2.Setup(x => x.IsPrepared()).Returns(false);
+            ICollection<IBot> bots = new List<IBot>
+            {
+                botMock_1.Object,
+                botMock_2.Object
+            };
+
+
+            TestSandBox testSandBox = new TestSandBox
+            {
+                Predicates = predicates,
+                Bots = bots
+            };
+
+            testSandBox.SetToken(token);
+
+            Assert.Throws<Exception>(() =>
+            {
+                testSandBox.Execution();
+            });
         }
 
         private IList<Slice> GetData()

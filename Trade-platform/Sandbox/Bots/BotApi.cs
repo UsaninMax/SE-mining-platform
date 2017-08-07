@@ -6,7 +6,6 @@ using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using TradePlatform.Charts.Data.Holders;
 using TradePlatform.Charts.Data.Populating;
-using TradePlatform.Charts.Data.Predicates;
 using TradePlatform.Charts.Data.Predicates.Basis;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios;
@@ -21,16 +20,10 @@ namespace TradePlatform.Sandbox.Bots
         private string _sandboxId;
         private BotPredicate _predicate;
         private readonly ITransactionsContext _context;
-        private readonly IChartPredicatesHolder _chartPredicatesHolder;
-        private readonly IChartsPopulator _chartsPopulator;
-        private readonly ICustomDataHolder _customDataHolder;
 
         protected BotApi(IDictionary<string, BrokerCost> brokerCosts)
         {
             _context = ContainerBuilder.Container.Resolve<ITransactionsContext>(new DependencyOverride<IDictionary<string, BrokerCost>>(brokerCosts));
-            _chartPredicatesHolder = ContainerBuilder.Container.Resolve<IChartPredicatesHolder>();
-            _chartsPopulator = ContainerBuilder.Container.Resolve<IChartsPopulator>();
-            _customDataHolder = ContainerBuilder.Container.Resolve<ICustomDataHolder>();
         }
 
         public string GetId()
@@ -75,9 +68,11 @@ namespace TradePlatform.Sandbox.Bots
 
         public void Execute()
         {
-            ISandboxDataHolder dataHolder = ContainerBuilder.Container.Resolve<ISandboxDataHolder>();
-            dataHolder.Get().Where(m => (_predicate.From == DateTime.MinValue || m.DateTime >= _predicate.From) &&
-                             (_predicate.To == DateTime.MinValue || m.DateTime <= _predicate.To))
+            ContainerBuilder.Container.Resolve<ISandboxDataHolder>()
+                .Get()
+                .Where(m =>
+                (_predicate.From == DateTime.MinValue || m.DateTime >= _predicate.From) &&
+                (_predicate.To == DateTime.MinValue || m.DateTime <= _predicate.To))
                 .ForEach(x =>
                 {
                     _context.ProcessTick(x.Ticks, x.DateTime);
@@ -98,18 +93,18 @@ namespace TradePlatform.Sandbox.Bots
 
         public void PopulateCharts(ICollection<ChartPredicate> predicates)
         {
-            _chartPredicatesHolder.Set(predicates);
-            _chartsPopulator.Populate();
+            ContainerBuilder.Container.Resolve<IChartPredicatesHolder>().Set(predicates);
+            ContainerBuilder.Container.Resolve<IChartsPopulator>().Populate();
         }
 
         public void StoreCustomData(string key, IList<object> data)
         {
-            _customDataHolder.Add(key, data);
+            ContainerBuilder.Container.Resolve<ICustomDataHolder>().Add(key, data);
         }
 
         public void CleanCustomeStorage()
         {
-            _customDataHolder.CleanAll();
+            ContainerBuilder.Container.Resolve<ICustomDataHolder>().CleanAll();
         }
     }
 }
