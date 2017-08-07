@@ -109,7 +109,7 @@ namespace Trade_platform.tests.Sandbox.Presenters
             proxySandbox.Verify(x => x.AfterExecution(),
                 Times.Exactly(0));
             proxySandbox.Verify(x => x.CleanMemory(),
-                Times.Exactly(0));
+                Times.Exactly(1));
             infoPublisher.Verify(x => x.PublishException(It.IsAny<AggregateException>()), Times.Once);
             Assert.That(presenter.StatusMessage, Is.EqualTo(Status.FailToExecute));
         }

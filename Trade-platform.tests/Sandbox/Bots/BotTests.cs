@@ -10,6 +10,9 @@ using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios;
 using TradePlatform.Sandbox.Transactios.Models;
+using TradePlatform.Charts.Data.Holders;
+using TradePlatform.Charts.Data.Populating;
+using TradePlatform.Sandbox.Holders;
 
 namespace Trade_platform.tests.Sandbox.Bots
 {
@@ -17,7 +20,6 @@ namespace Trade_platform.tests.Sandbox.Bots
     public class BotTests
     {
         [Test]
-        [Ignore("Ignore a fixture")]
         public void TestExecuteDataWithoutInterval()
         {
             var transactionContextMock = new Mock<ITransactionsContext>();
@@ -32,7 +34,6 @@ namespace Trade_platform.tests.Sandbox.Bots
         }
 
         [Test]
-        [Ignore("Ignore a fixture")]
         public void TestExecuteDataHasIdsWithInterval()
         {
             var transactionContextMock = new Mock<ITransactionsContext>();
@@ -50,13 +51,18 @@ namespace Trade_platform.tests.Sandbox.Bots
         }
 
         [Test]
-        [Ignore("Ignore a fixture")]
         public void Test_execute_dataHas_Ids_m_id_1_with_interval_and_slices_are_grouped()
         {
+            var customDataHolder = new Mock<ICustomDataHolder>();
+            ContainerBuilder.Container.RegisterInstance(customDataHolder.Object);
+            var chartPredicatesHolder = new Mock<IChartPredicatesHolder>();
+            ContainerBuilder.Container.RegisterInstance(chartPredicatesHolder.Object);
+            var chartsPopulator = new Mock<IChartsPopulator>();
+            ContainerBuilder.Container.RegisterInstance(chartsPopulator.Object);
             var transactionContextMock = new Mock<ITransactionsContext>();
             ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
             TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
-         //   bot.SetUpData(GetData());
+           // bot.SetUpData(GetData());
             bot.SetUpPredicate(new BotPredicate
                     .Builder()
                 .From(new DateTime(2016, 9, 14, 1, 28, 0))
@@ -70,7 +76,6 @@ namespace Trade_platform.tests.Sandbox.Bots
         }
 
         [Test]
-        [Ignore("Ignore a fixture")]
         public void Test_execute_tick_data()
         {
             var transactionContextMock = new Mock<ITransactionsContext>();
@@ -89,6 +94,12 @@ namespace Trade_platform.tests.Sandbox.Bots
         [Test]
         public void Check_set_up_working_period()
         {
+            var customDataHolder = new Mock<ICustomDataHolder>();
+            ContainerBuilder.Container.RegisterInstance(customDataHolder.Object);
+            var chartPredicatesHolder = new Mock<IChartPredicatesHolder>();
+            ContainerBuilder.Container.RegisterInstance(chartPredicatesHolder.Object);
+            var chartsPopulator = new Mock<IChartsPopulator>();
+            ContainerBuilder.Container.RegisterInstance(chartsPopulator.Object);
             var transactionContextMock = new Mock<ITransactionsContext>();
             ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
             TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
@@ -100,6 +111,12 @@ namespace Trade_platform.tests.Sandbox.Bots
         [Test]
         public void Check_set_up_balance()
         {
+            var customDataHolder = new Mock<ICustomDataHolder>();
+            ContainerBuilder.Container.RegisterInstance(customDataHolder.Object);
+            var chartPredicatesHolder = new Mock<IChartPredicatesHolder>();
+            ContainerBuilder.Container.RegisterInstance(chartPredicatesHolder.Object);
+            var chartsPopulator = new Mock<IChartsPopulator>();
+            ContainerBuilder.Container.RegisterInstance(chartsPopulator.Object);
             var transactionContextMock = new Mock<ITransactionsContext>();
             ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
             TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
@@ -110,6 +127,12 @@ namespace Trade_platform.tests.Sandbox.Bots
         [Test]
         public void Check_set_up_open_position()
         {
+            var customDataHolder = new Mock<ICustomDataHolder>();
+            ContainerBuilder.Container.RegisterInstance(customDataHolder.Object);
+            var chartPredicatesHolder = new Mock<IChartPredicatesHolder>();
+            ContainerBuilder.Container.RegisterInstance(chartPredicatesHolder.Object);
+            var chartsPopulator = new Mock<IChartsPopulator>();
+            ContainerBuilder.Container.RegisterInstance(chartsPopulator.Object);
             var transactionContextMock = new Mock<ITransactionsContext>();
             ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
             TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
@@ -121,6 +144,12 @@ namespace Trade_platform.tests.Sandbox.Bots
         [Test]
         public void Check_is_prepared()
         {
+            var customDataHolder = new Mock<ICustomDataHolder>();
+            ContainerBuilder.Container.RegisterInstance(customDataHolder.Object);
+            var chartPredicatesHolder = new Mock<IChartPredicatesHolder>();
+            ContainerBuilder.Container.RegisterInstance(chartPredicatesHolder.Object);
+            var chartsPopulator = new Mock<IChartsPopulator>();
+            ContainerBuilder.Container.RegisterInstance(chartsPopulator.Object);
             var transactionContextMock = new Mock<ITransactionsContext>();
             ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
             TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
@@ -131,6 +160,12 @@ namespace Trade_platform.tests.Sandbox.Bots
         [Test]
         public void Check_reset()
         {
+            var customDataHolder = new Mock<ICustomDataHolder>();
+            ContainerBuilder.Container.RegisterInstance(customDataHolder.Object);
+            var chartPredicatesHolder = new Mock<IChartPredicatesHolder>();
+            ContainerBuilder.Container.RegisterInstance(chartPredicatesHolder.Object);
+            var chartsPopulator = new Mock<IChartsPopulator>();
+            ContainerBuilder.Container.RegisterInstance(chartsPopulator.Object);
             var transactionContextMock = new Mock<ITransactionsContext>();
             ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
             TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());

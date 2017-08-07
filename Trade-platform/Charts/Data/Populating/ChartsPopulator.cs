@@ -61,6 +61,8 @@ namespace TradePlatform.Charts.Data.Populating
             {
                 _chartPredicatesHolder.Get(chartId).ForEach(predicate =>
                 {
+                    ((DateChartPredicate)predicate).From = from;
+                    ((DateChartPredicate)predicate).To = to;
                     Populate(_chartHolder.Get(predicate.ChartId), predicate, from, to);
                 });
             });
@@ -73,6 +75,8 @@ namespace TradePlatform.Charts.Data.Populating
             {
                 _chartPredicatesHolder.Get(chartId).ForEach(predicate =>
                 {
+                    ((IndexChartPredicate)predicate).From = from;
+                    ((IndexChartPredicate)predicate).To = to;
                     Populate(_chartHolder.Get(predicate.ChartId), predicate, from, to);
                 });
             });

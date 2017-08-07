@@ -11,6 +11,9 @@ using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding;
 using TradePlatform.Sandbox.DataProviding.Predicates;
 using TradePlatform.Sandbox.Models;
+using TradePlatform.Sandbox.Holders;
+using TradePlatform.Charts.Data.Holders;
+using TradePlatform.Charts.Data.Populating;
 
 namespace Trade_platform.tests.Sandbox
 {
@@ -19,9 +22,14 @@ namespace Trade_platform.tests.Sandbox
     {
 
         [Test]
-        [Ignore("Ignore a fixture")]
         public void Test_for_Build_Data()
         {
+            var customDataHolder = new Mock<ICustomDataHolder>();
+            ContainerBuilder.Container.RegisterInstance(customDataHolder.Object);
+            var chartPredicatesHolder = new Mock<IChartPredicatesHolder>();
+            ContainerBuilder.Container.RegisterInstance(chartPredicatesHolder.Object);
+            var chartsPopulator = new Mock<IChartsPopulator>();
+            ContainerBuilder.Container.RegisterInstance(chartsPopulator.Object);
             var dataProviderMock = new Mock<ISandboxDataProvider>();
             ContainerBuilder.Container.RegisterInstance(dataProviderMock.Object);
             CancellationToken token = new CancellationToken();
@@ -45,7 +53,6 @@ namespace Trade_platform.tests.Sandbox
         }
 
         [Test]
-        [Ignore("Ignore a fixture")]
         public void Test_for_Build_Data_if_cancelation_requested()
         {
             var dataProviderMock = new Mock<ISandboxDataProvider>();
@@ -71,9 +78,14 @@ namespace Trade_platform.tests.Sandbox
         }
 
         [Test]
-        [Ignore("Ignore a fixture")]
         public void Test_Execute()
         {
+            var customDataHolder = new Mock<ICustomDataHolder>();
+            ContainerBuilder.Container.RegisterInstance(customDataHolder.Object);
+            var chartPredicatesHolder = new Mock<IChartPredicatesHolder>();
+            ContainerBuilder.Container.RegisterInstance(chartPredicatesHolder.Object);
+            var chartsPopulator = new Mock<IChartsPopulator>();
+            ContainerBuilder.Container.RegisterInstance(chartsPopulator.Object);
             var dataProviderMock = new Mock<ISandboxDataProvider>();
             ContainerBuilder.Container.RegisterInstance(dataProviderMock.Object);
             CancellationToken token = new CancellationToken();
@@ -149,12 +161,12 @@ namespace Trade_platform.tests.Sandbox
 
         public override void AfterExecution()
         {
-            throw new NotImplementedException();
+ 
         }
 
         public override IEnumerable<PanelViewPredicate> SetUpCharts()
         {
-            throw new NotImplementedException();
+            return new List<PanelViewPredicate>();
         }
     }
 }
