@@ -59,7 +59,7 @@ namespace TradePlatform.Charts.Data.Populating
             _chartProxy.Clear(model);
             _chartHolder.Get(model).ForEach(chartId =>
             {
-                _chartPredicatesHolder.Get(chartId).ForEach(predicate =>
+                _chartPredicatesHolder.GetByChartId(chartId).ForEach(predicate =>
                 {
                     ((DateChartPredicate)predicate).From = from;
                     ((DateChartPredicate)predicate).To = to;
@@ -73,7 +73,7 @@ namespace TradePlatform.Charts.Data.Populating
             _chartProxy.Clear(model);
             _chartHolder.Get(model).ForEach(chartId =>
             {
-                _chartPredicatesHolder.Get(chartId).ForEach(predicate =>
+                _chartPredicatesHolder.GetByChartId(chartId).ForEach(predicate =>
                 {
                     ((IndexChartPredicate)predicate).From = from;
                     ((IndexChartPredicate)predicate).To = to;

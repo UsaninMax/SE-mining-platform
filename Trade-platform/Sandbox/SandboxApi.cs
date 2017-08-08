@@ -90,7 +90,7 @@ namespace TradePlatform.Sandbox
 
         public void PopulateCharts(ICollection<ChartPredicate> predicates)
         {
-            ContainerBuilder.Container.Resolve<IChartPredicatesHolder>().Set(predicates);
+            ContainerBuilder.Container.Resolve<IChartPredicatesHolder>().Add(predicates);
             ContainerBuilder.Container.Resolve<IChartsPopulator>().Populate();
         }
 

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.ObjectBuilder2;
-using TradePlatform.Charts.Data.Predicates;
 using TradePlatform.Charts.Data.Predicates.Basis;
 
 namespace TradePlatform.Charts.Data.Holders
@@ -10,7 +9,7 @@ namespace TradePlatform.Charts.Data.Holders
     {
         private ISet<ChartPredicate> _storage = new HashSet<ChartPredicate>();
 
-        public void Update(ChartPredicate predicate)
+        public void Add(ChartPredicate predicate)
         {
             if(_storage.Contains(predicate)) {
                 _storage.Remove(predicate);
@@ -33,12 +32,12 @@ namespace TradePlatform.Charts.Data.Holders
             _storage.Clear();
         }
 
-        public void Set(ICollection<ChartPredicate> predicates)
+        public void Add(ICollection<ChartPredicate> predicates)
         {
-            predicates.ForEach(predicate => Update(predicate));
+            predicates.ForEach(predicate => Add(predicate));
         }
 
-        public IEnumerable<ChartPredicate> Get(string chartId)
+        public IEnumerable<ChartPredicate> GetByChartId(string chartId)
         {
             return _storage.Where(x => x.ChartId.Equals(chartId));
         }
