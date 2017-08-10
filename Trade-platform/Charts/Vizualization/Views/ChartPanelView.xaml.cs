@@ -1,25 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Practices.ObjectBuilder2;
 using TradePlatform.Charts.Vizualization.Configurations;
-using TradePlatform.Charts.Vizualization.ViewModels;
+using TradePlatform.Charts.Vizualization.Holders;
+using Microsoft.Practices.Unity;
 
 namespace TradePlatform.Charts.Vizualization.Views
 {
     public partial class ChartPanelView
     {
-        public ChartPanelView(IEnumerable<Tuple<IChartViewModel, ChartViewPredicate>> settings )
+        public ChartPanelView(IEnumerable<ChartViewPredicate> chartPredicates )
         {
             InitializeComponent();
-            settings.ForEach(setting =>
+            IChartsHolder chartHolder = ContainerBuilder.Container.Resolve<IChartsHolder>();
+            chartPredicates.ForEach(predicate =>
             {
-                if (setting.Item2 is DateChartViewPredicate)
+                var model = chartHolder.Get(predicate);
+                if (predicate is DateChartViewPredicate)
                 {
-                    ChartStack.Children.Add(new DateChartView(setting.Item1) { Height = setting.Item2.YSize });
+                    ChartStack.Children.Add(new DateChartView(model) { Height = predicate.YSize });
                 }
-                else if (setting.Item2 is IndexChartViewPredicate)
+                else if (predicate is IndexChartViewPredicate)
                 {
-                    ChartStack.Children.Add(new IndexChartView(setting.Item1) { Height = setting.Item2.YSize });
+                    ChartStack.Children.Add(new IndexChartView(model) { Height = predicate.YSize });
                 }
             });
         }

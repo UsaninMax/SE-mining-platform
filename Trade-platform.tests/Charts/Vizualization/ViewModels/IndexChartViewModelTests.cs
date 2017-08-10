@@ -3,7 +3,7 @@
 namespace Trade_platform.tests.Charts.Vizualization.ViewModels
 {
     [TestFixture]
-    class IndexChartViewModelTests
+    public class IndexChartViewModelTests
     {
     }
 }

@@ -13,7 +13,6 @@ using TradePlatform.Charts.Data.Populating;
 using TradePlatform.Charts.Data.Predicates;
 using TradePlatform.Charts.Data.Predicates.Basis;
 using TradePlatform.Charts.Vizualization.ViewModels;
-using TradePlatform.Sandbox.Models;
 
 namespace Trade_platform.tests.Charts.Data.Populating
 {

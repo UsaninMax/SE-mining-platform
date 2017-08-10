@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using TradePlatform.Charts.Vizualization.Configurations;
 using TradePlatform.Charts.Vizualization.ViewModels;
 
 namespace TradePlatform.Charts.Vizualization.Holders
@@ -21,6 +23,11 @@ namespace TradePlatform.Charts.Vizualization.Holders
         public IEnumerable<string> Get(IChartViewModel model)
         {
             return _map.Where(x => x.Value.Equals(model)).Select(x => x.Key).Distinct();
+        }
+
+        public IChartViewModel Get(ChartViewPredicate predicate)
+        {
+            return _map[predicate.Ids.First()];
         }
 
         public void Set(IDictionary<string, IChartViewModel> map)

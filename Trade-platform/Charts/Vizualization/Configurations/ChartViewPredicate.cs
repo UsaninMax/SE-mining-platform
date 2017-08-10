@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TradePlatform.Charts.Vizualization.ViewModels;
 
 namespace TradePlatform.Charts.Vizualization.Configurations
 {

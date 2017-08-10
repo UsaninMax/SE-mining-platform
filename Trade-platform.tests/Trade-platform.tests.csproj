@@ -100,7 +100,6 @@
     <Compile Include="Charts\Data\Holders\ChartPredicatesHolderTests.cs" />
     <Compile Include="Charts\Data\Populating\ChartsPopulatorTests.cs" />
     <Compile Include="Charts\Data\Providers\ChartDataProviderTests.cs" />
-    <Compile Include="Charts\Vizualization\Dispatching\ChartsBuilderTests.cs" />
     <Compile Include="Charts\Vizualization\Dispatching\ChartsConfigurationDispatcherTests.cs" />
     <Compile Include="Charts\Vizualization\Holders\ChartsHolderTests.cs" />
     <Compile Include="Charts\Vizualization\ViewModels\DateChartViewModelTests.cs" />
