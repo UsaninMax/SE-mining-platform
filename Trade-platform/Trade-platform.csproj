@@ -138,6 +138,7 @@
     <Compile Include="Charts\Data\Predicates\Basis\IndexChartPredicate.cs" />
     <Compile Include="Charts\Vizualization\Configurations\IndexChartViewPredicate.cs" />
     <Compile Include="Charts\Vizualization\Configurations\DateChartViewPredicate.cs" />
+    <Compile Include="Charts\Vizualization\Dispatching\IChartProxy.cs" />
     <Compile Include="Charts\Vizualization\ViewModels\IndexChartViewModel.cs" />
     <Compile Include="Charts\Vizualization\Views\IndexChartView.xaml.cs">
       <DependentUpon>IndexChartView.xaml</DependentUpon>

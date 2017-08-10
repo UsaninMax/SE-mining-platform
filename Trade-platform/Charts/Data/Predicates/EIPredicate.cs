@@ -2,7 +2,7 @@
 
 namespace TradePlatform.Charts.Data.Predicates
 {
-    public class EIPredicate : DateChartPredicate, IExistDataStorage
+    public class EIPredicate : IndexChartPredicate, IExistDataStorage
     {
     }
 }
