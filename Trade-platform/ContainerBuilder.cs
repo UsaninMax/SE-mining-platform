@@ -121,7 +121,7 @@ namespace TradePlatform
             Container.RegisterType<IChartsPopulator, ChartsPopulator>(new ContainerControlledLifetimeManager(),new InjectionConstructor(typeof(IEnumerable<PanelViewPredicate>)));
             Container.RegisterType<IChartDataProvider, ChartDataProvider>();
             Container.RegisterType<IChartsBuilder, ChartsBuilder>();
-            Container.RegisterType<IChartProxy, ChartProxy>();
+            Container.RegisterType<IChartProxy, ChartProxy>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IChartPredicatesHolder, ChartPredicatesHolder>(new ContainerControlledLifetimeManager());
             Container.RegisterType<ICustomDataHolder, CustomDataHolder>(new ContainerControlledLifetimeManager());
         }

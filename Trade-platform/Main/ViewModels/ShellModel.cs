@@ -14,6 +14,7 @@ using TradePlatform.Sandbox.Events;
 using TradePlatform.Sandbox.Presenters;
 using TradePlatform.Sandbox.Providers;
 using TradePlatform.StockData.Views;
+using TradePlatform.Charts.Vizualization.Dispatching;
 
 namespace TradePlatform.Main.ViewModels
 {
@@ -67,6 +68,12 @@ namespace TradePlatform.Main.ViewModels
             _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
             var eventAggregator = ContainerBuilder.Container.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<RefreshContextMenuEvent>().Subscribe(UpdateVisibilityOfContextMenu);
+            InitializeChartProxy();
+        }
+
+        private void InitializeChartProxy()
+        {
+            ContainerBuilder.Container.Resolve<IChartProxy>();
         }
 
         private void StartExecution()
