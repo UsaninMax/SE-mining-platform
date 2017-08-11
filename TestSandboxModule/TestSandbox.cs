@@ -147,7 +147,7 @@ namespace TestSandboxModule
             return new List<PanelViewPredicate> {
                 new PanelViewPredicate
                 {
-                    Charts = new List<ChartViewPredicate>
+                    ChartPredicates = new List<ChartViewPredicate>
                     {
                         new DateChartViewPredicate
                         {

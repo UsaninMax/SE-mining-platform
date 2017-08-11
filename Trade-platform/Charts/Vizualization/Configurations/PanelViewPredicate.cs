@@ -4,6 +4,6 @@ namespace TradePlatform.Charts.Vizualization.Configurations
 {
     public class PanelViewPredicate
     {
-        public IEnumerable<ChartViewPredicate> Charts { get; set; }
+        public IEnumerable<ChartViewPredicate> ChartPredicates { get; set; }
     }
 }

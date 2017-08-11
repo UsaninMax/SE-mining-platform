@@ -214,7 +214,7 @@ namespace Trade_platform.tests.Charts.Data.Populating
             {
                  new PanelViewPredicate
                 {
-                    Charts = new List<ChartViewPredicate>
+                    ChartPredicates = new List<ChartViewPredicate>
                     {
                         new DateChartViewPredicate
                         {

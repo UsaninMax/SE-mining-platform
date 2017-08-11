@@ -12,8 +12,9 @@ namespace TradePlatform.Charts.Vizualization.Dispatching
         public IDictionary<string, IChartViewModel> Dispatch(IEnumerable<PanelViewPredicate> configuration)
         {
             return configuration
-                .SelectMany(x => x.Charts)
-                .SelectMany(chart => chart.Ids.Select(id => new Tuple<string, ChartViewPredicate>(id, chart)))
+                .SelectMany(x => x.ChartPredicates)
+                .SelectMany(chartPredicate => chartPredicate.Ids
+                .Select(id => new Tuple<string, ChartViewPredicate>(id, chartPredicate)))
                 .ToDictionary(t => t.Item1, t =>
                 {
                     if (t.Item2 is DateChartViewPredicate)

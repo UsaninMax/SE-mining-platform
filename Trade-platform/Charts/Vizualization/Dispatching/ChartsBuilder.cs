@@ -14,7 +14,7 @@ namespace TradePlatform.Charts.Vizualization.Dispatching
             configuration.ForEach(chartPredicate =>
             {
                 ContainerBuilder.Container.Resolve<ChartPanelView>( 
-                    new DependencyOverride<IEnumerable<ChartViewPredicate>>(chartPredicate.Charts.Where(s => s.Ids.Count() != 0))).Show();
+                    new DependencyOverride<IEnumerable<ChartViewPredicate>>(chartPredicate.ChartPredicates.Where(s => s.Ids.Count() != 0))).Show();
             });
         }
     }
