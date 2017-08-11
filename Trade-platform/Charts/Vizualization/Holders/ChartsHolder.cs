@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Castle.Core.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TradePlatform.Charts.Vizualization.Configurations;
@@ -9,11 +10,6 @@ namespace TradePlatform.Charts.Vizualization.Holders
     public class ChartsHolder : IChartsHolder
     {
         private IDictionary<string, IChartViewModel> _map = new Dictionary<string, IChartViewModel>();
-
-        public bool Exist(string key)
-        {
-            return _map.ContainsKey(key);
-        }
 
         public IChartViewModel Get(string key)
         {
@@ -27,7 +23,16 @@ namespace TradePlatform.Charts.Vizualization.Holders
 
         public IChartViewModel Get(ChartViewPredicate predicate)
         {
+            if (predicate.Ids.IsNullOrEmpty())
+            {
+                throw new Exception("internal problem, predicate was stored incorrectly");
+            }
             return _map[predicate.Ids.First()];
+        }
+
+        public IEnumerable<IChartViewModel> GetAll()
+        {
+            return _map.Values;
         }
 
         public void Set(IDictionary<string, IChartViewModel> map)

@@ -10,5 +10,6 @@ namespace TradePlatform.Charts.Vizualization.Holders
         IChartViewModel Get(string key);
         IChartViewModel Get(ChartViewPredicate predicate);
         IEnumerable<string> Get(IChartViewModel model);
+        IEnumerable<IChartViewModel> GetAll();
     }
 }
