@@ -4,6 +4,7 @@ using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using TradePlatform.StockData.DataServices.Serialization;
 using TradePlatform.StockData.Models;
+using TradePlatform.Commons.Loggers;
 
 namespace TradePlatform.StockData.Holders
 {
@@ -42,7 +43,7 @@ namespace TradePlatform.StockData.Holders
             }
             catch (Exception e)
             {
-                //TODO: log
+                SystemLogger.Log.Error(e);
             }
         }
 

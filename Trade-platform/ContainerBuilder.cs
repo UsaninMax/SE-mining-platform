@@ -42,6 +42,8 @@ using TradePlatform.Charts.Vizualization.Configurations;
 using TradePlatform.Charts.Vizualization.Dispatching;
 using TradePlatform.Charts.Vizualization.Holders;
 using TradePlatform.Charts.Vizualization.ViewModels;
+using TradePlatform.Sandbox.ResultProcessing;
+using TradePlatform.Sandbox.ResultStoring;
 
 namespace TradePlatform
 {
@@ -124,6 +126,7 @@ namespace TradePlatform
             Container.RegisterType<IChartProxy, ChartProxy>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IChartPredicatesHolder, ChartPredicatesHolder>(new ContainerControlledLifetimeManager());
             Container.RegisterType<ICustomDataHolder, CustomDataHolder>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<IResultStoring, StoringToFile>(new ContainerControlledLifetimeManager());
         }
     }
 }

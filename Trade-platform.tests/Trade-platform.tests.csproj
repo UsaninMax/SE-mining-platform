@@ -122,6 +122,7 @@
     <Compile Include="Sandbox\DataProviding\DataProviderTests.cs" />
     <Compile Include="Sandbox\DataProviding\Transformers\DataTransformerTests.cs" />
     <Compile Include="Sandbox\Presenters\SandboxPresenterTests.cs" />
+    <Compile Include="Sandbox\ResultStoring\StoringToFileTests.cs" />
     <Compile Include="Sandbox\SandboxTests.cs" />
     <Compile Include="Sandbox\Transactios\BalanceTests.cs" />
     <Compile Include="Sandbox\Transactios\TransactionBuilderTests.cs" />

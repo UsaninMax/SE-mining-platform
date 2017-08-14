@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
 using TradePlatform.Charts.Data.Holders;
 using TradePlatform.Charts.Data.Populating;
-using TradePlatform.Charts.Data.Predicates;
 using TradePlatform.Charts.Data.Predicates.Basis;
 using TradePlatform.Charts.Vizualization.Configurations;
 using TradePlatform.Charts.Vizualization.Dispatching;

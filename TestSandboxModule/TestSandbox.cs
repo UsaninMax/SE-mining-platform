@@ -8,6 +8,7 @@ using TradePlatform.Sandbox;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding.Predicates;
 using TradePlatform.Sandbox.Models;
+using TradePlatform.Sandbox.ResultStoring;
 using TradePlatform.Sandbox.Transactios.Enums;
 using TradePlatform.Sandbox.Transactios.Models;
 
@@ -57,6 +58,33 @@ namespace TestSandboxModule
 
         public override void Execution()
         {
+
+            IEnumerable<Dictionary<string, string>> data = new List<Dictionary<string, string>>
+            {
+                new Dictionary<string, string>
+                {
+                    { "id", "123"},
+                    { "name", "test"}
+
+                },
+                new Dictionary<string, string>
+                {
+                    { "id", "123"},
+                    { "name", "test"}
+
+                },
+               new Dictionary<string, string>
+                {
+                    { "id", "123"},
+                    { "name", "test"}
+
+                }
+            };
+
+            ReusltStoring.Store(data);
+
+
+
             var costs = new Dictionary<string, BrokerCost>();
             costs.Add("RTS", new BrokerCost());
 

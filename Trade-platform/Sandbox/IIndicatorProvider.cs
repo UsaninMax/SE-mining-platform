@@ -5,7 +5,6 @@ namespace TradePlatform.Sandbox
 {
     public interface IIndicatorProvider
     {
-
         void SetUpParameters(IDictionary<string, object> parameters);
         void Initialize();
         Indicator Get(Candle candle);

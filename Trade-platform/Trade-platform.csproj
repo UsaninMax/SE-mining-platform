@@ -75,6 +75,9 @@
     <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Expression.Interaction.3.0.40218.0\lib\net45\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
@@ -109,8 +112,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ValueTuple, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -146,6 +149,7 @@
     <Compile Include="Commons\BaseModels\IClosableWindow.cs" />
     <Compile Include="Commons\Info\Model\Message\DataSetInfo.cs" />
     <Compile Include="Commons\Info\Model\Message\SandboxInfo.cs" />
+    <Compile Include="Commons\Loggers\SystemLogger.cs" />
     <Compile Include="DataSet\DataServices\DataTickProvider.cs" />
     <Compile Include="DataSet\DataServices\DataSetService.cs" />
     <Compile Include="DataSet\DataServices\IDataTickProvider.cs" />
@@ -178,6 +182,9 @@
     <Compile Include="Sandbox\Bots\BotApi.cs" />
     <Compile Include="Sandbox\Providers\IIndicatorBuilder.cs" />
     <Compile Include="Sandbox\Providers\IndicatorBuilder.cs" />
+    <Compile Include="Sandbox\ResultStoring\IResultStoring.cs" />
+    <Compile Include="Sandbox\ResultStoring\ReusltStoring.cs" />
+    <Compile Include="Sandbox\ResultStoring\StoringToFile.cs" />
     <Compile Include="Sandbox\SandboxApi.cs" />
     <Compile Include="Sandbox\Presenters\ISandboxPresenter.cs" />
     <Compile Include="Sandbox\Presenters\SandboxPresenter.cs" />

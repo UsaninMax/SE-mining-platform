@@ -5,6 +5,7 @@ using TradePlatform.Main.Views;
 using TradePlatform.StockData.Holders;
 using System.Threading.Tasks;
 using TradePlatform.DataSet.Holders;
+using TradePlatform.Commons.Loggers;
 
 namespace TradePlatform
 {
@@ -25,6 +26,7 @@ namespace TradePlatform
             Application.Current.MainWindow = (Window)Shell;
             Application.Current.MainWindow.Show();
             InitializeHolders();
+            SystemLogger.InitLogger();
         }
 
         private void InitializeHolders()

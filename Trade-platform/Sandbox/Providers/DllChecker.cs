@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using TradePlatform.Commons.Loggers;
 
 namespace TradePlatform.Sandbox.Providers
 {
@@ -28,7 +29,10 @@ namespace TradePlatform.Sandbox.Providers
                             patches.Add(file.FullName);
                         });
                 }
-                catch (Exception ex) { }
+                catch (Exception ex)
+                {
+                    SystemLogger.Log.Error(ex);
+                }
             }
 
             return patches;
