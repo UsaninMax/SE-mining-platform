@@ -102,8 +102,6 @@
     <Compile Include="Charts\Data\Providers\ChartDataProviderTests.cs" />
     <Compile Include="Charts\Vizualization\Dispatching\ChartsConfigurationDispatcherTests.cs" />
     <Compile Include="Charts\Vizualization\Holders\ChartsHolderTests.cs" />
-    <Compile Include="Charts\Vizualization\ViewModels\DateChartViewModelTests.cs" />
-    <Compile Include="Charts\Vizualization\ViewModels\IndexChartViewModelTests.cs" />
     <Compile Include="Commons\Info\ViewModels\InfoViewModelTests.cs" />
     <Compile Include="Commons\Utils\FixedSizeObservableCollectionTests.cs" />
     <Compile Include="DataSet\DataServices\DataTickProviderTest.cs" />
