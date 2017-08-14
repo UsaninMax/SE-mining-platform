@@ -3,23 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Castle.Core;
 using Microsoft.Practices.Unity;
+using TradePlatform.Charts.Data.Holders;
+using TradePlatform.Charts.Data.Populating;
+using TradePlatform.Charts.Data.Predicates.Basis;
+using TradePlatform.Charts.Vizualization.Configurations;
+using TradePlatform.Charts.Vizualization.Dispatching;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding;
 using TradePlatform.Sandbox.DataProviding.Predicates;
-using TradePlatform.Sandbox.Models;
+using TradePlatform.Sandbox.Holders;
 
 namespace TradePlatform.Sandbox
 {
     public abstract class SandboxApi : ISandbox
     {
-        public IList<Slice> Data => _data;
         public CancellationToken Token => _token;
         public ICollection<IBot> Bots => _bots;
-        private IList<Slice> _data;
         private CancellationToken _token;
         private ICollection<IBot> _bots;
+
+        protected SandboxApi()
+        {
+            ContainerBuilder.Container.Resolve<IChartsPopulator>(new DependencyOverride<IEnumerable<PanelViewPredicate>>(SetUpCharts()));
+        }
 
         public void SetToken(CancellationToken token)
         {
@@ -34,8 +41,9 @@ namespace TradePlatform.Sandbox
         public void BuildData()
         {
             if (_token.IsCancellationRequested) { return; }
-            IDataProvider dataProvider = ContainerBuilder.Container.Resolve<IDataProvider>();
-            _data = dataProvider.Get(SetUpData(), _token);
+            ISandboxDataProvider dataProvider = ContainerBuilder.Container.Resolve<ISandboxDataProvider>();
+            ISandboxDataHolder dataHolder = ContainerBuilder.Container.Resolve<ISandboxDataHolder>();
+            dataHolder.Add(dataProvider.Get(SetUpData(), _token));
         }
 
         protected void Execute()
@@ -50,7 +58,6 @@ namespace TradePlatform.Sandbox
 
                 return Task.Run(() =>
                 {
-                    x.SetUpData(Data);
                     x.ResetTransactionContext();
                     x.Execute();
                 }, _token);
@@ -61,7 +68,8 @@ namespace TradePlatform.Sandbox
 
         public void CleanMemory()
         {
-            _data = null;
+            ISandboxDataHolder dataHolder = ContainerBuilder.Container.Resolve<ISandboxDataHolder>();
+            dataHolder.Clean();
             _bots = null;
             GC.Collect();
             GC.WaitForPendingFinalizers();
@@ -70,5 +78,29 @@ namespace TradePlatform.Sandbox
         public abstract ICollection<IPredicate> SetUpData();
         public abstract void Execution();
         public abstract void AfterExecution();
+        public abstract IEnumerable<PanelViewPredicate> SetUpCharts();
+
+        public void CreateCharts()
+        {
+            ContainerBuilder.Container.Resolve<IChartPredicatesHolder>().Reset();
+            var chartProxy = ContainerBuilder.Container.Resolve<ChartProxy>();
+            chartProxy.ShowCharts(SetUpCharts(), ContainerBuilder.Container.Resolve<IChartsBuilder>());
+        }
+
+        public void PopulateCharts(ICollection<ChartPredicate> predicates)
+        {
+            ContainerBuilder.Container.Resolve<IChartPredicatesHolder>().Add(predicates);
+            ContainerBuilder.Container.Resolve<IChartsPopulator>().Populate();
+        }
+
+        public void StoreCustomData(string key, IList<object> data)
+        {
+            ContainerBuilder.Container.Resolve<ICustomDataHolder>().Add(key, data);
+        }
+
+        public void CleanCustomeStorage()
+        {
+            ContainerBuilder.Container.Resolve<ICustomDataHolder>().CleanAll();
+        }
     }
 }

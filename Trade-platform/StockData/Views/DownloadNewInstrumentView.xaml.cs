@@ -14,7 +14,7 @@ namespace TradePlatform.StockData.Views
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 IDownloadNewInstrumentViewModel viewModel = ContainerBuilder.Container.Resolve<IDownloadNewInstrumentViewModel>();
-                this.DataContext = viewModel;
+                DataContext = viewModel;
                 viewModel.UpdateSecuritiesInfo();
 
             }

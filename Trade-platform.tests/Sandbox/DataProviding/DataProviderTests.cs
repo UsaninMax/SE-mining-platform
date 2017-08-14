@@ -50,7 +50,7 @@ namespace Trade_platform.tests.Sandbox.DataProviding
             dataAggregatorMock.Setup(x => x.Transform(ticks, It.IsAny<DataPredicate>()))
                 .Returns(new List<Candle> {new Candle.Builder().WithId("Id_3").WithDate(new DateTime(2016, 2, 7)).Build()});
 
-            DataProvider provider = new DataProvider();
+            SandboxDataProvider provider = new SandboxDataProvider();
 
             IList<Slice> result =  provider.Get(GetPredicate(), new CancellationToken());
 

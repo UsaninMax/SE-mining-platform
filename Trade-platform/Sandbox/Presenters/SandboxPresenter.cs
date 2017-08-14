@@ -55,16 +55,17 @@ namespace TradePlatform.Sandbox.Presenters
             {
                 var sandboxBuilder = ContainerBuilder.Container.Resolve<ISandboxProvider>();
                 ISandbox sandbox = sandboxBuilder.CreateInstance(_sandbox.GetType());
+                sandbox.CleanMemory();
                 sandbox.SetToken(_cancellationTokenSource.Token);
                 _infoPublisher.PublishInfo(new SandboxInfo { Message = DllName + " build data " });
                 sandbox.BuildData();
                 if (_cancellationTokenSource.Token.IsCancellationRequested){ return;}
                 _infoPublisher.PublishInfo(new SandboxInfo { Message = DllName + " execute bots processing " });
+                sandbox.CreateCharts();
                 sandbox.Execution();
                 if (_cancellationTokenSource.Token.IsCancellationRequested) { return; }
                 _infoPublisher.PublishInfo(new SandboxInfo { Message = DllName + " gather result " });
                 sandbox.AfterExecution();
-                sandbox.CleanMemory();
             }, _cancellationTokenSource.Token);
             _executionTask.ContinueWith(t =>
             {

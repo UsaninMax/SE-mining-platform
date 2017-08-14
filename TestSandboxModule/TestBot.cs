@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios.Models;
@@ -9,7 +10,29 @@ namespace TestSandboxModule
     {
         public override void Execution(IDictionary<string, IData> value)
         {
-            System.Diagnostics.Debug.WriteLine("Bot name = " + GetId() + " -receive slice " + value);
+            if (!value.ContainsKey("RTS_5"))
+            {
+                return;
+            }
+
+            DateTime date = value["RTS_5"].Date();
+            //PopulateCharts(new List<ChartPredicate>
+            //{
+            //    new CandlesDataPredicate
+            //{
+            //    DateTo = date,
+            //    ChartId = "RTS_5",
+            //    InstrumentId = "RTS_5"
+            //},
+            //    new IndicatorDataPredicate
+            //{
+            //    DateTo = date,
+            //    ChartId = "RTS_5",
+            //    InstrumentId = "MA"
+            //}
+            //});
+
+            //Thread.Sleep(2000);
         }
 
         public override int Score()

@@ -41,7 +41,7 @@ namespace TestSandboxModule
             _sum += candle.Close;
             _values.Add(candle.Close);
             return new Indicator.Builder()
-                .WithDate(DateTime.Now)
+                .WithDate(candle.Date())
                 .WithValue(_sum / _values.Count)
                 .Build();
         }

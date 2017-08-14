@@ -5,6 +5,7 @@ using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using TradePlatform.DataSet.DataServices.Serialization;
 using TradePlatform.DataSet.Models;
+using TradePlatform.Commons.Loggers;
 
 namespace TradePlatform.DataSet.Holders
 {
@@ -59,7 +60,7 @@ namespace TradePlatform.DataSet.Holders
             }
             catch (Exception e)
             {
-                //TODO: log
+                SystemLogger.Log.Error(e);
             }
         }
     }

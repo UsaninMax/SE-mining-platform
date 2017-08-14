@@ -4,16 +4,20 @@ using System.Linq;
 using Castle.Core.Internal;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
+using TradePlatform.Charts.Data.Holders;
+using TradePlatform.Charts.Data.Populating;
+using TradePlatform.Charts.Data.Predicates.Basis;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios;
 using TradePlatform.Sandbox.Transactios.Models;
+using TradePlatform.Sandbox.Holders;
 
 namespace TradePlatform.Sandbox.Bots
 {
     public abstract class BotApi : IBot
     {
         private string _id;
-        private IList<Slice> _data;
+        private string _sandboxId;
         private BotPredicate _predicate;
         private readonly ITransactionsContext _context;
 
@@ -30,11 +34,6 @@ namespace TradePlatform.Sandbox.Bots
         public void SetUpId(string id)
         {
             _id = id;
-        }
-
-        public void SetUpData(IList<Slice> data)
-        {
-            _data = data;
         }
 
         public void SetUpPredicate(BotPredicate predicate)
@@ -69,8 +68,11 @@ namespace TradePlatform.Sandbox.Bots
 
         public void Execute()
         {
-            _data.Where(m => (_predicate.From == DateTime.MinValue || m.DateTime >= _predicate.From) &&
-                             (_predicate.To == DateTime.MinValue || m.DateTime <= _predicate.To))
+            ContainerBuilder.Container.Resolve<ISandboxDataHolder>()
+                .Get()
+                .Where(m =>
+                (_predicate.From == DateTime.MinValue || m.DateTime >= _predicate.From) &&
+                (_predicate.To == DateTime.MinValue || m.DateTime <= _predicate.To))
                 .ForEach(x =>
                 {
                     _context.ProcessTick(x.Ticks, x.DateTime);
@@ -83,5 +85,26 @@ namespace TradePlatform.Sandbox.Bots
 
         public abstract void Execution(IDictionary<string, IData> data);
         public abstract int Score();
+
+        public void SetUpSandboxId(string id)
+        {
+            _sandboxId = id;
+        }
+
+        public void PopulateCharts(ICollection<ChartPredicate> predicates)
+        {
+            ContainerBuilder.Container.Resolve<IChartPredicatesHolder>().Add(predicates);
+            ContainerBuilder.Container.Resolve<IChartsPopulator>().Populate();
+        }
+
+        public void StoreCustomData(string key, IList<object> data)
+        {
+            ContainerBuilder.Container.Resolve<ICustomDataHolder>().Add(key, data);
+        }
+
+        public void CleanCustomeStorage()
+        {
+            ContainerBuilder.Container.Resolve<ICustomDataHolder>().CleanAll();
+        }
     }
 }

@@ -33,6 +33,17 @@ using TradePlatform.StockData.Holders;
 using TradePlatform.StockData.Models;
 using TradePlatform.StockData.Presenters;
 using TradePlatform.StockData.ViewModels;
+using TradePlatform.Sandbox.Holders;
+using System;
+using TradePlatform.Charts.Data.Holders;
+using TradePlatform.Charts.Data.Populating;
+using TradePlatform.Charts.Data.Providers;
+using TradePlatform.Charts.Vizualization.Configurations;
+using TradePlatform.Charts.Vizualization.Dispatching;
+using TradePlatform.Charts.Vizualization.Holders;
+using TradePlatform.Charts.Vizualization.ViewModels;
+using TradePlatform.Sandbox.ResultProcessing;
+using TradePlatform.Sandbox.ResultStoring;
 
 namespace TradePlatform
 {
@@ -91,9 +102,11 @@ namespace TradePlatform
 
             Container.RegisterType<ISandboxPresenter, SandboxPresenter>(new InjectionConstructor(typeof(ISandbox) , typeof(string)));
             Container.RegisterType<ISandboxProvider, SandboxProvider>();
+            Container.RegisterType<ISandboxDataHolder, SandboxDataHolder>(new ContainerControlledLifetimeManager());
+
 
             Container.RegisterType<IPredicateChecker, SlicePredicateChecker>();
-            Container.RegisterType<IDataProvider, DataProvider>();
+            Container.RegisterType<ISandboxDataProvider, SandboxDataProvider>();
             Container.RegisterType<ITransformer, DataTransformer>();
             Container.RegisterType<IIndicatorBuilder, IndicatorBuilder>();
 
@@ -102,6 +115,18 @@ namespace TradePlatform
             Container.RegisterType<IBalance, Balance>();
             Container.RegisterType<ITransactionBuilder, TransactionBuilder>();
             Container.RegisterType<IWorkingPeriodHolder, WorkingPeriodHolder>();
+
+            Container.RegisterType<IChartViewModel, DateChartViewModel>("DateChartViewModel", new InjectionConstructor(typeof(TimeSpan)));
+            Container.RegisterType<IChartViewModel, IndexChartViewModel>("IndexChartViewModel");
+            Container.RegisterType<IChartsConfigurationDispatcher, ChartsConfigurationDispatcher>();
+            Container.RegisterType<IChartsHolder, ChartsHolder>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<IChartsPopulator, ChartsPopulator>(new ContainerControlledLifetimeManager(),new InjectionConstructor(typeof(IEnumerable<PanelViewPredicate>)));
+            Container.RegisterType<IChartDataProvider, ChartDataProvider>();
+            Container.RegisterType<IChartsBuilder, ChartsBuilder>();
+            Container.RegisterType<IChartProxy, ChartProxy>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<IChartPredicatesHolder, ChartPredicatesHolder>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<ICustomDataHolder, CustomDataHolder>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<IResultStoring, StoringToFile>(new ContainerControlledLifetimeManager());
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
+using TradePlatform.Charts.Data.Predicates.Basis;
+using TradePlatform.Charts.Vizualization.Configurations;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding.Predicates;
 
@@ -14,5 +16,11 @@ namespace TradePlatform.Sandbox
         void Execution();
         void AfterExecution();
         void CleanMemory();
+
+        IEnumerable<PanelViewPredicate> SetUpCharts();
+        void CreateCharts();
+        void PopulateCharts(ICollection<ChartPredicate> predicates);
+        void StoreCustomData(string key, IList<object> data);
+        void CleanCustomeStorage();
     }
 }

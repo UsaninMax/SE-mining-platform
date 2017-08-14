@@ -7,7 +7,7 @@ namespace TradePlatform.Sandbox.Providers
     {
         public IIndicatorProvider Build(IndicatorPredicate predicate)
         {
-            IIndicatorProvider provider = Activator.CreateInstance(predicate.GetType()) as IIndicatorProvider;
+            IIndicatorProvider provider = Activator.CreateInstance(predicate.Indicator) as IIndicatorProvider;
             if (provider == null)
             {
                 throw new Exception(predicate.GetType() + "Indicator cannot be instantiated");

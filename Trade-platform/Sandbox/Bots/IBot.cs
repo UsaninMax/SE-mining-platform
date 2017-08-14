@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using TradePlatform.Charts.Data.Predicates;
+using TradePlatform.Charts.Data.Predicates.Basis;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios.Models;
 
@@ -8,7 +10,7 @@ namespace TradePlatform.Sandbox.Bots
     {
         string GetId();
         void SetUpId(string id);
-        void SetUpData(IList<Slice> data);
+        void SetUpSandboxId(string id);
         void SetUpPredicate(BotPredicate predicate);
         void Execute();
         void Execution(IDictionary<string, IData> data);
@@ -18,6 +20,8 @@ namespace TradePlatform.Sandbox.Bots
         void OpenPosition(OpenPositionRequest request);
         bool IsPrepared();
         void ResetTransactionContext();
-
+        void PopulateCharts(ICollection<ChartPredicate> predicates);
+        void StoreCustomData(string key, IList<object> data);
+        void CleanCustomeStorage();
     }
 }

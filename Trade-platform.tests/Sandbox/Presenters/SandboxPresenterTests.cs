@@ -28,7 +28,7 @@ namespace Trade_platform.tests.Sandbox.Presenters
         {
             var sandboxBuilderMock = new Mock<ISandboxProvider>();
             ContainerBuilder.Container.RegisterInstance(sandboxBuilderMock.Object);
-            var dataDrovider = new Mock<IDataProvider>();
+            var dataDrovider = new Mock<ISandboxDataProvider>();
             ContainerBuilder.Container.RegisterInstance(dataDrovider.Object);
             IEventAggregator eventAggregator = new EventAggregator();
             ContainerBuilder.Container.RegisterInstance(eventAggregator);
@@ -59,7 +59,7 @@ namespace Trade_platform.tests.Sandbox.Presenters
         {
             var sandboxBuilderMock = new Mock<ISandboxProvider>();
             ContainerBuilder.Container.RegisterInstance(sandboxBuilderMock.Object);
-            var dataDrovider = new Mock<IDataProvider>();
+            var dataDrovider = new Mock<ISandboxDataProvider>();
             ContainerBuilder.Container.RegisterInstance(dataDrovider.Object);
             IEventAggregator eventAggregator = new EventAggregator();
             ContainerBuilder.Container.RegisterInstance(eventAggregator);
@@ -89,7 +89,7 @@ namespace Trade_platform.tests.Sandbox.Presenters
         {
             var sandboxBuilderMock = new Mock<ISandboxProvider>();
             ContainerBuilder.Container.RegisterInstance(sandboxBuilderMock.Object);
-            var dataDrovider = new Mock<IDataProvider>();
+            var dataDrovider = new Mock<ISandboxDataProvider>();
             ContainerBuilder.Container.RegisterInstance(dataDrovider.Object);
             IEventAggregator eventAggregator = new EventAggregator();
             ContainerBuilder.Container.RegisterInstance(eventAggregator);
@@ -109,7 +109,7 @@ namespace Trade_platform.tests.Sandbox.Presenters
             proxySandbox.Verify(x => x.AfterExecution(),
                 Times.Exactly(0));
             proxySandbox.Verify(x => x.CleanMemory(),
-                Times.Exactly(0));
+                Times.Exactly(1));
             infoPublisher.Verify(x => x.PublishException(It.IsAny<AggregateException>()), Times.Once);
             Assert.That(presenter.StatusMessage, Is.EqualTo(Status.FailToExecute));
         }
@@ -119,7 +119,7 @@ namespace Trade_platform.tests.Sandbox.Presenters
         {
             var sandboxBuilderMock = new Mock<ISandboxProvider>();
             ContainerBuilder.Container.RegisterInstance(sandboxBuilderMock.Object);
-            var dataDrovider = new Mock<IDataProvider>();
+            var dataDrovider = new Mock<ISandboxDataProvider>();
             ContainerBuilder.Container.RegisterInstance(dataDrovider.Object);
             IEventAggregator eventAggregator = new EventAggregator();
             ContainerBuilder.Container.RegisterInstance(eventAggregator);
