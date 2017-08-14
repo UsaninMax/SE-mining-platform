@@ -120,8 +120,6 @@ namespace Trade_platform.tests.Charts.Data.Populating
 
             _chartsHolder.Verify(x => x.Get(model), Times.Exactly(1));
             _chartPredicatesHolder.Verify(x => x.GetByChartId("Chart_id_1"), Times.Exactly(1));
-            _chartsHolder.Verify(x => x.Get(chartPredicate.ChartId), Times.Exactly(1));
-            _chartsHolder.Verify(x => x.Get(chartPredicate_2.ChartId), Times.Exactly(1));
             Assert.That(chartPredicate.From, Is.EqualTo(from));
             Assert.That(chartPredicate.To, Is.EqualTo(to));
             Assert.That(chartPredicate_2.From, Is.EqualTo(from));
@@ -146,8 +144,6 @@ namespace Trade_platform.tests.Charts.Data.Populating
 
             _chartsHolder.Verify(x => x.Get(model), Times.Exactly(1));
             _chartPredicatesHolder.Verify(x => x.GetByChartId("Chart_id_1"), Times.Exactly(1));
-            _chartsHolder.Verify(x => x.Get(chartPredicate.ChartId), Times.Exactly(1));
-            _chartsHolder.Verify(x => x.Get(chartPredicate_2.ChartId), Times.Exactly(1));
             Assert.That(chartPredicate.From, Is.EqualTo(4));
             Assert.That(chartPredicate.To, Is.EqualTo(8));
             Assert.That(chartPredicate_2.From, Is.EqualTo(4));
