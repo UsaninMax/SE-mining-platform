@@ -15,7 +15,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
         {
             ITransactionHolder holder = new TransactionHolder(new Dictionary<string, BrokerCost>
                 {
-                    { "test_id", new BrokerCost{InstrumentId = "test_id", Coverage = 0.5, TransactionCost = 10}}
+                    { "test_id", new BrokerCost{Coverage = 0.5, TransactionCost = 10}}
                 }
             );
 
@@ -61,8 +61,8 @@ namespace Trade_platform.tests.Sandbox.Transactios
         {
             ITransactionHolder holder = new TransactionHolder(new Dictionary<string, BrokerCost>
                 {
-                    { "test_id", new BrokerCost{InstrumentId = "test_id", Coverage = 0.5, TransactionCost = 10}},
-                    { "test_id_2", new BrokerCost{InstrumentId = "test_id_2", Coverage = 0.15, TransactionCost = 3}}
+                    { "test_id", new BrokerCost{Coverage = 0.5, TransactionCost = 10}},
+                    { "test_id_2", new BrokerCost{ Coverage = 0.15, TransactionCost = 3}}
                 }
             );
 
@@ -113,9 +113,9 @@ namespace Trade_platform.tests.Sandbox.Transactios
         {
             ITransactionHolder holder = new TransactionHolder(new Dictionary<string, BrokerCost>
                 {
-                    { "test_id", new BrokerCost{InstrumentId = "test_id", Coverage = 0.5, TransactionCost = 10}},
-                    { "test_id_2", new BrokerCost{InstrumentId = "test_id_2", Coverage = 0.15, TransactionCost = 3}},
-                    { "test_id_3", new BrokerCost{InstrumentId = "test_id_3", Coverage = 0.20, TransactionCost = 20}}
+                    { "test_id", new BrokerCost{Coverage = 0.5, TransactionCost = 10}},
+                    { "test_id_2", new BrokerCost{ Coverage = 0.15, TransactionCost = 3}},
+                    { "test_id_3", new BrokerCost{Coverage = 0.20, TransactionCost = 20}}
                 }
             );
 
@@ -175,9 +175,9 @@ namespace Trade_platform.tests.Sandbox.Transactios
         {
             ITransactionHolder holder = new TransactionHolder(new Dictionary<string, BrokerCost>
                 {
-                    { "test_id", new BrokerCost{InstrumentId = "test_id", Coverage = 0.5, TransactionCost = 10}},
-                    { "test_id_2", new BrokerCost{InstrumentId = "test_id_2", Coverage = 0.15, TransactionCost = 3}},
-                    { "test_id_3", new BrokerCost{InstrumentId = "test_id_3", Coverage = 0.20, TransactionCost = 20}}
+                    { "test_id", new BrokerCost{Coverage = 0.5, TransactionCost = 10}},
+                    { "test_id_2", new BrokerCost{Coverage = 0.15, TransactionCost = 3}},
+                    { "test_id_3", new BrokerCost{Coverage = 0.20, TransactionCost = 20}}
                 }
             );
 

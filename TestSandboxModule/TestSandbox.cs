@@ -16,92 +16,67 @@ namespace TestSandboxModule
 {
     public class TestSandbox : SandboxApi
     {
+        DateTime _from = new DateTime(2016, 2, 1);
+        DateTime _to = new DateTime(2016, 2, 5);
+        TimeSpan _period = new TimeSpan(0, 0, 5);
+
         public override ICollection<IPredicate> SetUpData()
         {
             return new List<IPredicate>
             {
                 new DataPredicate.Builder()
                     .ParentId("RTS")
-                    .NewId("RTS_1")
-                    .AccumulationPeriod(new TimeSpan(0,0,1))
-                    .From(new DateTime(2016, 2, 1))
-                    .To(new DateTime(2016,2, 5))
-                    .Build(),
-                new DataPredicate.Builder()
-                    .ParentId("RTS")
                     .NewId("RTS_5")
-                    .AccumulationPeriod(new TimeSpan(0,0,5))
-                    .From(new DateTime(2016, 2, 1))
-                    .To(new DateTime(2016,2, 5))
-                    .Build(),
-                new DataPredicate.Builder()
-                    .ParentId("RTS")
-                    .NewId("RTS_15")
-                    .AccumulationPeriod(new TimeSpan(0,15,0))
-                    .From(new DateTime(2016, 2, 1))
-                    .To(new DateTime(2016,2, 5))
+                    .AccumulationPeriod(_period)
+                    .From(_from)
+                    .To(_to)
                     .Build(),
                 new IndicatorPredicate.Builder()
-                    .NewId("MA")
+                    .NewId("MA_short")
                     .Indicator(typeof(MA))
-                    .Parameter("length", 12)
+                    .Parameter("length", 8)
                     .DataPredicate(new DataPredicate.Builder()
                         .NewId("RTS_5")
                         .ParentId("RTS")
-                        .AccumulationPeriod(new TimeSpan(0,0,5))
-                        .From(new DateTime(2016, 2, 1))
-                        .To(new DateTime(2016,2, 5))
+                        .AccumulationPeriod(_period)
+                        .From(_from)
+                        .To(_to)
                         .Build())
-                    .Build()
+                    .Build(),
+                new IndicatorPredicate.Builder()
+                    .NewId("MA_long")
+                    .Indicator(typeof(MA))
+                    .Parameter("length", 16)
+                    .DataPredicate(new DataPredicate.Builder()
+                        .NewId("RTS_5")
+                        .ParentId("RTS")
+                        .AccumulationPeriod(_period)
+                        .From(_from)
+                        .To(_to)
+                        .Build())
+                    .Build(),
             };
         }
 
         public override void Execution()
         {
 
-            IEnumerable<Dictionary<string, string>> data = new List<Dictionary<string, string>>
+            var costs = new Dictionary<string, BrokerCost>
             {
-                new Dictionary<string, string>
-                {
-                    { "id", "123"},
-                    { "name", "test"}
+                {"RTS", new BrokerCost {Coverage = 0.11, TransactionCost = 0.5 } }
 
-                },
-                new Dictionary<string, string>
-                {
-                    { "id", "123"},
-                    { "name", "test"}
-
-                },
-               new Dictionary<string, string>
-                {
-                    { "id", "123"},
-                    { "name", "test"}
-
-                }
             };
-
-            ReusltStoring.Store(data);
-
-
-
-            var costs = new Dictionary<string, BrokerCost>();
-            costs.Add("RTS", new BrokerCost());
 
             TestBot bot_1 = new TestBot(costs);
             bot_1.SetUpId("Test_1");
             bot_1.SetUpBalance(10000);
             bot_1.SetUpPredicate(new BotPredicate.Builder()
-                .From(new DateTime(2014, 1, 1))
-                .To(new DateTime(2017, 1, 1))
+                .From(_from)
+                .To(_to)
                 .Build());
 
-            TestBot bot_2 = new TestBot(costs);
-            bot_2.SetUpId("Test_1");
-            bot_2.SetUpPredicate(new BotPredicate.Builder()
-                .From(new DateTime(2014, 1, 1))
-                .To(new DateTime(2017, 1, 1))
-                .Build());
+
+
 
             if (Token.IsCancellationRequested) { return; }
 

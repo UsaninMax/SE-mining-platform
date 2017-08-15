@@ -102,8 +102,8 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
-                { "test_id", new BrokerCost{InstrumentId ="test_id", Coverage = 0.10, TransactionCost = 2}},
-                { "test_id_2", new BrokerCost{InstrumentId ="test_id_2", Coverage = 0.20, TransactionCost = 4}}
+                { "test_id", new BrokerCost{Coverage = 0.10, TransactionCost = 2}},
+                { "test_id_2", new BrokerCost{Coverage = 0.20, TransactionCost = 4}}
             });
 
             IDictionary<string, Tick> ticks = new Dictionary<string, Tick>
@@ -134,7 +134,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
-                { "test_id", new BrokerCost{InstrumentId ="test_id", Coverage = 0.10, TransactionCost = 2}}
+                { "test_id", new BrokerCost{Coverage = 0.10, TransactionCost = 2}}
             });
 
             OpenPositionRequest request = new OpenPositionRequest.Builder().Build();
@@ -156,7 +156,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
-                { "test_id", new BrokerCost(){InstrumentId ="test_id", Coverage = 0.10, TransactionCost = 2}}
+                { "test_id", new BrokerCost(){ Coverage = 0.10, TransactionCost = 2}}
             });
 
 
@@ -191,7 +191,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .Returns(new WorkingPeriod {Open = new TimeSpan(0, 10, 30, 0), Close = new TimeSpan(0, 20, 0, 0)});
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
-                { "test_id", new BrokerCost(){InstrumentId ="test_id", Coverage = 0.10, TransactionCost = 2}}
+                { "test_id", new BrokerCost(){Coverage = 0.10, TransactionCost = 2}}
             });
 
 
@@ -258,7 +258,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
-                { "test_id", new BrokerCost(){InstrumentId ="test_id", Coverage = 0.10, TransactionCost = 2}}
+                { "test_id", new BrokerCost(){Coverage = 0.10, TransactionCost = 2}}
             });
 
             context.ProcessTick(new Dictionary<string, Tick>
@@ -321,7 +321,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
-                { "test_id", new BrokerCost{InstrumentId ="test_id", Coverage = 0.10, TransactionCost = 2}}
+                { "test_id", new BrokerCost{ Coverage = 0.10, TransactionCost = 2}}
             });
 
 
@@ -397,7 +397,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
-                { "test_id", new BrokerCost{InstrumentId ="test_id", Coverage = 0.10, TransactionCost = 2}}
+                { "test_id", new BrokerCost{ Coverage = 0.10, TransactionCost = 2}}
             });
 
             context.ProcessTick(new Dictionary<string, Tick>
@@ -467,7 +467,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
-                { "test_id", new BrokerCost{InstrumentId ="test_id", Coverage = 0.10, TransactionCost = 2}}
+                { "test_id", new BrokerCost{ Coverage = 0.10, TransactionCost = 2}}
             });
 
             context.SetUpWorkingPeriod(new Dictionary<string, WorkingPeriod>
