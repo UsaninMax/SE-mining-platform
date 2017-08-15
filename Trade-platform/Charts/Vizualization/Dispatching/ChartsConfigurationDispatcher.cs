@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Practices.Unity;
 using TradePlatform.Charts.Vizualization.Configurations;
 using TradePlatform.Charts.Vizualization.ViewModels;
+using Microsoft.Practices.ObjectBuilder2;
 
 namespace TradePlatform.Charts.Vizualization.Dispatching
 {
@@ -11,20 +12,30 @@ namespace TradePlatform.Charts.Vizualization.Dispatching
     {
         public IDictionary<string, IChartViewModel> Dispatch(IEnumerable<PanelViewPredicate> configuration)
         {
-            return configuration
+            var dispatchedStructure = new Dictionary<string, IChartViewModel>();
+
+            configuration
                 .SelectMany(x => x.ChartPredicates)
-                .SelectMany(chartPredicate => chartPredicate.Ids
-                .Select(id => new Tuple<string, ChartViewPredicate>(id, chartPredicate)))
-                .ToDictionary(t => t.Item1, t =>
+                .ForEach(predicate =>
                 {
-                    if (t.Item2 is DateChartViewPredicate)
+                    var model = CreateModel(predicate);
+                    predicate.Ids.ForEach(id =>
                     {
-                        var predicate = t.Item2 as DateChartViewPredicate;
-                        return ContainerBuilder.Container.Resolve<IChartViewModel>("DateChartViewModel",
-                            new DependencyOverride<TimeSpan>(predicate.XAxis));
-                    }
-                    return ContainerBuilder.Container.Resolve<IChartViewModel>("IndexChartViewModel");
+                        dispatchedStructure.Add(id, model);
+                    });
                 });
+            return dispatchedStructure;
+        }
+
+        private IChartViewModel CreateModel(ChartViewPredicate predicate)
+        {
+            if (predicate is DateChartViewPredicate)
+            {
+                var custedPredicate = predicate as DateChartViewPredicate;
+                return ContainerBuilder.Container.Resolve<IChartViewModel>("DateChartViewModel",
+                    new DependencyOverride<TimeSpan>(custedPredicate.XAxis));
+            }
+            return ContainerBuilder.Container.Resolve<IChartViewModel>("IndexChartViewModel");
         }
     }
 }

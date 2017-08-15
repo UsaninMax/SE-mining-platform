@@ -86,8 +86,9 @@ namespace TestSandboxModule
 
         public override void AfterExecution()
         {
-
             StoreCustomData("TRANSACTIONS", new List<object>(Bots.First().GetTansactionsHistory()));
+            var from = new DateTime(2016, 2, 1, 13, 55, 00);
+            var to = new DateTime(2016, 2, 1, 13, 56, 00);
             PopulateCharts(new List<ChartPredicate>
             {
                 new EDPredicate
@@ -95,26 +96,26 @@ namespace TestSandboxModule
                 CasType = typeof(Candle),
                 ChartId = "RTS_5",
                 InstrumentId = "RTS_5",
-                From = _from,
-                To = _to
+                From = from,
+                To = to
             },
                 new EDPredicate
             {
                 CasType = typeof(Indicator),
                 ChartId = "MA_SHORT",
-                InstrumentId = "MA",
+                InstrumentId = "MA_SHORT",
                 Color = Brushes.DarkBlue,
-                From = _from,
-                To = _to
+                From = from,
+                To = to
             },
                 new EDPredicate
             {
                 CasType = typeof(Indicator),
                 ChartId = "MA_LONG",
-                InstrumentId = "MA",
+                InstrumentId = "MA_LONG",
                 Color = Brushes.DarkBlue,
-                From = _from,
-                To = _to
+                From = from,
+                To = to
             },
                  new CDPredicate
             {
@@ -122,8 +123,8 @@ namespace TestSandboxModule
                 ChartId = "TRANSACTIONS",
                 InstrumentId = "TRANSACTIONS",
                 Color = Brushes.DarkBlue,
-                From = _from,
-                To = _to
+                From = from,
+                To = to
             }
         });
         }

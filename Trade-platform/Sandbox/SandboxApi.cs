@@ -23,11 +23,6 @@ namespace TradePlatform.Sandbox
         private CancellationToken _token;
         private ICollection<IBot> _bots;
 
-        protected SandboxApi()
-        {
-            ContainerBuilder.Container.Resolve<IChartsPopulator>(new DependencyOverride<IEnumerable<PanelViewPredicate>>(SetUpCharts()));
-        }
-
         public void SetToken(CancellationToken token)
         {
             _token = token;
@@ -84,6 +79,7 @@ namespace TradePlatform.Sandbox
         {
             ContainerBuilder.Container.Resolve<IChartPredicatesHolder>().Reset();
             var chartProxy = ContainerBuilder.Container.Resolve<ChartProxy>();
+            ContainerBuilder.Container.Resolve<IChartsPopulator>(new DependencyOverride<IEnumerable<PanelViewPredicate>>(SetUpCharts()));
             chartProxy.ShowCharts(SetUpCharts(), ContainerBuilder.Container.Resolve<IChartsBuilder>());
         }
 
