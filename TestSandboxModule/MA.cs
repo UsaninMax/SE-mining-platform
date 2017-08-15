@@ -31,7 +31,7 @@ namespace TestSandboxModule
             _values = new List<double>(_length);
         }
 
-        public Indicator Get(Candle candle)
+        public double Get(Candle candle)
         {
             if(_values.Count == _length && _length > 0)
             {
@@ -40,10 +40,7 @@ namespace TestSandboxModule
             }
             _sum += candle.Close;
             _values.Add(candle.Close);
-            return new Indicator.Builder()
-                .WithDate(candle.Date())
-                .WithValue(_sum / _values.Count)
-                .Build();
+            return _sum / _values.Count;
         }
     }
 }

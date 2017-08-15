@@ -104,11 +104,13 @@ namespace TradePlatform.Sandbox.DataProviding
             ITransformer dataAggregator = ContainerBuilder.Container.Resolve<ITransformer>();
             _infoPublisher.PublishInfo(new SandboxInfo { Message = " Build indicator  " + predicate });
             _data = _data.Concat(dataAggregator.Transform(_tiks[predicate.DataPredicate.ParentId], predicate.DataPredicate)
-                .Select(c =>
+                .Select(candle =>
                 {
-                    Indicator ind = provider.Get(c);
-                    ind.SetId(predicate.Id);
-                    return ind;
+                    return new Indicator.Builder()
+                    .WithId(predicate.Id)
+                    .WithDate(candle.Date())
+                    .WithValue(provider.Get(candle))
+                    .Build();
                 }).ToList());
             GC.Collect();
             GC.WaitForPendingFinalizers();
