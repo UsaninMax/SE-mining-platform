@@ -66,6 +66,16 @@ namespace TradePlatform.Sandbox.Bots
             _context.Reset();
         }
 
+        public IList<Transaction> GetTansactionsHistory()
+        {
+            return _context.GetTransactionHistory();
+        }
+
+        public IList<BalanceRow> GetBalanceHistory()
+        {
+            return _context.GetBalanceHistory();
+        }
+
         public void Execute()
         {
             ContainerBuilder.Container.Resolve<ISandboxDataHolder>()

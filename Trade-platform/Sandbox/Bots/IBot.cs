@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using TradePlatform.Charts.Data.Predicates;
 using TradePlatform.Charts.Data.Predicates.Basis;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios.Models;
@@ -23,5 +22,7 @@ namespace TradePlatform.Sandbox.Bots
         void PopulateCharts(ICollection<ChartPredicate> predicates);
         void StoreCustomData(string key, IList<object> data);
         void CleanCustomeStorage();
+        IList<Transaction> GetTansactionsHistory();
+        IList<BalanceRow> GetBalanceHistory();
     }
 }

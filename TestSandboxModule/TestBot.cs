@@ -14,25 +14,6 @@ namespace TestSandboxModule
             {
                 return;
             }
-
-            DateTime date = value["RTS_5"].Date();
-            //PopulateCharts(new List<ChartPredicate>
-            //{
-            //    new CandlesDataPredicate
-            //{
-            //    DateTo = date,
-            //    ChartId = "RTS_5",
-            //    InstrumentId = "RTS_5"
-            //},
-            //    new IndicatorDataPredicate
-            //{
-            //    DateTo = date,
-            //    ChartId = "RTS_5",
-            //    InstrumentId = "MA"
-            //}
-            //});
-
-            //Thread.Sleep(2000);
         }
 
         public override int Score()
