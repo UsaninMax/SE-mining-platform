@@ -96,7 +96,7 @@ namespace Trade_platform.tests.Sandbox.Bots
                 .To(new DateTime(2016, 9, 16, 23, 28, 0))
                 .Build());
             bot.Execute();
-            transactionContextMock.Verify(x=>x.ProcessTick(It.IsAny<IDictionary<string, Tick>>(), It.IsAny<DateTime>()), Times.Exactly(3));
+            transactionContextMock.Verify(x=>x.ProcessTick(It.IsAny<IDictionary<string, Tick>>(), It.IsAny<DateTime>()), Times.Exactly(2));
         }
 
         [Test]

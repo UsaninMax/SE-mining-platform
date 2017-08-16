@@ -341,7 +341,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
             transactionBuilderMock.Setup(x => x.Build(request, tick["test_id"])).Returns(transaction);
             context.ProcessTick(tick, new DateTime(2016, 9, 12, 11, 46, 0));
 
-            balanceMock.Verify(x => x.AddTransactionMargin(transaction, transactions, DateTime.MinValue), Times.Once);
+            balanceMock.Verify(x => x.AddTransactionMargin(transaction, transactions, It.IsAny<DateTime>()), Times.Once);
             transactionHolderMock.Verify(x => x.UpdateOpenTransactions(transaction), Times.Once);
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(0));
             Assert.That(context.GetHistoryRequests().Count, Is.EqualTo(1));
