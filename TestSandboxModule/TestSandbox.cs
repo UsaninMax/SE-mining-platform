@@ -15,6 +15,8 @@ namespace TestSandboxModule
 {
     public class TestSandbox : SandboxApi
     {
+        private IBot _first;
+        private IBot _second;
         private DateTime _from = new DateTime(2016, 2, 1);
         private DateTime _to = new DateTime(2016, 2, 5);
         private TimeSpan _period = new TimeSpan(0, 0, 5);
@@ -78,9 +80,9 @@ namespace TestSandboxModule
 
         public override void Execution()
         {
-            IBot first = CreateTestBot();
-            IBot second = CreateTestBot();
-            SetUpBots(new List<IBot> { first, second });
+            _first = CreateTestBot();
+            _second = CreateTestBot();
+            SetUpBots(new List<IBot> { _first, _second });
             Execute();
         }
 
@@ -133,7 +135,7 @@ namespace TestSandboxModule
         {
             TestBot bot = new TestBot(_costs);
             bot.SetUpId("Test_1");
-            bot.SetUpBalance(10000);
+            bot.SetUpBalance(10000000000);
             bot.SetUpPredicate(new BotPredicate.Builder()
                 .From(_from)
                 .To(_to)

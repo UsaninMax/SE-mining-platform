@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TradePlatform.Sandbox.Models;
+using TradePlatform.Sandbox.Transactios.Enums;
 using TradePlatform.Sandbox.Transactios.Models;
 
 namespace TradePlatform.Sandbox.Transactios
@@ -20,7 +21,8 @@ namespace TradePlatform.Sandbox.Transactios
         void ProcessTick(IDictionary<string, Tick> ticks, DateTime dateTime);
         IList<OpenPositionRequest> GetActiveRequests();
         IList<OpenPositionRequest> GetHistoryRequests();
-        IList<Transaction> GetActiveTransactions();
+        IList<Transaction> GetOpenTransactions();
+        IList<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
         double GetCoverage();
         double GetCoverage(OpenPositionRequest request);
     }

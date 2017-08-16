@@ -11,6 +11,7 @@ using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios;
 using TradePlatform.Sandbox.Transactios.Models;
 using TradePlatform.Sandbox.Holders;
+using TradePlatform.Sandbox.Transactios.Enums;
 
 namespace TradePlatform.Sandbox.Bots
 {
@@ -85,7 +86,10 @@ namespace TradePlatform.Sandbox.Bots
                 (_predicate.To == DateTime.MinValue || m.DateTime <= _predicate.To))
                 .ForEach(x =>
                 {
-                    _context.ProcessTick(x.Ticks, x.DateTime);
+                    if(!x.Ticks.IsNullOrEmpty())
+                    {
+                        _context.ProcessTick(x.Ticks, x.DateTime);
+                    }
                     if (!x.Datas.IsNullOrEmpty())
                     {
                         Execution(x.Datas);
@@ -115,6 +119,16 @@ namespace TradePlatform.Sandbox.Bots
         public void CleanCustomeStorage()
         {
             ContainerBuilder.Container.Resolve<ICustomDataHolder>().CleanAll();
+        }
+
+        public IList<Transaction> GetOpenTransactions()
+        {
+            return _context.GetOpenTransactions();
+        }
+
+        public IList<Transaction> GetOpenTransactions(string instrumentId, Direction direction)
+        {
+           return _context.GetOpenTransactions(instrumentId, direction);
         }
     }
 }

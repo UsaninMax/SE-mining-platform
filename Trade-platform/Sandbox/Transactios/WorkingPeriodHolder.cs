@@ -25,6 +25,11 @@ namespace TradePlatform.Sandbox.Transactios
 
         public void StorePoint(string instrumentId, DateTime date)
         {
+            if (_stored.ContainsKey(instrumentId))
+            {
+                _stored[instrumentId] = date;
+                return;
+            }
             _stored.Add(instrumentId, date);
         }
 

@@ -105,7 +105,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
             Assert.That(holder.GetOpenTransactions()[1].RemainingNumber, Is.EqualTo(55));
             Assert.That(holder.GetOpenTransactions()[1].Direction, Is.EqualTo(Direction.Sell));
 
-            Assert.That(holder.GetOpenTransactions("test_id_2", Direction.Sell).Count, Is.EqualTo(1));
+            Assert.That(holder.GetInvertedOpenTransactions("test_id_2", Direction.Sell).Count, Is.EqualTo(1));
         }
 
         [Test]

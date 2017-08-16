@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TradePlatform.Sandbox.Transactios.Models;
 
 namespace TradePlatform.Sandbox.Transactios
@@ -9,7 +10,7 @@ namespace TradePlatform.Sandbox.Transactios
         double GetTotal();
         void Reset();
         IList<BalanceRow> GetHistory();
-        void AddTransactionCost(double value);
-        void AddTransactionMargin(Transaction current, IList<Transaction> open);
+        void AddTransactionCost(double value, DateTime time);
+        void AddTransactionMargin(Transaction current, IList<Transaction> open, DateTime time);
     }
 }

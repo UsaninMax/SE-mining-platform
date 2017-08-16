@@ -19,10 +19,17 @@ namespace TradePlatform.Sandbox.Transactios.Models
 
         public class Builder
         {
-            private double _coverage;
+            private DateTime _date;
             private double _transactionCost;
             private double _transactionMargin;
             private double _total;
+
+
+            public Builder WithDate(DateTime value)
+            {
+                _date = value;
+                return this;
+            }
 
             public Builder TransactionCost(double value)
             {
@@ -46,7 +53,7 @@ namespace TradePlatform.Sandbox.Transactios.Models
             {
                 return new BalanceRow()
                 {
-                    _date = DateTime.Now,
+                    _date = _date,
                     _transactionCost = _transactionCost,
                     _transactionMargin = _transactionMargin,
                     _total = _total

@@ -39,16 +39,17 @@ namespace TradePlatform.Sandbox.Transactios
             return _history;
         }
 
-        public void AddTransactionCost(double value)
+        public void AddTransactionCost(double value, DateTime time)
         {
             _currentBalance = new BalanceRow.Builder()
+                .WithDate(time)
                 .TransactionCost(-value)
                 .Total(_currentBalance.Total - value)
                 .Build();
             _history.Add(_currentBalance);
         }
 
-        public void AddTransactionMargin(Transaction current, IList<Transaction> open)
+        public void AddTransactionMargin(Transaction current, IList<Transaction> open, DateTime time)
         {
             if (open.IsNullOrEmpty())
             {
@@ -69,6 +70,7 @@ namespace TradePlatform.Sandbox.Transactios
             var profit = current.Direction == Direction.Sell ? openSum - closeSum : closeSum - openSum;
 
             _currentBalance = new BalanceRow.Builder()
+               .WithDate(time)
                .TransactionMargin(profit)
                .Total(_currentBalance.Total + profit)
                .Build();

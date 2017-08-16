@@ -11,6 +11,7 @@ namespace TradePlatform.Sandbox.Transactios
         double GetCoverage(IDictionary<string, Tick> ticks, IEnumerable<OpenPositionRequest> activeRequests);
         double GetCoverage(IDictionary<string, Tick> ticks, IEnumerable<OpenPositionRequest> activeRequests, OpenPositionRequest newRequest);
         IList<Transaction> GetOpenTransactions();
+        IList<Transaction> GetInvertedOpenTransactions(string instrumentId, Direction direction);
         IList<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
         IList<Transaction> GetOpenTransactions(string instrumentId);
         int GetSize();

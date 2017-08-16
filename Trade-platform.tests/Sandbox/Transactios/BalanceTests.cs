@@ -25,7 +25,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
         {
             IBalance balance = new Balance();
             balance.AddMoney(300);
-            balance.AddTransactionCost(10);
+            balance.AddTransactionCost(10, DateTime.MinValue);
             Assert.That(balance.GetTotal(), Is.EqualTo(290));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(2));
             Assert.That(balance.GetHistory()[1].TransactionCost, Is.EqualTo(-10));
@@ -37,7 +37,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
         {
             IBalance balance = new Balance();
             balance.AddMoney(300);
-            balance.AddTransactionCost(10);
+            balance.AddTransactionCost(10, DateTime.MinValue);
             Assert.That(balance.GetTotal(), Is.EqualTo(290));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(2));
             Assert.That(balance.GetHistory()[1].TransactionCost, Is.EqualTo(-10));
@@ -67,7 +67,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .Build();
 
 
-            balance.AddTransactionMargin(transaction, new List<Transaction>());
+            balance.AddTransactionMargin(transaction, new List<Transaction>(), DateTime.MinValue);
 
             Assert.That(balance.GetTotal(), Is.EqualTo(300));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(1));
@@ -110,7 +110,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
             };
 
 
-            balance.AddTransactionMargin(transaction, transactions);
+            balance.AddTransactionMargin(transaction, transactions, DateTime.MinValue);
             Assert.That(balance.GetTotal(), Is.EqualTo(230));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(2));
             Assert.That(balance.GetHistory()[1].TransactionMargin, Is.EqualTo(-370));
@@ -152,7 +152,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
             };
 
 
-            balance.AddTransactionMargin(transaction, transactions);
+            balance.AddTransactionMargin(transaction, transactions, DateTime.MinValue);
             Assert.That(balance.GetTotal(), Is.EqualTo(330));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(2));
             Assert.That(balance.GetHistory()[1].TransactionMargin, Is.EqualTo(-270));

@@ -118,7 +118,7 @@ namespace TradePlatform.Sandbox.Transactios
             request.Date = _lastDate;
             _activeRequests.Add(request);
             _requestsHistory.Add(request);
-            _balance.AddTransactionCost(_brokerCosts[request.InstrumentId].TransactionCost);
+            _balance.AddTransactionCost(_brokerCosts[request.InstrumentId].TransactionCost, _lastDate);
             return true;
         }
 
@@ -135,7 +135,7 @@ namespace TradePlatform.Sandbox.Transactios
         private void ProcessTransaction(Transaction transaction)
         {
             _balance.AddTransactionMargin(transaction,
-                _transactionHolder.GetOpenTransactions(transaction.InstrumentId, transaction.Direction));
+                _transactionHolder.GetInvertedOpenTransactions(transaction.InstrumentId, transaction.Direction), _lastDate);
             _transactionHolder.UpdateOpenTransactions(transaction);
         }
 
@@ -155,7 +155,7 @@ namespace TradePlatform.Sandbox.Transactios
                         openPosition.Date = _lastDate;
                         _activeRequests.Add(openPosition);
                         _requestsHistory.Add(openPosition);
-                        _balance.AddTransactionCost(_brokerCosts[openPosition.InstrumentId].TransactionCost);
+                        _balance.AddTransactionCost(_brokerCosts[openPosition.InstrumentId].TransactionCost, _lastDate);
                     });
         }
 
@@ -205,7 +205,7 @@ namespace TradePlatform.Sandbox.Transactios
             return _requestsHistory;
         }
 
-        public IList<Transaction> GetActiveTransactions()
+        public IList<Transaction> GetOpenTransactions()
         {
             return _transactionHolder.GetOpenTransactions();
         }
@@ -241,5 +241,9 @@ namespace TradePlatform.Sandbox.Transactios
             return true;
         }
 
+        public IList<Transaction> GetOpenTransactions(string instrumentId, Direction direction)
+        {
+            return _transactionHolder.GetOpenTransactions(instrumentId, direction);
+        }
     }
 }
