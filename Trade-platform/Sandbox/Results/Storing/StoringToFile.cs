@@ -4,12 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TradePlatform.Commons.Sistem;
-using TradePlatform.Sandbox.ResultProcessing;
 using Microsoft.Practices.Unity;
 using System.Text;
 using System.IO;
 
-namespace TradePlatform.Sandbox.ResultStoring
+namespace TradePlatform.Sandbox.Results.Storing
 {
     public class StoringToFile : IResultStoring
     {

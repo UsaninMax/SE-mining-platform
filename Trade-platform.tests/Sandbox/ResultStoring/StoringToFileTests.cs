@@ -3,8 +3,8 @@ using TradePlatform.Commons.Sistem;
 using Microsoft.Practices.Unity;
 using Moq;
 using TradePlatform;
-using TradePlatform.Sandbox.ResultStoring;
 using System.Collections.Generic;
+using TradePlatform.Sandbox.Results.Storing;
 
 namespace Trade_platform.tests.Sandbox.ResultStoring
 {

@@ -9,6 +9,8 @@ using TradePlatform.Sandbox;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding.Predicates;
 using TradePlatform.Sandbox.Models;
+using TradePlatform.Sandbox.Results.Adaptors;
+using TradePlatform.Sandbox.Results.Storing;
 using TradePlatform.Sandbox.Transactios.Models;
 
 namespace TestSandboxModule
@@ -88,6 +90,9 @@ namespace TestSandboxModule
 
         public override void AfterExecution()
         {
+            IReportAdaptor reportAdaptor = new DefaultReportAdaptor();
+            ReusltStoring.Store(reportAdaptor.Adopt(_first.GetBalanceHistory()), "/");
+            ReusltStoring.Store(reportAdaptor.Adopt(_first.GetTansactionsHistory()), "/");
             StoreCustomData("TRANSACTIONS", new List<object>(Bots.First().GetTansactionsHistory()));
             var from = new DateTime(2016, 2, 1, 13, 55, 00);
             var to = new DateTime(2016, 2, 1, 13, 56, 00);

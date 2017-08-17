@@ -182,9 +182,11 @@
     <Compile Include="Sandbox\Bots\BotApi.cs" />
     <Compile Include="Sandbox\Providers\IIndicatorBuilder.cs" />
     <Compile Include="Sandbox\Providers\IndicatorBuilder.cs" />
-    <Compile Include="Sandbox\ResultStoring\IResultStoring.cs" />
-    <Compile Include="Sandbox\ResultStoring\ReusltStoring.cs" />
-    <Compile Include="Sandbox\ResultStoring\StoringToFile.cs" />
+    <Compile Include="Sandbox\Results\Adaptors\DefaultReportAdaptor.cs" />
+    <Compile Include="Sandbox\Results\Adaptors\IReportAdaptor.cs" />
+    <Compile Include="Sandbox\Results\Storing\IResultStoring.cs" />
+    <Compile Include="Sandbox\Results\Storing\ReusltStoring.cs" />
+    <Compile Include="Sandbox\Results\Storing\StoringToFile.cs" />
     <Compile Include="Sandbox\SandboxApi.cs" />
     <Compile Include="Sandbox\Presenters\ISandboxPresenter.cs" />
     <Compile Include="Sandbox\Presenters\SandboxPresenter.cs" />
