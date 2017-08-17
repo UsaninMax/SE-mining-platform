@@ -7,5 +7,6 @@ namespace TradePlatform.Sandbox.Results.Adaptors
     {
         IEnumerable<Dictionary<string, string>> Adopt(IList<Transaction> rows);
         IEnumerable<Dictionary<string, string>> Adopt(IList<BalanceRow> rows);
+        IEnumerable<Dictionary<string, string>> Adopt(IList<OpenPositionRequest> rows);
     }
 }

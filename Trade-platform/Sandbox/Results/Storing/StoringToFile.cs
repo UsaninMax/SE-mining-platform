@@ -41,12 +41,12 @@ namespace TradePlatform.Sandbox.Results.Storing
 
         private String GetHeader(Dictionary<string, string> header, string separator)
         {
-            return string.Join("/", header.Keys.ToArray());
+            return string.Join(separator, header.Keys.ToArray());
         }
 
         private String GetBody(Dictionary<string, string> body, string separator)
         {
-            return string.Join("/", body.Values.ToArray());
+            return string.Join(separator, body.Values.ToArray());
         }
 
         private void CreateRoot()

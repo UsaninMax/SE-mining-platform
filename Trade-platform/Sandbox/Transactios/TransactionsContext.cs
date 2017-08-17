@@ -200,7 +200,7 @@ namespace TradePlatform.Sandbox.Transactios
             return _activeRequests;
         }
 
-        public IList<OpenPositionRequest> GetHistoryRequests()
+        public IList<OpenPositionRequest> GetRequestsHistory()
         {
             return _requestsHistory;
         }

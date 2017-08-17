@@ -67,7 +67,12 @@ namespace TradePlatform.Sandbox.Transactios
                 forCalculation -= withdraw;
                 openSum += withdraw * x.Key;
             });
-            var profit = current.Direction == Direction.Sell ? openSum - closeSum : closeSum - openSum;
+            var profit = current.Direction == Direction.Sell ? closeSum - openSum : openSum - closeSum;
+
+            if(profit == 0)
+            {
+                return;
+            }
 
             _currentBalance = new BalanceRow.Builder()
                .WithDate(time)
@@ -76,7 +81,6 @@ namespace TradePlatform.Sandbox.Transactios
                .Build();
 
             _history.Add(_currentBalance);
-
         }
     }
 }

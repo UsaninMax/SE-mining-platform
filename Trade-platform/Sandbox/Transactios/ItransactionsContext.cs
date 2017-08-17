@@ -20,7 +20,7 @@ namespace TradePlatform.Sandbox.Transactios
         void CancelPosition(Guid guid);
         void ProcessTick(IDictionary<string, Tick> ticks, DateTime dateTime);
         IList<OpenPositionRequest> GetActiveRequests();
-        IList<OpenPositionRequest> GetHistoryRequests();
+        IList<OpenPositionRequest> GetRequestsHistory();
         IList<Transaction> GetOpenTransactions();
         IList<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
         double GetCoverage();

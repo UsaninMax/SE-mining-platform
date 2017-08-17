@@ -91,8 +91,9 @@ namespace TestSandboxModule
         public override void AfterExecution()
         {
             IReportAdaptor reportAdaptor = new DefaultReportAdaptor();
-            ReusltStoring.Store(reportAdaptor.Adopt(_first.GetBalanceHistory()), "/");
-            ReusltStoring.Store(reportAdaptor.Adopt(_first.GetTansactionsHistory()), "/");
+            ReusltStoring.Store(reportAdaptor.Adopt(_first.GetBalanceHistory()), " | ");
+            ReusltStoring.Store(reportAdaptor.Adopt(_first.GetTansactionsHistory()), " | ");
+            ReusltStoring.Store(reportAdaptor.Adopt(_first.GetRequestsHistory()), " | ");
             StoreCustomData("TRANSACTIONS", new List<object>(Bots.First().GetTansactionsHistory()));
             var from = new DateTime(2016, 2, 1, 13, 55, 00);
             var to = new DateTime(2016, 2, 1, 13, 56, 00);

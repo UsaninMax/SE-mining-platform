@@ -276,9 +276,9 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             Assert.That(context.OpenPosition(request), Is.True);
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(1));
-            Assert.That(context.GetHistoryRequests().Count, Is.EqualTo(1));
+            Assert.That(context.GetRequestsHistory().Count, Is.EqualTo(1));
             Assert.That(context.GetActiveRequests()[0], Is.EqualTo(request));
-            Assert.That(context.GetHistoryRequests()[0], Is.EqualTo(request));
+            Assert.That(context.GetRequestsHistory()[0], Is.EqualTo(request));
         }
 
         [Test]
@@ -332,7 +332,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             Assert.That(context.OpenPosition(request), Is.True);
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(1));
-            Assert.That(context.GetHistoryRequests().Count, Is.EqualTo(1));
+            Assert.That(context.GetRequestsHistory().Count, Is.EqualTo(1));
             Assert.That(context.GetActiveRequests()[0].Date, Is.EqualTo(new DateTime(2016, 9, 12, 11, 45, 0)));
 
             Transaction transaction = new Transaction.Builder().InstrumentId("test_id").Direction(Direction.Buy)
@@ -344,7 +344,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
             balanceMock.Verify(x => x.AddTransactionMargin(transaction, transactions, It.IsAny<DateTime>()), Times.Once);
             transactionHolderMock.Verify(x => x.UpdateOpenTransactions(transaction), Times.Once);
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(0));
-            Assert.That(context.GetHistoryRequests().Count, Is.EqualTo(1));
+            Assert.That(context.GetRequestsHistory().Count, Is.EqualTo(1));
         }
 
 
@@ -420,7 +420,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
             Assert.That(context.GetActiveRequests()[1].RemainingNumber, Is.EqualTo(10));
             Assert.That(context.GetActiveRequests()[1].Direction, Is.EqualTo(Direction.Buy));
             Assert.That(context.GetActiveRequests()[1].InstrumentId, Is.EqualTo("test_id"));
-            Assert.That(context.GetHistoryRequests().Count, Is.EqualTo(3));
+            Assert.That(context.GetRequestsHistory().Count, Is.EqualTo(3));
         }
 
 

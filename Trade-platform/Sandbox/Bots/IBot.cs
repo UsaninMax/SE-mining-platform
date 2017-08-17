@@ -23,9 +23,10 @@ namespace TradePlatform.Sandbox.Bots
         void PopulateCharts(ICollection<ChartPredicate> predicates);
         void StoreCustomData(string key, IList<object> data);
         void CleanCustomeStorage();
-        IList<Transaction> GetTansactionsHistory();
         IList<Transaction> GetOpenTransactions();
         IList<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
         IList<BalanceRow> GetBalanceHistory();
+        IList<Transaction> GetTansactionsHistory();
+        IList<OpenPositionRequest> GetRequestsHistory();
     }
 }

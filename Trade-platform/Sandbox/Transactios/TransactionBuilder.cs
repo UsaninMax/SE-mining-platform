@@ -11,13 +11,13 @@ namespace TradePlatform.Sandbox.Transactios
         public Transaction Build(OpenPositionRequest request, Tick input)
         {
             Tick tick = UpdateTick(input);
+            int willExecute = Math.Min(tick.Volume / 2, request.RemainingNumber);
 
-            if (tick.Volume == 0)
+            if (tick.Volume == 0 || willExecute == 0)
             {
                 return null;
             }
 
-            int willExecute = Math.Min(tick.Volume / 2, request.RemainingNumber);
             tick.Volume = tick.Volume - willExecute;
             Transaction transaction = new Transaction.Builder()
                 .WithDate(tick.Date())
