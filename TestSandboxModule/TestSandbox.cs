@@ -36,6 +36,11 @@ namespace TestSandboxModule
                            Ids = new List<string> { "RTS_5", "MA_SHORT", "MA_LONG", "TRANSACTIONS"},
                            XAxis = _period,
                            YSize = 400
+                        },
+                        new IndexChartViewPredicate
+                        {
+                           Ids = new List<string> { "EQUITY"},
+                           YSize = 400
                         }
                     }
                 }
@@ -95,6 +100,7 @@ namespace TestSandboxModule
             ReusltStoring.Store(reportAdaptor.Adopt(_first.GetTansactionsHistory()), " | ");
             ReusltStoring.Store(reportAdaptor.Adopt(_first.GetRequestsHistory()), " | ");
             StoreCustomData("TRANSACTIONS", new List<object>(Bots.First().GetTansactionsHistory()));
+            StoreCustomData("EQUITY", GetEquity());
             var from = new DateTime(2016, 2, 1, 13, 55, 00);
             var to = new DateTime(2016, 2, 1, 13, 56, 00);
             PopulateCharts(new List<ChartPredicate>
@@ -133,8 +139,28 @@ namespace TestSandboxModule
                 Color = Brushes.DarkBlue,
                 From = from,
                 To = to
+            },
+                 new CIPredicate
+            {
+                CasType = typeof(double),
+                ChartId = "EQUITY",
+                InstrumentId = "EQUITY",
+                Color = Brushes.DarkBlue,
+                From = 1,
+                To = 1000
             }
         });
+        }
+
+        private List<object> GetEquity()
+        {
+            return Bots
+                .First()
+                .GetBalanceHistory()
+                .Where(row => row.TransactionMargin != 0)
+                .Select(row => row.Total)
+                .Cast<object>()
+                .ToList();
         }
 
         private TestBot CreateTestBot()

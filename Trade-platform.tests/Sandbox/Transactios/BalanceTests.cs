@@ -111,9 +111,9 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
 
             balance.AddTransactionMargin(transaction, transactions, DateTime.MinValue);
-            Assert.That(balance.GetTotal(), Is.EqualTo(230));
+            Assert.That(balance.GetTotal(), Is.EqualTo(970));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(2));
-            Assert.That(balance.GetHistory()[1].TransactionMargin, Is.EqualTo(-370));
+            Assert.That(balance.GetHistory()[1].TransactionMargin, Is.EqualTo(370));
         }
 
         [Test]
@@ -153,9 +153,9 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
 
             balance.AddTransactionMargin(transaction, transactions, DateTime.MinValue);
-            Assert.That(balance.GetTotal(), Is.EqualTo(330));
+            Assert.That(balance.GetTotal(), Is.EqualTo(870));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(2));
-            Assert.That(balance.GetHistory()[1].TransactionMargin, Is.EqualTo(-270));
+            Assert.That(balance.GetHistory()[1].TransactionMargin, Is.EqualTo(270));
         }
     }
 }
