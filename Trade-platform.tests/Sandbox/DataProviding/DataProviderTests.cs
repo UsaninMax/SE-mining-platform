@@ -64,7 +64,7 @@ namespace Trade_platform.tests.Sandbox.DataProviding
             Assert.That(result.Where(x => x.DateTime.Equals(new DateTime(2016, 2, 7))).SelectMany(x => x.Datas).ToList().Count, Is.EqualTo(1));
         }
 
-        private ICollection<IPredicate> GetPredicate()
+        private IEnumerable<IPredicate> GetPredicate()
         {
             return new List<IPredicate>
             {

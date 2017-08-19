@@ -10,8 +10,8 @@ namespace TradePlatform.Sandbox
     public interface ISandbox
     {
         void SetToken(CancellationToken token);
-        ICollection<IPredicate> SetUpData();
-        void SetUpBots(ICollection<IBot> bots);
+        IEnumerable<IPredicate> SetUpData();
+        void SetUpBots(IEnumerable<IBot> bots);
         void BuildData();
         void Execution();
         void AfterExecution();
@@ -19,7 +19,7 @@ namespace TradePlatform.Sandbox
 
         IEnumerable<PanelViewPredicate> SetUpCharts();
         void CreateCharts();
-        void PopulateCharts(ICollection<ChartPredicate> predicates);
+        void PopulateCharts(IEnumerable<ChartPredicate> predicates);
         void StoreCustomData(string key, IEnumerable<object> data);
         void CleanCustomeStorage();
     }

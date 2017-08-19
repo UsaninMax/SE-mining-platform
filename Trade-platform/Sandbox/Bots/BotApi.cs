@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Castle.Core.Internal;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using TradePlatform.Charts.Data.Holders;
@@ -91,11 +90,11 @@ namespace TradePlatform.Sandbox.Bots
                 (_predicate.To == DateTime.MinValue || m.DateTime <= _predicate.To))
                 .ForEach(x =>
                 {
-                    if(!x.Ticks.IsNullOrEmpty())
+                    if (x.Ticks.Any())
                     {
                         _context.ProcessTick(x.Ticks, x.DateTime);
                     }
-                    if (!x.Datas.IsNullOrEmpty())
+                    if (x.Datas.Any())
                     {
                         Execution(x.Datas);
                     }
@@ -111,7 +110,7 @@ namespace TradePlatform.Sandbox.Bots
             _sandboxId = id;
         }
 
-        public void PopulateCharts(ICollection<ChartPredicate> predicates)
+        public void PopulateCharts(IEnumerable<ChartPredicate> predicates)
         {
             ContainerBuilder.Container.Resolve<IChartPredicatesHolder>().Add(predicates);
             ContainerBuilder.Container.Resolve<IChartsPopulator>().Populate();

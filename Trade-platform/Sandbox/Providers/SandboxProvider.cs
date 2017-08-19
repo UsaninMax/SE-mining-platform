@@ -28,7 +28,7 @@ namespace TradePlatform.Sandbox.Providers
             AppDomain dom = AppDomain.CreateDomain("CheckerDomain");
             DllChecker checker = (DllChecker)dom.CreateInstanceAndUnwrap(typeof(DllChecker).Assembly.FullName, typeof(DllChecker).FullName);
 
-            foreach (string file in checker.GetSuitableDLL(_sandboxFolder))
+            foreach (string file in checker.GetSuitableDll(_sandboxFolder))
             {
                 Assembly.Load(AssemblyName.GetAssemblyName(file))
                     .GetTypes()

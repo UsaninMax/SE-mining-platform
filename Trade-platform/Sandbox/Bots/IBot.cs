@@ -20,7 +20,7 @@ namespace TradePlatform.Sandbox.Bots
         void OpenPosition(OpenPositionRequest request);
         bool IsPrepared();
         void ResetTransactionContext();
-        void PopulateCharts(ICollection<ChartPredicate> predicates);
+        void PopulateCharts(IEnumerable<ChartPredicate> predicates);
         void StoreCustomData(string key, IEnumerable<object> data);
         void CleanCustomeStorage();
         IEnumerable<Transaction> GetOpenTransactions();

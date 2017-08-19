@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
-using Castle.Core.Internal;
 using LiveCharts;
 using LiveCharts.Wpf;
 using Microsoft.Practices.Unity;
@@ -174,7 +173,7 @@ namespace TradePlatform.Charts.Vizualization.ViewModels
             IEnumerable<Transaction> buyTransactions = values.Where(x => x.Direction.Equals(Direction.Buy)).ToList();
             IEnumerable<Transaction> sellTransactions = values.Where(x => x.Direction.Equals(Direction.Sell)).ToList();
 
-            if (!buyTransactions.IsNullOrEmpty())
+            if (buyTransactions.Any())
             {
                 Series.Add(new LineSeries
                 {
@@ -188,7 +187,7 @@ namespace TradePlatform.Charts.Vizualization.ViewModels
                 });
             }
 
-            if (!sellTransactions.IsNullOrEmpty())
+            if (sellTransactions.Any())
             {
                 Series.Add(new LineSeries
                 {

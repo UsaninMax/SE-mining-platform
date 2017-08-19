@@ -13,6 +13,14 @@ namespace TradePlatform.Sandbox.Models
         {
         }
 
+        public Tick(Tick inpuTick)
+        {
+            _date = inpuTick.Date();
+            _id = inpuTick.Id();
+            Price = inpuTick.Price;
+            Volume = inpuTick.Volume;
+        }
+
         public class Builder
         {
             private DateTime _date;

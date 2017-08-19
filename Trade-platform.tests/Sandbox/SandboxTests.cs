@@ -31,7 +31,7 @@ namespace Trade_platform.tests.Sandbox
             var sandboxDataHolder = new Mock<ISandboxDataHolder>();
             ContainerBuilder.Container.RegisterInstance(sandboxDataHolder.Object);
             CancellationToken token = new CancellationToken();
-            ICollection<IPredicate> predicates = new List<IPredicate>
+            IEnumerable<IPredicate> predicates = new List<IPredicate>
             {
                 new DataPredicate.Builder()
                     .NewId("RTS_1").Build()
@@ -59,7 +59,7 @@ namespace Trade_platform.tests.Sandbox
             ContainerBuilder.Container.RegisterInstance(dataProviderMock.Object);
             var sandboxDataHolder = new Mock<ISandboxDataHolder>();
             ContainerBuilder.Container.RegisterInstance(sandboxDataHolder.Object);
-            ICollection<IPredicate> predicates = new List<IPredicate>
+            IEnumerable<IPredicate> predicates = new List<IPredicate>
             {
                 new DataPredicate.Builder()
                     .NewId("RTS_1").Build()
@@ -73,7 +73,7 @@ namespace Trade_platform.tests.Sandbox
             testSandBox.SetToken(new CancellationToken(true));
             testSandBox.BuildData();
 
-            dataProviderMock.Verify(x => x.Get(It.IsAny<ICollection<IPredicate>>(), It.IsAny<CancellationToken>()), Times.Never);
+            dataProviderMock.Verify(x => x.Get(It.IsAny<IEnumerable<IPredicate>>(), It.IsAny<CancellationToken>()), Times.Never);
             sandboxDataHolder.Verify(x => x.Add(It.IsAny<IEnumerable<Slice>>()), Times.Never);
 
         }
@@ -84,7 +84,7 @@ namespace Trade_platform.tests.Sandbox
             var chartsPopulator = new Mock<IChartsPopulator>();
             ContainerBuilder.Container.RegisterInstance(chartsPopulator.Object);
             CancellationToken token = new CancellationToken();
-            ICollection<IPredicate> predicates = new List<IPredicate>
+            IEnumerable<IPredicate> predicates = new List<IPredicate>
             {
                 new DataPredicate.Builder()
                     .NewId("RTS_1").Build()
@@ -95,7 +95,7 @@ namespace Trade_platform.tests.Sandbox
 
             botMock_1.Setup(x => x.IsPrepared()).Returns(true);
             botMock_2.Setup(x => x.IsPrepared()).Returns(true);
-            ICollection<IBot> bots = new List<IBot>
+            IEnumerable<IBot> bots = new List<IBot>
             {
                 botMock_1.Object,
                 botMock_2.Object
@@ -123,7 +123,7 @@ namespace Trade_platform.tests.Sandbox
             var chartsPopulator = new Mock<IChartsPopulator>();
             ContainerBuilder.Container.RegisterInstance(chartsPopulator.Object);
             CancellationToken token = new CancellationToken(true);
-            ICollection<IPredicate> predicates = new List<IPredicate>
+            IEnumerable<IPredicate> predicates = new List<IPredicate>
             {
                 new DataPredicate.Builder()
                     .NewId("RTS_1").Build()
@@ -134,7 +134,7 @@ namespace Trade_platform.tests.Sandbox
 
             botMock_1.Setup(x => x.IsPrepared()).Returns(true);
             botMock_2.Setup(x => x.IsPrepared()).Returns(true);
-            ICollection<IBot> bots = new List<IBot>
+            IEnumerable<IBot> bots = new List<IBot>
             {
                 botMock_1.Object,
                 botMock_2.Object
@@ -162,7 +162,7 @@ namespace Trade_platform.tests.Sandbox
             var chartsPopulator = new Mock<IChartsPopulator>();
             ContainerBuilder.Container.RegisterInstance(chartsPopulator.Object);
             CancellationToken token = new CancellationToken();
-            ICollection<IPredicate> predicates = new List<IPredicate>
+            IEnumerable<IPredicate> predicates = new List<IPredicate>
             {
                 new DataPredicate.Builder()
                     .NewId("RTS_1").Build()
@@ -173,7 +173,7 @@ namespace Trade_platform.tests.Sandbox
 
             botMock_1.Setup(x => x.IsPrepared()).Returns(false);
             botMock_2.Setup(x => x.IsPrepared()).Returns(false);
-            ICollection<IBot> bots = new List<IBot>
+            IEnumerable<IBot> bots = new List<IBot>
             {
                 botMock_1.Object,
                 botMock_2.Object
@@ -212,10 +212,10 @@ namespace Trade_platform.tests.Sandbox
 
     class TestSandBox : SandboxApi
     {
-        public ICollection<IPredicate> Predicates;
-        public ICollection<IBot> Bots;
+        public IEnumerable<IPredicate> Predicates;
+        public IEnumerable<IBot> Bots;
 
-        public override ICollection<IPredicate> SetUpData()
+        public override IEnumerable<IPredicate> SetUpData()
         {
             return Predicates;
         }

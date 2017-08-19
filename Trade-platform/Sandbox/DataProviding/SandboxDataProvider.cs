@@ -35,7 +35,7 @@ namespace TradePlatform.Sandbox.DataProviding
             _indicatorBuilder = ContainerBuilder.Container.Resolve<IIndicatorBuilder>();
         }
 
-        public IEnumerable<Slice> Get(ICollection<IPredicate> predicates, CancellationToken token)
+        public IEnumerable<Slice> Get(IEnumerable<IPredicate> predicates, CancellationToken token)
         {
             if (token.IsCancellationRequested) { return null; }
             GatherPredicates(predicates);
@@ -145,7 +145,7 @@ namespace TradePlatform.Sandbox.DataProviding
             return predicate.From(from).To(to).Build();
         }
 
-        private void GatherPredicates(ICollection<IPredicate> predicates)
+        private void GatherPredicates(IEnumerable<IPredicate> predicates)
         {
             predicates.ForEach(x =>
             {

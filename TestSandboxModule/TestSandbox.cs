@@ -45,7 +45,7 @@ namespace TestSandboxModule
             };
         }
 
-        public override ICollection<IPredicate> SetUpData()
+        public override IEnumerable<IPredicate> SetUpData()
         {
             return new List<IPredicate>
             {
@@ -92,9 +92,8 @@ namespace TestSandboxModule
             _thirdBot = CreateTestBot("Test_3");
             SetUpBots(new List<IBot>
             {
-                _firstBot, _secondBot, _thirdBot, CreateTestBot("Test_4"), CreateTestBot("Test_5"), CreateTestBot("Test_6"), CreateTestBot("Test_7"), CreateTestBot("Test_8")
-                , CreateTestBot("Test_9"), CreateTestBot("Test_10"), CreateTestBot("Test_11"), CreateTestBot("Test_12"), CreateTestBot("Test_13"), CreateTestBot("Test_14"), CreateTestBot("Test_15")
-                , CreateTestBot("Test_16"), CreateTestBot("Test_17"), CreateTestBot("Test_18"), CreateTestBot("Test_19"), CreateTestBot("Test_20")
+                _firstBot, _secondBot, _thirdBot,CreateTestBot("Test_4"),CreateTestBot("Test_5"),CreateTestBot("Test_6"),CreateTestBot("Test_7"),CreateTestBot("Test_8"),CreateTestBot("Test_9"),CreateTestBot("Test_10"),CreateTestBot("Test_11")
+                ,CreateTestBot("Test_12"),CreateTestBot("Test_13"),CreateTestBot("Test_14"),CreateTestBot("Test_15"),CreateTestBot("Test_16"),CreateTestBot("Test_17"),CreateTestBot("Test_18"),CreateTestBot("Test_19"),CreateTestBot("Test_20")
             });
             Execute();
         }

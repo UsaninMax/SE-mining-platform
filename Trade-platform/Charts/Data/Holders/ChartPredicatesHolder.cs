@@ -32,7 +32,7 @@ namespace TradePlatform.Charts.Data.Holders
             _storage.Clear();
         }
 
-        public void Add(ICollection<ChartPredicate> predicates)
+        public void Add(IEnumerable<ChartPredicate> predicates)
         {
             predicates.ForEach(predicate => Add(predicate));
         }
