@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using TradePlatform.Commons.Loggers;
 
 namespace TradePlatform.Commons.Sistem
 {
@@ -9,21 +8,14 @@ namespace TradePlatform.Commons.Sistem
     {
         public void CreateFile(string text, string path)
         {
-            try
+            if (File.Exists(path))
             {
-                if (File.Exists(path))
-                {
-                    File.Delete(path);
-                }
-                using (FileStream fs = File.Create(path))
-                {
-                    Byte[] info = new UTF8Encoding(true).GetBytes(text);
-                    fs.Write(info, 0, info.Length);
-                }
+                File.Delete(path);
             }
-            catch (Exception ex)
+            using (FileStream fs = File.Create(path))
             {
-                SystemLogger.Log.Error(ex);
+                Byte[] info = new UTF8Encoding(true).GetBytes(text);
+                fs.Write(info, 0, info.Length);
             }
         }
 

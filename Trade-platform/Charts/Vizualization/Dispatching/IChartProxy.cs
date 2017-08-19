@@ -10,10 +10,10 @@ namespace TradePlatform.Charts.Vizualization.Dispatching
     public interface IChartProxy
     {
         void ShowCharts(IEnumerable<PanelViewPredicate> configuration, IChartsBuilder builder);
-        void Push(IChartViewModel chartViewModel, IList<Candle> list, ChartPredicate predicate);
-        void Push(IChartViewModel chartViewModel, IList<double> list, ChartPredicate predicate);
-        void Push(IChartViewModel chartViewModel, IList<Indicator> list, ChartPredicate predicate);
-        void Push(IChartViewModel chartViewModel, IList<Transaction> list);
+        void Push(IChartViewModel chartViewModel, IEnumerable<Candle> list, ChartPredicate predicate);
+        void Push(IChartViewModel chartViewModel, IEnumerable<double> list, ChartPredicate predicate);
+        void Push(IChartViewModel chartViewModel, IEnumerable<Indicator> list, ChartPredicate predicate);
+        void Push(IChartViewModel chartViewModel, IEnumerable<Transaction> list);
         void Clear(IChartViewModel chartViewModel);
     }
 }

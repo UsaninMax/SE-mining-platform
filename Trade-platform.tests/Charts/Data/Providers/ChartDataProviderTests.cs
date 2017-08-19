@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TradePlatform.Sandbox.Holders;
 using TradePlatform.Sandbox.Models;
 using Microsoft.Practices.Unity;
@@ -30,17 +31,17 @@ namespace TradePlatform.Charts.Data.Providers
         public void check_get_data_from_exist_storage()
         {
             IChartDataProvider dataProvider = new ChartDataProvider();
-            IList<Indicator> result = dataProvider.GetExistStorageData<Indicator>("m_id_1");
-            Assert.That(result.Count, Is.EqualTo(1));
-            Assert.That(result[0].Id, Is.EqualTo("m_id_1"));
-            Assert.That(result[0].Date(), Is.EqualTo(new DateTime(2016, 9, 15)));
+            IEnumerable<Indicator> result = dataProvider.GetExistStorageData<Indicator>("m_id_1");
+            Assert.That(result.Count(), Is.EqualTo(1));
+            Assert.That(result.First().Id, Is.EqualTo("m_id_1"));
+            Assert.That(result.First().Date(), Is.EqualTo(new DateTime(2016, 9, 15)));
         }
 
         [Test]
         public void check_get_data_from_exist_storage_2()
         {
             IChartDataProvider dataProvider = new ChartDataProvider();
-            IList<Indicator> result = dataProvider.GetExistStorageData<Indicator>("id_1");
+            IEnumerable<Indicator> result = dataProvider.GetExistStorageData<Indicator>("id_1");
             Assert.That(result.Count, Is.EqualTo(2));
         }
 
@@ -48,10 +49,10 @@ namespace TradePlatform.Charts.Data.Providers
         public void check_get_data_from_custome_storage()
         {
             IChartDataProvider dataProvider = new ChartDataProvider();
-            IList<Indicator> result = dataProvider.GetCustomStorageData<Indicator>("id_1");
-            Assert.That(result.Count, Is.EqualTo(2));
-            Assert.That(result[0].Date(), Is.EqualTo(new DateTime(2016, 9, 13, 1, 28, 0)));
-            Assert.That(result[0].Date(), Is.EqualTo(new DateTime(2016, 9, 13, 1, 28, 0)));
+            IEnumerable<Indicator> result = dataProvider.GetCustomStorageData<Indicator>("id_1");
+            Assert.That(result.Count(), Is.EqualTo(2));
+            Assert.That(result.First().Date(), Is.EqualTo(new DateTime(2016, 9, 13, 1, 28, 0)));
+            Assert.That(result.First().Date(), Is.EqualTo(new DateTime(2016, 9, 13, 1, 28, 0)));
         }
 
         [Test]

@@ -35,9 +35,9 @@ namespace Trade_platform.tests.DataSet.ViewModels
             ContainerBuilder.Container.RegisterInstance(fakeEventAggregator.Object);
             bool isHit = false;
             fakeEventAggregator.Setup(x => x.GetEvent<AddInstrumentToDatatSetEvent>()
-                .Publish(It.IsAny<IList<Instrument>>()));
+                .Publish(It.IsAny<IEnumerable<Instrument>>()));
             Instrument instrument = new Instrument.Builder().WithCode("test_id").Build();
-            IList<Instrument> instruments = new List<Instrument> { instrument };
+            IEnumerable<Instrument> instruments = new List<Instrument> { instrument };
             InstrumentChooseListViewModel model = new InstrumentChooseListViewModel();
             model.CloseWindowNotification += (s, e) =>
             {

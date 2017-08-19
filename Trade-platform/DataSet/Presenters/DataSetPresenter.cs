@@ -49,7 +49,7 @@ namespace TradePlatform.DataSet.Presenters
 
             if (IsActiveProcess())
             {
-                _infoPublisher.PublishInfo(new DataSetInfo { Message = this + "- currently in active data prepering process" });
+                _infoPublisher.PublishInfo(new DataSetInfo { Message = this + "- currently in active data preparation process" });
                 return;
             }
 
@@ -148,7 +148,7 @@ namespace TradePlatform.DataSet.Presenters
 
         public override string ToString()
         {
-            return $"{nameof(_dataSet)}: {_dataSet}, {nameof(_statusMessage)}: {_statusMessage}, {nameof(StatusMessage)}: {StatusMessage}, {nameof(DataSetId)}: {DataSetId}";
+            return $"{nameof(DataSetId)}: {DataSetId}";
         }
     }
 }

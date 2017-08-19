@@ -26,7 +26,7 @@ namespace TradePlatform.Charts.Vizualization.Dispatching
             }));
         }
 
-        public void Push(IChartViewModel chartViewModel, IList<Candle> list, ChartPredicate predicate)
+        public void Push(IChartViewModel chartViewModel, IEnumerable<Candle> list, ChartPredicate predicate)
         {
             _dispatcher.BeginInvoke((Action)(() =>
             {
@@ -34,7 +34,7 @@ namespace TradePlatform.Charts.Vizualization.Dispatching
             }));
         }
 
-        public void Push(IChartViewModel chartViewModel, IList<double> list, ChartPredicate predicate)
+        public void Push(IChartViewModel chartViewModel, IEnumerable<double> list, ChartPredicate predicate)
         {
             _dispatcher.BeginInvoke((Action)(() =>
             {
@@ -42,7 +42,7 @@ namespace TradePlatform.Charts.Vizualization.Dispatching
             }));
         }
 
-        public void Push(IChartViewModel chartViewModel, IList<Indicator> list, ChartPredicate predicate)
+        public void Push(IChartViewModel chartViewModel, IEnumerable<Indicator> list, ChartPredicate predicate)
         {
             _dispatcher.BeginInvoke((Action)(() =>
             {
@@ -50,7 +50,7 @@ namespace TradePlatform.Charts.Vizualization.Dispatching
             }));
         }
 
-        public void Push(IChartViewModel chartViewModel, IList<Transaction> list)
+        public void Push(IChartViewModel chartViewModel, IEnumerable<Transaction> list)
         {
             _dispatcher.BeginInvoke((Action)(() =>
             {

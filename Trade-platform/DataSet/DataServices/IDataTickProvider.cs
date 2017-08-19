@@ -7,6 +7,6 @@ namespace TradePlatform.DataSet.DataServices
 {
     public interface IDataTickProvider
     {
-        IList<DataTick> Get(DataSetItem item, CancellationToken cancellationToken);
+        IEnumerable<DataTick> Get(DataSetItem item, CancellationToken cancellationToken);
     }
 }

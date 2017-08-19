@@ -9,7 +9,7 @@ namespace TradePlatform.DataSet.Holders
         void Put(DataSetItem dataSet);
         void Remove(DataSetItem dataSet);
         DataSetItem Get(String id);
-        IList<DataSetItem> GetAll();
+        IEnumerable<DataSetItem> GetAll();
         void Store();
         void Restore();
     }

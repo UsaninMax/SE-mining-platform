@@ -31,7 +31,7 @@ namespace Trade_platform.tests.Sandbox.Bots
             bot.SetUpPredicate(new BotPredicate.Builder()
                 .Build());
             bot.Execute();
-            IList<IData> slices = bot.GetSlices();
+            IEnumerable<IData> slices = bot.GetSlices();
             Assert.That(slices.Count, Is.EqualTo(10));
         }
 
@@ -50,7 +50,7 @@ namespace Trade_platform.tests.Sandbox.Bots
                 .To(new DateTime(2016, 9, 16, 23, 28, 0))
                 .Build());
             bot.Execute();
-            IList<IData> slices = bot.GetSlices();
+            IEnumerable<IData> slices = bot.GetSlices();
             Assert.That(slices.Count, Is.EqualTo(6));
         }
 
@@ -75,7 +75,7 @@ namespace Trade_platform.tests.Sandbox.Bots
                 .To(new DateTime(2016, 9, 16, 23, 28, 0))
                 .Build());
             bot.Execute();
-            IList<IData> slices = bot.GetSlices();
+            IEnumerable<IData> slices = bot.GetSlices();
             Assert.That(slices.Count, Is.EqualTo(6));
             Assert.That(slices.OfType<Candle>().Count(), Is.EqualTo(3));
             Assert.That(slices.OfType<Indicator>().Count(), Is.EqualTo(3));
@@ -96,7 +96,7 @@ namespace Trade_platform.tests.Sandbox.Bots
                 .To(new DateTime(2016, 9, 16, 23, 28, 0))
                 .Build());
             bot.Execute();
-            transactionContextMock.Verify(x=>x.ProcessTick(It.IsAny<IDictionary<string, Tick>>(), It.IsAny<DateTime>()), Times.Exactly(3));
+            transactionContextMock.Verify(x=>x.ProcessTick(It.IsAny<IDictionary<string, Tick>>(), It.IsAny<DateTime>()), Times.Exactly(2));
         }
 
         [Test]
@@ -194,7 +194,7 @@ namespace Trade_platform.tests.Sandbox.Bots
                 throw new System.NotImplementedException();
             }
 
-            public IList<IData> GetSlices()
+            public IEnumerable<IData> GetSlices()
             {
                 return _slices;
             }

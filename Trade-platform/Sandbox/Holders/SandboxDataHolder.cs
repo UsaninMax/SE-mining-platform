@@ -5,19 +5,19 @@ namespace TradePlatform.Sandbox.Holders
 {
     public class SandboxDataHolder : ISandboxDataHolder
     {
-        private IList<Slice> _dataStorage = new List<Slice>();
+        private IEnumerable<Slice> _dataStorage = new List<Slice>();
 
-        public void Add(IList<Slice> data)
+        public void Add(IEnumerable<Slice> data)
         {
             _dataStorage = data;
         }
 
         public void Clean()
         {
-            _dataStorage.Clear();
+            _dataStorage = new List<Slice>();
         }
 
-        public IList<Slice> Get()
+        public IEnumerable<Slice> Get()
         {
             return _dataStorage;
         }

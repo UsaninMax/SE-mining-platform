@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using TradePlatform.Charts.Data.Predicates;
 using TradePlatform.Charts.Data.Predicates.Basis;
 using TradePlatform.Sandbox.Models;
+using TradePlatform.Sandbox.Transactios.Enums;
 using TradePlatform.Sandbox.Transactios.Models;
 
 namespace TradePlatform.Sandbox.Bots
@@ -20,8 +20,14 @@ namespace TradePlatform.Sandbox.Bots
         void OpenPosition(OpenPositionRequest request);
         bool IsPrepared();
         void ResetTransactionContext();
-        void PopulateCharts(ICollection<ChartPredicate> predicates);
-        void StoreCustomData(string key, IList<object> data);
+        void PopulateCharts(IEnumerable<ChartPredicate> predicates);
+        void StoreCustomData(string key, IEnumerable<object> data);
         void CleanCustomeStorage();
+        IEnumerable<Transaction> GetOpenTransactions();
+        IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
+        IEnumerable<BalanceRow> GetBalanceHistory();
+        IEnumerable<Transaction> GetTansactionsHistory();
+        IEnumerable<OpenPositionRequest> GetRequestsHistory();
+        IEnumerable<OpenPositionRequest> GetActiveRequests(string instrumentId, Direction direction);
     }
 }

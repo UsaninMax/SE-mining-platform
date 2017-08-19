@@ -8,9 +8,9 @@ namespace TradePlatform.Charts.Data.Providers
 {
     public class ChartDataProvider : IChartDataProvider
     {
-        public IList<T> GetExistStorageData<T>(string instrumentId)
+        public IEnumerable<T> GetExistStorageData<T>(string instrumentId)
         {
-            IList<Slice> slices = ContainerBuilder.Container.Resolve<ISandboxDataHolder>().Get();
+            IEnumerable<Slice> slices = ContainerBuilder.Container.Resolve<ISandboxDataHolder>().Get();
             return slices
                 .SelectMany(x => x.Datas)
                 .Where(x => x.Key.Equals(instrumentId))
@@ -19,9 +19,9 @@ namespace TradePlatform.Charts.Data.Providers
                 .ToList();
         }
 
-        public IList<T> GetCustomStorageData<T>(string instrumentId)
+        public IEnumerable<T> GetCustomStorageData<T>(string instrumentId)
         {
-            IList<object> data = ContainerBuilder.Container.Resolve<ICustomDataHolder>().Get(instrumentId);
+            IEnumerable<object> data = ContainerBuilder.Container.Resolve<ICustomDataHolder>().Get(instrumentId);
             return data
                 .Cast<T>()
                 .ToList();

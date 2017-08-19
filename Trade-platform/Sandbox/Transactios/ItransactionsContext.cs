@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TradePlatform.Sandbox.Models;
+using TradePlatform.Sandbox.Transactios.Enums;
 using TradePlatform.Sandbox.Transactios.Models;
 
 namespace TradePlatform.Sandbox.Transactios
@@ -13,14 +14,16 @@ namespace TradePlatform.Sandbox.Transactios
         double GetBalance();
         void Reset();
         int AvailableNumber(string instrumentId);
-        IList<Transaction> GetTransactionHistory();
-        IList<BalanceRow> GetBalanceHistory();
+        IEnumerable<Transaction> GetTransactionHistory();
+        IEnumerable<BalanceRow> GetBalanceHistory();
         bool OpenPosition(OpenPositionRequest request);
         void CancelPosition(Guid guid);
         void ProcessTick(IDictionary<string, Tick> ticks, DateTime dateTime);
-        IList<OpenPositionRequest> GetActiveRequests();
-        IList<OpenPositionRequest> GetHistoryRequests();
-        IList<Transaction> GetActiveTransactions();
+        IEnumerable<OpenPositionRequest> GetActiveRequests();
+        List<OpenPositionRequest> GetActiveRequests(string instrumentId, Direction direction);
+        IEnumerable<OpenPositionRequest> GetRequestsHistory();
+        IEnumerable<Transaction> GetOpenTransactions();
+        IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
         double GetCoverage();
         double GetCoverage(OpenPositionRequest request);
     }

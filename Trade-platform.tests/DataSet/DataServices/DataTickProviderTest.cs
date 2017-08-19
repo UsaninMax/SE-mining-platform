@@ -24,20 +24,20 @@ namespace Trade_platform.tests.DataSet.DataServices
             SubInstrument subInstrument_1 = new SubInstrument(new Instrument.Builder().Build());
             SubInstrument subInstrument_2 = new SubInstrument(new Instrument.Builder().Build());
 
-            IList<SubInstrument> subInstruments = new List<SubInstrument>()
+            IEnumerable<SubInstrument> subInstruments = new List<SubInstrument>()
             {
                 subInstrument_1,
                 subInstrument_2
             };
 
-            IList<DataTick> ticks_1 = new List<DataTick>()
+            IEnumerable<DataTick> ticks_1 = new List<DataTick>()
             {
                 new DataTick() { Date = new DateTime(2017, 3, 17)},
                 new DataTick() { Date = new DateTime(2017, 3, 15)},
                 new DataTick() { Date = new DateTime(2017, 3, 16)}
             };
 
-            IList<DataTick> ticks_2 = new List<DataTick>()
+            IEnumerable<DataTick> ticks_2 = new List<DataTick>()
             {
                 new DataTick() { Date = new DateTime(2017, 3, 20)},
                 new DataTick() { Date = new DateTime(2017, 3, 22)},
@@ -50,7 +50,7 @@ namespace Trade_platform.tests.DataSet.DataServices
 
             DataSetItem item = new DataSetItem.Builder().WithSubInstruments(subInstruments).Build();
             DataTickProvider provider = new DataTickProvider();
-            IList<DataTick> ticks = provider.Get(item, It.IsAny<CancellationToken>());
+            IEnumerable<DataTick> ticks = provider.Get(item, It.IsAny<CancellationToken>());
 
             Assert.That(ticks.Count, Is.EqualTo(0));
         }
@@ -63,27 +63,27 @@ namespace Trade_platform.tests.DataSet.DataServices
             SubInstrument subInstrument_1 = new SubInstrument(new Instrument.Builder().Build()) { SelectedFrom = new DateTime(2017, 3, 15), SelectedTo = new DateTime(2017, 3, 18) };
             SubInstrument subInstrument_2 = new SubInstrument(new Instrument.Builder().Build()) { SelectedFrom = new DateTime(2017, 3, 15), SelectedTo = new DateTime(2017, 3, 23) };
 
-            IList<SubInstrument> subInstruments = new List<SubInstrument>()
+            IEnumerable<SubInstrument> subInstruments = new List<SubInstrument>()
             {
                 subInstrument_1,
                 subInstrument_2
             };
 
-            IList<DataTick> ticks_1 = new List<DataTick>()
+            IEnumerable<DataTick> ticks_1 = new List<DataTick>()
             {
                 new DataTick() { Date = new DateTime(2017, 3, 17)},
                 new DataTick() { Date = new DateTime(2017, 3, 15)},
                 new DataTick() { Date = new DateTime(2017, 3, 16)}
             };
 
-            IList<DataTick> ticks_2 = new List<DataTick>()
+            IEnumerable<DataTick> ticks_2 = new List<DataTick>()
             {
                 new DataTick() { Date = new DateTime(2017, 3, 20)},
                 new DataTick() { Date = new DateTime(2017, 3, 22)},
                 new DataTick() { Date = new DateTime(2017, 3, 19)}
             };
 
-            IList<DataTick> expectedTicks = new List<DataTick>()
+            IEnumerable<DataTick> expectedTicks = new List<DataTick>()
             {
                 new DataTick() { Date = new DateTime(2017, 3, 15)},
                 new DataTick() { Date = new DateTime(2017, 3, 16)},
@@ -98,7 +98,7 @@ namespace Trade_platform.tests.DataSet.DataServices
 
             DataSetItem item = new DataSetItem.Builder().WithSubInstruments(subInstruments).Build();
             DataTickProvider provider = new DataTickProvider();
-            IList<DataTick> ticks = provider.Get(item, It.IsAny<CancellationToken>());
+            IEnumerable<DataTick> ticks = provider.Get(item, It.IsAny<CancellationToken>());
 
             Assert.That(ticks.Count, Is.EqualTo(6));
             Assert.IsTrue(ticks.SequenceEqual(expectedTicks));
@@ -112,27 +112,27 @@ namespace Trade_platform.tests.DataSet.DataServices
             SubInstrument subInstrument_1 = new SubInstrument(new Instrument.Builder().Build()) { SelectedFrom = new DateTime(2017, 3, 16), SelectedTo = new DateTime(2017, 3, 17) };
             SubInstrument subInstrument_2 = new SubInstrument(new Instrument.Builder().Build()) { SelectedFrom = new DateTime(2017, 3, 20), SelectedTo = new DateTime(2017, 3, 21) };
 
-            IList<SubInstrument> subInstruments = new List<SubInstrument>()
+            IEnumerable<SubInstrument> subInstruments = new List<SubInstrument>()
             {
                 subInstrument_1,
                 subInstrument_2
             };
 
-            IList<DataTick> ticks_1 = new List<DataTick>()
+            IEnumerable<DataTick> ticks_1 = new List<DataTick>()
             {
                 new DataTick() { Date = new DateTime(2017, 3, 17)},
                 new DataTick() { Date = new DateTime(2017, 3, 15)},
                 new DataTick() { Date = new DateTime(2017, 3, 16)}
             };
 
-            IList<DataTick> ticks_2 = new List<DataTick>()
+            IEnumerable<DataTick> ticks_2 = new List<DataTick>()
             {
                 new DataTick() { Date = new DateTime(2017, 3, 20)},
                 new DataTick() { Date = new DateTime(2017, 3, 22)},
                 new DataTick() { Date = new DateTime(2017, 3, 19)}
             };
 
-            IList<DataTick> expectedTicks = new List<DataTick>()
+            IEnumerable<DataTick> expectedTicks = new List<DataTick>()
             {
                 new DataTick() { Date = new DateTime(2017, 3, 16)},
                 new DataTick() { Date = new DateTime(2017, 3, 17)},
@@ -144,7 +144,7 @@ namespace Trade_platform.tests.DataSet.DataServices
 
             DataSetItem item = new DataSetItem.Builder().WithSubInstruments(subInstruments).Build();
             DataTickProvider provider = new DataTickProvider();
-            IList<DataTick> ticks = provider.Get(item, It.IsAny<CancellationToken>());
+            IEnumerable<DataTick> ticks = provider.Get(item, It.IsAny<CancellationToken>());
 
             Assert.That(ticks.Count, Is.EqualTo(3));
             Assert.IsTrue(ticks.SequenceEqual(expectedTicks));

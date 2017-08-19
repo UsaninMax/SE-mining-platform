@@ -53,7 +53,7 @@ namespace Trade_platform.tests.Sandbox.DataProviding.Transformers
                 .AccumulationPeriod(new TimeSpan(0, 3, 0))
                 .Build();
             DataTransformer transformer = new DataTransformer();
-            IList<Tick> tiks = GetTicks();
+            IEnumerable<Tick> tiks = GetTicks();
             List<Candle> candles = transformer.Transform(tiks, predicate);
 
             Assert.That(candles.Count, Is.EqualTo(4));
@@ -85,7 +85,7 @@ namespace Trade_platform.tests.Sandbox.DataProviding.Transformers
                 .To(new DateTime(2017, 7, 17, 13, 49, 13))
                 .Build();
             DataTransformer transformer = new DataTransformer();
-            IList<Tick> tiks = GetTicks();
+            IEnumerable<Tick> tiks = GetTicks();
             List<Candle> candles = transformer.Transform(tiks, predicate);
             Assert.That(candles.Count, Is.EqualTo(2));
         }

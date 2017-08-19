@@ -29,14 +29,14 @@ namespace TradePlatform.StockData.DataServices.Serialization
             _fileManager.CreateFolder("Settings");
         }
 
-        public IList<Instrument> ReStore()
+        public IEnumerable<Instrument> ReStore()
         {
             if (!_fileManager.IsFileExist(Path))
             {
                 return new List<Instrument>();
             }
 
-            return _serializer.Deserialize<IList<Instrument>>(Path);
+            return _serializer.Deserialize<IEnumerable<Instrument>>(Path);
         }
     }
 }

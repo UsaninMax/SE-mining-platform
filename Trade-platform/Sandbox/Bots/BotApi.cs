@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Castle.Core.Internal;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using TradePlatform.Charts.Data.Holders;
 using TradePlatform.Charts.Data.Populating;
 using TradePlatform.Charts.Data.Predicates.Basis;
+using TradePlatform.Commons.Info;
+using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios;
 using TradePlatform.Sandbox.Transactios.Models;
 using TradePlatform.Sandbox.Holders;
+using TradePlatform.Sandbox.Transactios.Enums;
 
 namespace TradePlatform.Sandbox.Bots
 {
@@ -18,12 +20,14 @@ namespace TradePlatform.Sandbox.Bots
     {
         private string _id;
         private string _sandboxId;
+        private readonly IInfoPublisher _infoPublisher;
         private BotPredicate _predicate;
         private readonly ITransactionsContext _context;
 
         protected BotApi(IDictionary<string, BrokerCost> brokerCosts)
         {
             _context = ContainerBuilder.Container.Resolve<ITransactionsContext>(new DependencyOverride<IDictionary<string, BrokerCost>>(brokerCosts));
+            _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
         }
 
         public string GetId()
@@ -66,8 +70,19 @@ namespace TradePlatform.Sandbox.Bots
             _context.Reset();
         }
 
+        public IEnumerable<Transaction> GetTansactionsHistory()
+        {
+            return _context.GetTransactionHistory();
+        }
+
+        public IEnumerable<BalanceRow> GetBalanceHistory()
+        {
+            return _context.GetBalanceHistory();
+        }
+
         public void Execute()
         {
+            _infoPublisher.PublishInfo(new InfoItem("Bot " + _id) { Message = "Start execute - " + _predicate });
             ContainerBuilder.Container.Resolve<ISandboxDataHolder>()
                 .Get()
                 .Where(m =>
@@ -75,12 +90,16 @@ namespace TradePlatform.Sandbox.Bots
                 (_predicate.To == DateTime.MinValue || m.DateTime <= _predicate.To))
                 .ForEach(x =>
                 {
-                    _context.ProcessTick(x.Ticks, x.DateTime);
-                    if (!x.Datas.IsNullOrEmpty())
+                    if (x.Ticks.Any())
+                    {
+                        _context.ProcessTick(x.Ticks, x.DateTime);
+                    }
+                    if (x.Datas.Any())
                     {
                         Execution(x.Datas);
                     }
                 });
+            _infoPublisher.PublishInfo(new InfoItem("Bot " + _id) { Message = "Executed - " + _predicate });
         }
 
         public abstract void Execution(IDictionary<string, IData> data);
@@ -91,13 +110,13 @@ namespace TradePlatform.Sandbox.Bots
             _sandboxId = id;
         }
 
-        public void PopulateCharts(ICollection<ChartPredicate> predicates)
+        public void PopulateCharts(IEnumerable<ChartPredicate> predicates)
         {
             ContainerBuilder.Container.Resolve<IChartPredicatesHolder>().Add(predicates);
             ContainerBuilder.Container.Resolve<IChartsPopulator>().Populate();
         }
 
-        public void StoreCustomData(string key, IList<object> data)
+        public void StoreCustomData(string key, IEnumerable<object> data)
         {
             ContainerBuilder.Container.Resolve<ICustomDataHolder>().Add(key, data);
         }
@@ -105,6 +124,26 @@ namespace TradePlatform.Sandbox.Bots
         public void CleanCustomeStorage()
         {
             ContainerBuilder.Container.Resolve<ICustomDataHolder>().CleanAll();
+        }
+
+        public IEnumerable<Transaction> GetOpenTransactions()
+        {
+            return _context.GetOpenTransactions();
+        }
+
+        public IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction)
+        {
+           return _context.GetOpenTransactions(instrumentId, direction);
+        }
+
+        public IEnumerable<OpenPositionRequest> GetRequestsHistory()
+        {
+            return _context.GetRequestsHistory();
+        }
+
+        public IEnumerable<OpenPositionRequest> GetActiveRequests(string instrumentId, Direction direction)
+        {
+            return _context.GetActiveRequests(instrumentId, direction);
         }
     }
 }

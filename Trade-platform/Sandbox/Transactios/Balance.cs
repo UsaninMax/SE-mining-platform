@@ -34,21 +34,22 @@ namespace TradePlatform.Sandbox.Transactios
             _history.Add(_currentBalance);
         }
 
-        public IList<BalanceRow> GetHistory()
+        public IEnumerable<BalanceRow> GetHistory()
         {
             return _history;
         }
 
-        public void AddTransactionCost(double value)
+        public void AddTransactionCost(double value, DateTime time)
         {
             _currentBalance = new BalanceRow.Builder()
+                .WithDate(time)
                 .TransactionCost(-value)
                 .Total(_currentBalance.Total - value)
                 .Build();
             _history.Add(_currentBalance);
         }
 
-        public void AddTransactionMargin(Transaction current, IList<Transaction> open)
+        public void AddTransactionMargin(Transaction current, IEnumerable<Transaction> open, DateTime time)
         {
             if (open.IsNullOrEmpty())
             {
@@ -66,15 +67,20 @@ namespace TradePlatform.Sandbox.Transactios
                 forCalculation -= withdraw;
                 openSum += withdraw * x.Key;
             });
-            var profit = current.Direction == Direction.Sell ? openSum - closeSum : closeSum - openSum;
+            var profit = current.Direction == Direction.Sell ? closeSum - openSum : openSum - closeSum;
+
+            if(profit == 0)
+            {
+                return;
+            }
 
             _currentBalance = new BalanceRow.Builder()
+               .WithDate(time)
                .TransactionMargin(profit)
                .Total(_currentBalance.Total + profit)
                .Build();
 
             _history.Add(_currentBalance);
-
         }
     }
 }

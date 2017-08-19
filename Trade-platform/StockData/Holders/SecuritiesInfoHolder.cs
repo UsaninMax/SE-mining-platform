@@ -6,7 +6,7 @@ namespace TradePlatform.StockData.Holders
 {
     public class SecuritiesInfoHolder
     {
-        public IList<Security> Securities { get; set; }
+        public IEnumerable<Security> Securities { get; set; }
 
         public IEnumerable<Market> Markets()
         {

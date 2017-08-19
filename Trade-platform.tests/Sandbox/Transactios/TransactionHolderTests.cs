@@ -4,6 +4,7 @@ using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios;
 using TradePlatform.Sandbox.Transactios.Enums;
 using TradePlatform.Sandbox.Transactios.Models;
+using System.Linq;
 
 namespace Trade_platform.tests.Sandbox.Transactios
 {
@@ -15,7 +16,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
         {
             ITransactionHolder holder = new TransactionHolder(new Dictionary<string, BrokerCost>
                 {
-                    { "test_id", new BrokerCost{InstrumentId = "test_id", Coverage = 0.5, TransactionCost = 10}}
+                    { "test_id", new BrokerCost{Coverage = 0.5, TransactionCost = 10}}
                 }
             );
 
@@ -39,10 +40,10 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .Number(10)
                 .Build());
             Assert.That(holder.GetOpenTransactions().Count, Is.EqualTo(2));
-            Assert.That(holder.GetOpenTransactions()[0].RemainingNumber, Is.EqualTo(5));
-            Assert.That(holder.GetOpenTransactions()[0].Direction, Is.EqualTo(Direction.Buy));
-            Assert.That(holder.GetOpenTransactions()[1].RemainingNumber, Is.EqualTo(15));
-            Assert.That(holder.GetOpenTransactions()[1].Direction, Is.EqualTo(Direction.Buy));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].RemainingNumber, Is.EqualTo(5));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].Direction, Is.EqualTo(Direction.Buy));
+            Assert.That(holder.GetOpenTransactions().ToList()[1].RemainingNumber, Is.EqualTo(15));
+            Assert.That(holder.GetOpenTransactions().ToList()[1].Direction, Is.EqualTo(Direction.Buy));
 
             holder.UpdateOpenTransactions(new Transaction.Builder()
                 .InstrumentId("test_id")
@@ -51,8 +52,8 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .Number(60)
                 .Build());
             Assert.That(holder.GetOpenTransactions().Count, Is.EqualTo(1));
-            Assert.That(holder.GetOpenTransactions()[0].RemainingNumber, Is.EqualTo(40));
-            Assert.That(holder.GetOpenTransactions()[0].Direction, Is.EqualTo(Direction.Sell));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].RemainingNumber, Is.EqualTo(40));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].Direction, Is.EqualTo(Direction.Sell));
         }
 
 
@@ -61,8 +62,8 @@ namespace Trade_platform.tests.Sandbox.Transactios
         {
             ITransactionHolder holder = new TransactionHolder(new Dictionary<string, BrokerCost>
                 {
-                    { "test_id", new BrokerCost{InstrumentId = "test_id", Coverage = 0.5, TransactionCost = 10}},
-                    { "test_id_2", new BrokerCost{InstrumentId = "test_id_2", Coverage = 0.15, TransactionCost = 3}}
+                    { "test_id", new BrokerCost{Coverage = 0.5, TransactionCost = 10}},
+                    { "test_id_2", new BrokerCost{ Coverage = 0.15, TransactionCost = 3}}
                 }
             );
 
@@ -86,10 +87,10 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .Number(10)
                 .Build());
             Assert.That(holder.GetOpenTransactions().Count, Is.EqualTo(2));
-            Assert.That(holder.GetOpenTransactions()[0].RemainingNumber, Is.EqualTo(5));
-            Assert.That(holder.GetOpenTransactions()[0].Direction, Is.EqualTo(Direction.Buy));
-            Assert.That(holder.GetOpenTransactions()[1].RemainingNumber, Is.EqualTo(15));
-            Assert.That(holder.GetOpenTransactions()[1].Direction, Is.EqualTo(Direction.Buy));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].RemainingNumber, Is.EqualTo(5));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].Direction, Is.EqualTo(Direction.Buy));
+            Assert.That(holder.GetOpenTransactions().ToList()[1].RemainingNumber, Is.EqualTo(15));
+            Assert.That(holder.GetOpenTransactions().ToList()[1].Direction, Is.EqualTo(Direction.Buy));
 
             holder.UpdateOpenTransactions(new Transaction.Builder()
                 .InstrumentId("test_id")
@@ -98,14 +99,14 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .Number(60)
                 .Build());
             Assert.That(holder.GetOpenTransactions().Count, Is.EqualTo(2));
-            Assert.That(holder.GetOpenTransactions()[0].InstrumentId, Is.EqualTo("test_id_2"));
-            Assert.That(holder.GetOpenTransactions()[0].RemainingNumber, Is.EqualTo(15));
-            Assert.That(holder.GetOpenTransactions()[0].Direction, Is.EqualTo(Direction.Buy));
-            Assert.That(holder.GetOpenTransactions()[1].InstrumentId, Is.EqualTo("test_id"));
-            Assert.That(holder.GetOpenTransactions()[1].RemainingNumber, Is.EqualTo(55));
-            Assert.That(holder.GetOpenTransactions()[1].Direction, Is.EqualTo(Direction.Sell));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].InstrumentId, Is.EqualTo("test_id_2"));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].RemainingNumber, Is.EqualTo(15));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].Direction, Is.EqualTo(Direction.Buy));
+            Assert.That(holder.GetOpenTransactions().ToList()[1].InstrumentId, Is.EqualTo("test_id"));
+            Assert.That(holder.GetOpenTransactions().ToList()[1].RemainingNumber, Is.EqualTo(55));
+            Assert.That(holder.GetOpenTransactions().ToList()[1].Direction, Is.EqualTo(Direction.Sell));
 
-            Assert.That(holder.GetOpenTransactions("test_id_2", Direction.Sell).Count, Is.EqualTo(1));
+            Assert.That(holder.GetInvertedOpenTransactions("test_id_2", Direction.Sell).Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -113,9 +114,9 @@ namespace Trade_platform.tests.Sandbox.Transactios
         {
             ITransactionHolder holder = new TransactionHolder(new Dictionary<string, BrokerCost>
                 {
-                    { "test_id", new BrokerCost{InstrumentId = "test_id", Coverage = 0.5, TransactionCost = 10}},
-                    { "test_id_2", new BrokerCost{InstrumentId = "test_id_2", Coverage = 0.15, TransactionCost = 3}},
-                    { "test_id_3", new BrokerCost{InstrumentId = "test_id_3", Coverage = 0.20, TransactionCost = 20}}
+                    { "test_id", new BrokerCost{Coverage = 0.5, TransactionCost = 10}},
+                    { "test_id_2", new BrokerCost{ Coverage = 0.15, TransactionCost = 3}},
+                    { "test_id_3", new BrokerCost{Coverage = 0.20, TransactionCost = 20}}
                 }
             );
 
@@ -175,9 +176,9 @@ namespace Trade_platform.tests.Sandbox.Transactios
         {
             ITransactionHolder holder = new TransactionHolder(new Dictionary<string, BrokerCost>
                 {
-                    { "test_id", new BrokerCost{InstrumentId = "test_id", Coverage = 0.5, TransactionCost = 10}},
-                    { "test_id_2", new BrokerCost{InstrumentId = "test_id_2", Coverage = 0.15, TransactionCost = 3}},
-                    { "test_id_3", new BrokerCost{InstrumentId = "test_id_3", Coverage = 0.20, TransactionCost = 20}}
+                    { "test_id", new BrokerCost{Coverage = 0.5, TransactionCost = 10}},
+                    { "test_id_2", new BrokerCost{Coverage = 0.15, TransactionCost = 3}},
+                    { "test_id_3", new BrokerCost{Coverage = 0.20, TransactionCost = 20}}
                 }
             );
 

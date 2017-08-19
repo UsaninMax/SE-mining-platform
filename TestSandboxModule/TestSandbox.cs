@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media;
 using TradePlatform.Charts.Data.Predicates;
 using TradePlatform.Charts.Data.Predicates.Basis;
@@ -8,167 +9,18 @@ using TradePlatform.Sandbox;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.DataProviding.Predicates;
 using TradePlatform.Sandbox.Models;
-using TradePlatform.Sandbox.ResultStoring;
-using TradePlatform.Sandbox.Transactios.Enums;
+using TradePlatform.Sandbox.Results.Adaptors;
+using TradePlatform.Sandbox.Results.Storing;
 using TradePlatform.Sandbox.Transactios.Models;
 
 namespace TestSandboxModule
 {
     public class TestSandbox : SandboxApi
     {
-        public override ICollection<IPredicate> SetUpData()
-        {
-            return new List<IPredicate>
-            {
-                new DataPredicate.Builder()
-                    .ParentId("RTS")
-                    .NewId("RTS_1")
-                    .AccumulationPeriod(new TimeSpan(0,0,1))
-                    .From(new DateTime(2016, 2, 1))
-                    .To(new DateTime(2016,2, 5))
-                    .Build(),
-                new DataPredicate.Builder()
-                    .ParentId("RTS")
-                    .NewId("RTS_5")
-                    .AccumulationPeriod(new TimeSpan(0,0,5))
-                    .From(new DateTime(2016, 2, 1))
-                    .To(new DateTime(2016,2, 5))
-                    .Build(),
-                new DataPredicate.Builder()
-                    .ParentId("RTS")
-                    .NewId("RTS_15")
-                    .AccumulationPeriod(new TimeSpan(0,15,0))
-                    .From(new DateTime(2016, 2, 1))
-                    .To(new DateTime(2016,2, 5))
-                    .Build(),
-                new IndicatorPredicate.Builder()
-                    .NewId("MA")
-                    .Indicator(typeof(MA))
-                    .Parameter("length", 12)
-                    .DataPredicate(new DataPredicate.Builder()
-                        .NewId("RTS_5")
-                        .ParentId("RTS")
-                        .AccumulationPeriod(new TimeSpan(0,0,5))
-                        .From(new DateTime(2016, 2, 1))
-                        .To(new DateTime(2016,2, 5))
-                        .Build())
-                    .Build()
-            };
-        }
-
-        public override void Execution()
-        {
-
-            IEnumerable<Dictionary<string, string>> data = new List<Dictionary<string, string>>
-            {
-                new Dictionary<string, string>
-                {
-                    { "id", "123"},
-                    { "name", "test"}
-
-                },
-                new Dictionary<string, string>
-                {
-                    { "id", "123"},
-                    { "name", "test"}
-
-                },
-               new Dictionary<string, string>
-                {
-                    { "id", "123"},
-                    { "name", "test"}
-
-                }
-            };
-
-            ReusltStoring.Store(data);
-
-
-
-            var costs = new Dictionary<string, BrokerCost>();
-            costs.Add("RTS", new BrokerCost());
-
-            TestBot bot_1 = new TestBot(costs);
-            bot_1.SetUpId("Test_1");
-            bot_1.SetUpBalance(10000);
-            bot_1.SetUpPredicate(new BotPredicate.Builder()
-                .From(new DateTime(2014, 1, 1))
-                .To(new DateTime(2017, 1, 1))
-                .Build());
-
-            TestBot bot_2 = new TestBot(costs);
-            bot_2.SetUpId("Test_1");
-            bot_2.SetUpPredicate(new BotPredicate.Builder()
-                .From(new DateTime(2014, 1, 1))
-                .To(new DateTime(2017, 1, 1))
-                .Build());
-
-            if (Token.IsCancellationRequested) { return; }
-
-            SetUpBots(new List<IBot>
-            {
-                bot_1
-            });
-            Execute();
-
-
-            StoreCustomData("Custom_1", new List<object> { 22d, 33d, 44d, 55d, 66d });
-            StoreCustomData("Custom_2", new List<object> {
-
-            new Transaction.Builder().Direction(Direction.Buy).ExecutedPrice(72860).WithDate(new DateTime(2016, 2, 4, 23, 49, 33)).Build(),
-             new Transaction.Builder().Direction(Direction.Buy).ExecutedPrice(72860).WithDate(new DateTime(2016, 2, 4, 23, 49, 33)).Build(),
-              new Transaction.Builder().Direction(Direction.Buy).ExecutedPrice(72860).WithDate(new DateTime(2016, 2, 4, 23, 49, 33)).Build(),
-            new Transaction.Builder().Direction(Direction.Sell).ExecutedPrice(72880).WithDate(new DateTime(2016, 2, 4, 23, 49, 41)).Build()
-
-            });
-
-            PopulateCharts(new List<ChartPredicate>
-            {
-                new EDPredicate
-            {
-                CasType = typeof(Candle),
-                ChartId = "RTS_5",
-                InstrumentId = "RTS_5",
-                From = new DateTime(2016, 2, 1, 13, 55, 00),
-                To = new DateTime(2016, 2, 1, 13, 56, 00)
-            },
-                new EDPredicate
-            {
-                CasType = typeof(Indicator),
-                ChartId = "RTS_5",
-                InstrumentId = "MA",
-                Color = Brushes.DarkBlue,
-                From = new DateTime(2016, 2, 1, 13, 55, 00),
-                To = new DateTime(2016, 2, 1, 13, 56, 00)
-            },
-                new CIPredicate
-                {
-                CasType = typeof(double),
-                ChartId = "Custom_1",
-                InstrumentId = "Custom_1",
-                Color = Brushes.DarkBlue,
-                From = 0,
-                To = 999
-                }
-                ,
-                new CDPredicate
-                {
-                CasType = typeof(Transaction),
-                ChartId = "RTS_5",
-                InstrumentId = "Custom_2",
-                From = new DateTime(2016, 2, 1, 13, 55, 00),
-                To = new DateTime(2016, 2, 1, 13, 56, 00)
-                }
-            });
-        }
-
-        public override void AfterExecution()
-        {
-            foreach (var bot in Bots)
-            {
-                System.Diagnostics.Debug.WriteLine("Bot name = " + bot.GetId() + " - has score " + bot.Score());
-            }
-        }
+        private DateTime _from = new DateTime(2016, 1, 1);
+        private DateTime _to = new DateTime(2017, 1, 1);
+        private TimeSpan _period = new TimeSpan(0, 0, 5);
+        private IDictionary<string, BrokerCost> _costs = new Dictionary<string, BrokerCost> { { "RTS", new BrokerCost { Coverage = 0.11, TransactionCost = 0.5 } } };
 
         public override IEnumerable<PanelViewPredicate> SetUpCharts()
         {
@@ -179,23 +31,162 @@ namespace TestSandboxModule
                     {
                         new DateChartViewPredicate
                         {
-                           Ids = new List<string> { "RTS_5"},
-                           XAxis = TimeSpan.FromSeconds(5),
-                           YSize = 400
+                           Ids = new List<string> { "RTS_5", "MA_SHORT", "MA_LONG", "TRANSACTIONS"},
+                           XAxis = _period,
+                           YSize = 700
                         },
                         new IndexChartViewPredicate
                         {
-                           Ids = new List<string> { "Custom_1"},
-                           YSize = 300
-                        },
-                        new IndexChartViewPredicate
-                        {
-                           Ids = new List<string> { "Custom_2"},
-                           YSize = 300
+                           Ids = new List<string> { "EQUITY"},
+                           YSize = 700
                         }
                     }
                 }
             };
+        }
+
+        public override IEnumerable<IPredicate> SetUpData()
+        {
+            return new List<IPredicate>
+            {
+                new DataPredicate.Builder()
+                    .ParentId("RTS")
+                    .NewId("RTS_5")
+                    .AccumulationPeriod(_period)
+                    .From(_from)
+                    .To(_to)
+                    .Build(),
+                new IndicatorPredicate.Builder()
+                    .NewId("MA_SHORT")
+                    .Indicator(typeof(MA))
+                    .Parameter("length", 8)
+                    .DataPredicate(new DataPredicate.Builder()
+                        .NewId("RTS_5")
+                        .ParentId("RTS")
+                        .AccumulationPeriod(_period)
+                        .From(_from)
+                        .To(_to)
+                        .Build())
+                    .Build(),
+                new IndicatorPredicate.Builder()
+                    .NewId("MA_LONG")
+                    .Indicator(typeof(MA))
+                    .Parameter("length", 16)
+                    .DataPredicate(new DataPredicate.Builder()
+                        .NewId("RTS_5")
+                        .ParentId("RTS")
+                        .AccumulationPeriod(_period)
+                        .From(_from)
+                        .To(_to)
+                        .Build())
+                    .Build(),
+            };
+        }
+        private IBot _firstBot;
+        private IBot _secondBot;
+        private IBot _thirdBot;
+        public override void Execution()
+        {
+            _firstBot = CreateTestBot("Test_1");
+            _secondBot = CreateTestBot("Test_2");
+            _thirdBot = CreateTestBot("Test_3");
+            SetUpBots(new List<IBot>
+            {
+                _firstBot, _secondBot, _thirdBot,CreateTestBot("Test_4"),CreateTestBot("Test_5"),CreateTestBot("Test_6"),CreateTestBot("Test_7"),CreateTestBot("Test_8"),CreateTestBot("Test_9"),CreateTestBot("Test_10"),CreateTestBot("Test_11")
+                ,CreateTestBot("Test_12"),CreateTestBot("Test_13"),CreateTestBot("Test_14"),CreateTestBot("Test_15"),CreateTestBot("Test_16"),CreateTestBot("Test_17"),CreateTestBot("Test_18"),CreateTestBot("Test_19"),CreateTestBot("Test_20")
+            });
+            Execute();
+        }
+
+        public override void AfterExecution()
+        {
+            IReportAdaptor reportAdaptor = new DefaultReportAdaptor();
+            ReusltStoring.Store(reportAdaptor.Adopt(_firstBot.GetRequestsHistory()), " | ");
+            ReusltStoring.Store(reportAdaptor.Adopt(_secondBot.GetRequestsHistory()), " | ");
+            ReusltStoring.Store(reportAdaptor.Adopt(_thirdBot.GetRequestsHistory()), " | ");
+            StoreCustomData("TRANSACTIONS", new List<object>(Bots.First().GetTansactionsHistory()));
+            StoreCustomData("EQUITY", GetEquity());
+            var from = new DateTime(2016, 2, 1, 13, 55, 00);
+            var to = new DateTime(2016, 2, 1, 13, 56, 00);
+            PopulateCharts(new List<ChartPredicate>
+            {
+                new EDPredicate
+            {
+                CasType = typeof(Candle),
+                ChartId = "RTS_5",
+                InstrumentId = "RTS_5",
+                From = from,
+                To = to
+            },
+                new EDPredicate
+            {
+                CasType = typeof(Indicator),
+                ChartId = "MA_SHORT",
+                InstrumentId = "MA_SHORT",
+                Color = Brushes.DarkBlue,
+                From = from,
+                To = to
+            },
+                new EDPredicate
+            {
+                CasType = typeof(Indicator),
+                ChartId = "MA_LONG",
+                InstrumentId = "MA_LONG",
+                Color = Brushes.DarkBlue,
+                From = from,
+                To = to
+            },
+                 new CDPredicate
+            {
+                CasType = typeof(Transaction),
+                ChartId = "TRANSACTIONS",
+                InstrumentId = "TRANSACTIONS",
+                Color = Brushes.DarkBlue,
+                From = from,
+                To = to
+            },
+                 new CIPredicate
+            {
+                CasType = typeof(double),
+                ChartId = "EQUITY",
+                InstrumentId = "EQUITY",
+                Color = Brushes.DarkBlue,
+                From = 1,
+                To = 1000
+            }
+        });
+        }
+
+        private List<object> GetEquity()
+        {
+            return Bots
+                .First()
+                .GetBalanceHistory()
+                .Where(row => row.TransactionMargin != 0)
+                .Select(row => row.Total)
+                .Cast<object>()
+                .ToList();
+        }
+
+        private TestBot CreateTestBot(string id)
+        {
+            TestBot bot = new TestBot(_costs);
+            bot.SetUpId(id);
+            bot.SetUpBalance(1000000000000);
+            bot.SetUpWorkingPeriod(new Dictionary<string, WorkingPeriod>
+            {
+                {"RTS", new WorkingPeriod
+                    {
+                        Open = new TimeSpan(0, 10, 30, 0),
+                        Close = new TimeSpan(0, 23, 30, 0)
+                    }
+                }
+            });
+            bot.SetUpPredicate(new BotPredicate.Builder()
+                .From(_from)
+                .To(_to)
+                .Build());
+            return bot;
         }
     }
 }

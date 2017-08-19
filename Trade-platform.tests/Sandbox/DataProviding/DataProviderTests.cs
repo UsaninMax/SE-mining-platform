@@ -52,7 +52,7 @@ namespace Trade_platform.tests.Sandbox.DataProviding
 
             SandboxDataProvider provider = new SandboxDataProvider();
 
-            IList<Slice> result =  provider.Get(GetPredicate(), new CancellationToken());
+            IEnumerable<Slice> result =  provider.Get(GetPredicate(), new CancellationToken());
 
             dataAggregatorMock.Verify(x=> x.Transform(It.IsAny<List<DataTick>>(), It.Is<TickPredicate>(
                 f => f.Id.Equals("RTS") &&
@@ -64,7 +64,7 @@ namespace Trade_platform.tests.Sandbox.DataProviding
             Assert.That(result.Where(x => x.DateTime.Equals(new DateTime(2016, 2, 7))).SelectMany(x => x.Datas).ToList().Count, Is.EqualTo(1));
         }
 
-        private ICollection<IPredicate> GetPredicate()
+        private IEnumerable<IPredicate> GetPredicate()
         {
             return new List<IPredicate>
             {

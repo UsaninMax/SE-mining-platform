@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Practices.Unity;
-using TradePlatform.Sandbox.ResultProcessing;
 
-namespace TradePlatform.Sandbox.ResultStoring
+namespace TradePlatform.Sandbox.Results.Storing
 {
     public static class ReusltStoring
     {

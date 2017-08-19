@@ -7,6 +7,6 @@ namespace TradePlatform.Sandbox.DataProviding
 {
     public interface ISandboxDataProvider
     {
-        IList<Slice> Get(ICollection<IPredicate> predicates, CancellationToken token);
+        IEnumerable<Slice> Get(IEnumerable<IPredicate> predicates, CancellationToken token);
     }
 }

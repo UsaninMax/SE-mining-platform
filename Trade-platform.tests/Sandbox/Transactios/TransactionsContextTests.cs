@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
@@ -102,8 +103,8 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
-                { "test_id", new BrokerCost{InstrumentId ="test_id", Coverage = 0.10, TransactionCost = 2}},
-                { "test_id_2", new BrokerCost{InstrumentId ="test_id_2", Coverage = 0.20, TransactionCost = 4}}
+                { "test_id", new BrokerCost{Coverage = 0.10, TransactionCost = 2}},
+                { "test_id_2", new BrokerCost{Coverage = 0.20, TransactionCost = 4}}
             });
 
             IDictionary<string, Tick> ticks = new Dictionary<string, Tick>
@@ -134,7 +135,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
-                { "test_id", new BrokerCost{InstrumentId ="test_id", Coverage = 0.10, TransactionCost = 2}}
+                { "test_id", new BrokerCost{Coverage = 0.10, TransactionCost = 2}}
             });
 
             OpenPositionRequest request = new OpenPositionRequest.Builder().Build();
@@ -156,7 +157,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
-                { "test_id", new BrokerCost(){InstrumentId ="test_id", Coverage = 0.10, TransactionCost = 2}}
+                { "test_id", new BrokerCost(){ Coverage = 0.10, TransactionCost = 2}}
             });
 
 
@@ -191,7 +192,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .Returns(new WorkingPeriod {Open = new TimeSpan(0, 10, 30, 0), Close = new TimeSpan(0, 20, 0, 0)});
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
-                { "test_id", new BrokerCost(){InstrumentId ="test_id", Coverage = 0.10, TransactionCost = 2}}
+                { "test_id", new BrokerCost(){Coverage = 0.10, TransactionCost = 2}}
             });
 
 
@@ -258,7 +259,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
-                { "test_id", new BrokerCost(){InstrumentId ="test_id", Coverage = 0.10, TransactionCost = 2}}
+                { "test_id", new BrokerCost(){Coverage = 0.10, TransactionCost = 2}}
             });
 
             context.ProcessTick(new Dictionary<string, Tick>
@@ -276,9 +277,9 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             Assert.That(context.OpenPosition(request), Is.True);
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(1));
-            Assert.That(context.GetHistoryRequests().Count, Is.EqualTo(1));
-            Assert.That(context.GetActiveRequests()[0], Is.EqualTo(request));
-            Assert.That(context.GetHistoryRequests()[0], Is.EqualTo(request));
+            Assert.That(context.GetRequestsHistory().Count, Is.EqualTo(1));
+            Assert.That(context.GetActiveRequests().First(), Is.EqualTo(request));
+            Assert.That(context.GetRequestsHistory().First(), Is.EqualTo(request));
         }
 
         [Test]
@@ -312,16 +313,16 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .Direction(Direction.Buy)
                 .Build();
 
-            IList<Transaction> transactions = new List<Transaction>
+            IEnumerable<Transaction> transactions = new List<Transaction>
             {
                 new Transaction.Builder().InstrumentId("test_id").Build()
             };
 
-            transactionHolderMock.Setup(x => x.GetOpenTransactions("test_id", Direction.Buy)).Returns(transactions);
+            transactionHolderMock.Setup(x => x.GetInvertedOpenTransactions("test_id", Direction.Buy)).Returns(transactions);
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
-                { "test_id", new BrokerCost{InstrumentId ="test_id", Coverage = 0.10, TransactionCost = 2}}
+                { "test_id", new BrokerCost{ Coverage = 0.10, TransactionCost = 2}}
             });
 
 
@@ -332,8 +333,8 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             Assert.That(context.OpenPosition(request), Is.True);
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(1));
-            Assert.That(context.GetHistoryRequests().Count, Is.EqualTo(1));
-            Assert.That(context.GetActiveRequests()[0].Date, Is.EqualTo(new DateTime(2016, 9, 12, 11, 45, 0)));
+            Assert.That(context.GetRequestsHistory().Count, Is.EqualTo(1));
+            Assert.That(context.GetActiveRequests().First().Date, Is.EqualTo(new DateTime(2016, 9, 12, 11, 45, 0)));
 
             Transaction transaction = new Transaction.Builder().InstrumentId("test_id").Direction(Direction.Buy)
                 .Number(10).Build();
@@ -341,10 +342,10 @@ namespace Trade_platform.tests.Sandbox.Transactios
             transactionBuilderMock.Setup(x => x.Build(request, tick["test_id"])).Returns(transaction);
             context.ProcessTick(tick, new DateTime(2016, 9, 12, 11, 46, 0));
 
-            balanceMock.Verify(x => x.AddTransactionMargin(transaction, transactions), Times.Once);
+            balanceMock.Verify(x => x.AddTransactionMargin(transaction, transactions, It.IsAny<DateTime>()), Times.Once);
             transactionHolderMock.Verify(x => x.UpdateOpenTransactions(transaction), Times.Once);
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(0));
-            Assert.That(context.GetHistoryRequests().Count, Is.EqualTo(1));
+            Assert.That(context.GetRequestsHistory().Count, Is.EqualTo(1));
         }
 
 
@@ -385,7 +386,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .Direction(Direction.Buy)
                 .Build();
 
-            IList<Transaction> transactions = new List<Transaction>
+            IEnumerable<Transaction> transactions = new List<Transaction>
             {
                 new Transaction.Builder().InstrumentId("test_id").Direction(Direction.Buy).Number(20).ExecutedPrice(123).Build(),
                 new Transaction.Builder().InstrumentId("test_id").Direction(Direction.Buy).Number(40).ExecutedPrice(123).Build(),
@@ -397,7 +398,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
-                { "test_id", new BrokerCost{InstrumentId ="test_id", Coverage = 0.10, TransactionCost = 2}}
+                { "test_id", new BrokerCost{ Coverage = 0.10, TransactionCost = 2}}
             });
 
             context.ProcessTick(new Dictionary<string, Tick>
@@ -408,19 +409,19 @@ namespace Trade_platform.tests.Sandbox.Transactios
             Assert.That(context.OpenPosition(request), Is.True);
 
             context.ProcessTick(tick, new DateTime(2016, 9, 12, 20, 46, 0));
-            balanceMock.Verify(x => x.AddTransactionMargin(It.IsAny<Transaction>(), transactions), Times.Never);
-            balanceMock.Verify(x => x.AddTransactionCost(2), Times.Exactly(3));
+            balanceMock.Verify(x => x.AddTransactionMargin(It.IsAny<Transaction>(), transactions, DateTime.MinValue), Times.Never);
+            balanceMock.Verify(x => x.AddTransactionCost(2, It.IsAny<DateTime>()), Times.Exactly(3));
             transactionHolderMock.Verify(x => x.UpdateOpenTransactions(It.IsAny<Transaction>()), Times.Never);
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(2));
 
-            Assert.That(context.GetActiveRequests()[0].RemainingNumber, Is.EqualTo(120));
-            Assert.That(context.GetActiveRequests()[0].Direction, Is.EqualTo(Direction.Sell));
-            Assert.That(context.GetActiveRequests()[0].InstrumentId, Is.EqualTo("test_id"));
+            Assert.That(context.GetActiveRequests().First().RemainingNumber, Is.EqualTo(120));
+            Assert.That(context.GetActiveRequests().First().Direction, Is.EqualTo(Direction.Sell));
+            Assert.That(context.GetActiveRequests().First().InstrumentId, Is.EqualTo("test_id"));
 
-            Assert.That(context.GetActiveRequests()[1].RemainingNumber, Is.EqualTo(10));
-            Assert.That(context.GetActiveRequests()[1].Direction, Is.EqualTo(Direction.Buy));
-            Assert.That(context.GetActiveRequests()[1].InstrumentId, Is.EqualTo("test_id"));
-            Assert.That(context.GetHistoryRequests().Count, Is.EqualTo(3));
+            Assert.That(context.GetActiveRequests().ToList()[1].RemainingNumber, Is.EqualTo(10));
+            Assert.That(context.GetActiveRequests().ToList()[1].Direction, Is.EqualTo(Direction.Buy));
+            Assert.That(context.GetActiveRequests().ToList()[1].InstrumentId, Is.EqualTo("test_id"));
+            Assert.That(context.GetRequestsHistory().Count, Is.EqualTo(3));
         }
 
 
@@ -455,7 +456,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .Direction(Direction.Buy)
                 .Build();
 
-            IList<Transaction> transactions = new List<Transaction>
+            IEnumerable<Transaction> transactions = new List<Transaction>
             {
                 new Transaction.Builder().InstrumentId("test_id").Direction(Direction.Buy).Number(20).ExecutedPrice(123).Build(),
                 new Transaction.Builder().InstrumentId("test_id").Direction(Direction.Buy).Number(40).ExecutedPrice(123).Build(),
@@ -467,7 +468,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
-                { "test_id", new BrokerCost{InstrumentId ="test_id", Coverage = 0.10, TransactionCost = 2}}
+                { "test_id", new BrokerCost{ Coverage = 0.10, TransactionCost = 2}}
             });
 
             context.SetUpWorkingPeriod(new Dictionary<string, WorkingPeriod>
@@ -483,12 +484,12 @@ namespace Trade_platform.tests.Sandbox.Transactios
             Assert.That(context.OpenPosition(request), Is.True);
 
             context.ProcessTick(tick, new DateTime(2016, 9, 12, 20, 46, 0));
-            balanceMock.Verify(x => x.AddTransactionCost(2), Times.Exactly(1));
+            balanceMock.Verify(x => x.AddTransactionCost(2, It.IsAny<DateTime>()), Times.Exactly(1));
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(1));
 
-            Assert.That(context.GetActiveRequests()[0].RemainingNumber, Is.EqualTo(10));
-            Assert.That(context.GetActiveRequests()[0].Direction, Is.EqualTo(Direction.Buy));
-            Assert.That(context.GetActiveRequests()[0].InstrumentId, Is.EqualTo("test_id"));
+            Assert.That(context.GetActiveRequests().First().RemainingNumber, Is.EqualTo(10));
+            Assert.That(context.GetActiveRequests().First().Direction, Is.EqualTo(Direction.Buy));
+            Assert.That(context.GetActiveRequests().First().InstrumentId, Is.EqualTo("test_id"));
 
         }
     }

@@ -42,8 +42,7 @@ using TradePlatform.Charts.Vizualization.Configurations;
 using TradePlatform.Charts.Vizualization.Dispatching;
 using TradePlatform.Charts.Vizualization.Holders;
 using TradePlatform.Charts.Vizualization.ViewModels;
-using TradePlatform.Sandbox.ResultProcessing;
-using TradePlatform.Sandbox.ResultStoring;
+using TradePlatform.Sandbox.Results.Storing;
 
 namespace TradePlatform
 {

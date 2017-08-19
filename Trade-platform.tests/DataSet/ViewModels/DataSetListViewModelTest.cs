@@ -104,7 +104,7 @@ namespace Trade_platform.tests.DataSet.ViewModels
             ContainerBuilder.Container.RegisterInstance(eventAggregator);
             var holder = new Mock<IDataSetHolder>();
             DataSetItem item = new DataSetItem.Builder().WithId("12").Build();
-            IList<DataSetItem> instruments = new List<DataSetItem> { item, item };
+            IEnumerable<DataSetItem> instruments = new List<DataSetItem> { item, item };
             holder.Setup(x => x.GetAll()).Returns(instruments);
 
             var presenterMock = new Mock<IDataSetPresenter>();

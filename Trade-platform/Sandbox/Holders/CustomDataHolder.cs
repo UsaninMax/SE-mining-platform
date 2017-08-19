@@ -5,9 +5,9 @@ namespace TradePlatform.Sandbox.Holders
     public class CustomDataHolder : ICustomDataHolder
     {
 
-        private IDictionary<string, IList<object>> _storage = new Dictionary<string, IList<object>>();
+        private IDictionary<string, IEnumerable<object>> _storage = new Dictionary<string, IEnumerable<object>>();
 
-        public void Add(string key, IList<object> data)
+        public void Add(string key, IEnumerable<object> data)
         {
            if (_storage.ContainsKey(key))
             {
@@ -22,7 +22,7 @@ namespace TradePlatform.Sandbox.Holders
             _storage.Clear();
         }
 
-        public IList<object> Get(string key)
+        public IEnumerable<object> Get(string key)
         {
             return _storage[key];
         }

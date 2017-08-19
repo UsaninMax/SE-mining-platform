@@ -9,7 +9,7 @@ namespace TradePlatform.Charts.Data.Holders
         IEnumerable<ChartPredicate> GetByChartId(string chartId);
         void Add(ChartPredicate predicate);
         void Remove(ChartPredicate predicate);
-        void Add(ICollection<ChartPredicate> predicates);
+        void Add(IEnumerable<ChartPredicate> predicates);
         IEnumerable<ChartPredicate> GetAll();
     }
 }

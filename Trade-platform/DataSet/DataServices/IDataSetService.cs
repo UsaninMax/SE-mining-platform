@@ -11,6 +11,6 @@ namespace TradePlatform.DataSet.DataServices
         void Store(DataSetItem item, CancellationToken cancellationToken);
         void Delete(DataSetItem item, Task build, CancellationTokenSource cancellationTokenSource);
         bool CheckIfExist(DataSetItem item);
-        IList<DataTick> Get(string id);
+        IEnumerable<DataTick> Get(string id);
     }
 }

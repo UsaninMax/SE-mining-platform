@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
@@ -36,7 +37,7 @@ namespace Trade_platform.tests.StockData.DataServices.Serialization
         [Test]
         public void ReStoreInstrumentCheck()
         {
-            IList<Instrument> instruments = new List<Instrument>
+            IEnumerable<Instrument> instruments = new List<Instrument>
             {
                 new Instrument.Builder().Build(),
                 new Instrument.Builder().Build()
@@ -46,15 +47,15 @@ namespace Trade_platform.tests.StockData.DataServices.Serialization
             fileManager.Setup(x => x.IsFileExist(It.IsAny<string>())).Returns(true);
             ContainerBuilder.Container.RegisterInstance(fileManager.Object);
             var settingSerializer = new Mock<ISettingSerializer>();
-            settingSerializer.Setup(x => x.Deserialize<IList<Instrument>>(It.IsAny<string>())).Returns(instruments);
+            settingSerializer.Setup(x => x.Deserialize<IEnumerable<Instrument>>(It.IsAny<string>())).Returns(instruments);
             ContainerBuilder.Container.RegisterInstance(settingSerializer.Object);
 
             var xmlInstrumentStorage = new XmlInstrumentStorage();
-            IList<Instrument> result = xmlInstrumentStorage.ReStore();
+            IEnumerable<Instrument> result = xmlInstrumentStorage.ReStore();
 
-            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result.Count(), Is.EqualTo(2));
             Assert.That(result, Is.EqualTo(instruments));
-            settingSerializer.Verify(x => x.Deserialize<IList<Instrument>>(It.IsAny<string>()), Times.Once);
+            settingSerializer.Verify(x => x.Deserialize<IEnumerable<Instrument>>(It.IsAny<string>()), Times.Once);
         }
 
         [Test]
@@ -66,10 +67,10 @@ namespace Trade_platform.tests.StockData.DataServices.Serialization
             var settingSerializer = new Mock<ISettingSerializer>();
             ContainerBuilder.Container.RegisterInstance(settingSerializer.Object);
             var xmlInstrumentStorage = new XmlInstrumentStorage();
-            IList<Instrument> result = xmlInstrumentStorage.ReStore();
+            IEnumerable<Instrument> result = xmlInstrumentStorage.ReStore();
 
             Assert.That(result.Count, Is.EqualTo(0));
-            settingSerializer.Verify(x => x.Deserialize<IList<Instrument>>(It.IsAny<string>()), Times.Never);
+            settingSerializer.Verify(x => x.Deserialize<IEnumerable<Instrument>>(It.IsAny<string>()), Times.Never);
 
 
         }

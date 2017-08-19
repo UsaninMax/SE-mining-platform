@@ -7,6 +7,6 @@ namespace TradePlatform.Sandbox
     {
         void SetUpParameters(IDictionary<string, object> parameters);
         void Initialize();
-        Indicator Get(Candle candle);
+        double Get(Candle candle);
     }
 }

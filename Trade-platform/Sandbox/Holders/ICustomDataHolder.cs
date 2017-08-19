@@ -4,8 +4,8 @@ namespace TradePlatform.Sandbox.Holders
 {
     public interface ICustomDataHolder
     {
-        IList<object> Get(string key);
-        void Add(string key, IList<object> data);
+        IEnumerable<object> Get(string key);
+        void Add(string key, IEnumerable<object> data);
         void CleanAll();
     }
 }

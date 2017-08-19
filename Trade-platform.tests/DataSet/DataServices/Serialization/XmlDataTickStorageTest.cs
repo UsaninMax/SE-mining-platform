@@ -6,7 +6,6 @@ using TradePlatform;
 using TradePlatform.Commons.Setting;
 using TradePlatform.Commons.Sistem;
 using TradePlatform.DataSet.DataServices.Serialization;
-using TradePlatform.Commons.BaseModels;
 using TradePlatform.StockData.Models;
 
 namespace Trade_platform.tests.DataSet.DataServices.Serialization
@@ -22,7 +21,7 @@ namespace Trade_platform.tests.DataSet.DataServices.Serialization
             var serializer = new Mock<ISettingSerializer>();
             ContainerBuilder.Container.RegisterInstance(serializer.Object);
 
-            IList<DataTick> ticks = new List<DataTick>()
+            IEnumerable<DataTick> ticks = new List<DataTick>()
             {
                 new DataTick()
             };

@@ -17,15 +17,15 @@ namespace TradePlatform.DataSet.DataServices.Serialization
             _serializer = ContainerBuilder.Container.Resolve<ISettingSerializer>();
         }
 
-        public void Store(IList<DataTick> ticks, string path, string file)
+        public void Store(IEnumerable<DataTick> ticks, string path, string file)
         {
             _fileManager.CreateFolder(path);
             _serializer.Serialize(ticks, path + "\\" + file + ".xml");
         }
 
-        public IList<DataTick> ReStore(string path)
+        public IEnumerable<DataTick> ReStore(string path)
         {
-            return _serializer.Deserialize<IList<DataTick>>(path);
+            return _serializer.Deserialize<IEnumerable<DataTick>>(path);
         }
     }
 }

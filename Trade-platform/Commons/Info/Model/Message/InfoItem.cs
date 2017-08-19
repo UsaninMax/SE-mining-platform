@@ -9,7 +9,7 @@ namespace TradePlatform.Commons.Info.Model.Message
         public DateTime Date { get; private set; }
         public string Message { get; set; }
 
-        protected InfoItem (string tabId)
+        public InfoItem (string tabId)
         {
             Date = DateTime.Now;
             TabId = tabId;

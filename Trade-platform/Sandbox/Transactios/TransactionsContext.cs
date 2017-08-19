@@ -89,12 +89,12 @@ namespace TradePlatform.Sandbox.Transactios
             return (int)Math.Floor((_balance.GetTotal() - GetCoverage()) / (_lastTicks[instrumentId].Price * costs.Coverage));
         }
 
-        public IList<Transaction> GetTransactionHistory()
+        public IEnumerable<Transaction> GetTransactionHistory()
         {
             return _requestsHistory.SelectMany(x => x.GetTransactions()).ToList();
         }
 
-        public IList<BalanceRow> GetBalanceHistory()
+        public IEnumerable<BalanceRow> GetBalanceHistory()
         {
             return _balance.GetHistory();
         }
@@ -118,7 +118,7 @@ namespace TradePlatform.Sandbox.Transactios
             request.Date = _lastDate;
             _activeRequests.Add(request);
             _requestsHistory.Add(request);
-            _balance.AddTransactionCost(_brokerCosts[request.InstrumentId].TransactionCost);
+            _balance.AddTransactionCost(_brokerCosts[request.InstrumentId].TransactionCost, _lastDate);
             return true;
         }
 
@@ -135,7 +135,7 @@ namespace TradePlatform.Sandbox.Transactios
         private void ProcessTransaction(Transaction transaction)
         {
             _balance.AddTransactionMargin(transaction,
-                _transactionHolder.GetOpenTransactions(transaction.InstrumentId, transaction.Direction));
+                _transactionHolder.GetInvertedOpenTransactions(transaction.InstrumentId, transaction.Direction), _lastDate);
             _transactionHolder.UpdateOpenTransactions(transaction);
         }
 
@@ -155,7 +155,7 @@ namespace TradePlatform.Sandbox.Transactios
                         openPosition.Date = _lastDate;
                         _activeRequests.Add(openPosition);
                         _requestsHistory.Add(openPosition);
-                        _balance.AddTransactionCost(_brokerCosts[openPosition.InstrumentId].TransactionCost);
+                        _balance.AddTransactionCost(_brokerCosts[openPosition.InstrumentId].TransactionCost, _lastDate);
                     });
         }
 
@@ -195,17 +195,24 @@ namespace TradePlatform.Sandbox.Transactios
             _activeRequests.RemoveAll(x => x.RemainingNumber == 0);
         }
 
-        public IList<OpenPositionRequest> GetActiveRequests()
+        public IEnumerable<OpenPositionRequest> GetActiveRequests()
         {
             return _activeRequests;
         }
 
-        public IList<OpenPositionRequest> GetHistoryRequests()
+        public List<OpenPositionRequest> GetActiveRequests(string instrumentId, Direction direction)
+        {
+            return _activeRequests
+                .Where(request => request.Direction == direction && request.InstrumentId.Equals(instrumentId))
+                .ToList();
+        }
+
+        public IEnumerable<OpenPositionRequest> GetRequestsHistory()
         {
             return _requestsHistory;
         }
 
-        public IList<Transaction> GetActiveTransactions()
+        public IEnumerable<Transaction> GetOpenTransactions()
         {
             return _transactionHolder.GetOpenTransactions();
         }
@@ -241,5 +248,9 @@ namespace TradePlatform.Sandbox.Transactios
             return true;
         }
 
+        public IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction)
+        {
+            return _transactionHolder.GetOpenTransactions(instrumentId, direction);
+        }
     }
 }

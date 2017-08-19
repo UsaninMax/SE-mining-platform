@@ -71,7 +71,7 @@ namespace Trade_platform.tests.Main.ViewModels
             var proxySandbox = new Mock<ISandbox>();
             ContainerBuilder.Container.RegisterInstance(proxySandbox.Object);
             ISandboxPresenter presenter = new SandboxPresenter(proxySandbox.Object, "test");
-            IList<ISandboxPresenter> presenters = new List<ISandboxPresenter>
+            IEnumerable<ISandboxPresenter> presenters = new List<ISandboxPresenter>
             {
                 presenter
             };
@@ -99,7 +99,7 @@ namespace Trade_platform.tests.Main.ViewModels
             var proxySandbox = new Mock<ISandbox>();
             ContainerBuilder.Container.RegisterInstance(proxySandbox.Object);
             ISandboxPresenter presenter = new SandboxPresenter(proxySandbox.Object, "test");
-            IList<ISandboxPresenter> presenters = new List<ISandboxPresenter>
+            IEnumerable<ISandboxPresenter> presenters = new List<ISandboxPresenter>
             {
                 presenter
             };

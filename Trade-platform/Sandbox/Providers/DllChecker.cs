@@ -10,7 +10,7 @@ namespace TradePlatform.Sandbox.Providers
     [Serializable]
     public class DllChecker
     {
-        public ICollection<string> GetSuitableDLL(string rootFolder)
+        public IEnumerable<string> GetSuitableDll(string rootFolder)
         {
             DirectoryInfo info = new DirectoryInfo(rootFolder);
             ICollection<string> patches = new HashSet<string>();

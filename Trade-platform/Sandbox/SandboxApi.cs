@@ -18,22 +18,17 @@ namespace TradePlatform.Sandbox
 {
     public abstract class SandboxApi : ISandbox
     {
-        public CancellationToken Token => _token;
-        public ICollection<IBot> Bots => _bots;
+        private CancellationToken Token => _token;
+        protected IEnumerable<IBot> Bots => _bots;
         private CancellationToken _token;
-        private ICollection<IBot> _bots;
-
-        protected SandboxApi()
-        {
-            ContainerBuilder.Container.Resolve<IChartsPopulator>(new DependencyOverride<IEnumerable<PanelViewPredicate>>(SetUpCharts()));
-        }
+        private IEnumerable<IBot> _bots;
 
         public void SetToken(CancellationToken token)
         {
             _token = token;
         }
 
-        public void SetUpBots(ICollection<IBot> bots)
+        public void SetUpBots(IEnumerable<IBot> bots)
         {
             _bots = bots;
         }
@@ -63,7 +58,7 @@ namespace TradePlatform.Sandbox
                 }, _token);
 
             }).ToList());
-            continuation.Wait();
+            continuation.Wait(Token);
         }
 
         public void CleanMemory()
@@ -75,7 +70,7 @@ namespace TradePlatform.Sandbox
             GC.WaitForPendingFinalizers();
         }
 
-        public abstract ICollection<IPredicate> SetUpData();
+        public abstract IEnumerable<IPredicate> SetUpData();
         public abstract void Execution();
         public abstract void AfterExecution();
         public abstract IEnumerable<PanelViewPredicate> SetUpCharts();
@@ -84,16 +79,17 @@ namespace TradePlatform.Sandbox
         {
             ContainerBuilder.Container.Resolve<IChartPredicatesHolder>().Reset();
             var chartProxy = ContainerBuilder.Container.Resolve<ChartProxy>();
+            ContainerBuilder.Container.Resolve<IChartsPopulator>(new DependencyOverride<IEnumerable<PanelViewPredicate>>(SetUpCharts()));
             chartProxy.ShowCharts(SetUpCharts(), ContainerBuilder.Container.Resolve<IChartsBuilder>());
         }
 
-        public void PopulateCharts(ICollection<ChartPredicate> predicates)
+        public void PopulateCharts(IEnumerable<ChartPredicate> predicates)
         {
             ContainerBuilder.Container.Resolve<IChartPredicatesHolder>().Add(predicates);
             ContainerBuilder.Container.Resolve<IChartsPopulator>().Populate();
         }
 
-        public void StoreCustomData(string key, IList<object> data)
+        public void StoreCustomData(string key, IEnumerable<object> data)
         {
             ContainerBuilder.Container.Resolve<ICustomDataHolder>().Add(key, data);
         }

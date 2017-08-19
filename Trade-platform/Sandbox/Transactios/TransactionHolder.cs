@@ -20,7 +20,7 @@ namespace TradePlatform.Sandbox.Transactios
 
         public void UpdateOpenTransactions(Transaction transaction)
         {
-            IList<Transaction> openTransactions = GetOpenTransactions(transaction.InstrumentId, transaction.Direction);
+            IEnumerable<Transaction> openTransactions = GetInvertedOpenTransactions(transaction.InstrumentId, transaction.Direction);
 
             openTransactions.ForEach(x =>
             {
@@ -66,19 +66,26 @@ namespace TradePlatform.Sandbox.Transactios
             return GetCoverage(ticks, temp);
         }
 
-        public IList<Transaction> GetOpenTransactions()
+        public IEnumerable<Transaction> GetOpenTransactions()
         {
             return _openTransactions;
         }
 
-        public IList<Transaction> GetOpenTransactions(string instrumentId, Direction direction)
+        public IEnumerable<Transaction> GetInvertedOpenTransactions(string instrumentId, Direction direction)
         {
             return _openTransactions
                 .Where(x => x.InstrumentId.Equals(instrumentId) && x.Direction.Equals(Invert(direction)))
                 .ToList();
         }
 
-        public IList<Transaction> GetOpenTransactions(string instrumentId)
+        public IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction)
+        {
+            return _openTransactions
+                .Where(x => x.InstrumentId.Equals(instrumentId) && x.Direction.Equals(direction))
+                .ToList();
+        }
+
+        public IEnumerable<Transaction> GetOpenTransactions(string instrumentId)
         {
             return _openTransactions
                 .Where(x => x.InstrumentId.Equals(instrumentId))

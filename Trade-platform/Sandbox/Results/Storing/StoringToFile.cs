@@ -4,12 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TradePlatform.Commons.Sistem;
-using TradePlatform.Sandbox.ResultProcessing;
 using Microsoft.Practices.Unity;
 using System.Text;
 using System.IO;
 
-namespace TradePlatform.Sandbox.ResultStoring
+namespace TradePlatform.Sandbox.Results.Storing
 {
     public class StoringToFile : IResultStoring
     {
@@ -42,12 +41,12 @@ namespace TradePlatform.Sandbox.ResultStoring
 
         private String GetHeader(Dictionary<string, string> header, string separator)
         {
-            return string.Join("/", header.Keys.ToArray());
+            return string.Join(separator, header.Keys.ToArray());
         }
 
         private String GetBody(Dictionary<string, string> body, string separator)
         {
-            return string.Join("/", body.Values.ToArray());
+            return string.Join(separator, body.Values.ToArray());
         }
 
         private void CreateRoot()

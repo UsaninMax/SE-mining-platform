@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TradePlatform.DataSet.Models;
 using Microsoft.Practices.Unity;
 using System.Linq;
 using TradePlatform.StockData.DataServices.Trades;
 using System.Threading;
 using Microsoft.Practices.ObjectBuilder2;
+using TradePlatform.Commons.Info;
+using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.StockData.Models;
 
 namespace TradePlatform.DataSet.DataServices
@@ -12,20 +15,24 @@ namespace TradePlatform.DataSet.DataServices
     public class DataTickProvider : IDataTickProvider
     {
         private readonly IDataTickParser _parser;
+        private readonly IInfoPublisher _infoPublisher;
 
         public DataTickProvider()
         {
             _parser = ContainerBuilder.Container.Resolve<IDataTickParser>();
+            _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
         }
 
-        public IList<DataTick> Get(DataSetItem item, CancellationToken cancellationToken)
+        public IEnumerable<DataTick> Get(DataSetItem item, CancellationToken cancellationToken)
         {
-            List<DataTick> fullDataSet = new List<DataTick>();
+            IEnumerable<DataTick> fullData = new List<DataTick>();
             foreach (SubInstrument subInstrument in item.SubInstruments)
             {
+                _infoPublisher.PublishInfo(new DataSetInfo { Message = subInstrument + "- start reading ticks" });
+
                 if (cancellationToken.IsCancellationRequested)
                 {
-                    return new List<DataTick>(fullDataSet);
+                    return fullData;
                 }
                 IList<DataTick> subSet = new List<DataTick>();
 
@@ -41,11 +48,13 @@ namespace TradePlatform.DataSet.DataServices
                             Volume = x.Data.Sum(y => y.Volume)
                         });
                     });
-
-                fullDataSet = new List<DataTick>(fullDataSet.Concat(subSet));
+                fullData = fullData.Concat(subSet);
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             }
-            fullDataSet.Sort((obj1, obj2) => obj1.Date.CompareTo(obj2.Date));
-            return fullDataSet;
+            List<DataTick> asList = fullData.ToList();
+            asList.Sort((obj1, obj2) => obj1.Date.CompareTo(obj2.Date));
+            return asList;
         }
     }
 }

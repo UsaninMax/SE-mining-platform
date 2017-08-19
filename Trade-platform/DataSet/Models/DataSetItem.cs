@@ -34,14 +34,14 @@ namespace TradePlatform.DataSet.Models
         }
 
         [DataMember()]
-        public IList<SubInstrument> SubInstruments { get; private set; }
+        public IEnumerable<SubInstrument> SubInstruments { get; private set; }
 
         public class Builder
         {
             private string _id;
             private double _warrantyCoverage;
             private double _stepSize;
-            private IList<SubInstrument> _subInstruments;
+            private IEnumerable<SubInstrument> _subInstruments;
 
 
             public Builder WithId(string value)
@@ -62,7 +62,7 @@ namespace TradePlatform.DataSet.Models
                 return this;
             }
 
-            public Builder WithSubInstruments(IList<SubInstrument> value)
+            public Builder WithSubInstruments(IEnumerable<SubInstrument> value)
             {
                 _subInstruments = value;
                 return this;
@@ -82,7 +82,7 @@ namespace TradePlatform.DataSet.Models
 
         public override string ToString()
         {
-            return $"{nameof(Id)}: {Id}, {nameof(SubInstruments)}: {SubInstruments}, {nameof(StepSize)}: {StepSize}, {nameof(WarrantyCoverage)}: {WarrantyCoverage}";
+            return $"{nameof(Id)}: {Id}";
         }
 
         public object Clone()
