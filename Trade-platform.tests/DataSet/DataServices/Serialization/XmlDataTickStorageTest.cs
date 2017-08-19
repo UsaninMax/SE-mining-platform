@@ -6,7 +6,6 @@ using TradePlatform;
 using TradePlatform.Commons.Setting;
 using TradePlatform.Commons.Sistem;
 using TradePlatform.DataSet.DataServices.Serialization;
-using TradePlatform.Commons.BaseModels;
 using TradePlatform.StockData.Models;
 
 namespace Trade_platform.tests.DataSet.DataServices.Serialization

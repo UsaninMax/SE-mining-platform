@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
-using Castle.Core.Internal;
 using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Wpf;

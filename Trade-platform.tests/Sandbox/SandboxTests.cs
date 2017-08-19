@@ -12,7 +12,6 @@ using TradePlatform.Sandbox.DataProviding;
 using TradePlatform.Sandbox.DataProviding.Predicates;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Holders;
-using TradePlatform.Charts.Data.Holders;
 using TradePlatform.Charts.Data.Populating;
 
 namespace Trade_platform.tests.Sandbox
