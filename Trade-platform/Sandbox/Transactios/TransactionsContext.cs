@@ -200,6 +200,13 @@ namespace TradePlatform.Sandbox.Transactios
             return _activeRequests;
         }
 
+        public List<OpenPositionRequest> GetActiveRequests(string instrumentId, Direction direction)
+        {
+            return _activeRequests
+                .Where(request => request.Direction == direction && request.InstrumentId.Equals(instrumentId))
+                .ToList();
+        }
+
         public IList<OpenPositionRequest> GetRequestsHistory()
         {
             return _requestsHistory;

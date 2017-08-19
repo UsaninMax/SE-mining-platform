@@ -35,12 +35,12 @@ namespace TestSandboxModule
                         {
                            Ids = new List<string> { "RTS_5", "MA_SHORT", "MA_LONG", "TRANSACTIONS"},
                            XAxis = _period,
-                           YSize = 400
+                           YSize = 700
                         },
                         new IndexChartViewPredicate
                         {
                            Ids = new List<string> { "EQUITY"},
-                           YSize = 400
+                           YSize = 700
                         }
                     }
                 }
@@ -168,6 +168,15 @@ namespace TestSandboxModule
             TestBot bot = new TestBot(_costs);
             bot.SetUpId("Test_1");
             bot.SetUpBalance(10000000000);
+            bot.SetUpWorkingPeriod(new Dictionary<string, WorkingPeriod>()
+            {
+                {"RTS", new WorkingPeriod
+                    {
+                        Open = new TimeSpan(0, 10, 30, 0),
+                        Close = new TimeSpan(0, 23, 30, 0)
+                    }
+                }
+            });
             bot.SetUpPredicate(new BotPredicate.Builder()
                 .From(_from)
                 .To(_to)

@@ -28,5 +28,6 @@ namespace TradePlatform.Sandbox.Bots
         IList<BalanceRow> GetBalanceHistory();
         IList<Transaction> GetTansactionsHistory();
         IList<OpenPositionRequest> GetRequestsHistory();
+        IList<OpenPositionRequest> GetActiveRequests(string instrumentId, Direction direction);
     }
 }

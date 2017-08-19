@@ -20,14 +20,16 @@ namespace TestSandboxModule
 
             if(maSrort < maLong)
             {
-                if (GetOpenTransactions("RTS", Direction.Sell).Count == 0)
+                if (GetOpenTransactions("RTS", Direction.Sell).Count == 0 &&
+                    GetActiveRequests("RTS", Direction.Sell).Count == 0)
                 {
                     OpenPosition(new OpenPositionRequest.Builder().Direction(Direction.Sell).InstrumentId("RTS").Number(10).Build());
                 } 
             }
             if (maSrort > maLong)
             {
-                if (GetOpenTransactions("RTS", Direction.Buy).Count == 0)
+                if (GetOpenTransactions("RTS", Direction.Buy).Count == 0 &&
+                    GetActiveRequests("RTS", Direction.Buy).Count == 0)
                 {
                     OpenPosition(new OpenPositionRequest.Builder().Direction(Direction.Buy).InstrumentId("RTS").Number(10).Build());
                 }

@@ -135,5 +135,10 @@ namespace TradePlatform.Sandbox.Bots
         {
             return _context.GetRequestsHistory();
         }
+
+        public IList<OpenPositionRequest> GetActiveRequests(string instrumentId, Direction direction)
+        {
+            return _context.GetActiveRequests(instrumentId, direction);
+        }
     }
 }
