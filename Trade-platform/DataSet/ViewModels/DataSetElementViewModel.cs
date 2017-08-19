@@ -111,7 +111,7 @@ namespace TradePlatform.DataSet.ViewModels
             CreateNewCommand = new DelegateCommand(CreateNew);
         }
 
-        private void AddSelectedInstruments(IList<Instrument> instruments)
+        private void AddSelectedInstruments(IEnumerable<Instrument> instruments)
         {
             instruments?.ForEach(i =>
             {

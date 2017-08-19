@@ -54,7 +54,7 @@ namespace TradePlatform.Sandbox.Transactios.Models
             }
         }
 
-        public IList<Transaction> GetTransactions()
+        public IEnumerable<Transaction> GetTransactions()
         {
             return _transactions.ToList();
         }

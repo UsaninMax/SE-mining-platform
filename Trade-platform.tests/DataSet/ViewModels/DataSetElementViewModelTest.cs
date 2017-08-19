@@ -26,7 +26,7 @@ namespace Trade_platform.tests.DataSet.ViewModels
             ContainerBuilder.Container.RegisterInstance(dataSetHolder.Object);
             IEventAggregator eventAggregator = new EventAggregator();
             ContainerBuilder.Container.RegisterInstance(eventAggregator);
-            IList<Instrument> instruments = new List<Instrument> {
+            IEnumerable<Instrument> instruments = new List<Instrument> {
                 new Instrument.Builder().WithCode("test_1").Build(),
                 new Instrument.Builder().WithCode("test_2").Build()
             };
@@ -52,7 +52,7 @@ namespace Trade_platform.tests.DataSet.ViewModels
             fakeEventAggregator.Setup(x => x.GetEvent<CreateDataSetItemEvent>()
                 .Publish(It.IsAny<DataSetItem>()));
             fakeEventAggregator.Setup(x => x.GetEvent<AddInstrumentToDatatSetEvent>()
-                .Publish(It.IsAny<IList<Instrument>>()));
+                .Publish(It.IsAny<IEnumerable<Instrument>>()));
 
             dataSetHolder.Setup(x => x.CheckIfExist(It.IsAny<String>())).Returns(false);
 
@@ -99,7 +99,7 @@ namespace Trade_platform.tests.DataSet.ViewModels
             fakeEventAggregator.Setup(x => x.GetEvent<CreateDataSetItemEvent>()
                 .Publish(It.IsAny<DataSetItem>()));
             fakeEventAggregator.Setup(x => x.GetEvent<AddInstrumentToDatatSetEvent>()
-                .Publish(It.IsAny<IList<Instrument>>()));
+                .Publish(It.IsAny<IEnumerable<Instrument>>()));
 
             dataSetHolder.Setup(x => x.CheckIfExist(It.IsAny<String>())).Returns(true);
 
@@ -146,14 +146,14 @@ namespace Trade_platform.tests.DataSet.ViewModels
             fakeEventAggregator.Setup(x => x.GetEvent<CreateDataSetItemEvent>()
                 .Publish(It.IsAny<DataSetItem>()));
             fakeEventAggregator.Setup(x => x.GetEvent<AddInstrumentToDatatSetEvent>()
-                .Publish(It.IsAny<IList<Instrument>>()));
+                .Publish(It.IsAny<IEnumerable<Instrument>>()));
 
             DataSetElementViewModel model = new DataSetElementViewModel();
  
             model.Dispose();
 
             fakeEventAggregator.Verify(x => x.GetEvent<AddInstrumentToDatatSetEvent>()
-                .Unsubscribe(It.IsAny<Action<IList<Instrument>>>()), Times.Once);
+                .Unsubscribe(It.IsAny<Action<IEnumerable<Instrument>>>()), Times.Once);
         }
     }
 }

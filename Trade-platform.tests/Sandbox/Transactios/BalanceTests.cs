@@ -4,6 +4,7 @@ using NUnit.Framework;
 using TradePlatform.Sandbox.Transactios;
 using TradePlatform.Sandbox.Transactios.Enums;
 using TradePlatform.Sandbox.Transactios.Models;
+using System.Linq;
 
 namespace Trade_platform.tests.Sandbox.Transactios
 {
@@ -17,7 +18,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
             balance.AddMoney(300);
             Assert.That(balance.GetTotal(), Is.EqualTo(300));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(1));
-            Assert.That(balance.GetHistory()[0].Total, Is.EqualTo(300));
+            Assert.That(balance.GetHistory().ToList()[0].Total, Is.EqualTo(300));
         }
 
         [Test]
@@ -28,8 +29,8 @@ namespace Trade_platform.tests.Sandbox.Transactios
             balance.AddTransactionCost(10, DateTime.MinValue);
             Assert.That(balance.GetTotal(), Is.EqualTo(290));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(2));
-            Assert.That(balance.GetHistory()[1].TransactionCost, Is.EqualTo(-10));
-            Assert.That(balance.GetHistory()[1].Total, Is.EqualTo(290));
+            Assert.That(balance.GetHistory().ToList()[1].TransactionCost, Is.EqualTo(-10));
+            Assert.That(balance.GetHistory().ToList()[1].Total, Is.EqualTo(290));
         }
 
         [Test]
@@ -40,12 +41,12 @@ namespace Trade_platform.tests.Sandbox.Transactios
             balance.AddTransactionCost(10, DateTime.MinValue);
             Assert.That(balance.GetTotal(), Is.EqualTo(290));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(2));
-            Assert.That(balance.GetHistory()[1].TransactionCost, Is.EqualTo(-10));
-            Assert.That(balance.GetHistory()[1].Total, Is.EqualTo(290));
+            Assert.That(balance.GetHistory().ToList()[1].TransactionCost, Is.EqualTo(-10));
+            Assert.That(balance.GetHistory().ToList()[1].Total, Is.EqualTo(290));
             balance.Reset();
             Assert.That(balance.GetTotal(), Is.EqualTo(300));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(1));
-            Assert.That(balance.GetHistory()[0].Total, Is.EqualTo(300));
+            Assert.That(balance.GetHistory().ToList()[0].Total, Is.EqualTo(300));
 
         }
 
@@ -56,7 +57,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
             balance.AddMoney(300);
             Assert.That(balance.GetTotal(), Is.EqualTo(300));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(1));
-            Assert.That(balance.GetHistory()[0].Total, Is.EqualTo(300));
+            Assert.That(balance.GetHistory().ToList()[0].Total, Is.EqualTo(300));
 
             Transaction transaction = new Transaction.Builder()
                 .InstrumentId("test_1")
@@ -71,7 +72,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
 
             Assert.That(balance.GetTotal(), Is.EqualTo(300));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(1));
-            Assert.That(balance.GetHistory()[0].Total, Is.EqualTo(300));
+            Assert.That(balance.GetHistory().ToList()[0].Total, Is.EqualTo(300));
         }
 
         [Test]
@@ -81,7 +82,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
             balance.AddMoney(600);
             Assert.That(balance.GetTotal(), Is.EqualTo(600));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(1));
-            Assert.That(balance.GetHistory()[0].Total, Is.EqualTo(600));
+            Assert.That(balance.GetHistory().ToList()[0].Total, Is.EqualTo(600));
 
             Transaction transaction = new Transaction.Builder()
                 .InstrumentId("test_1")
@@ -91,7 +92,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .WithDate(new DateTime())
                 .Build();
 
-            IList<Transaction> transactions = new List<Transaction>
+            IEnumerable<Transaction> transactions = new List<Transaction>
             {
                 new Transaction.Builder()
                     .InstrumentId("test_1")
@@ -113,7 +114,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
             balance.AddTransactionMargin(transaction, transactions, DateTime.MinValue);
             Assert.That(balance.GetTotal(), Is.EqualTo(970));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(2));
-            Assert.That(balance.GetHistory()[1].TransactionMargin, Is.EqualTo(370));
+            Assert.That(balance.GetHistory().ToList()[1].TransactionMargin, Is.EqualTo(370));
         }
 
         [Test]
@@ -123,7 +124,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
             balance.AddMoney(600);
             Assert.That(balance.GetTotal(), Is.EqualTo(600));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(1));
-            Assert.That(balance.GetHistory()[0].Total, Is.EqualTo(600));
+            Assert.That(balance.GetHistory().ToList()[0].Total, Is.EqualTo(600));
 
             Transaction transaction = new Transaction.Builder()
                 .InstrumentId("test_1")
@@ -133,7 +134,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .WithDate(new DateTime())
                 .Build();
 
-            IList<Transaction> transactions = new List<Transaction>
+            IEnumerable<Transaction> transactions = new List<Transaction>
             {
                 new Transaction.Builder()
                     .InstrumentId("test_1")
@@ -155,7 +156,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
             balance.AddTransactionMargin(transaction, transactions, DateTime.MinValue);
             Assert.That(balance.GetTotal(), Is.EqualTo(870));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(2));
-            Assert.That(balance.GetHistory()[1].TransactionMargin, Is.EqualTo(270));
+            Assert.That(balance.GetHistory().ToList()[1].TransactionMargin, Is.EqualTo(270));
         }
     }
 }

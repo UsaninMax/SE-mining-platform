@@ -34,7 +34,7 @@ namespace TradePlatform.Sandbox.Transactios
             _history.Add(_currentBalance);
         }
 
-        public IList<BalanceRow> GetHistory()
+        public IEnumerable<BalanceRow> GetHistory()
         {
             return _history;
         }
@@ -49,7 +49,7 @@ namespace TradePlatform.Sandbox.Transactios
             _history.Add(_currentBalance);
         }
 
-        public void AddTransactionMargin(Transaction current, IList<Transaction> open, DateTime time)
+        public void AddTransactionMargin(Transaction current, IEnumerable<Transaction> open, DateTime time)
         {
             if (open.IsNullOrEmpty())
             {

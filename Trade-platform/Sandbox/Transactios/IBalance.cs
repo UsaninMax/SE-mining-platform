@@ -9,8 +9,8 @@ namespace TradePlatform.Sandbox.Transactios
         void AddMoney(double value);
         double GetTotal();
         void Reset();
-        IList<BalanceRow> GetHistory();
+        IEnumerable<BalanceRow> GetHistory();
         void AddTransactionCost(double value, DateTime time);
-        void AddTransactionMargin(Transaction current, IList<Transaction> open, DateTime time);
+        void AddTransactionMargin(Transaction current, IEnumerable<Transaction> open, DateTime time);
     }
 }

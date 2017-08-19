@@ -126,7 +126,7 @@ namespace TradePlatform.Charts.Vizualization.ViewModels
             Series.Clear();
         }
 
-        public void Push(IList<Indicator> values, ChartPredicate predicate)
+        public void Push(IEnumerable<Indicator> values, ChartPredicate predicate)
         {
             UpdateRange(predicate);
             Series.Add(new LineSeries
@@ -143,7 +143,7 @@ namespace TradePlatform.Charts.Vizualization.ViewModels
             });
         }
 
-        public void Push(IList<Candle> values, ChartPredicate predicate)
+        public void Push(IEnumerable<Candle> values, ChartPredicate predicate)
         {
             UpdateRange(predicate);
             Series.Add(new OhlcSeries
@@ -154,7 +154,7 @@ namespace TradePlatform.Charts.Vizualization.ViewModels
             });
         }
 
-        public void Push(IList<double> values, ChartPredicate predicate)
+        public void Push(IEnumerable<double> values, ChartPredicate predicate)
         {
             UpdateRange(predicate);
             Series.Add(new LineSeries
@@ -169,10 +169,10 @@ namespace TradePlatform.Charts.Vizualization.ViewModels
             });
         }
 
-        public void Push(IList<Transaction> values)
+        public void Push(IEnumerable<Transaction> values)
         {
-            IList<Transaction> buyTransactions = values.Where(x => x.Direction.Equals(Direction.Buy)).ToList();
-            IList<Transaction> sellTransactions = values.Where(x => x.Direction.Equals(Direction.Sell)).ToList();
+            IEnumerable<Transaction> buyTransactions = values.Where(x => x.Direction.Equals(Direction.Buy)).ToList();
+            IEnumerable<Transaction> sellTransactions = values.Where(x => x.Direction.Equals(Direction.Sell)).ToList();
 
             if (!buyTransactions.IsNullOrEmpty())
             {

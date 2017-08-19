@@ -6,6 +6,6 @@ namespace TradePlatform.DataSet.DataServices.Serialization
     public interface IDataSetStorage
     {
         void Store(IEnumerable<DataSetItem> dataSets);
-        IList<DataSetItem> ReStore();
+        IEnumerable<DataSetItem> ReStore();
     }
 }

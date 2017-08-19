@@ -61,8 +61,7 @@ namespace TradePlatform.Sandbox.DataProviding.Predicates
         {
             return $"{nameof(Id)}: {Id}, " +
                    $"{nameof(Indicator)}: {Indicator}," +
-                   $" {nameof(DataPredicate)}: {DataPredicate}," +
-                   $" {nameof(Parameters)}: {Parameters}";
+                   $" {nameof(DataPredicate)}: {DataPredicate}";
         }
     }
 }

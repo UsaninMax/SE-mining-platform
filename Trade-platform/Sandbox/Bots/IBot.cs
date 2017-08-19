@@ -21,13 +21,13 @@ namespace TradePlatform.Sandbox.Bots
         bool IsPrepared();
         void ResetTransactionContext();
         void PopulateCharts(ICollection<ChartPredicate> predicates);
-        void StoreCustomData(string key, IList<object> data);
+        void StoreCustomData(string key, IEnumerable<object> data);
         void CleanCustomeStorage();
-        IList<Transaction> GetOpenTransactions();
-        IList<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
-        IList<BalanceRow> GetBalanceHistory();
-        IList<Transaction> GetTansactionsHistory();
-        IList<OpenPositionRequest> GetRequestsHistory();
-        IList<OpenPositionRequest> GetActiveRequests(string instrumentId, Direction direction);
+        IEnumerable<Transaction> GetOpenTransactions();
+        IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
+        IEnumerable<BalanceRow> GetBalanceHistory();
+        IEnumerable<Transaction> GetTansactionsHistory();
+        IEnumerable<OpenPositionRequest> GetRequestsHistory();
+        IEnumerable<OpenPositionRequest> GetActiveRequests(string instrumentId, Direction direction);
     }
 }

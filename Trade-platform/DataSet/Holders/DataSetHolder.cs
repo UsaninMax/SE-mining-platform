@@ -40,7 +40,7 @@ namespace TradePlatform.DataSet.Holders
             return _dataSet[uniqueId];
         }
 
-        public IList<DataSetItem> GetAll()
+        public IEnumerable<DataSetItem> GetAll()
         {
             return _dataSet.Values.ToList();
         }

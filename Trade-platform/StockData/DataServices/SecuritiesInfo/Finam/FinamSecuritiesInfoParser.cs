@@ -12,7 +12,7 @@ namespace TradePlatform.StockData.DataServices.SecuritiesInfo.Finam
         private string[] _codes;
         private string[] _markets;
 
-        public IList<Security> Parse(string message)
+        public IEnumerable<Security> Parse(string message)
         {
             if (message.IsNullOrEmpty())
             {
@@ -57,12 +57,12 @@ namespace TradePlatform.StockData.DataServices.SecuritiesInfo.Finam
             return replaced.Split(splitters, StringSplitOptions.None); ;
         }
 
-        private IList<Security> BuildSecutities()
+        private IEnumerable<Security> BuildSecutities()
         {
             IList<Security> securities = new List<Security>(_ids.Length);
             for (int i = 0; i < _ids.Length; i++)
             {
-                securities.Add(new Security()
+                securities.Add(new Security
                 {
                     Id = _ids[i],
                     Name = _names[i],

@@ -4,6 +4,7 @@ using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios;
 using TradePlatform.Sandbox.Transactios.Enums;
 using TradePlatform.Sandbox.Transactios.Models;
+using System.Linq;
 
 namespace Trade_platform.tests.Sandbox.Transactios
 {
@@ -39,10 +40,10 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .Number(10)
                 .Build());
             Assert.That(holder.GetOpenTransactions().Count, Is.EqualTo(2));
-            Assert.That(holder.GetOpenTransactions()[0].RemainingNumber, Is.EqualTo(5));
-            Assert.That(holder.GetOpenTransactions()[0].Direction, Is.EqualTo(Direction.Buy));
-            Assert.That(holder.GetOpenTransactions()[1].RemainingNumber, Is.EqualTo(15));
-            Assert.That(holder.GetOpenTransactions()[1].Direction, Is.EqualTo(Direction.Buy));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].RemainingNumber, Is.EqualTo(5));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].Direction, Is.EqualTo(Direction.Buy));
+            Assert.That(holder.GetOpenTransactions().ToList()[1].RemainingNumber, Is.EqualTo(15));
+            Assert.That(holder.GetOpenTransactions().ToList()[1].Direction, Is.EqualTo(Direction.Buy));
 
             holder.UpdateOpenTransactions(new Transaction.Builder()
                 .InstrumentId("test_id")
@@ -51,8 +52,8 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .Number(60)
                 .Build());
             Assert.That(holder.GetOpenTransactions().Count, Is.EqualTo(1));
-            Assert.That(holder.GetOpenTransactions()[0].RemainingNumber, Is.EqualTo(40));
-            Assert.That(holder.GetOpenTransactions()[0].Direction, Is.EqualTo(Direction.Sell));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].RemainingNumber, Is.EqualTo(40));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].Direction, Is.EqualTo(Direction.Sell));
         }
 
 
@@ -86,10 +87,10 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .Number(10)
                 .Build());
             Assert.That(holder.GetOpenTransactions().Count, Is.EqualTo(2));
-            Assert.That(holder.GetOpenTransactions()[0].RemainingNumber, Is.EqualTo(5));
-            Assert.That(holder.GetOpenTransactions()[0].Direction, Is.EqualTo(Direction.Buy));
-            Assert.That(holder.GetOpenTransactions()[1].RemainingNumber, Is.EqualTo(15));
-            Assert.That(holder.GetOpenTransactions()[1].Direction, Is.EqualTo(Direction.Buy));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].RemainingNumber, Is.EqualTo(5));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].Direction, Is.EqualTo(Direction.Buy));
+            Assert.That(holder.GetOpenTransactions().ToList()[1].RemainingNumber, Is.EqualTo(15));
+            Assert.That(holder.GetOpenTransactions().ToList()[1].Direction, Is.EqualTo(Direction.Buy));
 
             holder.UpdateOpenTransactions(new Transaction.Builder()
                 .InstrumentId("test_id")
@@ -98,12 +99,12 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .Number(60)
                 .Build());
             Assert.That(holder.GetOpenTransactions().Count, Is.EqualTo(2));
-            Assert.That(holder.GetOpenTransactions()[0].InstrumentId, Is.EqualTo("test_id_2"));
-            Assert.That(holder.GetOpenTransactions()[0].RemainingNumber, Is.EqualTo(15));
-            Assert.That(holder.GetOpenTransactions()[0].Direction, Is.EqualTo(Direction.Buy));
-            Assert.That(holder.GetOpenTransactions()[1].InstrumentId, Is.EqualTo("test_id"));
-            Assert.That(holder.GetOpenTransactions()[1].RemainingNumber, Is.EqualTo(55));
-            Assert.That(holder.GetOpenTransactions()[1].Direction, Is.EqualTo(Direction.Sell));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].InstrumentId, Is.EqualTo("test_id_2"));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].RemainingNumber, Is.EqualTo(15));
+            Assert.That(holder.GetOpenTransactions().ToList()[0].Direction, Is.EqualTo(Direction.Buy));
+            Assert.That(holder.GetOpenTransactions().ToList()[1].InstrumentId, Is.EqualTo("test_id"));
+            Assert.That(holder.GetOpenTransactions().ToList()[1].RemainingNumber, Is.EqualTo(55));
+            Assert.That(holder.GetOpenTransactions().ToList()[1].Direction, Is.EqualTo(Direction.Sell));
 
             Assert.That(holder.GetInvertedOpenTransactions("test_id_2", Direction.Sell).Count, Is.EqualTo(1));
         }

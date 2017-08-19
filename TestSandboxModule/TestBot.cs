@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TradePlatform.Sandbox.Bots;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios.Enums;
@@ -20,16 +21,16 @@ namespace TestSandboxModule
 
             if(maSrort < maLong)
             {
-                if (GetOpenTransactions("RTS", Direction.Sell).Count == 0 &&
-                    GetActiveRequests("RTS", Direction.Sell).Count == 0)
+                if (!GetOpenTransactions("RTS", Direction.Sell).Any() &&
+                    !GetActiveRequests("RTS", Direction.Sell).Any())
                 {
                     OpenPosition(new OpenPositionRequest.Builder().Direction(Direction.Sell).InstrumentId("RTS").Number(10).Build());
                 } 
             }
             if (maSrort > maLong)
             {
-                if (GetOpenTransactions("RTS", Direction.Buy).Count == 0 &&
-                    GetActiveRequests("RTS", Direction.Buy).Count == 0)
+                if (!GetOpenTransactions("RTS", Direction.Buy).Any() &&
+                    !GetActiveRequests("RTS", Direction.Buy).Any())
                 {
                     OpenPosition(new OpenPositionRequest.Builder().Direction(Direction.Buy).InstrumentId("RTS").Number(10).Build());
                 }

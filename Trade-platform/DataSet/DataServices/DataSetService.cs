@@ -32,7 +32,11 @@ namespace TradePlatform.DataSet.DataServices
         public void Store(DataSetItem item, CancellationToken cancellationToken)
         {
             var tickProvider = ContainerBuilder.Container.Resolve<IDataTickProvider>();
-            IList<DataTick> ticks = tickProvider.Get(item, cancellationToken);
+            _infoPublisher.PublishInfo(new DataSetInfo { Message = item + "- start read ticks from files" });
+            IEnumerable<DataTick> ticks = tickProvider.Get(item, cancellationToken);
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            _infoPublisher.PublishInfo(new DataSetInfo { Message = item + "- ticks is ready, start saving data set" });
 
             if (cancellationToken.IsCancellationRequested)
             {
@@ -42,10 +46,12 @@ namespace TradePlatform.DataSet.DataServices
             DeleteFolder(item);
             CreateFolder(item);
             _tickStorage.Store(ticks, DataSetItem.RootPath + "\\" + item.Path, item.Path);
-            _infoPublisher.PublishInfo(new DataSetInfo { Message = item + "- was created" });
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            _infoPublisher.PublishInfo(new DataSetInfo { Message = item + "- data set was saved " });
         }
 
-        public IList<DataTick> Get(string id)
+        public IEnumerable<DataTick> Get(string id)
         {
             if (!_dataSetHolder.CheckIfExist(id))
             {
@@ -60,7 +66,7 @@ namespace TradePlatform.DataSet.DataServices
 
             if (build != null && !build.IsCompleted)
             {
-                _infoPublisher.PublishInfo(new DataSetInfo { Message = item + "- cancellation will wait till build data set will finished" });
+                _infoPublisher.PublishInfo(new DataSetInfo { Message = item + "- cancellation will wait till build data set will finish" });
                 cancellationTokenSource.Cancel();
                 build.Wait();
             }

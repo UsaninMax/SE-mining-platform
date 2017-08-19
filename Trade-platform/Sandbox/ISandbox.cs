@@ -20,7 +20,7 @@ namespace TradePlatform.Sandbox
         IEnumerable<PanelViewPredicate> SetUpCharts();
         void CreateCharts();
         void PopulateCharts(ICollection<ChartPredicate> predicates);
-        void StoreCustomData(string key, IList<object> data);
+        void StoreCustomData(string key, IEnumerable<object> data);
         void CleanCustomeStorage();
     }
 }

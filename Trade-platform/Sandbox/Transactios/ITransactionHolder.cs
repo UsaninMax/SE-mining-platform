@@ -10,10 +10,10 @@ namespace TradePlatform.Sandbox.Transactios
         void UpdateOpenTransactions(Transaction transaction);
         double GetCoverage(IDictionary<string, Tick> ticks, IEnumerable<OpenPositionRequest> activeRequests);
         double GetCoverage(IDictionary<string, Tick> ticks, IEnumerable<OpenPositionRequest> activeRequests, OpenPositionRequest newRequest);
-        IList<Transaction> GetOpenTransactions();
-        IList<Transaction> GetInvertedOpenTransactions(string instrumentId, Direction direction);
-        IList<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
-        IList<Transaction> GetOpenTransactions(string instrumentId);
+        IEnumerable<Transaction> GetOpenTransactions();
+        IEnumerable<Transaction> GetInvertedOpenTransactions(string instrumentId, Direction direction);
+        IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
+        IEnumerable<Transaction> GetOpenTransactions(string instrumentId);
         int GetSize();
         void Reset();
     }

@@ -74,7 +74,7 @@ namespace Trade_platform.tests.Sandbox
             testSandBox.BuildData();
 
             dataProviderMock.Verify(x => x.Get(It.IsAny<ICollection<IPredicate>>(), It.IsAny<CancellationToken>()), Times.Never);
-            sandboxDataHolder.Verify(x => x.Add(It.IsAny<IList<Slice>>()), Times.Never);
+            sandboxDataHolder.Verify(x => x.Add(It.IsAny<IEnumerable<Slice>>()), Times.Never);
 
         }
 
@@ -194,7 +194,7 @@ namespace Trade_platform.tests.Sandbox
             });
         }
 
-        private IList<Slice> GetData()
+        private IEnumerable<Slice> GetData()
         {
             IDictionary<string, IData> datas = new Dictionary<string, IData>();
             datas.Add("111", new Candle.Builder().WithId("111").Build());

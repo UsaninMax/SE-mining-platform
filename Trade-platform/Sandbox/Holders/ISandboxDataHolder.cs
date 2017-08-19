@@ -5,8 +5,8 @@ namespace TradePlatform.Sandbox.Holders
 {
     public interface ISandboxDataHolder
     {
-        IList<Slice> Get();
-        void Add(IList<Slice> data);
+        IEnumerable<Slice> Get();
+        void Add(IEnumerable<Slice> data);
         void Clean ();
     }
 }

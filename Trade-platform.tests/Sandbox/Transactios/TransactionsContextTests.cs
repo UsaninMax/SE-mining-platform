@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
@@ -277,8 +278,8 @@ namespace Trade_platform.tests.Sandbox.Transactios
             Assert.That(context.OpenPosition(request), Is.True);
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(1));
             Assert.That(context.GetRequestsHistory().Count, Is.EqualTo(1));
-            Assert.That(context.GetActiveRequests()[0], Is.EqualTo(request));
-            Assert.That(context.GetRequestsHistory()[0], Is.EqualTo(request));
+            Assert.That(context.GetActiveRequests().First(), Is.EqualTo(request));
+            Assert.That(context.GetRequestsHistory().First(), Is.EqualTo(request));
         }
 
         [Test]
@@ -312,7 +313,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .Direction(Direction.Buy)
                 .Build();
 
-            IList<Transaction> transactions = new List<Transaction>
+            IEnumerable<Transaction> transactions = new List<Transaction>
             {
                 new Transaction.Builder().InstrumentId("test_id").Build()
             };
@@ -333,7 +334,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
             Assert.That(context.OpenPosition(request), Is.True);
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(1));
             Assert.That(context.GetRequestsHistory().Count, Is.EqualTo(1));
-            Assert.That(context.GetActiveRequests()[0].Date, Is.EqualTo(new DateTime(2016, 9, 12, 11, 45, 0)));
+            Assert.That(context.GetActiveRequests().First().Date, Is.EqualTo(new DateTime(2016, 9, 12, 11, 45, 0)));
 
             Transaction transaction = new Transaction.Builder().InstrumentId("test_id").Direction(Direction.Buy)
                 .Number(10).Build();
@@ -385,7 +386,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .Direction(Direction.Buy)
                 .Build();
 
-            IList<Transaction> transactions = new List<Transaction>
+            IEnumerable<Transaction> transactions = new List<Transaction>
             {
                 new Transaction.Builder().InstrumentId("test_id").Direction(Direction.Buy).Number(20).ExecutedPrice(123).Build(),
                 new Transaction.Builder().InstrumentId("test_id").Direction(Direction.Buy).Number(40).ExecutedPrice(123).Build(),
@@ -413,13 +414,13 @@ namespace Trade_platform.tests.Sandbox.Transactios
             transactionHolderMock.Verify(x => x.UpdateOpenTransactions(It.IsAny<Transaction>()), Times.Never);
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(2));
 
-            Assert.That(context.GetActiveRequests()[0].RemainingNumber, Is.EqualTo(120));
-            Assert.That(context.GetActiveRequests()[0].Direction, Is.EqualTo(Direction.Sell));
-            Assert.That(context.GetActiveRequests()[0].InstrumentId, Is.EqualTo("test_id"));
+            Assert.That(context.GetActiveRequests().First().RemainingNumber, Is.EqualTo(120));
+            Assert.That(context.GetActiveRequests().First().Direction, Is.EqualTo(Direction.Sell));
+            Assert.That(context.GetActiveRequests().First().InstrumentId, Is.EqualTo("test_id"));
 
-            Assert.That(context.GetActiveRequests()[1].RemainingNumber, Is.EqualTo(10));
-            Assert.That(context.GetActiveRequests()[1].Direction, Is.EqualTo(Direction.Buy));
-            Assert.That(context.GetActiveRequests()[1].InstrumentId, Is.EqualTo("test_id"));
+            Assert.That(context.GetActiveRequests().ToList()[1].RemainingNumber, Is.EqualTo(10));
+            Assert.That(context.GetActiveRequests().ToList()[1].Direction, Is.EqualTo(Direction.Buy));
+            Assert.That(context.GetActiveRequests().ToList()[1].InstrumentId, Is.EqualTo("test_id"));
             Assert.That(context.GetRequestsHistory().Count, Is.EqualTo(3));
         }
 
@@ -455,7 +456,7 @@ namespace Trade_platform.tests.Sandbox.Transactios
                 .Direction(Direction.Buy)
                 .Build();
 
-            IList<Transaction> transactions = new List<Transaction>
+            IEnumerable<Transaction> transactions = new List<Transaction>
             {
                 new Transaction.Builder().InstrumentId("test_id").Direction(Direction.Buy).Number(20).ExecutedPrice(123).Build(),
                 new Transaction.Builder().InstrumentId("test_id").Direction(Direction.Buy).Number(40).ExecutedPrice(123).Build(),
@@ -486,9 +487,9 @@ namespace Trade_platform.tests.Sandbox.Transactios
             balanceMock.Verify(x => x.AddTransactionCost(2, It.IsAny<DateTime>()), Times.Exactly(1));
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(1));
 
-            Assert.That(context.GetActiveRequests()[0].RemainingNumber, Is.EqualTo(10));
-            Assert.That(context.GetActiveRequests()[0].Direction, Is.EqualTo(Direction.Buy));
-            Assert.That(context.GetActiveRequests()[0].InstrumentId, Is.EqualTo("test_id"));
+            Assert.That(context.GetActiveRequests().First().RemainingNumber, Is.EqualTo(10));
+            Assert.That(context.GetActiveRequests().First().Direction, Is.EqualTo(Direction.Buy));
+            Assert.That(context.GetActiveRequests().First().InstrumentId, Is.EqualTo("test_id"));
 
         }
     }

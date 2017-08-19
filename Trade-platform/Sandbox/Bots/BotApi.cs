@@ -7,6 +7,8 @@ using Microsoft.Practices.Unity;
 using TradePlatform.Charts.Data.Holders;
 using TradePlatform.Charts.Data.Populating;
 using TradePlatform.Charts.Data.Predicates.Basis;
+using TradePlatform.Commons.Info;
+using TradePlatform.Commons.Info.Model.Message;
 using TradePlatform.Sandbox.Models;
 using TradePlatform.Sandbox.Transactios;
 using TradePlatform.Sandbox.Transactios.Models;
@@ -19,12 +21,14 @@ namespace TradePlatform.Sandbox.Bots
     {
         private string _id;
         private string _sandboxId;
+        private readonly IInfoPublisher _infoPublisher;
         private BotPredicate _predicate;
         private readonly ITransactionsContext _context;
 
         protected BotApi(IDictionary<string, BrokerCost> brokerCosts)
         {
             _context = ContainerBuilder.Container.Resolve<ITransactionsContext>(new DependencyOverride<IDictionary<string, BrokerCost>>(brokerCosts));
+            _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
         }
 
         public string GetId()
@@ -67,18 +71,19 @@ namespace TradePlatform.Sandbox.Bots
             _context.Reset();
         }
 
-        public IList<Transaction> GetTansactionsHistory()
+        public IEnumerable<Transaction> GetTansactionsHistory()
         {
             return _context.GetTransactionHistory();
         }
 
-        public IList<BalanceRow> GetBalanceHistory()
+        public IEnumerable<BalanceRow> GetBalanceHistory()
         {
             return _context.GetBalanceHistory();
         }
 
         public void Execute()
         {
+            _infoPublisher.PublishInfo(new InfoItem("Bot " + _id) { Message = "Start execute - " + _predicate });
             ContainerBuilder.Container.Resolve<ISandboxDataHolder>()
                 .Get()
                 .Where(m =>
@@ -95,6 +100,7 @@ namespace TradePlatform.Sandbox.Bots
                         Execution(x.Datas);
                     }
                 });
+            _infoPublisher.PublishInfo(new InfoItem("Bot " + _id) { Message = "Executed - " + _predicate });
         }
 
         public abstract void Execution(IDictionary<string, IData> data);
@@ -111,7 +117,7 @@ namespace TradePlatform.Sandbox.Bots
             ContainerBuilder.Container.Resolve<IChartsPopulator>().Populate();
         }
 
-        public void StoreCustomData(string key, IList<object> data)
+        public void StoreCustomData(string key, IEnumerable<object> data)
         {
             ContainerBuilder.Container.Resolve<ICustomDataHolder>().Add(key, data);
         }
@@ -121,22 +127,22 @@ namespace TradePlatform.Sandbox.Bots
             ContainerBuilder.Container.Resolve<ICustomDataHolder>().CleanAll();
         }
 
-        public IList<Transaction> GetOpenTransactions()
+        public IEnumerable<Transaction> GetOpenTransactions()
         {
             return _context.GetOpenTransactions();
         }
 
-        public IList<Transaction> GetOpenTransactions(string instrumentId, Direction direction)
+        public IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction)
         {
            return _context.GetOpenTransactions(instrumentId, direction);
         }
 
-        public IList<OpenPositionRequest> GetRequestsHistory()
+        public IEnumerable<OpenPositionRequest> GetRequestsHistory()
         {
             return _context.GetRequestsHistory();
         }
 
-        public IList<OpenPositionRequest> GetActiveRequests(string instrumentId, Direction direction)
+        public IEnumerable<OpenPositionRequest> GetActiveRequests(string instrumentId, Direction direction)
         {
             return _context.GetActiveRequests(instrumentId, direction);
         }

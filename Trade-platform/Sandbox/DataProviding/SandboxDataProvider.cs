@@ -21,7 +21,7 @@ namespace TradePlatform.Sandbox.DataProviding
         private readonly IPredicateChecker _predicateChecker;
         private readonly IInfoPublisher _infoPublisher;
         private readonly IIndicatorBuilder _indicatorBuilder;
-        private IDictionary<string, IList<Tick>> _tiks = new Dictionary<string, IList<Tick>>();
+        private IDictionary<string, IEnumerable<Tick>> _tiks = new Dictionary<string, IEnumerable<Tick>>();
         private IEnumerable<IData> _data = new List<IData>();
         private readonly ICollection<DataPredicate> _dataPredicates = new List<DataPredicate>();
         private readonly ICollection<IndicatorPredicate> _indicatorPredicates = new List<IndicatorPredicate>();
@@ -35,23 +35,23 @@ namespace TradePlatform.Sandbox.DataProviding
             _indicatorBuilder = ContainerBuilder.Container.Resolve<IIndicatorBuilder>();
         }
 
-        public IList<Slice> Get(ICollection<IPredicate> predicates, CancellationToken token)
+        public IEnumerable<Slice> Get(ICollection<IPredicate> predicates, CancellationToken token)
         {
             if (token.IsCancellationRequested) { return null; }
             GatherPredicates(predicates);
             CheckPredicateStructure();
             GatherTickPredicates();
             if (token.IsCancellationRequested) { return null; }
-            _infoPublisher.PublishInfo(new SandboxInfo { Message = " constract tick data  " });
+            _infoPublisher.PublishInfo(new SandboxInfo { Message = "Constract tick data  " });
             _tickPredicate.ForEach(ConstructSeries);
             if (token.IsCancellationRequested) { return null; }
-            _infoPublisher.PublishInfo(new SandboxInfo { Message = " constract indicator data " });
+            _infoPublisher.PublishInfo(new SandboxInfo { Message = "Constract indicator data " });
             _indicatorPredicates.ForEach(ConstructSeries);
             if (token.IsCancellationRequested) { return null; }
-            _infoPublisher.PublishInfo(new SandboxInfo { Message = " constract data series " });
+            _infoPublisher.PublishInfo(new SandboxInfo { Message = "Constract data series " });
             _dataPredicates.ForEach(ConstructSeries);
             if (token.IsCancellationRequested) { return null; }
-            _infoPublisher.PublishInfo(new SandboxInfo { Message = " combine all data together " });
+            _infoPublisher.PublishInfo(new SandboxInfo { Message = "Combine all data together " });
 
             _tiks.Values.ForEach(x =>
             {
@@ -81,7 +81,7 @@ namespace TradePlatform.Sandbox.DataProviding
 
         private void ConstructSeries(DataPredicate predicate)
         {
-            _infoPublisher.PublishInfo(new SandboxInfo { Message = " build  " + predicate });
+            _infoPublisher.PublishInfo(new SandboxInfo { Message = predicate + " - build  " });
             ITransformer dataAggregator = ContainerBuilder.Container.Resolve<ITransformer>();
             _data = _data.Concat(dataAggregator.Transform(_tiks[predicate.ParentId], predicate));
             GC.Collect();
@@ -90,7 +90,7 @@ namespace TradePlatform.Sandbox.DataProviding
 
         private void ConstructSeries(TickPredicate predicate)
         {
-            _infoPublisher.PublishInfo(new SandboxInfo { Message = " build  " + predicate });
+            _infoPublisher.PublishInfo(new SandboxInfo { Message = predicate + " - build  " });
             ITransformer dataAggregator = ContainerBuilder.Container.Resolve<ITransformer>();
             _tiks.Add(predicate.Id, dataAggregator.Transform(_dataSetService.Get(predicate.Id), predicate));
             GC.Collect();
@@ -99,10 +99,9 @@ namespace TradePlatform.Sandbox.DataProviding
 
         private void ConstructSeries(IndicatorPredicate predicate)
         {
-            _infoPublisher.PublishInfo(new SandboxInfo { Message = " build  " + predicate });
+            _infoPublisher.PublishInfo(new SandboxInfo { Message = predicate + " - build  " });
             IIndicatorProvider provider = _indicatorBuilder.Build(predicate);
             ITransformer dataAggregator = ContainerBuilder.Container.Resolve<ITransformer>();
-            _infoPublisher.PublishInfo(new SandboxInfo { Message = " Build indicator  " + predicate });
             _data = _data.Concat(dataAggregator.Transform(_tiks[predicate.DataPredicate.ParentId], predicate.DataPredicate)
                 .Select(candle =>
                 {

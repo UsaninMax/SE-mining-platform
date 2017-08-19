@@ -2,6 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using TradePlatform;
 using TradePlatform.Commons.Setting;
 using TradePlatform.Commons.Sistem;
@@ -48,7 +49,7 @@ namespace Trade_platform.tests.DataSet.DataServices.Serialization
         [Test]
         public void TestReStoreDataSetWhenFileExist()
         {
-            IList<DataSetItem> dataSets = new List<DataSetItem>()
+            IEnumerable<DataSetItem> dataSets = new List<DataSetItem>()
             {
                 new DataSetItem.Builder().Build()
             };
@@ -57,7 +58,7 @@ namespace Trade_platform.tests.DataSet.DataServices.Serialization
             fileManager.Setup(x => x.IsFileExist(It.IsAny<string>())).Returns(true);
             ContainerBuilder.Container.RegisterInstance(fileManager.Object);
             var serializer = new Mock<ISettingSerializer>();
-            serializer.Setup(x => x.Deserialize<IList<DataSetItem>>("Settings\\DataSets.xml")).Returns(dataSets);
+            serializer.Setup(x => x.Deserialize<IEnumerable<DataSetItem>>("Settings\\DataSets.xml")).Returns(dataSets);
             ContainerBuilder.Container.RegisterInstance(serializer.Object);
             XmlDataSetStorage storage = new XmlDataSetStorage();
             storage.ReStore();

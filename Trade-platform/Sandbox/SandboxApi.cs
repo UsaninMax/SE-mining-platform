@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using TradePlatform.Charts.Data.Holders;
 using TradePlatform.Charts.Data.Populating;
@@ -89,7 +90,7 @@ namespace TradePlatform.Sandbox
             ContainerBuilder.Container.Resolve<IChartsPopulator>().Populate();
         }
 
-        public void StoreCustomData(string key, IList<object> data)
+        public void StoreCustomData(string key, IEnumerable<object> data)
         {
             ContainerBuilder.Container.Resolve<ICustomDataHolder>().Add(key, data);
         }

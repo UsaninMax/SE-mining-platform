@@ -18,7 +18,7 @@ namespace TradePlatform.Sandbox.Providers
             _fileManager = ContainerBuilder.Container.Resolve<IFileManager>();
         }
 
-        public IList<ISandboxPresenter> Get()
+        public IEnumerable<ISandboxPresenter> Get()
         {
             if (!_fileManager.IsDirectoryExist(_sandboxFolder))
             {

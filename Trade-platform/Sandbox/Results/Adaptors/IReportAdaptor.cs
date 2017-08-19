@@ -5,8 +5,8 @@ namespace TradePlatform.Sandbox.Results.Adaptors
 {
     public interface IReportAdaptor
     {
-        IEnumerable<Dictionary<string, string>> Adopt(IList<Transaction> rows);
-        IEnumerable<Dictionary<string, string>> Adopt(IList<BalanceRow> rows);
-        IEnumerable<Dictionary<string, string>> Adopt(IList<OpenPositionRequest> rows);
+        IEnumerable<Dictionary<string, string>> Adopt(IEnumerable<Transaction> rows);
+        IEnumerable<Dictionary<string, string>> Adopt(IEnumerable<BalanceRow> rows);
+        IEnumerable<Dictionary<string, string>> Adopt(IEnumerable<OpenPositionRequest> rows);
     }
 }

@@ -6,7 +6,7 @@ namespace TradePlatform.Sandbox.Providers
 {
     public interface ISandboxProvider
     {
-        IList<ISandboxPresenter> Get();
+        IEnumerable<ISandboxPresenter> Get();
         ISandbox CreateInstance(Type type);
     }
 }

@@ -26,7 +26,7 @@ namespace Trade_platform.tests.DataSet.ViewModels
             ContainerBuilder.Container.RegisterInstance(dataSetHolder.Object);
             IEventAggregator eventAggregator = new EventAggregator();
             ContainerBuilder.Container.RegisterInstance(eventAggregator);
-            IList<SubInstrument> instruments = new List<SubInstrument> {
+            IEnumerable<SubInstrument> instruments = new List<SubInstrument> {
                 new SubInstrument(new Instrument.Builder().WithCode("test_1").Build()),
                 new SubInstrument(new Instrument.Builder().WithCode("test_2").Build())
             };
@@ -61,7 +61,7 @@ namespace Trade_platform.tests.DataSet.ViewModels
             fakeEventAggregator.Setup(x => x.GetEvent<CreateDataSetItemEvent>()
                 .Publish(It.IsAny<DataSetItem>()));
             fakeEventAggregator.Setup(x => x.GetEvent<AddInstrumentToDatatSetEvent>()
-                .Publish(It.IsAny<IList<Instrument>>()));
+                .Publish(It.IsAny<IEnumerable<Instrument>>()));
 
             fakeEventAggregator.Setup(x => x.GetEvent<CopyDataSetEvent>()
                 .Publish(It.IsAny<DataSetItem>()));
@@ -71,7 +71,7 @@ namespace Trade_platform.tests.DataSet.ViewModels
             model.Dispose();
 
             fakeEventAggregator.Verify(x => x.GetEvent<AddInstrumentToDatatSetEvent>()
-                .Unsubscribe(It.IsAny<Action<IList<Instrument>>>()), Times.Once);
+                .Unsubscribe(It.IsAny<Action<IEnumerable<Instrument>>>()), Times.Once);
 
             fakeEventAggregator.Verify(x => x.GetEvent<CopyDataSetEvent>()
                 .Unsubscribe(It.IsAny<Action<DataSetItem>>()), Times.Once);

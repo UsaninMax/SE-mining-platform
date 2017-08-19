@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
@@ -30,8 +31,8 @@ namespace Trade_platform.tests.StockData.DataServices.SecuritiesInfo.Finam
             FinamSecuritiesInfoUpdater finamSecuritiesInfoUpdater = new FinamSecuritiesInfoUpdater();
             finamSecuritiesInfoUpdater.Update();
 
-            Assert.IsTrue(infoHolder.Securities.Count == 1);
-            Assert.IsTrue(testSecurity.Equals(infoHolder.Securities[0]));
+            Assert.IsTrue(infoHolder.Securities.Count() == 1);
+            Assert.IsTrue(testSecurity.Equals(infoHolder.Securities.First()));
         }
     }
 }

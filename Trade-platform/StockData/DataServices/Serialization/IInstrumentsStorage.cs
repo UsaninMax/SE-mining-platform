@@ -6,6 +6,6 @@ namespace TradePlatform.StockData.DataServices.Serialization
     public interface IInstrumentsStorage
     {
         void Store(IEnumerable<Instrument> instruments);
-        IList<Instrument> ReStore();
+        IEnumerable<Instrument> ReStore();
     }
 }

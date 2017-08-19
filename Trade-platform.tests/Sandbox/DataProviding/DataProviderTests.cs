@@ -52,7 +52,7 @@ namespace Trade_platform.tests.Sandbox.DataProviding
 
             SandboxDataProvider provider = new SandboxDataProvider();
 
-            IList<Slice> result =  provider.Get(GetPredicate(), new CancellationToken());
+            IEnumerable<Slice> result =  provider.Get(GetPredicate(), new CancellationToken());
 
             dataAggregatorMock.Verify(x=> x.Transform(It.IsAny<List<DataTick>>(), It.Is<TickPredicate>(
                 f => f.Id.Equals("RTS") &&

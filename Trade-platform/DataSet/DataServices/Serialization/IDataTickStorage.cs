@@ -6,7 +6,7 @@ namespace TradePlatform.DataSet.DataServices.Serialization
 {
     public interface IDataTickStorage
     {
-        void Store(IList<DataTick> ticks, string path, string file);
-        IList<DataTick> ReStore(string path);
+        void Store(IEnumerable<DataTick> ticks, string path, string file);
+        IEnumerable<DataTick> ReStore(string path);
     }
 }

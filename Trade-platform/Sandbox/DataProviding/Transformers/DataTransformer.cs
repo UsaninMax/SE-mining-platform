@@ -9,7 +9,7 @@ namespace TradePlatform.Sandbox.DataProviding.Transformers
 {
     public class DataTransformer : ITransformer
     {
-        public List<Candle> Transform(IList<Tick> tiks, DataPredicate predicate)
+        public List<Candle> Transform(IEnumerable<Tick> tiks, DataPredicate predicate)
         {
             return tiks.Where(m => (predicate.From == DateTime.MinValue || m.Date() >= predicate.From) &&
                                    (predicate.To == DateTime.MinValue || m.Date() <= predicate.To))
@@ -28,7 +28,7 @@ namespace TradePlatform.Sandbox.DataProviding.Transformers
                 }).ToList();
         }
 
-        public List<Tick> Transform(IList<DataTick> tiks, TickPredicate predicate)
+        public List<Tick> Transform(IEnumerable<DataTick> tiks, TickPredicate predicate)
         {
             return tiks.Where(m => (predicate.From == DateTime.MinValue || m.Date >= predicate.From) &&
                                     (predicate.To == DateTime.MinValue || m.Date <= predicate.To))

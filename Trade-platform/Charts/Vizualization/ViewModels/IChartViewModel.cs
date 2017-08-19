@@ -7,10 +7,10 @@ namespace TradePlatform.Charts.Vizualization.ViewModels
 {
     public interface IChartViewModel
     {
-        void Push(IList<Indicator> values, ChartPredicate predicate);
-        void Push(IList<Candle> values, ChartPredicate predicate);
-        void Push(IList<double> values, ChartPredicate predicate);
-        void Push(IList<Transaction> values);
+        void Push(IEnumerable<Indicator> values, ChartPredicate predicate);
+        void Push(IEnumerable<Candle> values, ChartPredicate predicate);
+        void Push(IEnumerable<double> values, ChartPredicate predicate);
+        void Push(IEnumerable<Transaction> values);
         void ClearAll();
     }
 }

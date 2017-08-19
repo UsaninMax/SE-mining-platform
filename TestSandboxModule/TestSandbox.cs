@@ -17,10 +17,8 @@ namespace TestSandboxModule
 {
     public class TestSandbox : SandboxApi
     {
-        private IBot _first;
-        private IBot _second;
-        private DateTime _from = new DateTime(2016, 2, 1);
-        private DateTime _to = new DateTime(2016, 2, 5);
+        private DateTime _from = new DateTime(2016, 1, 1);
+        private DateTime _to = new DateTime(2017, 1, 1);
         private TimeSpan _period = new TimeSpan(0, 0, 5);
         private IDictionary<string, BrokerCost> _costs = new Dictionary<string, BrokerCost> { { "RTS", new BrokerCost { Coverage = 0.11, TransactionCost = 0.5 } } };
 
@@ -84,21 +82,29 @@ namespace TestSandboxModule
                     .Build(),
             };
         }
-
+        private IBot _firstBot;
+        private IBot _secondBot;
+        private IBot _thirdBot;
         public override void Execution()
         {
-            _first = CreateTestBot();
-            _second = CreateTestBot();
-            SetUpBots(new List<IBot> { _first, _second });
+            _firstBot = CreateTestBot("Test_1");
+            _secondBot = CreateTestBot("Test_2");
+            _thirdBot = CreateTestBot("Test_3");
+            SetUpBots(new List<IBot>
+            {
+                _firstBot, _secondBot, _thirdBot, CreateTestBot("Test_4"), CreateTestBot("Test_5"), CreateTestBot("Test_6"), CreateTestBot("Test_7"), CreateTestBot("Test_8")
+                , CreateTestBot("Test_9"), CreateTestBot("Test_10"), CreateTestBot("Test_11"), CreateTestBot("Test_12"), CreateTestBot("Test_13"), CreateTestBot("Test_14"), CreateTestBot("Test_15")
+                , CreateTestBot("Test_16"), CreateTestBot("Test_17"), CreateTestBot("Test_18"), CreateTestBot("Test_19"), CreateTestBot("Test_20")
+            });
             Execute();
         }
 
         public override void AfterExecution()
         {
             IReportAdaptor reportAdaptor = new DefaultReportAdaptor();
-            ReusltStoring.Store(reportAdaptor.Adopt(_first.GetBalanceHistory()), " | ");
-            ReusltStoring.Store(reportAdaptor.Adopt(_first.GetTansactionsHistory()), " | ");
-            ReusltStoring.Store(reportAdaptor.Adopt(_first.GetRequestsHistory()), " | ");
+            ReusltStoring.Store(reportAdaptor.Adopt(_firstBot.GetRequestsHistory()), " | ");
+            ReusltStoring.Store(reportAdaptor.Adopt(_secondBot.GetRequestsHistory()), " | ");
+            ReusltStoring.Store(reportAdaptor.Adopt(_thirdBot.GetRequestsHistory()), " | ");
             StoreCustomData("TRANSACTIONS", new List<object>(Bots.First().GetTansactionsHistory()));
             StoreCustomData("EQUITY", GetEquity());
             var from = new DateTime(2016, 2, 1, 13, 55, 00);
@@ -163,12 +169,12 @@ namespace TestSandboxModule
                 .ToList();
         }
 
-        private TestBot CreateTestBot()
+        private TestBot CreateTestBot(string id)
         {
             TestBot bot = new TestBot(_costs);
-            bot.SetUpId("Test_1");
-            bot.SetUpBalance(10000000000);
-            bot.SetUpWorkingPeriod(new Dictionary<string, WorkingPeriod>()
+            bot.SetUpId(id);
+            bot.SetUpBalance(1000000000000);
+            bot.SetUpWorkingPeriod(new Dictionary<string, WorkingPeriod>
             {
                 {"RTS", new WorkingPeriod
                     {
