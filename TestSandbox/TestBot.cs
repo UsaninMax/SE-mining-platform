@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SEMining.Sandbox.Bots;
-using SEMining.Sandbox.Models;
-using SEMining.Sandbox.Transactios.Enums;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Enums;
+using SE_mining_base.Transactios.Models;
 
 namespace TestSandbox
 {
-    public class TestBot : BotApi
+    public class TestBot : BotAbstraction
     {
         public override void Execution(IDictionary<string, IData> value)
         {

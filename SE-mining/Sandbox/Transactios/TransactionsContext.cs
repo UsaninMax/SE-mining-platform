@@ -4,9 +4,9 @@ using System.Linq;
 using Castle.Core.Internal;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
-using SEMining.Sandbox.Models;
-using SEMining.Sandbox.Transactios.Enums;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Enums;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.Sandbox.Transactios
 {
@@ -19,7 +19,7 @@ namespace SEMining.Sandbox.Transactios
         private IDictionary<string, Tick> _lastTicks = new Dictionary<string, Tick>();
         private DateTime _lastDate;
         private readonly ITransactionHolder _transactionHolder;
-        private readonly IBalance _balance;
+        private readonly IBalanceHolder _balance;
         private readonly IWorkingPeriodHolder _workingPeriodHolder;
         private readonly ITransactionBuilder _transactionBuilder;
 
@@ -27,7 +27,7 @@ namespace SEMining.Sandbox.Transactios
         {
             _brokerCosts = brokerCosts;
             _transactionHolder = ContainerBuilder.Container.Resolve<ITransactionHolder>(new DependencyOverride<IDictionary<string, BrokerCost>>(brokerCosts));
-            _balance = ContainerBuilder.Container.Resolve<IBalance>();
+            _balance = ContainerBuilder.Container.Resolve<IBalanceHolder>();
             _transactionBuilder = ContainerBuilder.Container.Resolve<ITransactionBuilder>();
             _workingPeriodHolder = ContainerBuilder.Container.Resolve<IWorkingPeriodHolder>();
         }

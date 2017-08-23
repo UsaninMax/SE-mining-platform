@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SEMining.Sandbox.DataProviding.Predicates;
-using SEMining.Sandbox.Models;
 using SEMining.StockData.Models;
+using SE_mining_base.Sandbox.DataProviding.Predicates;
+using SE_mining_base.Sandbox.Models;
 
 namespace SEMining.Sandbox.DataProviding.Transformers
 {

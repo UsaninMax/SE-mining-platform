@@ -5,13 +5,13 @@ using System.Threading;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using SEMining.Commons.Info;
-using SEMining.Commons.Info.Model.Message;
 using SEMining.DataSet.DataServices;
 using SEMining.Sandbox.DataProviding.Checks;
-using SEMining.Sandbox.DataProviding.Predicates;
 using SEMining.Sandbox.DataProviding.Transformers;
-using SEMining.Sandbox.Models;
 using SEMining.Sandbox.Providers;
+using SE_mining_base.Info.Message;
+using SE_mining_base.Sandbox.DataProviding.Predicates;
+using SE_mining_base.Sandbox.Models;
 
 namespace SEMining.Sandbox.DataProviding
 {

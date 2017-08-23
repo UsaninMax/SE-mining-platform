@@ -1,6 +1,6 @@
 ﻿
 using Prism.Events;
-using SEMining.Commons.Info.Model.Message;
+using SE_mining_base.Info.Message;
 
 namespace SEMining.Commons.Info.Events
 {

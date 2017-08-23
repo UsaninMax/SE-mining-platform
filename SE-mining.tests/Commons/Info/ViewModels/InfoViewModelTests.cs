@@ -5,8 +5,8 @@ using NUnit.Framework;
 using Prism.Events;
 using SEMining.Commons.Info.Events;
 using SEMining.Commons.Info.Model;
-using SEMining.Commons.Info.Model.Message;
 using SEMining.Commons.Info.ViewModels;
+using SE_mining_base.Info.Message;
 
 namespace SEMining.tests.Commons.Info.ViewModels
 {

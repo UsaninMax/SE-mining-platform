@@ -1,12 +1,12 @@
 ﻿using System.Windows.Threading;
 using Microsoft.Practices.Unity;
 using Prism.Events;
-using SEMining.Commons.Info.Model.Message;
 using System.Linq;
 using System.Windows;
 using SEMining.Commons.Info.Views;
 using System;
 using SEMining.Commons.Info.Events;
+using SE_mining_base.Info.Message;
 
 namespace SEMining.Commons.Info.Exception
 {

@@ -111,20 +111,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Charts\Data\Predicates\Basis\CustomStorage.cs" />
-    <Compile Include="Charts\Data\Predicates\Basis\DateChartPredicate.cs" />
-    <Compile Include="Charts\Data\Predicates\Basis\IExistDataStorage.cs" />
-    <Compile Include="Charts\Data\Predicates\Basis\IndexChartPredicate.cs" />
-    <Compile Include="Charts\Vizualization\Configurations\IndexChartViewPredicate.cs" />
-    <Compile Include="Charts\Vizualization\Configurations\DateChartViewPredicate.cs" />
     <Compile Include="Charts\Vizualization\Dispatching\IChartProxy.cs" />
     <Compile Include="Charts\Vizualization\ViewModels\IndexChartViewModel.cs" />
     <Compile Include="Charts\Vizualization\Views\IndexChartView.xaml.cs">
       <DependentUpon>IndexChartView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Commons\BaseModels\IClosableWindow.cs" />
-    <Compile Include="Commons\Info\Model\Message\DataSetInfo.cs" />
-    <Compile Include="Commons\Info\Model\Message\SandboxInfo.cs" />
     <Compile Include="Commons\Loggers\SystemLogger.cs" />
     <Compile Include="DataSet\DataServices\DataTickProvider.cs" />
     <Compile Include="DataSet\DataServices\DataSetService.cs" />
@@ -138,10 +130,6 @@
     <Compile Include="Sandbox\DataProviding\Checks\IPredicateChecker.cs" />
     <Compile Include="Sandbox\DataProviding\Checks\SlicePredicateChecker.cs" />
     <Compile Include="Sandbox\DataProviding\ISandboxDataProvider.cs" />
-    <Compile Include="Sandbox\DataProviding\Predicates\IndicatorPredicate.cs" />
-    <Compile Include="Sandbox\DataProviding\Predicates\DataPredicate.cs" />
-    <Compile Include="Sandbox\DataProviding\Predicates\IPredicate.cs" />
-    <Compile Include="Sandbox\DataProviding\Predicates\TickPredicate.cs" />
     <Compile Include="Sandbox\DataProviding\SandboxDataProvider.cs" />
     <Compile Include="Sandbox\Events\RefreshContextMenuEvent.cs" />
     <Compile Include="Sandbox\Holders\CustomDataHolder.cs" />
@@ -150,12 +138,7 @@
     <Compile Include="Sandbox\Holders\ISandboxDataHolder.cs" />
     <Compile Include="Sandbox\IIndicatorProvider.cs" />
     <Compile Include="Sandbox\ISandbox.cs" />
-    <Compile Include="Sandbox\Models\Candle.cs" />
-    <Compile Include="Sandbox\Models\IData.cs" />
-    <Compile Include="Sandbox\Models\Indicator.cs" />
-    <Compile Include="Sandbox\Models\Slice.cs" />
-    <Compile Include="Sandbox\Models\Tick.cs" />
-    <Compile Include="Sandbox\Bots\BotApi.cs" />
+    <Compile Include="Sandbox\Bots\BotAbstraction.cs" />
     <Compile Include="Sandbox\Providers\IIndicatorBuilder.cs" />
     <Compile Include="Sandbox\Providers\IndicatorBuilder.cs" />
     <Compile Include="Sandbox\Results\Adaptors\DefaultReportAdaptor.cs" />
@@ -163,25 +146,19 @@
     <Compile Include="Sandbox\Results\Storing\IResultStoring.cs" />
     <Compile Include="Sandbox\Results\Storing\ReusltStoring.cs" />
     <Compile Include="Sandbox\Results\Storing\StoringToFile.cs" />
-    <Compile Include="Sandbox\SandboxApi.cs" />
+    <Compile Include="Sandbox\SandboxAbstraction.cs" />
     <Compile Include="Sandbox\Presenters\ISandboxPresenter.cs" />
     <Compile Include="Sandbox\Presenters\SandboxPresenter.cs" />
     <Compile Include="Sandbox\Presenters\Status.cs" />
     <Compile Include="Sandbox\Providers\DllChecker.cs" />
     <Compile Include="Sandbox\Providers\ISandboxProvider.cs" />
     <Compile Include="Sandbox\Providers\SandboxProvider.cs" />
-    <Compile Include="Sandbox\Transactios\Balance.cs" />
-    <Compile Include="Sandbox\Transactios\Enums\Direction.cs" />
-    <Compile Include="Sandbox\Transactios\IBalance.cs" />
+    <Compile Include="Sandbox\Transactios\BalanceHolder.cs" />
+    <Compile Include="Sandbox\Transactios\IBalanceHolder.cs" />
     <Compile Include="Sandbox\Transactios\ITransactionBuilder.cs" />
     <Compile Include="Sandbox\Transactios\ITransactionHolder.cs" />
     <Compile Include="Sandbox\Transactios\ITransactionsContext.cs" />
     <Compile Include="Sandbox\Transactios\IWorkingPeriodHolder.cs" />
-    <Compile Include="Sandbox\Transactios\Models\BalanceRow.cs" />
-    <Compile Include="Sandbox\Transactios\Models\BrokerCost.cs" />
-    <Compile Include="Sandbox\Transactios\Models\OpenPositionRequest.cs" />
-    <Compile Include="Sandbox\Transactios\Models\Transaction.cs" />
-    <Compile Include="Sandbox\Transactios\Models\WorkingPeriod.cs" />
     <Compile Include="Sandbox\Transactios\TransactionBuilder.cs" />
     <Compile Include="Sandbox\Transactios\TransactionHolder.cs" />
     <Compile Include="Sandbox\Transactios\TransactionsContext.cs" />
@@ -237,9 +214,6 @@
     <Compile Include="Commons\Info\IInfoPublisher.cs" />
     <Compile Include="Commons\Info\InfoPublisher.cs" />
     <Compile Include="Commons\Info\Model\IInfoTab.cs" />
-    <Compile Include="Commons\Info\Model\Message\DownloadInfo.cs" />
-    <Compile Include="Commons\Info\Model\Message\ExceptionInfo.cs" />
-    <Compile Include="Commons\Info\Model\Message\InfoItem.cs" />
     <Compile Include="Commons\Info\Model\InfoTab.cs" />
     <Compile Include="Commons\Info\ViewModels\IInfoViewModel.cs" />
     <Compile Include="Commons\Info\ViewModels\InfoViewModel.cs" />
@@ -296,8 +270,6 @@
     <Compile Include="Charts\Vizualization\Dispatching\IChartsBuilder.cs" />
     <Compile Include="Charts\Vizualization\Dispatching\ChartsConfigurationDispatcher.cs" />
     <Compile Include="Charts\Vizualization\Dispatching\IChartsConfigurationDispatcher.cs" />
-    <Compile Include="Charts\Vizualization\Configurations\ChartViewPredicate.cs" />
-    <Compile Include="Charts\Vizualization\Configurations\PanelViewPredicate.cs" />
     <Compile Include="Charts\Vizualization\Holders\ChartsHolder.cs" />
     <Compile Include="Charts\Vizualization\Holders\IChartsHolder.cs" />
     <Compile Include="Charts\Vizualization\Dispatching\ChartProxy.cs" />
@@ -305,11 +277,6 @@
     <Compile Include="Charts\Data\Holders\ChartPredicatesHolder.cs" />
     <Compile Include="Charts\Data\Holders\IChartPredicatesHolder.cs" />
     <Compile Include="Charts\Data\Populating\IChartsPopulator.cs" />
-    <Compile Include="Charts\Data\Predicates\Basis\ChartPredicate.cs" />
-    <Compile Include="Charts\Data\Predicates\EDPredicate.cs" />
-    <Compile Include="Charts\Data\Predicates\CDPredicate.cs" />
-    <Compile Include="Charts\Data\Predicates\CIPredicate.cs" />
-    <Compile Include="Charts\Data\Predicates\EIPredicate.cs" />
     <Compile Include="Charts\Data\Providers\ChartDataProvider.cs" />
     <Compile Include="Charts\Data\Providers\IChartDataProvider.cs" />
     <Compile Include="Charts\Vizualization\ViewModels\IChartViewModel.cs" />
@@ -423,7 +390,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SE-mining-base\SE-mining-base.csproj">
+      <Project>{4664f1a9-cb3d-464d-8c71-3421d688d5bd}</Project>
+      <Name>SE-mining-base</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

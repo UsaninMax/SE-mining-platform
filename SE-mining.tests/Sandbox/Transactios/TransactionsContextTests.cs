@@ -4,10 +4,10 @@ using System.Linq;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
-using SEMining.Sandbox.Models;
 using SEMining.Sandbox.Transactios;
-using SEMining.Sandbox.Transactios.Enums;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Enums;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.tests.Sandbox.Transactios
 {
@@ -24,7 +24,7 @@ namespace SEMining.tests.Sandbox.Transactios
             ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
             var transactionHolderMock = new Mock<ITransactionHolder>();
             ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
+            var balanceMock = new Mock<IBalanceHolder>();
             ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>());
@@ -44,7 +44,7 @@ namespace SEMining.tests.Sandbox.Transactios
             ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
             var transactionHolderMock = new Mock<ITransactionHolder>();
             ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
+            var balanceMock = new Mock<IBalanceHolder>();
             ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
 
             balanceMock.Setup(x => x.GetHistory()).Returns(new List<BalanceRow>() { new BalanceRow.Builder().Build() });
@@ -69,7 +69,7 @@ namespace SEMining.tests.Sandbox.Transactios
             ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
             var transactionHolderMock = new Mock<ITransactionHolder>();
             ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
+            var balanceMock = new Mock<IBalanceHolder>();
             ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
@@ -96,7 +96,7 @@ namespace SEMining.tests.Sandbox.Transactios
             ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
             var transactionHolderMock = new Mock<ITransactionHolder>();
             ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
+            var balanceMock = new Mock<IBalanceHolder>();
             ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
             balanceMock.Setup(x => x.GetTotal()).Returns(1000);
 
@@ -129,7 +129,7 @@ namespace SEMining.tests.Sandbox.Transactios
             ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
             var transactionHolderMock = new Mock<ITransactionHolder>();
             ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
+            var balanceMock = new Mock<IBalanceHolder>();
             ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
@@ -150,7 +150,7 @@ namespace SEMining.tests.Sandbox.Transactios
             ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
             var transactionHolderMock = new Mock<ITransactionHolder>();
             ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
+            var balanceMock = new Mock<IBalanceHolder>();
             ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
             balanceMock.Setup(x => x.GetTotal()).Returns(1000);
 
@@ -182,7 +182,7 @@ namespace SEMining.tests.Sandbox.Transactios
             ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
             var transactionHolderMock = new Mock<ITransactionHolder>();
             ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
+            var balanceMock = new Mock<IBalanceHolder>();
             ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
             balanceMock.Setup(x => x.GetTotal()).Returns(1000);
             transactionHolderMock.Setup(x => x.GetOpenTransactions(It.IsAny<string>()))
@@ -252,7 +252,7 @@ namespace SEMining.tests.Sandbox.Transactios
             ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
             var transactionHolderMock = new Mock<ITransactionHolder>();
             ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
+            var balanceMock = new Mock<IBalanceHolder>();
             ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
             balanceMock.Setup(x => x.GetTotal()).Returns(1000);
 
@@ -290,7 +290,7 @@ namespace SEMining.tests.Sandbox.Transactios
             ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
             var transactionHolderMock = new Mock<ITransactionHolder>();
             ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
+            var balanceMock = new Mock<IBalanceHolder>();
             ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
             balanceMock.Setup(x => x.GetTotal()).Returns(1000);
 
@@ -358,7 +358,7 @@ namespace SEMining.tests.Sandbox.Transactios
             ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
             var transactionHolderMock = new Mock<ITransactionHolder>();
             ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
+            var balanceMock = new Mock<IBalanceHolder>();
             ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
             balanceMock.Setup(x => x.GetTotal()).Returns(1000);
 
@@ -433,7 +433,7 @@ namespace SEMining.tests.Sandbox.Transactios
             ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
             var transactionHolderMock = new Mock<ITransactionHolder>();
             ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
+            var balanceMock = new Mock<IBalanceHolder>();
             ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
             balanceMock.Setup(x => x.GetTotal()).Returns(1000);
             workingPeriodHolderMock.Setup(x => x.IsStoredPoint(It.IsAny<string>(), It.IsAny<DateTime>())).Returns(true);

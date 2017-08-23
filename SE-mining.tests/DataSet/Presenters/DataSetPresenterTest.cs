@@ -6,11 +6,11 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using SEMining.Commons.Info;
-using SEMining.Commons.Info.Model.Message;
 using SEMining.DataSet.DataServices;
 using SEMining.DataSet.Events;
 using SEMining.DataSet.Models;
 using SEMining.DataSet.Presenters;
+using SE_mining_base.Info.Message;
 
 namespace SEMining.tests.DataSet.Presenters
 {

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SEMining.Sandbox.Models;
+using SE_mining_base.Sandbox.Models;
 
 namespace SEMining.Sandbox.Holders
 {

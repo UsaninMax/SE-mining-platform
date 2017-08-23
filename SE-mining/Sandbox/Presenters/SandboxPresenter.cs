@@ -5,9 +5,9 @@ using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;
 using SEMining.Commons.Info;
-using SEMining.Commons.Info.Model.Message;
 using SEMining.Sandbox.Events;
 using SEMining.Sandbox.Providers;
+using SE_mining_base.Info.Message;
 
 namespace SEMining.Sandbox.Presenters
 {

@@ -11,7 +11,7 @@ using SEMining.StockData.Holders;
 using SEMining.StockData.Models;
 using SEMining.StockData.Presenters;
 using SEMining.StockData.ViewModels;
-using SEMining.Commons.Info.Model.Message;
+using SE_mining_base.Info.Message;
 
 namespace SEMining.tests.StockData.ViewModels
 {

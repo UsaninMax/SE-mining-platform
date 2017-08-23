@@ -3,9 +3,9 @@ using SEMining.Charts.Vizualization.ViewModels;
 using Moq;
 using Microsoft.Practices.Unity;
 using System.Collections.Generic;
-using SEMining.Charts.Vizualization.Configurations;
 using System;
 using SEMining.Charts.Vizualization.Dispatching;
+using SE_mining_base.Charts.Vizualization.Configurations;
 
 namespace SEMining.tests.Charts.Vizualization.Dispatching
 {

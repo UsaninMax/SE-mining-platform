@@ -23,7 +23,6 @@ using SEMining.Sandbox.DataProviding.Transformers;
 using SEMining.Sandbox.Presenters;
 using SEMining.Sandbox.Providers;
 using SEMining.Sandbox.Transactios;
-using SEMining.Sandbox.Transactios.Models;
 using SEMining.StockData.DataServices.SecuritiesInfo;
 using SEMining.StockData.DataServices.SecuritiesInfo.Finam;
 using SEMining.StockData.DataServices.Serialization;
@@ -38,11 +37,12 @@ using System;
 using SEMining.Charts.Data.Holders;
 using SEMining.Charts.Data.Populating;
 using SEMining.Charts.Data.Providers;
-using SEMining.Charts.Vizualization.Configurations;
 using SEMining.Charts.Vizualization.Dispatching;
 using SEMining.Charts.Vizualization.Holders;
 using SEMining.Charts.Vizualization.ViewModels;
 using SEMining.Sandbox.Results.Storing;
+using SE_mining_base.Charts.Vizualization.Configurations;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining
 {
@@ -111,7 +111,7 @@ namespace SEMining
 
             Container.RegisterType<ITransactionsContext, TransactionsContext>(new InjectionConstructor(typeof(IDictionary<string, BrokerCost>)));
             Container.RegisterType<ITransactionHolder, TransactionHolder>(new InjectionConstructor(typeof(IDictionary<string, BrokerCost>)));
-            Container.RegisterType<IBalance, Balance>();
+            Container.RegisterType<IBalanceHolder, BalanceHolder>();
             Container.RegisterType<ITransactionBuilder, TransactionBuilder>();
             Container.RegisterType<IWorkingPeriodHolder, WorkingPeriodHolder>();
 

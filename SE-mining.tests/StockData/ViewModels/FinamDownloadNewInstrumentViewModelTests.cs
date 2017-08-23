@@ -6,7 +6,6 @@ using Moq;
 using NUnit.Framework;
 using Prism.Events;
 using SEMining.Commons.Info;
-using SEMining.Commons.Info.Model.Message;
 using SEMining.StockData.DataServices.SecuritiesInfo;
 using SEMining.StockData.DataServices.Trades;
 using SEMining.StockData.Events;
@@ -14,6 +13,7 @@ using SEMining.StockData.Holders;
 using SEMining.StockData.Models;
 using SEMining.StockData.Presenters;
 using SEMining.StockData.ViewModels;
+using SE_mining_base.Info.Message;
 
 namespace SEMining.tests.StockData.ViewModels
 {

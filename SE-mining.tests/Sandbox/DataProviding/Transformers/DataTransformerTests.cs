@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using SEMining.Sandbox.DataProviding.Predicates;
 using SEMining.Sandbox.DataProviding.Transformers;
-using SEMining.Sandbox.Models;
 using SEMining.StockData.Models;
+using SE_mining_base.Sandbox.DataProviding.Predicates;
+using SE_mining_base.Sandbox.Models;
 
 namespace SEMining.tests.Sandbox.DataProviding.Transformers
 {

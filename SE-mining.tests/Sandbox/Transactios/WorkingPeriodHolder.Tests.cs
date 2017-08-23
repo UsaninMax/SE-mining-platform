@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using SEMining.Sandbox.Transactios;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.tests.Sandbox.Transactios
 {

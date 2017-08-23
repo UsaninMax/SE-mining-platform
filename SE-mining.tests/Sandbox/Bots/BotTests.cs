@@ -6,12 +6,12 @@ using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
 using SEMining.Sandbox.Bots;
-using SEMining.Sandbox.Models;
 using SEMining.Sandbox.Transactios;
-using SEMining.Sandbox.Transactios.Models;
 using SEMining.Charts.Data.Holders;
 using SEMining.Charts.Data.Populating;
 using SEMining.Sandbox.Holders;
+using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.tests.Sandbox.Bots
 {
@@ -180,7 +180,7 @@ namespace SEMining.tests.Sandbox.Bots
             transactionContextMock.Verify(x => x.Reset(), Times.Once);
         }
 
-        private class TestBot : BotApi
+        private class TestBot : BotAbstraction
         {
             private IList<IData> _slices = new List<IData>();
             public override void Execution(IDictionary<string, IData> data)

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using SEMining.Charts.Data.Predicates.Basis;
-using SEMining.Sandbox.Models;
-using SEMining.Sandbox.Transactios.Enums;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Charts.Data.Predicates.Basis;
+using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Enums;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.Sandbox.Bots
 {
