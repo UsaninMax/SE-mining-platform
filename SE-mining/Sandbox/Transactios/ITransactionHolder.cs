@@ -14,6 +14,7 @@ namespace SEMining.Sandbox.Transactios
         IEnumerable<Transaction> GetInvertedOpenTransactions(string instrumentId, Direction direction);
         IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
         IEnumerable<Transaction> GetOpenTransactions(string instrumentId);
+        int GetNumberOfOpenTransactions(string instrumentId);
         int GetSize();
         void Reset();
     }

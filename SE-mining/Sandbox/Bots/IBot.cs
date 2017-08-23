@@ -23,6 +23,8 @@ namespace SEMining.Sandbox.Bots
         void PopulateCharts(IEnumerable<ChartPredicate> predicates);
         void StoreCustomData(string key, IEnumerable<object> data);
         void CleanCustomeStorage();
+        int GetAvailableNumberToOpen(string instrumentId);
+        int GetNumberOfOpenTransactions(string instrumentId);
         IEnumerable<Transaction> GetOpenTransactions();
         IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
         IEnumerable<BalanceRow> GetBalanceHistory();

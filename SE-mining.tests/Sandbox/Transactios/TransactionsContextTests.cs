@@ -83,7 +83,7 @@ namespace SEMining.tests.Sandbox.Transactios
 
             Assert.Throws<Exception>(() =>
             {
-                context.AvailableNumber("test");
+                context.GetAvailableNumberToOpen("test");
             });
         }
 
@@ -114,10 +114,10 @@ namespace SEMining.tests.Sandbox.Transactios
             context.ProcessTick(ticks, DateTime.MinValue);
             context.SetUpBalance(1000);
 
-            Assert.That(context.AvailableNumber("test_id"), Is.EqualTo(83));
+            Assert.That(context.GetAvailableNumberToOpen("test_id"), Is.EqualTo(83));
 
             transactionHolderMock.Setup(x => x.GetCoverage(ticks, It.IsAny<IEnumerable<OpenPositionRequest>>())).Returns(103);
-            Assert.That(context.AvailableNumber("test_id"), Is.EqualTo(74));
+            Assert.That(context.GetAvailableNumberToOpen("test_id"), Is.EqualTo(74));
         }
 
         [Test]

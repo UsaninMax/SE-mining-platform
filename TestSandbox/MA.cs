@@ -4,7 +4,7 @@ using System.Linq;
 using SEMining.Sandbox;
 using SEMining.Sandbox.Models;
 
-namespace TestSandboxModule
+namespace TestSandbox
 {
     public class MA : IIndicatorProvider
     {

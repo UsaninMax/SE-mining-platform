@@ -5,7 +5,7 @@ using SEMining.Sandbox.Models;
 using SEMining.Sandbox.Transactios.Enums;
 using SEMining.Sandbox.Transactios.Models;
 
-namespace TestSandboxModule
+namespace TestSandbox
 {
     public class TestBot : BotApi
     {

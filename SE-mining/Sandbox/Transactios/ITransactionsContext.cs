@@ -13,7 +13,8 @@ namespace SEMining.Sandbox.Transactios
         void SetUpWorkingPeriod(IDictionary<string, WorkingPeriod> value);
         double GetBalance();
         void Reset();
-        int AvailableNumber(string instrumentId);
+        int GetAvailableNumberToOpen(string instrumentId);
+        int GetNumberOfOpenTransactions(string instrumentId);
         IEnumerable<Transaction> GetTransactionHistory();
         IEnumerable<BalanceRow> GetBalanceHistory();
         bool OpenPosition(OpenPositionRequest request);

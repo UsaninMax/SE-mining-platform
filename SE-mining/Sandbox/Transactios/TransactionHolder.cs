@@ -92,6 +92,12 @@ namespace SEMining.Sandbox.Transactios
                 .ToList();
         }
 
+        public int GetNumberOfOpenTransactions(string instrumentId)
+        {
+            return _openTransactions
+                .Where(x => x.InstrumentId.Equals(instrumentId)).Select(transaction => transaction.RemainingNumber).Sum();
+        }
+
         public int GetSize()
         {
             return _openTransactions.Count;

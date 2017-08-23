@@ -126,6 +126,16 @@ namespace SEMining.Sandbox.Bots
             ContainerBuilder.Container.Resolve<ICustomDataHolder>().CleanAll();
         }
 
+        public int GetAvailableNumberToOpen(string instrumentId)
+        {
+            return _context.GetAvailableNumberToOpen(instrumentId);
+        }
+
+        public int GetNumberOfOpenTransactions(string instrumentId)
+        {
+            return _context.GetNumberOfOpenTransactions(instrumentId);
+        }
+
         public IEnumerable<Transaction> GetOpenTransactions()
         {
             return _context.GetOpenTransactions();

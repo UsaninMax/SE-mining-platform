@@ -74,7 +74,7 @@ namespace SEMining.Sandbox.Transactios
             _lastDate = DateTime.MinValue;
         }
 
-        public int AvailableNumber(string instrumentId)
+        public int GetAvailableNumberToOpen(string instrumentId)
         {
             if (_lastTicks.IsNullOrEmpty())
             {
@@ -87,6 +87,11 @@ namespace SEMining.Sandbox.Transactios
 
             var costs = _brokerCosts[instrumentId];
             return (int)Math.Floor((_balance.GetTotal() - GetCoverage()) / (_lastTicks[instrumentId].Price * costs.Coverage));
+        }
+
+        public int GetNumberOfOpenTransactions(string instrumentId)
+        {
+            return _transactionHolder.GetNumberOfOpenTransactions(instrumentId);
         }
 
         public IEnumerable<Transaction> GetTransactionHistory()
