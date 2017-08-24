@@ -26,7 +26,7 @@ namespace SEMining.Charts.Vizualization.Dispatching
             }));
         }
 
-        public void Push(IChartViewModel chartViewModel, IEnumerable<Candle> list, ChartPredicate predicate)
+        public void Push(IChartViewModel chartViewModel, ICollection<Candle> list, ChartPredicate predicate)
         {
             _dispatcher.BeginInvoke((Action)(() =>
             {
@@ -34,7 +34,7 @@ namespace SEMining.Charts.Vizualization.Dispatching
             }));
         }
 
-        public void Push(IChartViewModel chartViewModel, IEnumerable<double> list, ChartPredicate predicate)
+        public void Push(IChartViewModel chartViewModel, ICollection<double> list, ChartPredicate predicate)
         {
             _dispatcher.BeginInvoke((Action)(() =>
             {
@@ -42,7 +42,7 @@ namespace SEMining.Charts.Vizualization.Dispatching
             }));
         }
 
-        public void Push(IChartViewModel chartViewModel, IEnumerable<Indicator> list, ChartPredicate predicate)
+        public void Push(IChartViewModel chartViewModel, ICollection<Indicator> list, ChartPredicate predicate)
         {
             _dispatcher.BeginInvoke((Action)(() =>
             {
@@ -50,7 +50,7 @@ namespace SEMining.Charts.Vizualization.Dispatching
             }));
         }
 
-        public void Push(IChartViewModel chartViewModel, IEnumerable<Transaction> list)
+        public void Push(IChartViewModel chartViewModel, ICollection<Transaction> list)
         {
             _dispatcher.BeginInvoke((Action)(() =>
             {

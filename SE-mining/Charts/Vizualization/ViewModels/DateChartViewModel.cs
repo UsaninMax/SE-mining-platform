@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
+using Castle.Core.Internal;
 using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Wpf;
@@ -75,27 +76,15 @@ namespace SEMining.Charts.Vizualization.ViewModels
         public ICommand ChangeToogleZoomingModeCommand { get; private set; }
         public ICommand ShowDataCommand { get; private set; }
 
+        private readonly TimeSpan _xAxis;
+
         public DateChartViewModel(TimeSpan xAxis)
         {
+            _xAxis = xAxis;
             ChangeToogleZoomingModeCommand = new DelegateCommand(ChangeToogleZoomingMode);
             ShowDataCommand = new DelegateCommand(UpdateCharts);
             ToogleZoomingModeText = "Zooming mode " + ZoomingMode;
-            XFormatter = val => new DateTime((long)val * xAxis.Ticks).ToString("dd/MM/yy HH:mm:ss");
-
-            Charting.For<Candle>(Mappers.Financial<Candle>()
-                .X(x => x.Date().Ticks / xAxis.Ticks)
-                .Open(x => x.Open)
-                .Close(x => x.Close)
-                .High(x => x.High)
-                .Low(x => x.Low), SeriesOrientation.Horizontal);
-
-            Charting.For<Indicator>(Mappers.Xy<Indicator>()
-                .X(x => x.Date().Ticks / xAxis.Ticks)
-                .Y(x => x.Value), SeriesOrientation.Horizontal);
-
-            Charting.For<Transaction>(Mappers.Xy<Transaction>()
-                .X(x => x.Date.Ticks / xAxis.Ticks)
-                .Y(x => x.ExecutedPrice), SeriesOrientation.Horizontal);
+            XFormatter = val => new DateTime((long)val * _xAxis.Ticks).ToString("dd/MM/yy HH:mm:ss");
 
         }
 
@@ -149,10 +138,19 @@ namespace SEMining.Charts.Vizualization.ViewModels
             Series.Clear();
         }
 
-        public void Push(IEnumerable<Indicator> values, ChartPredicate predicate)
+        public void Push(ICollection<Indicator> values, ChartPredicate predicate)
         {
             UpdateRange(predicate);
-            Series.Add(new LineSeries
+            if (values.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            var mapper = Mappers.Xy<Indicator>()
+                .X(x => x.Date().Ticks / _xAxis.Ticks)
+                .Y(x => x.Value);
+
+            Series.Add(new LineSeries(mapper)
             {
                 Title = predicate.InstrumentId,
                 StrokeThickness = 1,
@@ -166,10 +164,22 @@ namespace SEMining.Charts.Vizualization.ViewModels
             });
         }
 
-        public void Push(IEnumerable<Candle> values, ChartPredicate predicate)
+        public void Push(ICollection<Candle> values, ChartPredicate predicate)
         {
             UpdateRange(predicate);
-            Series.Add(new OhlcSeries
+            if (values.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            var mapper = Mappers.Financial<Candle>()
+                .X(x => x.Date().Ticks / _xAxis.Ticks)
+                .Open(x => x.Open)
+                .Close(x => x.Close)
+                .High(x => x.High)
+                .Low(x => x.Low);
+
+            Series.Add(new OhlcSeries(mapper)
             {
                 Title = predicate.InstrumentId,
                 StrokeThickness = 1.3,
@@ -177,29 +187,28 @@ namespace SEMining.Charts.Vizualization.ViewModels
             });
         }
 
-        public void Push(IEnumerable<double> values, ChartPredicate predicate)
+        public void Push(ICollection<double> values, ChartPredicate predicate)
         {
-            UpdateRange(predicate);
-            Series.Add(new LineSeries
-            {
-                Title = predicate.InstrumentId,
-                StrokeThickness = 0,
-                Fill = Brushes.Transparent,
-                LineSmoothness = 0,
-                PointGeometrySize = 5,
-                PointForeground = predicate.Color,
-                Values = new ChartValues<double>(values)
-            });
+            throw new NotSupportedException("Cannot use double list in datetime chart");
         }
 
-        public void Push(IEnumerable<Transaction> values)
+        public void Push(ICollection<Transaction> values)
         {
+            if (values.IsNullOrEmpty())
+            {
+                return;
+            }
+
             IEnumerable<Transaction> buyTransactions = values.Where(x => x.Direction.Equals(Direction.Buy)).ToList();
             IEnumerable<Transaction> sellTransactions = values.Where(x => x.Direction.Equals(Direction.Sell)).ToList();
 
+            var mapper = Mappers.Xy<Transaction>()
+                .X(x => x.Date.Ticks / _xAxis.Ticks)
+                .Y(x => x.ExecutedPrice);
+
             if (buyTransactions.Any())
             {
-                Series.Add(new LineSeries
+                Series.Add(new LineSeries(mapper)
                 {
                     Title = "Buy",
                     StrokeThickness = 0,
@@ -213,7 +222,7 @@ namespace SEMining.Charts.Vizualization.ViewModels
 
             if (sellTransactions.Any())
             {
-                Series.Add(new LineSeries
+                Series.Add(new LineSeries(mapper)
                 {
                     Title = "Sell",
                     StrokeThickness = 0,

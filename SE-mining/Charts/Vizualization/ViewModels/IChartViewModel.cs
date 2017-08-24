@@ -7,10 +7,10 @@ namespace SEMining.Charts.Vizualization.ViewModels
 {
     public interface IChartViewModel
     {
-        void Push(IEnumerable<Indicator> values, ChartPredicate predicate);
-        void Push(IEnumerable<Candle> values, ChartPredicate predicate);
-        void Push(IEnumerable<double> values, ChartPredicate predicate);
-        void Push(IEnumerable<Transaction> values);
+        void Push(ICollection<Indicator> values, ChartPredicate predicate);
+        void Push(ICollection<Candle> values, ChartPredicate predicate);
+        void Push(ICollection<double> values, ChartPredicate predicate);
+        void Push(ICollection<Transaction> values);
         void ClearAll();
     }
 }
