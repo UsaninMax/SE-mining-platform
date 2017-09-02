@@ -68,12 +68,6 @@ namespace SEMining.Sandbox.Transactios
                 openSum += withdraw * x.Key;
             });
             var profit = current.Direction == Direction.Sell ? closeSum - openSum : openSum - closeSum;
-
-            if(profit == 0)
-            {
-                return;
-            }
-
             _currentBalance = new BalanceRow.Builder()
                .WithDate(time)
                .TransactionMargin(profit)
