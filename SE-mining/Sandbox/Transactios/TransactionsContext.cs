@@ -106,6 +106,11 @@ namespace SEMining.Sandbox.Transactios
 
         public bool OpenPosition(OpenPositionRequest request)
         {
+            if (request.Number == 0)
+            {
+                return false;
+            }
+
             if (_lastTicks.IsNullOrEmpty())
             {
                 return false;

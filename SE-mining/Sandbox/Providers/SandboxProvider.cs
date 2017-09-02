@@ -30,9 +30,10 @@ namespace SEMining.Sandbox.Providers
 
             foreach (string file in checker.GetSuitableDll(_sandboxFolder))
             {
-                Assembly.Load(AssemblyName.GetAssemblyName(file))
+                var name = AssemblyName.GetAssemblyName(file);
+                Assembly.Load(name)
                     .GetTypes()
-                    .Where(t => typeof(SandboxAbstraction).IsAssignableFrom(t))
+                    .Where(t => typeof(SandboxAbstraction).IsAssignableFrom(t) && name.Name.Equals(t.Name))
                     .ToList()
                     .ForEach(x =>
                     {
