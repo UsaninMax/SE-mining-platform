@@ -57,7 +57,8 @@ namespace SEMining.Sandbox.Results.Adaptors
                             {"TransactionInstrumentId" , transaction.InstrumentId.ToString()},
                             {"TransactionDirection" , transaction.Direction.ToString()},
                             {"TransactionNumber" , transaction.Number.ToString()},
-                            {"TransactionExecutedPrice" , transaction.ExecutedPrice.ToString(CultureInfo.InvariantCulture)}
+                            {"TransactionExecutedPrice" , transaction.ExecutedPrice.ToString(CultureInfo.InvariantCulture)},
+                            {"Id" , request.Id.ToString()}
                         };
                         report.Add(reportRequest);
                     });
