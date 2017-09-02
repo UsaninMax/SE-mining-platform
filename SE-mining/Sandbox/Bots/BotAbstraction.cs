@@ -155,5 +155,20 @@ namespace SEMining.Sandbox.Bots
         {
             return _context.GetActiveRequests(instrumentId, direction);
         }
+
+        public int NumberOfOpen(string id, Direction direction)
+        {
+            return GetOpenTransactions(id, direction)
+                .Select(tr => tr.RemainingNumber)
+                .Sum();
+        }
+
+        public bool AnyOpenPositions(string id)
+        {
+            return GetOpenTransactions(id, Direction.Buy).Any() ||
+                   GetOpenTransactions(id, Direction.Sell).Any() ||
+                   GetActiveRequests(id, Direction.Buy).Any() ||
+                   GetActiveRequests(id, Direction.Sell).Any();
+        }
     }
 }

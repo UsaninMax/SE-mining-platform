@@ -31,5 +31,7 @@ namespace SEMining.Sandbox.Bots
         IEnumerable<Transaction> GetTansactionsHistory();
         IEnumerable<OpenPositionRequest> GetRequestsHistory();
         IEnumerable<OpenPositionRequest> GetActiveRequests(string instrumentId, Direction direction);
+        bool AnyOpenPositions(string id);
+        int NumberOfOpen(string id, Direction direction);
     }
 }
