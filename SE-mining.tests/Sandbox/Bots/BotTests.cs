@@ -188,7 +188,7 @@ namespace SEMining.tests.Sandbox.Bots
                 data.Values.ForEach(x => _slices.Add(x));
             }
 
-            public override int Score()
+            public override double Score()
             {
                 throw new System.NotImplementedException();
             }

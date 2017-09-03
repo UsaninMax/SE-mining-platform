@@ -5,11 +5,9 @@ using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using SEMining.Charts.Data.Holders;
 using SEMining.Charts.Data.Populating;
-using SEMining.Commons.Info;
 using SEMining.Sandbox.Transactios;
 using SEMining.Sandbox.Holders;
 using SE_mining_base.Charts.Data.Predicates.Basis;
-using SE_mining_base.Info.Message;
 using SE_mining_base.Sandbox.Models;
 using SE_mining_base.Transactios.Enums;
 using SE_mining_base.Transactios.Models;
@@ -20,14 +18,15 @@ namespace SEMining.Sandbox.Bots
     {
         private string _id;
         private string _sandboxId;
-        private readonly IInfoPublisher _infoPublisher;
         private BotPredicate _predicate;
         private readonly ITransactionsContext _context;
+
+        public double StartBalance => _startBalance;
+        private double _startBalance;
 
         protected BotAbstraction(IDictionary<string, BrokerCost> brokerCosts)
         {
             _context = ContainerBuilder.Container.Resolve<ITransactionsContext>(new DependencyOverride<IDictionary<string, BrokerCost>>(brokerCosts));
-            _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
         }
 
         public string GetId()
@@ -53,6 +52,7 @@ namespace SEMining.Sandbox.Bots
         public void SetUpBalance(double value)
         {
             _context.SetUpBalance(value);
+            _startBalance = value;
         }
 
         public void OpenPosition(OpenPositionRequest request)
@@ -70,6 +70,11 @@ namespace SEMining.Sandbox.Bots
             _context.Reset();
         }
 
+        public double CurrentBalance()
+        {
+            return _context.CurrentBalance();
+        }
+
         public IEnumerable<Transaction> GetTansactionsHistory()
         {
             return _context.GetTransactionHistory();
@@ -82,7 +87,6 @@ namespace SEMining.Sandbox.Bots
 
         public void Execute()
         {
-            _infoPublisher.PublishInfo(new InfoItem("Bot " + _id) { Message = "Start execute - " + _predicate });
             ContainerBuilder.Container.Resolve<ISandboxDataHolder>()
                 .Get()
                 .Where(m =>
@@ -99,11 +103,10 @@ namespace SEMining.Sandbox.Bots
                         Execution(x.Datas);
                     }
                 });
-            _infoPublisher.PublishInfo(new InfoItem("Bot " + _id) { Message = "Executed - " + _predicate });
         }
 
         public abstract void Execution(IDictionary<string, IData> data);
-        public abstract int Score();
+        public abstract double Score();
 
         public void SetUpSandboxId(string id)
         {

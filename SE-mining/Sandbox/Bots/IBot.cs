@@ -14,7 +14,7 @@ namespace SEMining.Sandbox.Bots
         void SetUpPredicate(BotPredicate predicate);
         void Execute();
         void Execution(IDictionary<string, IData> data);
-        int Score();
+        double Score();
         void SetUpWorkingPeriod(IDictionary<string, WorkingPeriod> value);
         void SetUpBalance(double value);
         void OpenPosition(OpenPositionRequest request);
@@ -28,6 +28,7 @@ namespace SEMining.Sandbox.Bots
         IEnumerable<Transaction> GetOpenTransactions();
         IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
         IEnumerable<BalanceRow> GetBalanceHistory();
+        double CurrentBalance();
         IEnumerable<Transaction> GetTansactionsHistory();
         IEnumerable<OpenPositionRequest> GetRequestsHistory();
         IEnumerable<OpenPositionRequest> GetActiveRequests(string instrumentId, Direction direction);

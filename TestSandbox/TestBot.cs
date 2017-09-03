@@ -37,7 +37,7 @@ namespace TestSandbox
             }
         }
 
-        public override int Score()
+        public override double Score()
         {
             return 100;
         }

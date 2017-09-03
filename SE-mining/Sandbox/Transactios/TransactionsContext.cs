@@ -57,7 +57,7 @@ namespace SEMining.Sandbox.Transactios
             _workingPeriodHolder.SetUp(value);
         }
 
-        public double GetBalance()
+        public double CurrentBalance()
         {
             return _balance.GetTotal();
         }

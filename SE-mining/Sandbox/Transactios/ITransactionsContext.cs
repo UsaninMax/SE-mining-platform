@@ -11,7 +11,7 @@ namespace SEMining.Sandbox.Transactios
         bool IsPrepared();
         void SetUpBalance(double value);
         void SetUpWorkingPeriod(IDictionary<string, WorkingPeriod> value);
-        double GetBalance();
+        double CurrentBalance();
         void Reset();
         int GetAvailableNumberToOpen(string instrumentId);
         int GetNumberOfOpenTransactions(string instrumentId);
