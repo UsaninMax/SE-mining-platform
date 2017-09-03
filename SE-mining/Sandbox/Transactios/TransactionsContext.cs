@@ -105,13 +105,6 @@ namespace SEMining.Sandbox.Transactios
 
         public bool OpenPosition(OpenPositionRequest request)
         {
-
-            if (GetOpenTransactions().Any() && _lastDate > new DateTime(2016, 3, 15, 10, 30, 24) && _lastDate < new DateTime(2016, 3, 15, 10, 31, 00))
-            {
-                int f = 0;
-            }
-
-
             if (request.Number == 0)
             {
                 return false;
