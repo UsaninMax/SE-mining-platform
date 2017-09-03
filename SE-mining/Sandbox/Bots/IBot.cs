@@ -35,5 +35,6 @@ namespace SEMining.Sandbox.Bots
         bool AnyOpenPositions(string id);
         bool AnyOpenPositions(string id, Direction direction);
         int NumberOfOpen(string id, Direction direction);
+        double StartBalance();
     }
 }

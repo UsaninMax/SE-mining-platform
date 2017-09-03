@@ -20,8 +20,6 @@ namespace SEMining.Sandbox.Bots
         private string _sandboxId;
         private BotPredicate _predicate;
         private readonly ITransactionsContext _context;
-
-        public double StartBalance => _startBalance;
         private double _startBalance;
 
         protected BotAbstraction(IDictionary<string, BrokerCost> brokerCosts)
@@ -170,6 +168,11 @@ namespace SEMining.Sandbox.Bots
             return GetOpenTransactions(id, direction)
                 .Select(tr => tr.RemainingNumber)
                 .Sum();
+        }
+
+        public double StartBalance()
+        {
+            return _startBalance;
         }
 
         public bool AnyOpenPositions(string id)
