@@ -69,7 +69,6 @@ namespace SEMining.Sandbox.Transactios
             _requestsHistory.Clear();
             _balance.Reset();
             _transactionHolder.Reset();
-            _workingPeriodHolder.Reset();
             _lastTicks.Clear();
             _lastDate = DateTime.MinValue;
         }
@@ -106,6 +105,13 @@ namespace SEMining.Sandbox.Transactios
 
         public bool OpenPosition(OpenPositionRequest request)
         {
+
+            if (GetOpenTransactions().Any() && _lastDate > new DateTime(2016, 3, 15, 10, 30, 24) && _lastDate < new DateTime(2016, 3, 15, 10, 31, 00))
+            {
+                int f = 0;
+            }
+
+
             if (request.Number == 0)
             {
                 return false;
@@ -171,11 +177,6 @@ namespace SEMining.Sandbox.Transactios
 
         private bool ForceClosePositionChecker(string instrumentId)
         {
-            if (_workingPeriodHolder.IsStoredPoint(instrumentId, _lastDate.Date))
-            {
-                return false;
-            }
-            _workingPeriodHolder.StorePoint(instrumentId, _lastDate.Date);
             return !IsWorkingTime(instrumentId);
         }
 

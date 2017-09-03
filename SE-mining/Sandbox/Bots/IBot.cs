@@ -32,6 +32,7 @@ namespace SEMining.Sandbox.Bots
         IEnumerable<OpenPositionRequest> GetRequestsHistory();
         IEnumerable<OpenPositionRequest> GetActiveRequests(string instrumentId, Direction direction);
         bool AnyOpenPositions(string id);
+        bool AnyOpenPositions(string id, Direction direction);
         int NumberOfOpen(string id, Direction direction);
     }
 }

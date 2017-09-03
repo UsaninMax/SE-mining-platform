@@ -156,6 +156,12 @@ namespace SEMining.Sandbox.Bots
             return _context.GetActiveRequests(instrumentId, direction);
         }
 
+        public bool AnyOpenPositions(string id, Direction direction)
+        {
+            return GetOpenTransactions(id, direction).Any() ||
+                   GetActiveRequests(id, direction).Any();
+        }
+
         public int NumberOfOpen(string id, Direction direction)
         {
             return GetOpenTransactions(id, direction)
