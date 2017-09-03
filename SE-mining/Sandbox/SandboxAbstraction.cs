@@ -7,11 +7,13 @@ using Microsoft.Practices.Unity;
 using SEMining.Charts.Data.Holders;
 using SEMining.Charts.Data.Populating;
 using SEMining.Charts.Vizualization.Dispatching;
+using SEMining.Commons.Info;
 using SEMining.Sandbox.Bots;
 using SEMining.Sandbox.DataProviding;
 using SEMining.Sandbox.Holders;
 using SE_mining_base.Charts.Data.Predicates.Basis;
 using SE_mining_base.Charts.Vizualization.Configurations;
+using SE_mining_base.Info.Message;
 using SE_mining_base.Sandbox.DataProviding.Predicates;
 
 namespace SEMining.Sandbox
@@ -22,6 +24,17 @@ namespace SEMining.Sandbox
         protected IEnumerable<IBot> Bots => _bots;
         private CancellationToken _token;
         private IEnumerable<IBot> _bots;
+        private readonly IInfoPublisher _infoPublisher;
+
+        public SandboxAbstraction()
+        {
+            _infoPublisher = ContainerBuilder.Container.Resolve<IInfoPublisher>();
+        }
+
+        public void SendMessage(string message)
+        {
+            _infoPublisher.PublishInfo(new SandboxInfo{ Message = message });
+        }
 
         public void SetToken(CancellationToken token)
         {

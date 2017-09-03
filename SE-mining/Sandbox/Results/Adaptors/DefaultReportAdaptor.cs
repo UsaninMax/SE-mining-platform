@@ -34,7 +34,8 @@ namespace SEMining.Sandbox.Results.Adaptors
                     {"Date" , row.Date.ToString(CultureInfo.InvariantCulture)},
                     {"TransactionCost" , row.TransactionCost.ToString(CultureInfo.InvariantCulture)},
                     {"TransactionMargin" , row.TransactionMargin.ToString(CultureInfo.InvariantCulture)},
-                    {"Total" , row.Total.ToString(CultureInfo.InvariantCulture)}
+                    {"Total" , row.Total.ToString(CultureInfo.InvariantCulture)},
+                    {"RequestId" , row.RequestId.ToString()}
                 });
             });
             return report;

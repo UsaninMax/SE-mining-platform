@@ -12,6 +12,8 @@ namespace SE_mining_base.Transactios.Models
         private double _transactionMargin;
         public double Total => _total;
         private double _total;
+        public Guid RequestId => _requestId;
+        private Guid _requestId;
 
         private BalanceRow()
         {
@@ -23,7 +25,13 @@ namespace SE_mining_base.Transactios.Models
             private double _transactionCost;
             private double _transactionMargin;
             private double _total;
+            private Guid _requestId;
 
+            public Builder WithRequestId(Guid value)
+            {
+                _requestId = value;
+                return this;
+            }
 
             public Builder WithDate(DateTime value)
             {
@@ -56,7 +64,8 @@ namespace SE_mining_base.Transactios.Models
                     _date = _date,
                     _transactionCost = _transactionCost,
                     _transactionMargin = _transactionMargin,
-                    _total = _total
+                    _total = _total,
+                    _requestId = _requestId
                 };
             }
         }
@@ -66,6 +75,7 @@ namespace SE_mining_base.Transactios.Models
             return $"{nameof(Date)}: {Date}," +
                    $" {nameof(TransactionCost)}: {TransactionCost}," +
                    $" {nameof(TransactionMargin)}: {TransactionMargin}, " +
+                   $" {nameof(RequestId)}: {RequestId}, " +
                    $"{nameof(Total)}: {Total}";
         }
     }

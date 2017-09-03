@@ -127,7 +127,7 @@ namespace SEMining.Sandbox.Transactios
             request.Date = _lastDate;
             _activeRequests.Add(request);
             _requestsHistory.Add(request);
-            _balance.AddTransactionCost(_brokerCosts[request.InstrumentId].TransactionCost, _lastDate);
+            _balance.AddTransactionCost(_brokerCosts[request.InstrumentId].TransactionCost, _lastDate, request.Id);
             return true;
         }
 
@@ -164,7 +164,7 @@ namespace SEMining.Sandbox.Transactios
                         openPosition.Date = _lastDate;
                         _activeRequests.Add(openPosition);
                         _requestsHistory.Add(openPosition);
-                        _balance.AddTransactionCost(_brokerCosts[openPosition.InstrumentId].TransactionCost, _lastDate);
+                        _balance.AddTransactionCost(_brokerCosts[openPosition.InstrumentId].TransactionCost, _lastDate, openPosition.Id);
                     });
         }
 

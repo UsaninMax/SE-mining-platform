@@ -22,5 +22,6 @@ namespace SEMining.Sandbox
         void PopulateCharts(IEnumerable<ChartPredicate> predicates);
         void StoreCustomData(string key, IEnumerable<object> data);
         void CleanCustomeStorage();
+        void SendMessage(string message);
     }
 }

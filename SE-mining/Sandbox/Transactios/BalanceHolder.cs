@@ -39,12 +39,13 @@ namespace SEMining.Sandbox.Transactios
             return _history;
         }
 
-        public void AddTransactionCost(double value, DateTime time)
+        public void AddTransactionCost(double value, DateTime time, Guid requestId)
         {
             _currentBalance = new BalanceRow.Builder()
                 .WithDate(time)
                 .TransactionCost(-value)
                 .Total(_currentBalance.Total - value)
+                .WithRequestId(requestId)
                 .Build();
             _history.Add(_currentBalance);
         }
@@ -72,6 +73,7 @@ namespace SEMining.Sandbox.Transactios
                .WithDate(time)
                .TransactionMargin(profit)
                .Total(_currentBalance.Total + profit)
+               .WithRequestId(current.RequestId)
                .Build();
 
             _history.Add(_currentBalance);

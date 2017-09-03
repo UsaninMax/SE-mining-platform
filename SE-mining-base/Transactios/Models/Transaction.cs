@@ -10,9 +10,10 @@ namespace SE_mining_base.Transactios.Models
         public double ExecutedPrice { get; private set; }
         public int Number { get; set; }
         public int RemainingNumber { get; set; }
+        public Guid RequestId { get; private set; }
         public Direction Direction { get; private set; }
 
-        protected Transaction() { }
+        private Transaction() { }
 
         public class Builder
         {
@@ -21,6 +22,13 @@ namespace SE_mining_base.Transactios.Models
             private double _executedPrice;
             private int _number;
             private Direction _direction;
+            private Guid _requestId;
+
+            public Builder RequestId(Guid value)
+            {
+                _requestId = value;
+                return this;
+            }
 
             public Builder InstrumentId(string value)
             {
@@ -61,7 +69,8 @@ namespace SE_mining_base.Transactios.Models
                     RemainingNumber = _number,
                     ExecutedPrice = _executedPrice,
                     Number = _number,
-                    Direction = _direction
+                    Direction = _direction,
+                    RequestId = _requestId
                 };
             }
         }
@@ -70,6 +79,7 @@ namespace SE_mining_base.Transactios.Models
         {
             return $"{nameof(Date)}: {Date}, " +
                    $"{nameof(InstrumentId)}: {InstrumentId}, " +
+                   $"{nameof(RequestId)}: {RequestId}, " +
                    $"{nameof(RemainingNumber)}: {RemainingNumber}, " +
                    $"{nameof(ExecutedPrice)}: {ExecutedPrice}," +
                    $" {nameof(Number)}: {Number}, " +

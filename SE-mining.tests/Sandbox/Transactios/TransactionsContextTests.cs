@@ -343,7 +343,7 @@ namespace SEMining.tests.Sandbox.Transactios
 
             context.ProcessTick(tick, new DateTime(2016, 9, 12, 20, 46, 0));
             _balanceMock.Verify(x => x.AddTransactionMargin(It.IsAny<Transaction>(), transactions, DateTime.MinValue), Times.Never);
-            _balanceMock.Verify(x => x.AddTransactionCost(2, It.IsAny<DateTime>()), Times.Exactly(3));
+            _balanceMock.Verify(x => x.AddTransactionCost(2, It.IsAny<DateTime>(), It.IsAny<Guid>()), Times.Exactly(3));
             _transactionHolderMock.Verify(x => x.UpdateOpenTransactions(It.IsAny<Transaction>()), Times.Never);
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(2));
 
@@ -409,7 +409,7 @@ namespace SEMining.tests.Sandbox.Transactios
             Assert.That(context.OpenPosition(request), Is.True);
 
             context.ProcessTick(tick, new DateTime(2016, 9, 12, 20, 46, 0));
-            _balanceMock.Verify(x => x.AddTransactionCost(2, It.IsAny<DateTime>()), Times.Exactly(1));
+            _balanceMock.Verify(x => x.AddTransactionCost(2, It.IsAny<DateTime>(), It.IsAny<Guid>()), Times.Exactly(1));
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(1));
 
             Assert.That(context.GetActiveRequests().First().RemainingNumber, Is.EqualTo(10));

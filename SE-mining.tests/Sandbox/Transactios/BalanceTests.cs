@@ -26,7 +26,7 @@ namespace SEMining.tests.Sandbox.Transactios
         {
             IBalanceHolder balance = new BalanceHolder();
             balance.AddMoney(300);
-            balance.AddTransactionCost(10, DateTime.MinValue);
+            balance.AddTransactionCost(10, DateTime.MinValue, new Guid());
             Assert.That(balance.GetTotal(), Is.EqualTo(290));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(2));
             Assert.That(balance.GetHistory().ToList()[1].TransactionCost, Is.EqualTo(-10));
@@ -38,7 +38,7 @@ namespace SEMining.tests.Sandbox.Transactios
         {
             IBalanceHolder balance = new BalanceHolder();
             balance.AddMoney(300);
-            balance.AddTransactionCost(10, DateTime.MinValue);
+            balance.AddTransactionCost(10, DateTime.MinValue, new Guid());
             Assert.That(balance.GetTotal(), Is.EqualTo(290));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(2));
             Assert.That(balance.GetHistory().ToList()[1].TransactionCost, Is.EqualTo(-10));
