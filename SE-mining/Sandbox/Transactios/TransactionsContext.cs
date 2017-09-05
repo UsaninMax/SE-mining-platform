@@ -93,7 +93,7 @@ namespace SEMining.Sandbox.Transactios
             return _transactionHolder.GetNumberOfOpenTransactions(instrumentId);
         }
 
-        public IEnumerable<Transaction> GetTransactionHistory()
+        public IList<Transaction> GetTransactionHistory()
         {
             return _requestsHistory.SelectMany(x => x.GetTransactions()).ToList();
         }

@@ -73,7 +73,7 @@ namespace SEMining.Sandbox.Bots
             return _context.CurrentBalance();
         }
 
-        public IEnumerable<Transaction> GetTansactionsHistory()
+        public IList<Transaction> GetTansactionsHistory()
         {
             return _context.GetTransactionHistory();
         }
