@@ -19,5 +19,10 @@ namespace SEMining.Sandbox.Results.Storing
         {
             ContainerBuilder.Container.Resolve<IResultStoring>().Store(data);
         }
+
+        public static void Store(IList<string> data)
+        {
+            ContainerBuilder.Container.Resolve<IResultStoring>().Store(data);
+        }
     }
 }
