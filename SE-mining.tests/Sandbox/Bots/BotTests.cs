@@ -176,7 +176,7 @@ namespace SEMining.tests.Sandbox.Bots
             var transactionContextMock = new Mock<ITransactionsContext>();
             ContainerBuilder.Container.RegisterInstance(transactionContextMock.Object);
             TestBot bot = new TestBot(new Dictionary<string, BrokerCost>());
-            bot.ResetTransactionContext();
+            bot.Reset();
             transactionContextMock.Verify(x => x.Reset(), Times.Once);
         }
 

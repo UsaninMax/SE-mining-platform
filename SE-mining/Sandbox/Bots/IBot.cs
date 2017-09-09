@@ -19,7 +19,7 @@ namespace SEMining.Sandbox.Bots
         void SetUpBalance(double value);
         void OpenPosition(OpenPositionRequest request);
         bool IsPrepared();
-        void ResetTransactionContext();
+        void Reset();
         void PopulateCharts(IEnumerable<ChartPredicate> predicates);
         void StoreCustomData(string key, IEnumerable<object> data);
         void CleanCustomeStorage();
@@ -28,13 +28,13 @@ namespace SEMining.Sandbox.Bots
         IEnumerable<Transaction> GetOpenTransactions();
         IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
         IEnumerable<BalanceRow> GetBalanceHistory();
-        double CurrentBalance();
+        double GetCurrentBalance();
         IList<Transaction> GetTansactionsHistory();
         IEnumerable<OpenPositionRequest> GetRequestsHistory();
         IEnumerable<OpenPositionRequest> GetActiveRequests(string instrumentId, Direction direction);
         bool AnyOpenPositions(string id);
         bool AnyOpenPositions(string id, Direction direction);
         int NumberOfOpen(string id, Direction direction);
-        double StartBalance();
+        double GetStartBalance();
     }
 }

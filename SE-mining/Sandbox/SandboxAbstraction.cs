@@ -66,7 +66,7 @@ namespace SEMining.Sandbox
 
                 return Task.Run(() =>
                 {
-                    x.ResetTransactionContext();
+                    x.Reset();
                     x.Execute();
                 }, _token);
 

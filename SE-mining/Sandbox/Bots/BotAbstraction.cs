@@ -63,12 +63,12 @@ namespace SEMining.Sandbox.Bots
             return _context.IsPrepared();
         }
 
-        public void ResetTransactionContext()
+        public void Reset()
         {
             _context.Reset();
         }
 
-        public double CurrentBalance()
+        public double GetCurrentBalance()
         {
             return _context.CurrentBalance();
         }
@@ -170,7 +170,7 @@ namespace SEMining.Sandbox.Bots
                 .Sum();
         }
 
-        public double StartBalance()
+        public double GetStartBalance()
         {
             return _startBalance;
         }

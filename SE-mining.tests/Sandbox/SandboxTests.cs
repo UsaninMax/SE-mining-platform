@@ -110,9 +110,9 @@ namespace SEMining.tests.Sandbox
             testSandBox.Execution();
 
             botMock_1.Verify(x => x.Execute(), Times.Once);
-            botMock_1.Verify(x => x.ResetTransactionContext(), Times.Once);
+            botMock_1.Verify(x => x.Reset(), Times.Once);
             botMock_2.Verify(x => x.Execute(), Times.Once);
-            botMock_2.Verify(x => x.ResetTransactionContext(), Times.Once);
+            botMock_2.Verify(x => x.Reset(), Times.Once);
         }
 
         [Test]
@@ -149,9 +149,9 @@ namespace SEMining.tests.Sandbox
             testSandBox.Execution();
 
             botMock_1.Verify(x => x.Execute(), Times.Never);
-            botMock_1.Verify(x => x.ResetTransactionContext(), Times.Never);
+            botMock_1.Verify(x => x.Reset(), Times.Never);
             botMock_2.Verify(x => x.Execute(), Times.Never);
-            botMock_2.Verify(x => x.ResetTransactionContext(), Times.Never);
+            botMock_2.Verify(x => x.Reset(), Times.Never);
         }
 
         [Test]
