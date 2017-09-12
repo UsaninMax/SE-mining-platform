@@ -63,7 +63,7 @@ namespace SEMining.Sandbox.Bots
             return _context.IsPrepared();
         }
 
-        public void Reset()
+        public virtual void Reset()
         {
             _context.Reset();
         }
@@ -78,7 +78,7 @@ namespace SEMining.Sandbox.Bots
             return _context.GetTransactionHistory();
         }
 
-        public IEnumerable<BalanceRow> GetBalanceHistory()
+        public IList<BalanceRow> GetBalanceHistory()
         {
             return _context.GetBalanceHistory();
         }

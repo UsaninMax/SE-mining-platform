@@ -98,7 +98,7 @@ namespace SEMining.Sandbox.Transactios
             return _requestsHistory.SelectMany(x => x.GetTransactions()).ToList();
         }
 
-        public IEnumerable<BalanceRow> GetBalanceHistory()
+        public IList<BalanceRow> GetBalanceHistory()
         {
             return _balance.GetHistory();
         }

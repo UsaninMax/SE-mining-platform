@@ -9,7 +9,7 @@ namespace SEMining.Sandbox.Transactios
         void AddMoney(double value);
         double GetTotal();
         void Reset();
-        IEnumerable<BalanceRow> GetHistory();
+        IList<BalanceRow> GetHistory();
         void AddTransactionCost(double value, DateTime time, Guid requestId);
         void AddTransactionMargin(Transaction current, IEnumerable<Transaction> open, DateTime time);
     }

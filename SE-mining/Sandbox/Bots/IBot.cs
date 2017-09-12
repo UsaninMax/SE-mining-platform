@@ -27,7 +27,7 @@ namespace SEMining.Sandbox.Bots
         int GetNumberOfOpenTransactions(string instrumentId);
         IEnumerable<Transaction> GetOpenTransactions();
         IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
-        IEnumerable<BalanceRow> GetBalanceHistory();
+        IList<BalanceRow> GetBalanceHistory();
         double GetCurrentBalance();
         IList<Transaction> GetTansactionsHistory();
         IEnumerable<OpenPositionRequest> GetRequestsHistory();

@@ -16,7 +16,7 @@ namespace SEMining.Sandbox.Transactios
         int GetAvailableNumberToOpen(string instrumentId);
         int GetNumberOfOpenTransactions(string instrumentId);
         IList<Transaction> GetTransactionHistory();
-        IEnumerable<BalanceRow> GetBalanceHistory();
+        IList<BalanceRow> GetBalanceHistory();
         bool OpenPosition(OpenPositionRequest request);
         void CancelPosition(Guid guid);
         void ProcessTick(IDictionary<string, Tick> ticks, DateTime dateTime);

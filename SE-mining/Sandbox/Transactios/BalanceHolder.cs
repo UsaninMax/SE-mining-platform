@@ -34,7 +34,7 @@ namespace SEMining.Sandbox.Transactios
             _history.Add(_currentBalance);
         }
 
-        public IEnumerable<BalanceRow> GetHistory()
+        public IList<BalanceRow> GetHistory()
         {
             return _history;
         }
