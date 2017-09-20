@@ -256,5 +256,10 @@ namespace SEMining.Sandbox.Transactios
         {
             return _transactionHolder.GetOpenTransactions(instrumentId, direction);
         }
+
+        public BrokerCost GetBrokerCost(string instrument)
+        {
+            return _brokerCosts[instrument];
+        }
     }
 }

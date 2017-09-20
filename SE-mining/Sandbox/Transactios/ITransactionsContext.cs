@@ -27,5 +27,6 @@ namespace SEMining.Sandbox.Transactios
         IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
         double GetCoverage();
         double GetCoverage(OpenPositionRequest request);
+        BrokerCost GetBrokerCost(string instrument);
     }
 }

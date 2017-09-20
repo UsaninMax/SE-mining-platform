@@ -182,5 +182,10 @@ namespace SEMining.Sandbox.Bots
                    GetActiveRequests(id, Direction.Buy).Any() ||
                    GetActiveRequests(id, Direction.Sell).Any();
         }
+
+        public BrokerCost GetBrokerCost(string instrument)
+        {
+            return _context.GetBrokerCost(instrument);
+        }
     }
 }

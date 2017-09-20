@@ -36,5 +36,6 @@ namespace SEMining.Sandbox.Bots
         bool AnyOpenPositions(string id, Direction direction);
         int NumberOfOpen(string id, Direction direction);
         double GetStartBalance();
+        BrokerCost GetBrokerCost(string instrument);
     }
 }
