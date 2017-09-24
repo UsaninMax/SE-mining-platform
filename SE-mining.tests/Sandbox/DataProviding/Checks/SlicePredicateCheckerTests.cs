@@ -2,9 +2,9 @@
 using Moq;
 using NUnit.Framework;
 using SEMining.Commons.Info;
-using SEMining.Commons.Info.Model.Message;
 using SEMining.Sandbox.DataProviding.Checks;
-using SEMining.Sandbox.DataProviding.Predicates;
+using SE_mining_base.Info.Message;
+using SE_mining_base.Sandbox.DataProviding.Predicates;
 
 namespace SEMining.tests.Sandbox.DataProviding.Checks
 {

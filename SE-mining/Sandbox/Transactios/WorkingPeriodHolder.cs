@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.Sandbox.Transactios
 {
     public class WorkingPeriodHolder : IWorkingPeriodHolder
     {
         private IDictionary<string, WorkingPeriod> _periods = new Dictionary<string, WorkingPeriod>();
-        private readonly IDictionary<string, DateTime> _stored = new Dictionary<string, DateTime>();
 
         public WorkingPeriod Get(string instrumentId)
         {
@@ -21,31 +20,6 @@ namespace SEMining.Sandbox.Transactios
         public void SetUp(IDictionary<string, WorkingPeriod> periods)
         {
             _periods = periods;
-        }
-
-        public void StorePoint(string instrumentId, DateTime date)
-        {
-            if (_stored.ContainsKey(instrumentId))
-            {
-                _stored[instrumentId] = date;
-                return;
-            }
-            _stored.Add(instrumentId, date);
-        }
-
-        public bool IsStoredPoint(string instrumentId, DateTime date)
-        {
-            if (!_stored.ContainsKey(instrumentId))
-            {
-                return false;
-            }
-
-            return _stored[instrumentId] == date;
-        }
-
-        public void Reset()
-        {
-            _stored.Clear();
         }
     }
 }

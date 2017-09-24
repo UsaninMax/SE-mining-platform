@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using SEMining.Charts.Data.Predicates.Basis;
-using SEMining.Charts.Vizualization.Configurations;
 using SEMining.Sandbox.Bots;
-using SEMining.Sandbox.DataProviding.Predicates;
+using SE_mining_base.Charts.Data.Predicates.Basis;
+using SE_mining_base.Charts.Vizualization.Configurations;
+using SE_mining_base.Sandbox.DataProviding.Predicates;
 
 namespace SEMining.Sandbox
 {
@@ -22,5 +22,6 @@ namespace SEMining.Sandbox
         void PopulateCharts(IEnumerable<ChartPredicate> predicates);
         void StoreCustomData(string key, IEnumerable<object> data);
         void CleanCustomeStorage();
+        void SendMessage(string message);
     }
 }

@@ -7,9 +7,9 @@ using SEMining.DataSet.Models;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using SEMining.Commons.Info;
-using SEMining.Commons.Info.Model.Message;
 using SEMining.DataSet.DataServices;
 using SEMining.DataSet.Events;
+using SE_mining_base.Info.Message;
 
 namespace SEMining.DataSet.Presenters
 {

@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using SEMining.Commons.Info;
-using SEMining.Commons.Info.Model.Message;
 using SEMining.Commons.Sistem;
 using SEMining.StockData.Models;
 using SEMining.StockData.Holders;
+using SE_mining_base.Info.Message;
 
 namespace SEMining.StockData.DataServices.Trades.Finam
 {

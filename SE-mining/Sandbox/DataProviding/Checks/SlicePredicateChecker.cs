@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.Practices.Unity;
 using SEMining.Commons.Info;
-using SEMining.Commons.Info.Model.Message;
-using SEMining.Sandbox.DataProviding.Predicates;
+using SE_mining_base.Info.Message;
+using SE_mining_base.Sandbox.DataProviding.Predicates;
 
 namespace SEMining.Sandbox.DataProviding.Checks
 {

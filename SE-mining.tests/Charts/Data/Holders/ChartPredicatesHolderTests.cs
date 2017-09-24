@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SEMining.Charts.Data.Holders;
-using SEMining.Charts.Data.Predicates;
-using SEMining.Charts.Data.Predicates.Basis;
+using SE_mining_base.Charts.Data.Predicates;
+using SE_mining_base.Charts.Data.Predicates.Basis;
 
 namespace SEMining.tests.Charts.Data.Holders
 {

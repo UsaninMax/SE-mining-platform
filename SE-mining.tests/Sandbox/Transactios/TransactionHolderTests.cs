@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using SEMining.Sandbox.Models;
 using SEMining.Sandbox.Transactios;
-using SEMining.Sandbox.Transactios.Enums;
-using SEMining.Sandbox.Transactios.Models;
 using System.Linq;
+using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Enums;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.tests.Sandbox.Transactios
 {
@@ -236,6 +236,47 @@ namespace SEMining.tests.Sandbox.Transactios
                 .Direction(Direction.Buy)
                 .Number(15)
                 .Build()), Is.EqualTo(665));
+        }
+
+        [Test]
+        public void Check_transaction_count_for_instrument()
+        {
+            ITransactionHolder holder = new TransactionHolder(null);
+
+            holder.UpdateOpenTransactions(new Transaction.Builder()
+                .InstrumentId("test_id")
+                .Direction(Direction.Buy)
+                .ExecutedPrice(150)
+                .Number(15)
+                .Build());
+            holder.UpdateOpenTransactions(new Transaction.Builder()
+                .InstrumentId("test_id")
+                .Direction(Direction.Buy)
+                .ExecutedPrice(150)
+                .Number(15)
+                .Build());
+            holder.UpdateOpenTransactions(new Transaction.Builder()
+                .InstrumentId("test_id")
+                .Direction(Direction.Buy)
+                .ExecutedPrice(150)
+                .Number(15)
+                .Build());
+            holder.UpdateOpenTransactions(new Transaction.Builder()
+                .InstrumentId("test_id_2")
+                .Direction(Direction.Buy)
+                .ExecutedPrice(170)
+                .Number(15)
+                .Build());
+
+            holder.UpdateOpenTransactions(new Transaction.Builder()
+                .InstrumentId("test_id")
+                .Direction(Direction.Sell)
+                .ExecutedPrice(110)
+                .Number(10)
+                .Build());
+
+            Assert.That(holder.GetNumberOfOpenTransactions("test_id"), Is.EqualTo(35));
+            Assert.That(holder.GetNumberOfOpenTransactions("test_id_2"), Is.EqualTo(15));
         }
     }
 }

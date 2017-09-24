@@ -2,8 +2,8 @@
 using System.Linq;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
-using SEMining.Charts.Vizualization.Configurations;
 using SEMining.Charts.Vizualization.Views;
+using SE_mining_base.Charts.Vizualization.Configurations;
 
 namespace SEMining.Charts.Vizualization.Dispatching
 {

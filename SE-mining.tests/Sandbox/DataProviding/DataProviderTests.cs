@@ -9,11 +9,11 @@ using SEMining.Commons.Info;
 using SEMining.DataSet.DataServices;
 using SEMining.Sandbox.DataProviding;
 using SEMining.Sandbox.DataProviding.Checks;
-using SEMining.Sandbox.DataProviding.Predicates;
 using SEMining.Sandbox.DataProviding.Transformers;
-using SEMining.Sandbox.Models;
 using SEMining.Sandbox.Providers;
 using SEMining.StockData.Models;
+using SE_mining_base.Sandbox.DataProviding.Predicates;
+using SE_mining_base.Sandbox.Models;
 
 namespace SEMining.tests.Sandbox.DataProviding
 {

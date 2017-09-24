@@ -30,13 +30,14 @@ namespace SEMining.Sandbox.Providers
 
             foreach (string file in checker.GetSuitableDll(_sandboxFolder))
             {
-                Assembly.Load(AssemblyName.GetAssemblyName(file))
+                var name = AssemblyName.GetAssemblyName(file);
+                Assembly.Load(name)
                     .GetTypes()
-                    .Where(t => typeof(SandboxApi).IsAssignableFrom(t))
+                    .Where(t => typeof(SandboxAbstraction).IsAssignableFrom(t) && name.Name.Equals(t.Name))
                     .ToList()
                     .ForEach(x =>
                     {
-                        SandboxApi sandbox = (SandboxApi)Activator.CreateInstance(x);
+                        SandboxAbstraction sandbox = (SandboxAbstraction)Activator.CreateInstance(x);
                         var sandboxPresenter = ContainerBuilder.Container.Resolve<ISandboxPresenter>(
                             new DependencyOverride<ISandbox>(sandbox),
                             new DependencyOverride<string>(x.Name));
@@ -48,7 +49,7 @@ namespace SEMining.Sandbox.Providers
 
         public ISandbox CreateInstance(Type type)
         {
-            return (SandboxApi)Activator.CreateInstance(type);
+            return (SandboxAbstraction)Activator.CreateInstance(type);
         }
     }
 }

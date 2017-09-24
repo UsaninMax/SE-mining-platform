@@ -1,7 +1,7 @@
 Stock exchange mining platform
 ================
 
-The module provides support for the development of trading robots for the exchange
+The module provides support for the development of trading algorithm
 
 ### Functionality/modules:
 

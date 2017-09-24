@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using SEMining.Charts.Vizualization.Configurations;
 using SEMining.Charts.Vizualization.ViewModels;
+using SE_mining_base.Charts.Vizualization.Configurations;
 
 namespace SEMining.Charts.Vizualization.Dispatching
 {

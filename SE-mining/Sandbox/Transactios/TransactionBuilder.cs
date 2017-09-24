@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using SEMining.Sandbox.Models;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.Sandbox.Transactios
 {
@@ -21,6 +21,7 @@ namespace SEMining.Sandbox.Transactios
             tick.Volume = tick.Volume - willExecute;
             Transaction transaction = new Transaction.Builder()
                 .WithDate(tick.Date())
+                .RequestId(request.Id)
                 .InstrumentId(request.InstrumentId)
                 .Direction(request.Direction)
                 .ExecutedPrice(tick.Price)

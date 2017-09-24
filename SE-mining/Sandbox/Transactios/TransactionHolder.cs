@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.ObjectBuilder2;
-using SEMining.Sandbox.Models;
-using SEMining.Sandbox.Transactios.Enums;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Enums;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.Sandbox.Transactios
 {
@@ -90,6 +90,12 @@ namespace SEMining.Sandbox.Transactios
             return _openTransactions
                 .Where(x => x.InstrumentId.Equals(instrumentId))
                 .ToList();
+        }
+
+        public int GetNumberOfOpenTransactions(string instrumentId)
+        {
+            return _openTransactions
+                .Where(x => x.InstrumentId.Equals(instrumentId)).Select(transaction => transaction.RemainingNumber).Sum();
         }
 
         public int GetSize()

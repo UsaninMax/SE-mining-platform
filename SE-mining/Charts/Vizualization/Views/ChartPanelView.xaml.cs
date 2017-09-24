@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Practices.ObjectBuilder2;
-using SEMining.Charts.Vizualization.Configurations;
 using SEMining.Charts.Vizualization.Holders;
 using Microsoft.Practices.Unity;
+using SE_mining_base.Charts.Vizualization.Configurations;
 
 namespace SEMining.Charts.Vizualization.Views
 {

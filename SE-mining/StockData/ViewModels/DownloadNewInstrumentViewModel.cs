@@ -7,11 +7,11 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using SEMining.Commons.Info;
-using SEMining.Commons.Info.Model.Message;
 using SEMining.StockData.DataServices.SecuritiesInfo;
 using SEMining.StockData.Events;
 using SEMining.StockData.Holders;
 using SEMining.StockData.Models;
+using SE_mining_base.Info.Message;
 
 namespace SEMining.StockData.ViewModels
 {

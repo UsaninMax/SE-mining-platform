@@ -4,16 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
+using Castle.Core.Internal;
 using LiveCharts;
 using LiveCharts.Wpf;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
 using SEMining.Charts.Data.Populating;
-using SEMining.Charts.Data.Predicates.Basis;
-using SEMining.Sandbox.Models;
-using SEMining.Sandbox.Transactios.Enums;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Charts.Data.Predicates.Basis;
+using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Enums;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.Charts.Vizualization.ViewModels
 {
@@ -125,9 +126,14 @@ namespace SEMining.Charts.Vizualization.ViewModels
             Series.Clear();
         }
 
-        public void Push(IEnumerable<Indicator> values, ChartPredicate predicate)
+        public void Push(ICollection<Indicator> values, ChartPredicate predicate)
         {
             UpdateRange(predicate);
+            if (values.IsNullOrEmpty())
+            {
+                return;
+            }
+
             Series.Add(new LineSeries
             {
                 Title = predicate.InstrumentId,
@@ -142,9 +148,14 @@ namespace SEMining.Charts.Vizualization.ViewModels
             });
         }
 
-        public void Push(IEnumerable<Candle> values, ChartPredicate predicate)
+        public void Push(ICollection<Candle> values, ChartPredicate predicate)
         {
             UpdateRange(predicate);
+            if (values.IsNullOrEmpty())
+            {
+                return;
+            }
+
             Series.Add(new OhlcSeries
             {
                 Title = predicate.InstrumentId,
@@ -153,9 +164,14 @@ namespace SEMining.Charts.Vizualization.ViewModels
             });
         }
 
-        public void Push(IEnumerable<double> values, ChartPredicate predicate)
+        public void Push(ICollection<double> values, ChartPredicate predicate)
         {
             UpdateRange(predicate);
+            if (values.IsNullOrEmpty())
+            {
+                return;
+            }
+
             Series.Add(new LineSeries
             {
                 Title = predicate.InstrumentId,
@@ -168,8 +184,13 @@ namespace SEMining.Charts.Vizualization.ViewModels
             });
         }
 
-        public void Push(IEnumerable<Transaction> values)
+        public void Push(ICollection<Transaction> values)
         {
+            if (values.IsNullOrEmpty())
+            {
+                return;
+            }
+
             IEnumerable<Transaction> buyTransactions = values.Where(x => x.Direction.Equals(Direction.Buy)).ToList();
             IEnumerable<Transaction> sellTransactions = values.Where(x => x.Direction.Equals(Direction.Sell)).ToList();
 

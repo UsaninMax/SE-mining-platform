@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.Practices.Unity;
 using SEMining.Sandbox.Holders;
-using SEMining.Sandbox.Models;
+using SE_mining_base.Sandbox.Models;
 
 namespace SEMining.Charts.Data.Providers
 {

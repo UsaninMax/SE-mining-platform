@@ -1,4 +1,4 @@
-﻿using SEMining.Sandbox.DataProviding.Predicates;
+﻿using SE_mining_base.Sandbox.DataProviding.Predicates;
 
 namespace SEMining.Sandbox.DataProviding.Checks
 {

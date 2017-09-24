@@ -1,5 +1,5 @@
-﻿using SEMining.Sandbox.Models;
-using SEMining.Sandbox.Transactios.Models;
+﻿using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.Sandbox.Transactios
 {

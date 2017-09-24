@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
-using SEMining.Charts.Data.Predicates.Basis;
-using SEMining.Sandbox.Models;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Charts.Data.Predicates.Basis;
+using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.Charts.Vizualization.ViewModels
 {
     public interface IChartViewModel
     {
-        void Push(IEnumerable<Indicator> values, ChartPredicate predicate);
-        void Push(IEnumerable<Candle> values, ChartPredicate predicate);
-        void Push(IEnumerable<double> values, ChartPredicate predicate);
-        void Push(IEnumerable<Transaction> values);
+        void Push(ICollection<Indicator> values, ChartPredicate predicate);
+        void Push(ICollection<Candle> values, ChartPredicate predicate);
+        void Push(ICollection<double> values, ChartPredicate predicate);
+        void Push(ICollection<Transaction> values);
         void ClearAll();
     }
 }

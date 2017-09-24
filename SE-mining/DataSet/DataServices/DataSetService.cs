@@ -3,13 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
 using SEMining.Commons.Info;
-using SEMining.Commons.Info.Model.Message;
 using SEMining.Commons.Sistem;
 using SEMining.DataSet.DataServices.Serialization;
 using SEMining.DataSet.Holders;
 using SEMining.DataSet.Models;
 using System.Collections.Generic;
 using SEMining.StockData.Models;
+using SE_mining_base.Info.Message;
 
 namespace SEMining.DataSet.DataServices
 {

@@ -4,50 +4,49 @@ using System.Linq;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
-using SEMining.Sandbox.Models;
 using SEMining.Sandbox.Transactios;
-using SEMining.Sandbox.Transactios.Enums;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Enums;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.tests.Sandbox.Transactios
 {
     [TestFixture]
     public class TransactionsContextTests
     {
+        private Mock<IWorkingPeriodHolder> _workingPeriodHolderMock;
+        private Mock<ITransactionBuilder> _transactionBuilderMock;
+        private Mock<ITransactionHolder> _transactionHolderMock;
+        private Mock<IBalanceHolder> _balanceMock;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _workingPeriodHolderMock = new Mock<IWorkingPeriodHolder>();
+            ContainerBuilder.Container.RegisterInstance(_workingPeriodHolderMock.Object);
+            _transactionBuilderMock = new Mock<ITransactionBuilder>();
+            ContainerBuilder.Container.RegisterInstance(_transactionBuilderMock.Object);
+            _transactionHolderMock = new Mock<ITransactionHolder>();
+            ContainerBuilder.Container.RegisterInstance(_transactionHolderMock.Object);
+            _balanceMock = new Mock<IBalanceHolder>();
+            ContainerBuilder.Container.RegisterInstance(_balanceMock.Object);
+        }
+
 
         [Test]
         public void Check_reset()
         {
-            var workingPeriodHolderMock = new Mock<IWorkingPeriodHolder>();
-            ContainerBuilder.Container.RegisterInstance(workingPeriodHolderMock.Object);
-            var transactionBuilderMock = new Mock<ITransactionBuilder>();
-            ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
-            var transactionHolderMock = new Mock<ITransactionHolder>();
-            ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
-            ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
-
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>());
             context.Reset();
-            transactionBuilderMock.Verify(x=> x.Reset(), Times.Once);
-            transactionHolderMock.Verify(x => x.Reset(), Times.Once);
-            workingPeriodHolderMock.Verify(x => x.Reset(), Times.Once);
-            balanceMock.Verify(x => x.Reset(), Times.Once);
+            _transactionBuilderMock.Verify(x=> x.Reset(), Times.Once);
+            _transactionHolderMock.Verify(x => x.Reset(), Times.Once);
+            _balanceMock.Verify(x => x.Reset(), Times.Once);
         }
 
         [Test]
         public void Check_if_context_is_prepared()
         {
-            var workingPeriodHolderMock = new Mock<IWorkingPeriodHolder>();
-            ContainerBuilder.Container.RegisterInstance(workingPeriodHolderMock.Object);
-            var transactionBuilderMock = new Mock<ITransactionBuilder>();
-            ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
-            var transactionHolderMock = new Mock<ITransactionHolder>();
-            ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
-            ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
-
-            balanceMock.Setup(x => x.GetHistory()).Returns(new List<BalanceRow>() { new BalanceRow.Builder().Build() });
+            _balanceMock.Setup(x => x.GetHistory()).Returns(new List<BalanceRow>() { new BalanceRow.Builder().Build() });
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
@@ -55,7 +54,7 @@ namespace SEMining.tests.Sandbox.Transactios
             });
 
             context.SetUpBalance(1000);
-            balanceMock.Verify(x => x.AddMoney(1000), Times.Once);
+            _balanceMock.Verify(x => x.AddMoney(1000), Times.Once);
 
             Assert.That(context.IsPrepared, Is.True);
         }
@@ -63,15 +62,6 @@ namespace SEMining.tests.Sandbox.Transactios
         [Test]
         public void Check_available_number_if_context_not_set_up()
         {
-            var workingPeriodHolderMock = new Mock<IWorkingPeriodHolder>();
-            ContainerBuilder.Container.RegisterInstance(workingPeriodHolderMock.Object);
-            var transactionBuilderMock = new Mock<ITransactionBuilder>();
-            ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
-            var transactionHolderMock = new Mock<ITransactionHolder>();
-            ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
-            ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
-
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
                 { "instrument_id", new BrokerCost()}
@@ -83,22 +73,14 @@ namespace SEMining.tests.Sandbox.Transactios
 
             Assert.Throws<Exception>(() =>
             {
-                context.AvailableNumber("test");
+                context.GetAvailableNumberToOpen("test");
             });
         }
 
         [Test]
         public void Calculate_available_number()
         {
-            var workingPeriodHolderMock = new Mock<IWorkingPeriodHolder>();
-            ContainerBuilder.Container.RegisterInstance(workingPeriodHolderMock.Object);
-            var transactionBuilderMock = new Mock<ITransactionBuilder>();
-            ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
-            var transactionHolderMock = new Mock<ITransactionHolder>();
-            ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
-            ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
-            balanceMock.Setup(x => x.GetTotal()).Returns(1000);
+            _balanceMock.Setup(x => x.GetTotal()).Returns(1000);
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
@@ -114,24 +96,15 @@ namespace SEMining.tests.Sandbox.Transactios
             context.ProcessTick(ticks, DateTime.MinValue);
             context.SetUpBalance(1000);
 
-            Assert.That(context.AvailableNumber("test_id"), Is.EqualTo(83));
+            Assert.That(context.GetAvailableNumberToOpen("test_id"), Is.EqualTo(83));
 
-            transactionHolderMock.Setup(x => x.GetCoverage(ticks, It.IsAny<IEnumerable<OpenPositionRequest>>())).Returns(103);
-            Assert.That(context.AvailableNumber("test_id"), Is.EqualTo(74));
+            _transactionHolderMock.Setup(x => x.GetCoverage(ticks, It.IsAny<IEnumerable<OpenPositionRequest>>())).Returns(103);
+            Assert.That(context.GetAvailableNumberToOpen("test_id"), Is.EqualTo(74));
         }
 
         [Test]
         public void Open_position_when_not_tick_processed()
         {
-            var workingPeriodHolderMock = new Mock<IWorkingPeriodHolder>();
-            ContainerBuilder.Container.RegisterInstance(workingPeriodHolderMock.Object);
-            var transactionBuilderMock = new Mock<ITransactionBuilder>();
-            ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
-            var transactionHolderMock = new Mock<ITransactionHolder>();
-            ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
-            ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
-
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
                 { "test_id", new BrokerCost{Coverage = 0.10, TransactionCost = 2}}
@@ -144,15 +117,7 @@ namespace SEMining.tests.Sandbox.Transactios
         [Test]
         public void Open_position_when_not_set_up_workin_time()
         {
-            var workingPeriodHolderMock = new Mock<IWorkingPeriodHolder>();
-            ContainerBuilder.Container.RegisterInstance(workingPeriodHolderMock.Object);
-            var transactionBuilderMock = new Mock<ITransactionBuilder>();
-            ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
-            var transactionHolderMock = new Mock<ITransactionHolder>();
-            ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
-            ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
-            balanceMock.Setup(x => x.GetTotal()).Returns(1000);
+            _balanceMock.Setup(x => x.GetTotal()).Returns(1000);
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
@@ -176,18 +141,10 @@ namespace SEMining.tests.Sandbox.Transactios
         [Test]
         public void Open_position_when_set_up_workin_time()
         {
-            var workingPeriodHolderMock = new Mock<IWorkingPeriodHolder>();
-            ContainerBuilder.Container.RegisterInstance(workingPeriodHolderMock.Object);
-            var transactionBuilderMock = new Mock<ITransactionBuilder>();
-            ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
-            var transactionHolderMock = new Mock<ITransactionHolder>();
-            ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
-            ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
-            balanceMock.Setup(x => x.GetTotal()).Returns(1000);
-            transactionHolderMock.Setup(x => x.GetOpenTransactions(It.IsAny<string>()))
+            _balanceMock.Setup(x => x.GetTotal()).Returns(1000);
+            _transactionHolderMock.Setup(x => x.GetOpenTransactions(It.IsAny<string>()))
                 .Returns(new List<Transaction>());
-            workingPeriodHolderMock.Setup(x => x.Get("test_id"))
+            _workingPeriodHolderMock.Setup(x => x.Get("test_id"))
                 .Returns(new WorkingPeriod {Open = new TimeSpan(0, 10, 30, 0), Close = new TimeSpan(0, 20, 0, 0)});
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
@@ -246,15 +203,7 @@ namespace SEMining.tests.Sandbox.Transactios
         [Test]
         public void Open_position_check_history()
         {
-            var workingPeriodHolderMock = new Mock<IWorkingPeriodHolder>();
-            ContainerBuilder.Container.RegisterInstance(workingPeriodHolderMock.Object);
-            var transactionBuilderMock = new Mock<ITransactionBuilder>();
-            ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
-            var transactionHolderMock = new Mock<ITransactionHolder>();
-            ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
-            ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
-            balanceMock.Setup(x => x.GetTotal()).Returns(1000);
+            _balanceMock.Setup(x => x.GetTotal()).Returns(1000);
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
@@ -284,15 +233,7 @@ namespace SEMining.tests.Sandbox.Transactios
         [Test]
         public void Open_position_check()
         {
-            var workingPeriodHolderMock = new Mock<IWorkingPeriodHolder>();
-            ContainerBuilder.Container.RegisterInstance(workingPeriodHolderMock.Object);
-            var transactionBuilderMock = new Mock<ITransactionBuilder>();
-            ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
-            var transactionHolderMock = new Mock<ITransactionHolder>();
-            ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
-            ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
-            balanceMock.Setup(x => x.GetTotal()).Returns(1000);
+            _balanceMock.Setup(x => x.GetTotal()).Returns(1000);
 
             IDictionary<string, Tick> tick = new Dictionary<string, Tick>
             {
@@ -317,7 +258,7 @@ namespace SEMining.tests.Sandbox.Transactios
                 new Transaction.Builder().InstrumentId("test_id").Build()
             };
 
-            transactionHolderMock.Setup(x => x.GetInvertedOpenTransactions("test_id", Direction.Buy)).Returns(transactions);
+            _transactionHolderMock.Setup(x => x.GetInvertedOpenTransactions("test_id", Direction.Buy)).Returns(transactions);
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
@@ -338,11 +279,11 @@ namespace SEMining.tests.Sandbox.Transactios
             Transaction transaction = new Transaction.Builder().InstrumentId("test_id").Direction(Direction.Buy)
                 .Number(10).Build();
 
-            transactionBuilderMock.Setup(x => x.Build(request, tick["test_id"])).Returns(transaction);
+            _transactionBuilderMock.Setup(x => x.Build(request, tick["test_id"])).Returns(transaction);
             context.ProcessTick(tick, new DateTime(2016, 9, 12, 11, 46, 0));
 
-            balanceMock.Verify(x => x.AddTransactionMargin(transaction, transactions, It.IsAny<DateTime>()), Times.Once);
-            transactionHolderMock.Verify(x => x.UpdateOpenTransactions(transaction), Times.Once);
+            _balanceMock.Verify(x => x.AddTransactionMargin(transaction, transactions, It.IsAny<DateTime>()), Times.Once);
+            _transactionHolderMock.Verify(x => x.UpdateOpenTransactions(transaction), Times.Once);
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(0));
             Assert.That(context.GetRequestsHistory().Count, Is.EqualTo(1));
         }
@@ -352,18 +293,11 @@ namespace SEMining.tests.Sandbox.Transactios
         [Test]
         public void Force_close_positions()
         {
-            var workingPeriodHolderMock = new Mock<IWorkingPeriodHolder>();
-            ContainerBuilder.Container.RegisterInstance(workingPeriodHolderMock.Object);
-            var transactionBuilderMock = new Mock<ITransactionBuilder>();
-            ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
-            var transactionHolderMock = new Mock<ITransactionHolder>();
-            ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
-            ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
-            balanceMock.Setup(x => x.GetTotal()).Returns(1000);
+          
+            _balanceMock.Setup(x => x.GetTotal()).Returns(1000);
 
 
-            workingPeriodHolderMock.Setup(x => x.Get("test_id"))
+            _workingPeriodHolderMock.Setup(x => x.Get("test_id"))
                 .Returns(new WorkingPeriod {Open = new TimeSpan(0, 10, 30, 0), Close = new TimeSpan(0, 20, 0, 0)});
 
 
@@ -393,7 +327,7 @@ namespace SEMining.tests.Sandbox.Transactios
                 new Transaction.Builder().InstrumentId("test_id").Direction(Direction.Sell).Number(10).ExecutedPrice(123).Build()
             };
 
-            transactionHolderMock.Setup(x => x.GetOpenTransactions("test_id")).Returns(transactions);
+            _transactionHolderMock.Setup(x => x.GetOpenTransactions("test_id")).Returns(transactions);
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
@@ -408,9 +342,9 @@ namespace SEMining.tests.Sandbox.Transactios
             Assert.That(context.OpenPosition(request), Is.True);
 
             context.ProcessTick(tick, new DateTime(2016, 9, 12, 20, 46, 0));
-            balanceMock.Verify(x => x.AddTransactionMargin(It.IsAny<Transaction>(), transactions, DateTime.MinValue), Times.Never);
-            balanceMock.Verify(x => x.AddTransactionCost(2, It.IsAny<DateTime>()), Times.Exactly(3));
-            transactionHolderMock.Verify(x => x.UpdateOpenTransactions(It.IsAny<Transaction>()), Times.Never);
+            _balanceMock.Verify(x => x.AddTransactionMargin(It.IsAny<Transaction>(), transactions, DateTime.MinValue), Times.Never);
+            _balanceMock.Verify(x => x.AddTransactionCost(2, It.IsAny<DateTime>(), It.IsAny<Guid>()), Times.Exactly(3));
+            _transactionHolderMock.Verify(x => x.UpdateOpenTransactions(It.IsAny<Transaction>()), Times.Never);
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(2));
 
             Assert.That(context.GetActiveRequests().First().RemainingNumber, Is.EqualTo(120));
@@ -427,16 +361,8 @@ namespace SEMining.tests.Sandbox.Transactios
         [Test]
         public void Force_close_positions_when_not_working_period_was_execute()
         {
-            var workingPeriodHolderMock = new Mock<IWorkingPeriodHolder>();
-            ContainerBuilder.Container.RegisterInstance(workingPeriodHolderMock.Object);
-            var transactionBuilderMock = new Mock<ITransactionBuilder>();
-            ContainerBuilder.Container.RegisterInstance(transactionBuilderMock.Object);
-            var transactionHolderMock = new Mock<ITransactionHolder>();
-            ContainerBuilder.Container.RegisterInstance(transactionHolderMock.Object);
-            var balanceMock = new Mock<IBalance>();
-            ContainerBuilder.Container.RegisterInstance(balanceMock.Object);
-            balanceMock.Setup(x => x.GetTotal()).Returns(1000);
-            workingPeriodHolderMock.Setup(x => x.IsStoredPoint(It.IsAny<string>(), It.IsAny<DateTime>())).Returns(true);
+
+            _balanceMock.Setup(x => x.GetTotal()).Returns(1000);
             IDictionary<string, Tick> tick = new Dictionary<string, Tick>
             {
                 {
@@ -463,7 +389,7 @@ namespace SEMining.tests.Sandbox.Transactios
                 new Transaction.Builder().InstrumentId("test_id").Direction(Direction.Sell).Number(10).ExecutedPrice(123).Build()
             };
 
-            transactionHolderMock.Setup(x => x.GetOpenTransactions("test_id")).Returns(transactions);
+            _transactionHolderMock.Setup(x => x.GetOpenTransactions("test_id")).Returns(transactions);
 
             ITransactionsContext context = new TransactionsContext(new Dictionary<string, BrokerCost>
             {
@@ -483,7 +409,7 @@ namespace SEMining.tests.Sandbox.Transactios
             Assert.That(context.OpenPosition(request), Is.True);
 
             context.ProcessTick(tick, new DateTime(2016, 9, 12, 20, 46, 0));
-            balanceMock.Verify(x => x.AddTransactionCost(2, It.IsAny<DateTime>()), Times.Exactly(1));
+            _balanceMock.Verify(x => x.AddTransactionCost(2, It.IsAny<DateTime>(), It.IsAny<Guid>()), Times.Exactly(1));
             Assert.That(context.GetActiveRequests().Count, Is.EqualTo(1));
 
             Assert.That(context.GetActiveRequests().First().RemainingNumber, Is.EqualTo(10));
