@@ -66,7 +66,6 @@ namespace SEMining.Sandbox
 
                 return Task.Run(() =>
                 {
-                    x.Reset();
                     x.Execute();
                 }, _token);
 
