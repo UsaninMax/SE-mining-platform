@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using SEMining.Sandbox.Models;
-using SEMining.Sandbox.Transactios.Enums;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Enums;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.Sandbox.Transactios
 {
@@ -14,6 +14,7 @@ namespace SEMining.Sandbox.Transactios
         IEnumerable<Transaction> GetInvertedOpenTransactions(string instrumentId, Direction direction);
         IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
         IEnumerable<Transaction> GetOpenTransactions(string instrumentId);
+        int GetNumberOfOpenTransactions(string instrumentId);
         int GetSize();
         void Reset();
     }

@@ -7,8 +7,8 @@ using SEMining.StockData.DataServices.Trades;
 using System.Threading;
 using Microsoft.Practices.ObjectBuilder2;
 using SEMining.Commons.Info;
-using SEMining.Commons.Info.Model.Message;
 using SEMining.StockData.Models;
+using SE_mining_base.Info.Message;
 
 namespace SEMining.DataSet.DataServices
 {

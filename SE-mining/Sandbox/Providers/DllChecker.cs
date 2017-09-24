@@ -22,7 +22,7 @@ namespace SEMining.Sandbox.Providers
                     var name = AssemblyName.GetAssemblyName(file.FullName);
                     Assembly.Load(name)
                         .GetTypes()
-                        .Where(t => t != typeof(SandboxApi) && typeof(SandboxApi).IsAssignableFrom(t))
+                        .Where(t => t != typeof(SandboxAbstraction) && typeof(SandboxAbstraction).IsAssignableFrom(t))
                         .ToList()
                         .ForEach(x =>
                         {

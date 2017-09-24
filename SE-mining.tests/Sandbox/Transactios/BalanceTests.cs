@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using SEMining.Sandbox.Transactios;
-using SEMining.Sandbox.Transactios.Enums;
-using SEMining.Sandbox.Transactios.Models;
 using System.Linq;
+using SE_mining_base.Transactios.Enums;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.tests.Sandbox.Transactios
 {
@@ -14,7 +14,7 @@ namespace SEMining.tests.Sandbox.Transactios
         [Test]
         public void Check_set_up_balance()
         {
-            IBalance balance = new Balance();
+            IBalanceHolder balance = new BalanceHolder();
             balance.AddMoney(300);
             Assert.That(balance.GetTotal(), Is.EqualTo(300));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(1));
@@ -24,9 +24,9 @@ namespace SEMining.tests.Sandbox.Transactios
         [Test]
         public void Check_Add_Transaction_Cost()
         {
-            IBalance balance = new Balance();
+            IBalanceHolder balance = new BalanceHolder();
             balance.AddMoney(300);
-            balance.AddTransactionCost(10, DateTime.MinValue);
+            balance.AddTransactionCost(10, DateTime.MinValue, new Guid());
             Assert.That(balance.GetTotal(), Is.EqualTo(290));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(2));
             Assert.That(balance.GetHistory().ToList()[1].TransactionCost, Is.EqualTo(-10));
@@ -36,9 +36,9 @@ namespace SEMining.tests.Sandbox.Transactios
         [Test]
         public void Check_reset()
         {
-            IBalance balance = new Balance();
+            IBalanceHolder balance = new BalanceHolder();
             balance.AddMoney(300);
-            balance.AddTransactionCost(10, DateTime.MinValue);
+            balance.AddTransactionCost(10, DateTime.MinValue, new Guid());
             Assert.That(balance.GetTotal(), Is.EqualTo(290));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(2));
             Assert.That(balance.GetHistory().ToList()[1].TransactionCost, Is.EqualTo(-10));
@@ -53,7 +53,7 @@ namespace SEMining.tests.Sandbox.Transactios
         [Test]
         public void Check_calculate_margine_when_open_transaction_not_exist()
         {
-            IBalance balance = new Balance();
+            IBalanceHolder balance = new BalanceHolder();
             balance.AddMoney(300);
             Assert.That(balance.GetTotal(), Is.EqualTo(300));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(1));
@@ -78,7 +78,7 @@ namespace SEMining.tests.Sandbox.Transactios
         [Test]
         public void Check_calculate_margine_when_open_transaction_exist()
         {
-            IBalance balance = new Balance();
+            IBalanceHolder balance = new BalanceHolder();
             balance.AddMoney(600);
             Assert.That(balance.GetTotal(), Is.EqualTo(600));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(1));
@@ -120,7 +120,7 @@ namespace SEMining.tests.Sandbox.Transactios
         [Test]
         public void Check_calculate_margine_when_open_transaction_exist_2()
         {
-            IBalance balance = new Balance();
+            IBalanceHolder balance = new BalanceHolder();
             balance.AddMoney(600);
             Assert.That(balance.GetTotal(), Is.EqualTo(600));
             Assert.That(balance.GetHistory().Count, Is.EqualTo(1));

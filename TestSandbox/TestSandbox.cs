@@ -1,24 +1,25 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
-using SEMining.Charts.Data.Predicates;
-using SEMining.Charts.Data.Predicates.Basis;
-using SEMining.Charts.Vizualization.Configurations;
 using SEMining.Sandbox;
 using SEMining.Sandbox.Bots;
-using SEMining.Sandbox.DataProviding.Predicates;
-using SEMining.Sandbox.Models;
 using SEMining.Sandbox.Results.Adaptors;
 using SEMining.Sandbox.Results.Storing;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Charts.Data.Predicates;
+using SE_mining_base.Charts.Data.Predicates.Basis;
+using SE_mining_base.Charts.Vizualization.Configurations;
+using SE_mining_base.Sandbox.DataProviding.Predicates;
+using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Models;
 
-namespace TestSandboxModule
+namespace TestSandbox
 {
-    public class TestSandbox : SandboxApi
+    public class TestSandbox : SandboxAbstraction
     {
-        private DateTime _from = new DateTime(2016, 1, 1);
-        private DateTime _to = new DateTime(2017, 1, 1);
+        private DateTime _from = new DateTime(2016, 3, 15);
+        private DateTime _to = new DateTime(2016, 3, 25);
         private TimeSpan _period = new TimeSpan(0, 0, 5);
         private IDictionary<string, BrokerCost> _costs = new Dictionary<string, BrokerCost> { { "RTS", new BrokerCost { Coverage = 0.11, TransactionCost = 0.5 } } };
 
@@ -106,8 +107,8 @@ namespace TestSandboxModule
             ReusltStoring.Store(reportAdaptor.Adopt(_thirdBot.GetRequestsHistory()), " | ");
             StoreCustomData("TRANSACTIONS", new List<object>(Bots.First().GetTansactionsHistory()));
             StoreCustomData("EQUITY", GetEquity());
-            var from = new DateTime(2016, 2, 1, 13, 55, 00);
-            var to = new DateTime(2016, 2, 1, 13, 56, 00);
+            var from = new DateTime(2016, 3, 15, 13, 55, 00);
+            var to = new DateTime(2016, 3, 25, 13, 56, 00);
             PopulateCharts(new List<ChartPredicate>
             {
                 new EDPredicate

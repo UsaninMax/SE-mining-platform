@@ -6,12 +6,12 @@ using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
 using SEMining.Commons.Info;
-using SEMining.Commons.Info.Model.Message;
 using SEMining.Commons.Sistem;
 using SEMining.StockData.DataServices.Trades;
 using SEMining.StockData.DataServices.Trades.Finam;
 using SEMining.StockData.Holders;
 using SEMining.StockData.Models;
+using SE_mining_base.Info.Message;
 
 namespace SEMining.tests.StockData.DataServices.Trades.Finam
 {

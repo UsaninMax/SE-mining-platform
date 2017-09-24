@@ -4,14 +4,14 @@ using System.Threading;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
-using SEMining.Charts.Vizualization.Configurations;
 using SEMining.Sandbox;
 using SEMining.Sandbox.Bots;
 using SEMining.Sandbox.DataProviding;
-using SEMining.Sandbox.DataProviding.Predicates;
-using SEMining.Sandbox.Models;
 using SEMining.Sandbox.Holders;
 using SEMining.Charts.Data.Populating;
+using SE_mining_base.Charts.Vizualization.Configurations;
+using SE_mining_base.Sandbox.DataProviding.Predicates;
+using SE_mining_base.Sandbox.Models;
 
 namespace SEMining.tests.Sandbox
 {
@@ -110,9 +110,9 @@ namespace SEMining.tests.Sandbox
             testSandBox.Execution();
 
             botMock_1.Verify(x => x.Execute(), Times.Once);
-            botMock_1.Verify(x => x.ResetTransactionContext(), Times.Once);
+            botMock_1.Verify(x => x.Reset(), Times.Once);
             botMock_2.Verify(x => x.Execute(), Times.Once);
-            botMock_2.Verify(x => x.ResetTransactionContext(), Times.Once);
+            botMock_2.Verify(x => x.Reset(), Times.Once);
         }
 
         [Test]
@@ -149,9 +149,9 @@ namespace SEMining.tests.Sandbox
             testSandBox.Execution();
 
             botMock_1.Verify(x => x.Execute(), Times.Never);
-            botMock_1.Verify(x => x.ResetTransactionContext(), Times.Never);
+            botMock_1.Verify(x => x.Reset(), Times.Never);
             botMock_2.Verify(x => x.Execute(), Times.Never);
-            botMock_2.Verify(x => x.ResetTransactionContext(), Times.Never);
+            botMock_2.Verify(x => x.Reset(), Times.Never);
         }
 
         [Test]
@@ -208,7 +208,7 @@ namespace SEMining.tests.Sandbox
         }
     }
 
-    class TestSandBox : SandboxApi
+    class TestSandBox : SandboxAbstraction
     {
         public IEnumerable<IPredicate> Predicates;
         public IEnumerable<IBot> Bots;

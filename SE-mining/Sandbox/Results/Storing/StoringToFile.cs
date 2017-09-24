@@ -22,7 +22,7 @@ namespace SEMining.Sandbox.Results.Storing
 
         public void Store(IEnumerable<Dictionary<string, string>> data, string separator)
         {
-            if(data.IsNullOrEmpty())
+            if(!data.Any())
             {
                 return;
             }
@@ -33,6 +33,41 @@ namespace SEMining.Sandbox.Results.Storing
             data.ForEach(line =>
             {
                 sb.Append(GetBody(line, separator));
+                sb.Append(Environment.NewLine);
+            });
+
+            _fileManager.CreateFile(sb.ToString(), STORAGE_FOLDER + "\\" + Path.GetRandomFileName());
+        }
+
+        public void Store(IList<double> data)
+        {
+            if (!data.Any())
+            {
+                return;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            data.ForEach(line =>
+            {
+                sb.Append(line);
+                sb.Append(Environment.NewLine);
+            });
+
+            _fileManager.CreateFile(sb.ToString(), STORAGE_FOLDER + "\\" + Path.GetRandomFileName());
+
+        }
+
+        public void Store(IList<string> data)
+        {
+            if (!data.Any())
+            {
+                return;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            data.ForEach(line =>
+            {
+                sb.Append(line);
                 sb.Append(Environment.NewLine);
             });
 

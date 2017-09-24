@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using SEMining.Charts.Data.Predicates.Basis;
+﻿using SE_mining_base.Charts.Data.Predicates.Basis;
+using System.Collections.Generic;
 
 namespace SEMining.Charts.Data.Holders
 {

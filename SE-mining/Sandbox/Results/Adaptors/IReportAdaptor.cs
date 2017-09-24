@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.Sandbox.Results.Adaptors
 {

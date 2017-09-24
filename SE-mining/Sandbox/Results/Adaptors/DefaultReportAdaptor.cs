@@ -1,7 +1,7 @@
 ﻿using Microsoft.Practices.ObjectBuilder2;
 using System.Collections.Generic;
 using System.Globalization;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.Sandbox.Results.Adaptors
 {
@@ -34,7 +34,8 @@ namespace SEMining.Sandbox.Results.Adaptors
                     {"Date" , row.Date.ToString(CultureInfo.InvariantCulture)},
                     {"TransactionCost" , row.TransactionCost.ToString(CultureInfo.InvariantCulture)},
                     {"TransactionMargin" , row.TransactionMargin.ToString(CultureInfo.InvariantCulture)},
-                    {"Total" , row.Total.ToString(CultureInfo.InvariantCulture)}
+                    {"Total" , row.Total.ToString(CultureInfo.InvariantCulture)},
+                    {"RequestId" , row.RequestId.ToString()}
                 });
             });
             return report;
@@ -57,7 +58,8 @@ namespace SEMining.Sandbox.Results.Adaptors
                             {"TransactionInstrumentId" , transaction.InstrumentId.ToString()},
                             {"TransactionDirection" , transaction.Direction.ToString()},
                             {"TransactionNumber" , transaction.Number.ToString()},
-                            {"TransactionExecutedPrice" , transaction.ExecutedPrice.ToString(CultureInfo.InvariantCulture)}
+                            {"TransactionExecutedPrice" , transaction.ExecutedPrice.ToString(CultureInfo.InvariantCulture)},
+                            {"Id" , request.Id.ToString()}
                         };
                         report.Add(reportRequest);
                     });

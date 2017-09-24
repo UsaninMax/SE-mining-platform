@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Threading;
-using SEMining.Charts.Data.Predicates.Basis;
-using SEMining.Charts.Vizualization.Configurations;
 using SEMining.Charts.Vizualization.ViewModels;
-using SEMining.Sandbox.Models;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Charts.Data.Predicates.Basis;
+using SE_mining_base.Charts.Vizualization.Configurations;
+using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.Charts.Vizualization.Dispatching
 {
@@ -26,7 +26,7 @@ namespace SEMining.Charts.Vizualization.Dispatching
             }));
         }
 
-        public void Push(IChartViewModel chartViewModel, IEnumerable<Candle> list, ChartPredicate predicate)
+        public void Push(IChartViewModel chartViewModel, ICollection<Candle> list, ChartPredicate predicate)
         {
             _dispatcher.BeginInvoke((Action)(() =>
             {
@@ -34,7 +34,7 @@ namespace SEMining.Charts.Vizualization.Dispatching
             }));
         }
 
-        public void Push(IChartViewModel chartViewModel, IEnumerable<double> list, ChartPredicate predicate)
+        public void Push(IChartViewModel chartViewModel, ICollection<double> list, ChartPredicate predicate)
         {
             _dispatcher.BeginInvoke((Action)(() =>
             {
@@ -42,7 +42,7 @@ namespace SEMining.Charts.Vizualization.Dispatching
             }));
         }
 
-        public void Push(IChartViewModel chartViewModel, IEnumerable<Indicator> list, ChartPredicate predicate)
+        public void Push(IChartViewModel chartViewModel, ICollection<Indicator> list, ChartPredicate predicate)
         {
             _dispatcher.BeginInvoke((Action)(() =>
             {
@@ -50,7 +50,7 @@ namespace SEMining.Charts.Vizualization.Dispatching
             }));
         }
 
-        public void Push(IChartViewModel chartViewModel, IEnumerable<Transaction> list)
+        public void Push(IChartViewModel chartViewModel, ICollection<Transaction> list)
         {
             _dispatcher.BeginInvoke((Action)(() =>
             {

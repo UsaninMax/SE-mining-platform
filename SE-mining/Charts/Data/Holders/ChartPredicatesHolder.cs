@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.ObjectBuilder2;
-using SEMining.Charts.Data.Predicates.Basis;
+using SE_mining_base.Charts.Data.Predicates.Basis;
 
 namespace SEMining.Charts.Data.Holders
 {

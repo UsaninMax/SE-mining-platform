@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SEMining.Commons.Info;
-using SEMining.Commons.Info.Model.Message;
 using SEMining.Commons.Sistem;
 using SEMining.DataSet.DataServices;
 using SEMining.DataSet.DataServices.Serialization;
 using SEMining.DataSet.Holders;
 using SEMining.DataSet.Models;
 using SEMining.StockData.Models;
+using SE_mining_base.Info.Message;
 
 namespace SEMining.tests.DataSet.DataServices
 {

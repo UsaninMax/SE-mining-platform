@@ -5,11 +5,12 @@ using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;
 using SEMining.Commons.Info;
-using SEMining.Commons.Info.Model.Message;
 using SEMining.Commons.Sistem;
 using SEMining.StockData.DataServices.Trades;
 using SEMining.StockData.Events;
 using SEMining.StockData.Models;
+using SE_mining_base.Info.Message;
+
 namespace SEMining.StockData.Presenters
 {
     public class DounloadInstrumentPresenter : BindableBase, IDounloadInstrumentPresenter

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using SEMining.Sandbox.Models;
-using SEMining.Sandbox.Transactios.Enums;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Enums;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.Sandbox.Transactios
 {
@@ -11,11 +11,12 @@ namespace SEMining.Sandbox.Transactios
         bool IsPrepared();
         void SetUpBalance(double value);
         void SetUpWorkingPeriod(IDictionary<string, WorkingPeriod> value);
-        double GetBalance();
+        double CurrentBalance();
         void Reset();
-        int AvailableNumber(string instrumentId);
-        IEnumerable<Transaction> GetTransactionHistory();
-        IEnumerable<BalanceRow> GetBalanceHistory();
+        int GetAvailableNumberToOpen(string instrumentId);
+        int GetNumberOfOpenTransactions(string instrumentId);
+        IList<Transaction> GetTransactionHistory();
+        IList<BalanceRow> GetBalanceHistory();
         bool OpenPosition(OpenPositionRequest request);
         void CancelPosition(Guid guid);
         void ProcessTick(IDictionary<string, Tick> ticks, DateTime dateTime);
@@ -26,5 +27,6 @@ namespace SEMining.Sandbox.Transactios
         IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
         double GetCoverage();
         double GetCoverage(OpenPositionRequest request);
+        BrokerCost GetBrokerCost(string instrument);
     }
 }

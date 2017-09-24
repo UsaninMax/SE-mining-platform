@@ -5,8 +5,8 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using SEMining.Commons.Info.Events;
-using SEMining.Commons.Info.Model.Message;
 using SEMining.Commons.Utils;
+using SE_mining_base.Info.Message;
 
 namespace SEMining.Commons.Info.Model
 {

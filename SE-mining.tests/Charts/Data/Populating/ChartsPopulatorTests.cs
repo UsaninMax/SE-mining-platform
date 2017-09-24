@@ -5,13 +5,13 @@ using SEMining.Charts.Vizualization.Holders;
 using SEMining.Charts.Data.Providers;
 using SEMining.Charts.Vizualization.Dispatching;
 using SEMining.Charts.Data.Holders;
-using SEMining.Charts.Vizualization.Configurations;
 using System.Collections.Generic;
 using System;
 using SEMining.Charts.Data.Populating;
-using SEMining.Charts.Data.Predicates;
-using SEMining.Charts.Data.Predicates.Basis;
+using SE_mining_base.Charts.Data.Predicates.Basis;
 using SEMining.Charts.Vizualization.ViewModels;
+using SE_mining_base.Charts.Data.Predicates;
+using SE_mining_base.Charts.Vizualization.Configurations;
 
 namespace SEMining.tests.Charts.Data.Populating
 {

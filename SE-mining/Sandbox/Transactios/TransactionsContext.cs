@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Castle.Core.Internal;
+using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
-using MoreLinq;
-using SEMining.Sandbox.Models;
-using SEMining.Sandbox.Transactios.Enums;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Enums;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.Sandbox.Transactios
 {
@@ -19,7 +19,7 @@ namespace SEMining.Sandbox.Transactios
         private IDictionary<string, Tick> _lastTicks = new Dictionary<string, Tick>();
         private DateTime _lastDate;
         private readonly ITransactionHolder _transactionHolder;
-        private readonly IBalance _balance;
+        private readonly IBalanceHolder _balance;
         private readonly IWorkingPeriodHolder _workingPeriodHolder;
         private readonly ITransactionBuilder _transactionBuilder;
 
@@ -27,7 +27,7 @@ namespace SEMining.Sandbox.Transactios
         {
             _brokerCosts = brokerCosts;
             _transactionHolder = ContainerBuilder.Container.Resolve<ITransactionHolder>(new DependencyOverride<IDictionary<string, BrokerCost>>(brokerCosts));
-            _balance = ContainerBuilder.Container.Resolve<IBalance>();
+            _balance = ContainerBuilder.Container.Resolve<IBalanceHolder>();
             _transactionBuilder = ContainerBuilder.Container.Resolve<ITransactionBuilder>();
             _workingPeriodHolder = ContainerBuilder.Container.Resolve<IWorkingPeriodHolder>();
         }
@@ -57,7 +57,7 @@ namespace SEMining.Sandbox.Transactios
             _workingPeriodHolder.SetUp(value);
         }
 
-        public double GetBalance()
+        public double CurrentBalance()
         {
             return _balance.GetTotal();
         }
@@ -69,12 +69,11 @@ namespace SEMining.Sandbox.Transactios
             _requestsHistory.Clear();
             _balance.Reset();
             _transactionHolder.Reset();
-            _workingPeriodHolder.Reset();
             _lastTicks.Clear();
             _lastDate = DateTime.MinValue;
         }
 
-        public int AvailableNumber(string instrumentId)
+        public int GetAvailableNumberToOpen(string instrumentId)
         {
             if (_lastTicks.IsNullOrEmpty())
             {
@@ -89,18 +88,28 @@ namespace SEMining.Sandbox.Transactios
             return (int)Math.Floor((_balance.GetTotal() - GetCoverage()) / (_lastTicks[instrumentId].Price * costs.Coverage));
         }
 
-        public IEnumerable<Transaction> GetTransactionHistory()
+        public int GetNumberOfOpenTransactions(string instrumentId)
+        {
+            return _transactionHolder.GetNumberOfOpenTransactions(instrumentId);
+        }
+
+        public IList<Transaction> GetTransactionHistory()
         {
             return _requestsHistory.SelectMany(x => x.GetTransactions()).ToList();
         }
 
-        public IEnumerable<BalanceRow> GetBalanceHistory()
+        public IList<BalanceRow> GetBalanceHistory()
         {
             return _balance.GetHistory();
         }
 
         public bool OpenPosition(OpenPositionRequest request)
         {
+            if (request.Number == 0)
+            {
+                return false;
+            }
+
             if (_lastTicks.IsNullOrEmpty())
             {
                 return false;
@@ -118,7 +127,7 @@ namespace SEMining.Sandbox.Transactios
             request.Date = _lastDate;
             _activeRequests.Add(request);
             _requestsHistory.Add(request);
-            _balance.AddTransactionCost(_brokerCosts[request.InstrumentId].TransactionCost, _lastDate);
+            _balance.AddTransactionCost(_brokerCosts[request.InstrumentId].TransactionCost, _lastDate, request.Id);
             return true;
         }
 
@@ -155,17 +164,12 @@ namespace SEMining.Sandbox.Transactios
                         openPosition.Date = _lastDate;
                         _activeRequests.Add(openPosition);
                         _requestsHistory.Add(openPosition);
-                        _balance.AddTransactionCost(_brokerCosts[openPosition.InstrumentId].TransactionCost, _lastDate);
+                        _balance.AddTransactionCost(_brokerCosts[openPosition.InstrumentId].TransactionCost, _lastDate, openPosition.Id);
                     });
         }
 
         private bool ForceClosePositionChecker(string instrumentId)
         {
-            if (_workingPeriodHolder.IsStoredPoint(instrumentId, _lastDate.Date))
-            {
-                return false;
-            }
-            _workingPeriodHolder.StorePoint(instrumentId, _lastDate.Date);
             return !IsWorkingTime(instrumentId);
         }
 
@@ -251,6 +255,11 @@ namespace SEMining.Sandbox.Transactios
         public IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction)
         {
             return _transactionHolder.GetOpenTransactions(instrumentId, direction);
+        }
+
+        public BrokerCost GetBrokerCost(string instrument)
+        {
+            return _brokerCosts[instrument];
         }
     }
 }

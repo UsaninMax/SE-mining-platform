@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using SEMining.Charts.Data.Predicates.Basis;
-using SEMining.Sandbox.Models;
-using SEMining.Sandbox.Transactios.Enums;
-using SEMining.Sandbox.Transactios.Models;
+using SE_mining_base.Charts.Data.Predicates.Basis;
+using SE_mining_base.Sandbox.Models;
+using SE_mining_base.Transactios.Enums;
+using SE_mining_base.Transactios.Models;
 
 namespace SEMining.Sandbox.Bots
 {
@@ -14,20 +14,28 @@ namespace SEMining.Sandbox.Bots
         void SetUpPredicate(BotPredicate predicate);
         void Execute();
         void Execution(IDictionary<string, IData> data);
-        int Score();
+        double Score();
         void SetUpWorkingPeriod(IDictionary<string, WorkingPeriod> value);
         void SetUpBalance(double value);
         void OpenPosition(OpenPositionRequest request);
         bool IsPrepared();
-        void ResetTransactionContext();
+        void Reset();
         void PopulateCharts(IEnumerable<ChartPredicate> predicates);
         void StoreCustomData(string key, IEnumerable<object> data);
         void CleanCustomeStorage();
+        int GetAvailableNumberToOpen(string instrumentId);
+        int GetNumberOfOpenTransactions(string instrumentId);
         IEnumerable<Transaction> GetOpenTransactions();
         IEnumerable<Transaction> GetOpenTransactions(string instrumentId, Direction direction);
-        IEnumerable<BalanceRow> GetBalanceHistory();
-        IEnumerable<Transaction> GetTansactionsHistory();
+        IList<BalanceRow> GetBalanceHistory();
+        double GetCurrentBalance();
+        IList<Transaction> GetTansactionsHistory();
         IEnumerable<OpenPositionRequest> GetRequestsHistory();
         IEnumerable<OpenPositionRequest> GetActiveRequests(string instrumentId, Direction direction);
+        bool AnyOpenPositions(string id);
+        bool AnyOpenPositions(string id, Direction direction);
+        int NumberOfOpen(string id, Direction direction);
+        double GetStartBalance();
+        BrokerCost GetBrokerCost(string instrument);
     }
 }
